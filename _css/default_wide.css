@@ -13,30 +13,41 @@
 	*/
 
 /* =====================================================
-   index
+   Profile
 ===================================================== */
 
-span.index_Link{
-color				: red;
-font-weight			: bolder;
+#Profile{
+border				: 0px !important;
+background-color	: transparent !important;
 }
-
-
-
-tr.index_Prof{
+#Profile tr{
 border				: 0px !important;
 }
-td.index_Prof{
+
+#Profile  td{
 border				: 0px !important;
 padding-top			: 8px;
 padding-left		: 10px;
 }
 
-a.index_Prof{
+#Profile a{
 color				: transparent !important;
 background-color	: transparent !important;
 display				: block ;
 text-decoration		: none;
+}
+
+
+
+/* =====================================================
+   Profile
+===================================================== */
+
+#SiteLink span.LinkURL{
+color				: #3333FF;
+background-color	: #eeeeFF;
+font-weight			: bolder;
+text-decoration		: underline;
 }
 
 
