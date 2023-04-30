@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xml-stylesheet href="_css/rss_style.css" type="text/css" encoding="utf-8" ?>
+<rss version="2.0"
+		xmlns:rss="http://purl.org/rss/1.0/"
+		xmlns:dc="http://purl.org/dc/elements/1.1/"
+		xmlns:content="http://purl.org/rss/1.0/modules/content/"
+		xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+	<title>Korei's Labo Home Page</title>
+	<link>https://www.koreis-labo.com/</link>
+	<description>Korei's Laboホームページの更新履歴ファイルです。</description>
+
+	<item>
+		<title>新設</title>
+		<link>https://www.koreis-labo.com/</link>
+		<description><![CDATA[新設。]]></description>
+		<category>全体</category>
+		<pubDate>Mon, 1 May 2023 00:00:00 +0900</pubDate>
+		<guid isPermaLink="false">koreislabo:20230501-1</guid>
+	</item>
+</channel>
+</rss>

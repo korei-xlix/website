@@ -1,0 +1,371 @@
+/* *****************************************************
+ ::Project  : web page
+ ::Admin    : Korei (@korei-xlix)
+ ::github   : https://github.com/korei-xlix/galaxyfleet/
+ ::Style    : Default Style - Mini
+***************************************************** */
+
+/* margin / padding
+	1px             = ALL
+	1px 1px         = UP.Down / Left.Right
+	1px 1px 1px     = UP / Left.Right / Down
+	1px 1px 1px 1px = UP / Right / Down / Left
+	*/
+
+/* =====================================================
+   index
+===================================================== */
+
+span.index_Link{
+color				: red;
+font-weight			: bolder;
+}
+
+
+
+/* =====================================================
+   Page Title
+===================================================== */
+
+#com_PageTitle div.com_TitleImage{
+background-image	: url(../_pic/title/koreilabo_title_bunner.jpg);
+width				: 200px;
+height				: 95px;
+}
+
+
+
+/* =====================================================
+   Inline Frame
+===================================================== */
+
+iframe.com_Frame-sample1{
+height				: 100px;
+}
+
+
+
+/* =====================================================
+   Body
+===================================================== */
+
+body{
+color				: black;
+background-color	: white;
+}
+
+#com_bodyOutline{
+}
+
+#com_bodyInline{
+}
+
+
+
+/* =====================================================
+   Header
+===================================================== */
+
+header{
+background-color	: #6699FF;
+border-top			: solid 6px #0066CC;
+border-bottom		: solid 6px #0066CC;
+}
+
+header span.com_Menu_Select{
+color				: #0033FF;
+background-color	: #CCFFFF;
+}
+
+header a.com_Menu_Cel{
+color				: #FFFFFF;
+background-color	: #0066FF;
+
+}
+
+header div.com_CSS_Menu{
+color				: #FFFFFF;
+}
+
+header a.com_CSS_Mode{
+color				: #FFFFFF;
+background-color	: #006699;
+}
+
+
+
+/* =====================================================
+   Footter
+===================================================== */
+
+footer{
+background-color	: cornflowerblue;
+border-top			: solid 6px darkblue;
+border-bottom		: solid 8px darkblue;
+}
+
+footer div.com_Menu_Description{
+color				: paleturquoise;
+}
+
+footer a.com_Menu_Cel{
+color				: paleturquoise;
+background-color	: royalblue;
+}
+
+
+
+/* =====================================================
+   CopyrightHeader
+===================================================== */
+
+#com_CopyrightHeader{
+color				: #000000;
+background-color	: #FFFFFF;
+}
+
+
+
+/* =====================================================
+   CopyrightFooter
+===================================================== */
+
+#com_CopyrightFooter{
+color				: #000000;
+background-color	: #FFFFFF;
+}
+
+#com_CopyrightFooter div.com_Menu_Ope, #com_CopyrightFooter a.com_Menu_Ope{
+color				: #FFFFFF;
+background-color	: #008000;
+}
+
+#com_CopyrightFooter div.com_Menu_Rule, #com_CopyrightFooter a.com_Menu_Rule{
+color				: #FFFFFF;
+background-color	: #aa1212;
+}
+
+#com_CopyrightFooter div.com_Menu_RSS, #com_CopyrightFooter a.com_Menu_RSS{
+color				: #FFFFFF;
+background-color	: #ee802f;
+}
+
+#com_CopyrightFooter div.com_Menu_Github, #com_CopyrightFooter a.com_Menu_Github{
+color				: #FFFFFF;
+background-color	: #7D4ABE;
+/*border-radius		: 0px !important;*/
+}
+
+#com_CopyrightFooter div.com_Menu_Youtube, #com_CopyrightFooter a.com_Menu_Youtube{
+color				: #FFFFFF;
+background-color	: #FF0000;
+}
+
+#com_CopyrightFooter div.com_Menu_Twitter, #com_CopyrightFooter a.com_Menu_Twitter{
+color				: #FFFFFF;
+background-color	: #469AF9;
+/*border-radius		: 0px !important;*/
+}
+
+#com_CopyrightFooter div.com_Menu_Address, #com_CopyrightFooter a.com_Menu_Address{
+color				: #FFFFFF;
+background-color	: #333333;
+}
+
+#com_CopyrightFooter a.com_Menu_TwitterFT{
+color				: #0000FF;
+background-color	: #FFFFFF;
+}
+
+
+
+/* =====================================================
+   Description
+===================================================== */
+
+#com_Description{
+color				: #000000;
+background-color	: transparent;
+}
+
+
+
+/* =====================================================
+   Navigation
+===================================================== */
+
+#com_Navigation{
+color				: blue;
+background-color	: transparent;
+/*
+background-color	: cyan;
+*/
+}
+
+#com_Navigation div.com_NavigationTitle{
+color				: #FFFFFF;
+background-color	: #000066;
+}
+
+#com_Navigation a{
+color				: blue;
+background-color	: transparent;
+}
+
+a.com_Nav{
+color				: #444444;
+background-color	: #DDDDDD;
+}
+
+
+
+/* =====================================================
+   Contents Common
+===================================================== */
+
+.com_ContentsTitle{
+color				: #FFFFFF;
+background			: #0099FF;
+}
+.com_ContentsTitle:before{
+border-bottom		: solid 10px #0099FF;
+border-right		: solid 20px transparent;
+}
+.com_ContentsTitle:after{
+border-top			: solid 10px #0099FF;
+border-left			: solid 20px transparent;
+}
+
+.com_ContentsBody{
+color				: #000000;
+background-color	: #FFFFFF;
+}
+
+
+
+/* =====================================================
+   Selector
+===================================================== */
+
+							/* Close */
+input[type="checkbox"].com_ContentsSelector_CBX + .com_ContentsSelector_LAB{
+color				: #FFFFFF;
+background			: #0099FF;
+border				: inset 6px #0066FF;
+}
+
+							/* Open */
+input[type="checkbox"].com_ContentsSelector_CBX:checked + .com_ContentsSelector_LAB{
+color				: #FFFFFF;
+background-color	: #009900;
+border				: inset 6px #009900;
+}
+
+							/* Body */
+.com_ContentsSelector_Body{
+color				: #000000;
+background-color	: #FFFFFF;
+border-left			: solid 4px #009900;
+border-right		: solid 4px #009900;
+border-bottom		: solid 4px #009900;
+border-top			: 0px;
+}
+
+
+
+/* =====================================================
+   Anchor
+===================================================== */
+
+a{
+color				: #0000FF;
+background-color	: transparent;
+}
+
+
+
+/* =====================================================
+   List Style
+===================================================== */
+
+ul{
+}
+
+ol{
+}
+
+li{
+}
+
+
+
+/* =====================================================
+   h1～h6
+===================================================== */
+
+h1{
+color				: white;
+background-color	: darkblue;
+}
+
+h2{
+color				: white;
+background-color	: blue;
+}
+
+h3{
+color				: black;
+background-color	: cyan;
+}
+
+h4{
+color				: black;
+background-color	: orange;
+}
+
+h5{
+color				: black;
+background-color	: yellow;
+}
+
+h6{
+color				: white;
+background-color	: pink;
+}
+
+
+
+/* =====================================================
+   hr
+===================================================== */
+
+hr{
+border				: 0px;
+background-color	: lightgray;
+}
+
+
+
+/* =====================================================
+   Table
+===================================================== */
+
+table{
+background-color	: dimgray;
+border				: solid 2px dimgray;
+}
+
+th{
+color				: white;
+background-color	: darkgray;
+border				: solid 2px dimgray;
+}
+
+td{
+color				: black;
+background-color	: white;
+border				: solid 2px dimgray;
+}
+
+
+
