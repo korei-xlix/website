@@ -296,6 +296,14 @@ text-align			:center;
 float				:left;
 }
 
+#com_CopyrightFooter div.com_Menu_Cel_Long{
+width				: 360px;
+margin				: 4px;
+padding				: 4px 12px 0px;
+text-align			:left;
+float				:left;
+}
+
 #com_CopyrightFooter a.com_Menu_Cel{
 font-size			: 12px;
 display				: block;

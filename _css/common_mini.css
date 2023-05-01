@@ -283,6 +283,13 @@ float				:left;
 border-radius		: 8px;
 }
 
+#com_CopyrightFooter div.com_Menu_Cel_Long{
+margin				: 4px;
+width				: 36px;
+text-align			:left;
+float				:left;
+}
+
 #com_CopyrightFooter a.com_Menu_Cel{
 font-size			: 12px;
 display				: block;

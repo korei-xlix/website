@@ -40,7 +40,42 @@ text-decoration		: none;
 
 
 /* =====================================================
-   Profile
+   Address
+===================================================== */
+
+#Address{
+border				: solid 1px #a0a0FF;
+background-color	: a0a0FF;
+}
+#Address tr{
+border				: solid 1px #a0a0FF;
+}
+
+#Address  td{
+border				: solid 1px #a0a0FF;
+padding-top			: 8px;
+padding-left		: 10px;
+}
+
+#Address a{
+color				: transparent !important;
+background-color	: transparent !important;
+display				: block ;
+text-decoration		: none;
+}
+
+#Address div.Address{
+color				: #ffffff;
+background-color	: #8080ff;
+margin				: 4px 32px 8px 0px;
+padding				: 2px;
+text-decoration		: underline;
+}
+
+
+
+/* =====================================================
+   Site Link
 ===================================================== */
 
 #SiteLink span.LinkURL{
@@ -185,6 +220,15 @@ background-color	: #FFFFFF;
 #com_CopyrightFooter{
 color				: #000000;
 background-color	: #FFFFFF;
+}
+
+#com_CopyrightFooter div.com_Menu_Index, #com_CopyrightFooter a.com_Menu_Index{
+color				: #FFFFFF;
+background-color	: #000080;
+}
+#com_CopyrightFooter div.com_Menu_Index:hover, #com_CopyrightFooter a.com_Menu_Index:hover{
+color				: #0000FF;
+background-color	: #c0c0FF;
 }
 
 #com_CopyrightFooter div.com_Menu_Ope, #com_CopyrightFooter a.com_Menu_Ope{

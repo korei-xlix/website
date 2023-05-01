@@ -40,7 +40,7 @@ text-decoration		: none;
 
 
 /* =====================================================
-   Profile
+   Site Link
 ===================================================== */
 
 #SiteLink span.LinkURL{
@@ -57,7 +57,7 @@ text-decoration		: underline;
 ===================================================== */
 
 #com_PageTitle div.com_TitleImage{
-background-image	: url(../_pic/title/koreilabo_title_bunner.jpg);
+background-image	: url(../_pic/title/koreilabo_title_bunner.png);
 width				: 200px;
 height				: 95px;
 }
@@ -162,6 +162,11 @@ background-color	: #FFFFFF;
 #com_CopyrightFooter{
 color				: #000000;
 background-color	: #FFFFFF;
+}
+
+#com_CopyrightFooter div.com_Menu_Index, #com_CopyrightFooter a.com_Menu_Index{
+color				: #FFFFFF;
+background-color	: #000080;
 }
 
 #com_CopyrightFooter div.com_Menu_Ope, #com_CopyrightFooter a.com_Menu_Ope{

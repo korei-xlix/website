@@ -1,7 +1,7 @@
 //#####################################################
-//# ::Project  : Galaxy Fleet
+//# ::Project  : Web Site
 //# ::Admin    : Korei (@korei-xlix)
-//# ::github   : https://github.com/korei-xlix/galaxyfleet/
+//# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : ハンドラ
 //#####################################################
 

@@ -331,13 +331,6 @@ function CLS_WindowCtrl_PageSet({
 	///////////////////////////////
 	// タイトル変更(メインページ上下)
 	wSubRes = __WindowCtrl_setPageTitle() ;
-///	if( wSubRes['Result']!=true )
-///	{
-///		//失敗
-///		wRes['Reason'] = "__WindowCtrl_setPageTitle is failed" ;
-///		CLS_L({ inRes:wRes, inLevel: "B" }) ;
-///		return wRes ;
-///	}
 	
 	///////////////////////////////
 	// ページアイコン設定
@@ -816,10 +809,11 @@ function __WindowCtrl_setPageUpdate({
 	}) ;
 	if( wSubRes_Dst['Result']!=true )
 	{
-		if( DEF_TEST_LOG==true )
-		{
-			CLS_L({ inRes:wRes, inLevel: "SR", inMessage: DEF_GLOBAL_IND_UPDATE_DATE + " is not exist" }) ;
-		}
+///		if( DEF_TEST_LOG==true )
+///		{
+///			CLS_L({ inRes:wRes, inLevel: "SR", inMessage: DEF_GLOBAL_IND_UPDATE_DATE + " is not exist" }) ;
+///		}
+		CLS_L({ inRes:wRes, inLevel: "SR", inMessage: DEF_GLOBAL_IND_UPDATE_DATE + " is not exist" }) ;
 		wRes['Result'] = true ;
 		return wRes ;
 	}

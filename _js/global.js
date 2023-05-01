@@ -1,7 +1,7 @@
 //#####################################################
-//# ::Project  : Galaxy Fleet
+//# ::Project  : Web Site
 //# ::Admin    : Korei (@korei-xlix)
-//# ::github   : https://github.com/korei-xlix/galaxyfleet/
+//# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : グローバル値
 //#####################################################
 
@@ -29,7 +29,7 @@ var DEF_GLOBAL_HOST = new Array(
 	"localhost",
 	"localhost:8989",
 	"starregion",
-	"www.koreis-labo.com",
+///	"www.koreis-labo.com",
 	"koreis-labo.com",
 	"koreislabo.xsrv.jp"
 	) ;
@@ -42,7 +42,7 @@ var DEF_GLOBAL_STORAGE_TRANSRATE = DEF_GLOBAL_STORAGE_HEADER + "_TRANSRATE" ;
 ///////////////////////////////
 // 通知アイコンを表示する日数
 var DEF_GLOBAL_UPDATE_PAST    = 3 ;
-var DEF_GLOBAL_CHR_UP_ICONPATH = "/_pic/icon/icon_up.gif" ;	//通知アイコンGIFの相対パス
+var DEF_GLOBAL_CHR_UP_ICONPATH = "/_pic/icon/new_icon.gif" ;	//通知アイコンGIFの相対パス
 
 /////////////////////////////
 // PC版となる画面サイズ
