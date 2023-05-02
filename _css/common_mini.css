@@ -432,6 +432,16 @@ margin				: 0px auto 4px;
 padding				: 0px;
 }
 
+.com_ContentsTitle_Bunner{
+font-weight			: bolder;
+padding				: 4px;
+}
+
+.com_ContentsInline{
+margin				: 8px 0px 8px 16px;
+padding				: 0px;
+}
+
 
 
 /* =====================================================
