@@ -112,6 +112,36 @@ text-decoration		: underline;
 
 
 /* =====================================================
+   Thanks
+===================================================== */
+
+#Thanks{
+border				: solid 1px #a0a0FF;
+background-color	: #a0a0FF;
+}
+#Thanks tr{
+border				: solid 1px #a0a0FF;
+}
+
+#Thanks  td{
+border				: solid 1px #a0a0FF;
+padding-top			: 8px;
+padding-left		: 10px;
+}
+
+#Thanks a{
+padding				: 2px;
+display				: block ;
+}
+
+#Thanks div.Text{
+margin				: 4px 32px 8px 0px;
+padding				: 2px;
+}
+
+
+
+/* =====================================================
    Site Link
 ===================================================== */
 
