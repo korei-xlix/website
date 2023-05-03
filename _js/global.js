@@ -29,7 +29,7 @@ var DEF_GLOBAL_HOST = new Array(
 	"localhost",
 	"localhost:8989",
 	"starregion",
-///	"www.koreis-labo.com",
+	"www.koreis-labo.com",
 	"koreis-labo.com",
 	"koreislabo.xsrv.jp"
 	) ;

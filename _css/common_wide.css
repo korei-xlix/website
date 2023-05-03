@@ -13,6 +13,47 @@
 	*/
 
 /* =====================================================
+   Font
+===================================================== */
+
+/*** color ***/
+#com_FontColorRed{
+color				: #ff0000;
+}
+#com_FontColorBlue{
+color				: #0000ff;
+}
+
+/*** mark color ***/
+#com_FontMarkRed{
+color				: #ff0000;
+font-weight			: bold;
+text-decoration		: underline;
+}
+#com_FontMarkBlue{
+color				: #0000ff;
+font-weight			: bold;
+text-decoration		: underline;
+}
+
+/*** font ***/
+#com_FontBold{
+font-weight			: bold;
+}
+#com_FontUnderline{
+text-decoration		: underline;
+}
+#com_FontItalic{
+font-style			: italic;
+}
+#com_FontMark{
+font-weight			: bold;
+text-decoration		: underline;
+}
+
+
+
+/* =====================================================
    Page Title
 ===================================================== */
 
