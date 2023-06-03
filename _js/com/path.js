@@ -168,6 +168,63 @@ function CLS_Path_getCurrPath({
 
 
 
+function CLS_Path_getOutDomainPath({
+	inOutDomain,
+	inPath = null
+})
+{
+	///////////////////////////////
+	// 応答形式の取得
+	let wRes = CLS_L_getRes({ inClassName : "CLS_Path", inFuncName : "CLS_Path_getOutDomainPath" }) ;
+	
+	let wPath, wIndex, wKouho, wI ;
+	
+	///////////////////////////////
+	// 入力チェック
+	if( inOutDomain==null )
+	{
+		//失敗
+		wRes['Reason'] = "input error: [inOutDomain]=" + String(inOutDomain) ;
+		CLS_L({ inRes:wRes, inLevel: "A" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// カレントまでのパスを取得
+	
+	///////////////////////////////
+	// まず設定してるHOSTで検索
+	wKouho = "" ;
+	for( wI=0 ; wI<DEF_GLOBAL_HOST.length ; wI++ )
+	{
+		wIndex = inOutDomain.indexOf( DEF_GLOBAL_HOST[wI] ) ;
+		if( wIndex>=0 )
+		{
+			wKouho = DEF_GLOBAL_HOST[wI]
+			break;
+		}
+	}
+	if( wKouho=="" )
+	{
+		///失敗
+		wRes['Reason'] = "File Path not detect: [inOutDomain]=" + String(inOutDomain) ;
+		CLS_L({ inRes:wRes, inLevel: "A" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// カレントパス取得
+	wPath = inOutDomain + inPath ;
+	
+	///////////////////////////////
+	// 正常
+	wRes['Responce'] = wPath ;
+	wRes['Result']   = true ;
+	return wRes ;
+}
+
+
+
 //#####################################################
 //# ページのhref取得
 //#####################################################

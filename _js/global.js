@@ -28,6 +28,7 @@ var DEF_TEST_MOB = false ;
 var DEF_GLOBAL_HOST = new Array(
 	"localhost",
 	"localhost:8989",
+	"localhost:8991",
 	"starregion",
 	"website.koreis-labo.com",
 	"samafeald.koreis-labo.com",
