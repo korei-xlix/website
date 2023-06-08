@@ -1460,7 +1460,8 @@ function __WindowCtrl_setPageUpdate()
 	wSubRes_Dst = CLS_PageObj_setDisplay({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
 		inKey		: DEF_GLOBAL_IND_UPDATE_ICON,
-		inView		: this.STR_WindowCtrl_Val.UpdateInfo.FLG_ON
+		inView		: this.STR_WindowCtrl_Val.UpdateInfo.FLG_ON,
+		inError		: false
 		}) ;
 	if( wSubRes_Dst['Result']!=true )
 	{
