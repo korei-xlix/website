@@ -1464,9 +1464,20 @@ function __WindowCtrl_setPageUpdate()
 		}) ;
 	if( wSubRes_Dst['Result']!=true )
 	{
-		//失敗
-		wRes['Reason'] = "CLS_PageObj_setDisplay is failed(1)" ;
-		CLS_L({ inRes:wSubRes_Dst, inLevel: "B" }) ;
+///		//失敗
+///		wRes['Reason'] = "CLS_PageObj_setDisplay is failed(1)" ;
+///		CLS_L({ inRes:wSubRes_Dst, inLevel: "B" }) ;
+		
+		///////////////////////////////
+		// 更新アイコンがない場合
+		// 処理終わる
+		wStr = "noset upicon (no disp)"
+		CLS_L({ inRes:wRes, inLevel: "SC", inMessage: wStr }) ;
+		
+		///////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+
 		return wRes ;
 	}
 	
