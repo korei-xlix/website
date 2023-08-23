@@ -46,6 +46,11 @@ margin				: 8px 0px;
 padding				: 0px;
 }
 
+#Profile img.AccountIcon{
+border				: 4px solid #8f0000;
+}
+
+
 
 
 /* =====================================================

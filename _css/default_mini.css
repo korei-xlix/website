@@ -30,7 +30,7 @@ padding-top			: 8px;
 padding-left		: 10px;
 }
 
-#Profile a{
+#Profile a.Icon{
 color				: transparent !important;
 background-color	: transparent !important;
 display				: block ;
@@ -429,6 +429,21 @@ color				: #0000FF;
 background-color	: transparent;
 }
 
+a:hover{
+color				: #FFFFFF;
+background-color	: #0000FF;
+cursor				: pointer;
+/*
+cursor				: default;
+cursor				: move;
+cursor				: crosshair;
+cursor				: wait;
+cursor				: help;
+cursor				: not-allowed;
+cursor				: col-resize;
+cursor				: row-resize;
+*/
+}
 
 
 /* =====================================================
