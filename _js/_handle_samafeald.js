@@ -19,8 +19,9 @@ function __handle_PageLoad()
 	CLS_WindowCtrl_PageSet({
 	   inPageObj	: self.document,
 	   inMaterialDomain	: "https://website.koreis-labo.com/",
+///	   inMaterialDomain	: "https://localhost:8989/",
 	   inStylePath	: "/_css/",
-	   inStyleName	: "default",
+	   inStyleName	: "darkred",
 	   inMode		: "normal",
 	   inStyleCommPath	: null,
 	   inIconPath	: "/_pic/icon/koreilabo_icon.ico"
