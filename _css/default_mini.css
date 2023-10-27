@@ -75,6 +75,45 @@ text-decoration		: none;
 
 
 /* =====================================================
+   Contents Index
+===================================================== */
+
+#ContentsIndex{
+border				: 0px !important;
+background-color	: transparent !important;
+}
+#ContentsIndex tr{
+border				: 0px !important;
+}
+
+#ContentsIndex  td{
+border				: 0px !important;
+padding-top			: 8px;
+padding-left		: 10px;
+}
+
+#ContentsIndex .Link{
+margin				: 4px 0px;
+}
+
+#ContentsIndex .Text{
+margin				: 0px 0px 4px 6px;
+
+}
+
+#ContentsIndex a{
+/* font-size		: 20px; */
+font-weight			: bolder;
+/*
+color				: transparent !important;
+background-color	: transparent !important;
+display				: block ;
+text-decoration		: none; */
+}
+
+
+
+/* =====================================================
    Address
 ===================================================== */
 
