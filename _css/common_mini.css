@@ -67,6 +67,13 @@ margin				: 0px auto;
 padding				: 0px;
 }
 
+#com_PageTitle div.com_TitleText{
+font-size			: 18px;
+font-weight			: bolder;
+margin				: 0px auto;
+padding				: 4px 0px;
+}
+
 #com_TitleSub{
 display				: none;
 }

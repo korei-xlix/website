@@ -201,6 +201,12 @@ width				: 200px;
 height				: 95px;
 }
 
+#com_PageTitle div.com_TitleText{
+color				: #000000;
+background-color	: transparent;
+font-size			: 16px !important;
+}
+
 
 
 /* =====================================================
