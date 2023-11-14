@@ -68,10 +68,12 @@ padding				: 0px;
 }
 
 #com_PageTitle div.com_TitleText{
-font-size			: 18px;
+font-size			: 24px;
 font-weight			: bolder;
 margin				: 0px auto;
 padding				: 4px 0px;
+line-height			: 40px;
+text-align			: center;
 }
 
 #com_TitleSub{
