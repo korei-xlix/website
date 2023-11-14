@@ -12,10 +12,10 @@
 var DEF_TEST_LOG = true ;
 
 
-//#####################################################
-//# 強制携帯CSS適用(テストモード)  true=テストON
-//#####################################################
-var DEF_TEST_MOB = false ;
+/////#####################################################
+/////# 強制携帯CSS適用(テストモード)  true=テストON
+/////#####################################################
+////var DEF_TEST_MOB = false ;
 ////var DEF_TEST_MOB = true ;
 
 
@@ -84,8 +84,10 @@ var DEF_GLOBAL_IND_TITLE_SUB_TRANS_EN = "iTitleSubEN" ;
 
 /////////////////////////////
 // インデックス - CSS切替スイッチ
-var DEF_GLOBAL_IND_CSSSW      = "iCSSsw" ;
-var DEF_GLOBAL_IND_CSSSW_MODE = "iCSSsw_Mode-" ;
+var DEF_GLOBAL_IND_CSSSW_STYLE = "iCSSsw_Style" ;
+var DEF_GLOBAL_IND_CSSSW       = "iCSSsw" ;
+///var DEF_GLOBAL_IND_CSSSW_MODE = "iCSSsw_Mode-" ;
+var DEF_GLOBAL_IND_CSSSW_MODE  = "iCSSsw_Mode" ;
 
 /////////////////////////////
 // インデックス - 翻訳

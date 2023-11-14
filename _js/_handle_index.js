@@ -21,6 +21,11 @@ function __handle_PageLoad()
 	   inStylePath	: "/_css/",
 	   inStyleName	: "default",
 	   inMode		: "normal",
+//	   inMode		: "pconly",
+//	   inMode		: "mbonly",
+//	   inMode		: "pcnone",
+//	   inMode		: "mbnone",
+//	   inMode		: "elase",
 	   inStyleCommPath	: null,
 	   inIconPath	: "/_pic/icon/koreilabo_icon.ico"
 	}) ;

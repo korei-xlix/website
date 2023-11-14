@@ -10,11 +10,17 @@
 //#####################################################
 
 const DEF_WINDOWCTR_CSS_MODE = new Array(
-	"normal",								//通常モード(自由切替)
-	"pconly",								//CSSモード変更不可(PCのみ)
-	"mbonly",								//CSSモード変更不可(モバイルのみ)
-	"pcnone",								//CSS切り替え不可(PCのみ)
-	"mbnone"								//CSS切り替え不可(モバイルのみ)
+///	"normal",								//通常モード(自由切替)
+///	"pconly",								//CSSモード変更不可(PCのみ)
+///	"mbonly",								//CSSモード変更不可(モバイルのみ)
+///	"pcnone",								//CSS切り替え不可(PCのみ)
+///	"mbnone"								//CSS切り替え不可(モバイルのみ)
+	"normal",								//CSS変更可・サイズ自動切替
+	"pconly",								//CSS変更可・PCサイズのみ
+	"mbonly",								//CSS変更可・モバイルサイズのみ
+	"pcnone",								//CSS変更不可・PCサイズのみ
+	"mbnone",								//CSS変更不可・モバイルサイズのみ
+	"elase"									//ボタン非表示・サイズ自動切替
 	) ;
 
 const DEF_WINDOWCTR_FRAMEINFO = {
@@ -266,8 +272,17 @@ function CLS_WindowCtrl_PageSet({
 	
 	///////////////////////////////
 	// 画面モード
-	if(((wSTR_Param.WindowInfo.Width>=DEF_GLOBAL_VAL_PC_WIDTH) ||
-	    (wMode=="only")) && DEF_TEST_MOB==false )
+///	if(((wSTR_Param.WindowInfo.Width>=DEF_GLOBAL_VAL_PC_WIDTH) ||
+///	    (wMode=="only")) && DEF_TEST_MOB==false )
+	if((wMode=="pconly") || (wMode=="pcnone"))
+	{
+		wSTR_Param.FLG_PC = true ;
+	}
+	else if((wMode=="mbonly") || (wMode=="mbnone"))
+	{
+		wSTR_Param.FLG_PC = false ;
+	}
+	else if( wSTR_Param.WindowInfo.Width>=DEF_GLOBAL_VAL_PC_WIDTH )
 	{
 		wSTR_Param.FLG_PC = true ;
 	}
@@ -386,7 +401,10 @@ function CLS_WindowCtrl_PageSet({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
 		inComPath	: this.STR_WindowCtrl_Val.Com.CHR_StylePath,
 		inOrgPath	: this.STR_WindowCtrl_Val.Org.CHR_StylePath
-	}) ;
+///		inOrgPath	: this.STR_WindowCtrl_Val.Org.CHR_StylePath,
+///		inOrgName	: this.STR_WindowCtrl_Val.Org.CHR_StyleName,
+///		inPC		: this.STR_WindowCtrl_Val.FLG_PC
+		}) ;
 	if( wSubRes['Result']!=true )
 	{
 		//失敗
@@ -767,16 +785,17 @@ function __WindowCtrl_getCSSfileName({
 	pSubParam = outSubParam ;
 	///////////////////////////////
 	// ファイル名の設定
-	if( inSW_Mode=="normal" )
-	{
+///	if( inSW_Mode=="normal" )
+	if(( inSW_Mode=="normal" )||( inSW_Mode=="elase" ))
+	{///自動切替の場合
 		if( inFLG_PC==true )
 		{
-			//PC版
+			//PPサイズ
 			wPath = pSubParam.CHR_StyleName + "_wide.css" ;
 		}
 		else
 		{
-			//Mobile版
+			//モバイルサイズ
 			wPath = pSubParam.CHR_StyleName + "_mini.css" ;
 		}
 	}
@@ -784,12 +803,12 @@ function __WindowCtrl_getCSSfileName({
 	{
 		if(( inSW_Mode=="pconly" )||( inSW_Mode=="pcnone" ))
 		{
-			//PC版
+			//PPサイズ
 			wPath = pSubParam.CHR_StyleName + "_wide.css" ;
 		}
 		else
 		{
-			//Mobile版
+			//モバイルサイズ
 			wPath = pSubParam.CHR_StyleName + "_mini.css" ;
 		}
 	}
@@ -922,6 +941,9 @@ function __WindowCtrl_setCSSfile({
 	inPageObj,
 	inComPath,
 	inOrgPath
+///	inOrgPath,
+///	inOrgName,
+///	inPC
 })
 {
 	///////////////////////////////
@@ -966,6 +988,19 @@ function __WindowCtrl_setCSSfile({
 		CLS_L({ inRes:wRes, inLevel: "SC", inMessage: "set css Org ="+String(inOrgPath) }) ;
 	}
 	
+	//#############################
+	//# スタイル情報の出力
+	//#############################
+	if( DEF_TEST_LOG==true )
+	{
+		let wLogStr ;
+		wLogStr = "set css style name =" ;
+		wLogStr = wLogStr + this.STR_WindowCtrl_Val.CSSname ;
+		wLogStr = wLogStr + " PC =" ;
+		wLogStr = wLogStr + this.STR_WindowCtrl_Val.FLG_PC ;
+		CLS_L({ inRes:wRes, inLevel: "SC", inMessage: wLogStr }) ;
+	}
+	
 	///////////////////////////////
 	// 正常
 	wRes['Result'] = true ;
@@ -983,7 +1018,8 @@ function __WindowCtrl_getFilePath({
 {
 	///////////////////////////////
 	// 応答形式の取得
-	let wRes = CLS_L_getRes({ inClassName : "CLS_WindowCtrl", inFuncName : "__WindowCtrl_setCSSfile" }) ;
+///	let wRes = CLS_L_getRes({ inClassName : "CLS_WindowCtrl", inFuncName : "__WindowCtrl_setCSSfile" }) ;
+	let wRes = CLS_L_getRes({ inClassName : "CLS_WindowCtrl", inFuncName : "__WindowCtrl_getFilePath" }) ;
 	
 	let wPath ;
 	let pSubParam ;
@@ -1135,9 +1171,12 @@ function __WindowCtrl_setCSSsw()
 	let wRes = CLS_L_getRes({ inClassName : "CLS_WindowCtrl", inFuncName : "__WindowCtrl_setCSSsw" }) ;
 	
 	///////////////////////////////
-	// CSS切替不可の場合
-	//   スイッチを非表示にする
-	if(( this.STR_WindowCtrl_Val.SW_Mode=="pcnone" )||( this.STR_WindowCtrl_Val.SW_Mode=="mbnone" ))
+///	// CSS切替不可の場合
+///	//   スイッチを非表示にする
+///	if(( this.STR_WindowCtrl_Val.SW_Mode=="pcnone" )||( this.STR_WindowCtrl_Val.SW_Mode=="mbnone" ))
+	// ボタン非表示の場合
+	//   スイッチ全体を非表示にする
+	if( this.STR_WindowCtrl_Val.SW_Mode=="elase" )
 	{
 		///////////////////////////////
 		// CSS切替スイッチの非表示
@@ -1154,6 +1193,13 @@ function __WindowCtrl_setCSSsw()
 				CLS_L({ inRes:wRes, inLevel: "SR", inMessage: "iCSSsw is not exist" }) ;
 			}
 		}
+		//#############################
+		//# スイッチ情報の出力
+		//#############################
+		if( DEF_TEST_LOG==true )
+		{
+			CLS_L({ inRes:wRes, inLevel: "SR", inMessage: "CSS SW =OFF" }) ;
+		}
 		
 		///////////////////////////////
 		// 正常
@@ -1163,12 +1209,28 @@ function __WindowCtrl_setCSSsw()
 	}
 	
 	///////////////////////////////
-	// CSSモード切替不可の場合
-	//   モード切替スイッチを非表示にする
-	if(( this.STR_WindowCtrl_Val.SW_Mode=="pconly" )||( this.STR_WindowCtrl_Val.SW_Mode=="mbonly" ))
+	// 画面サイズ固定 かつ CSS変更不可の場合
+	//   CSS切替を無効化し、サイズ切替スイッチを非表示にする
+	if(( this.STR_WindowCtrl_Val.SW_Mode=="pcnone" )||( this.STR_WindowCtrl_Val.SW_Mode=="mbnone" ))
 	{
 		///////////////////////////////
-		// CSS切替スイッチの非表示
+		// CSS切替スイッチの無効化
+		wSubRes_Dst = CLS_PageObj_setDisabled({
+			inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+			inKey		: DEF_GLOBAL_IND_CSSSW_STYLE,
+			inDisabled	: true,
+			inError		: false
+		}) ;
+		if( wSubRes_Dst['Result']!=true )
+		{
+			if( DEF_TEST_LOG==true )
+			{
+				CLS_L({ inRes:wRes, inLevel: "SR", inMessage: "iCSSsw is not exist" }) ;
+			}
+		}
+		
+		///////////////////////////////
+		// サイズ切替スイッチの非表示
 		wSubRes_Dst = CLS_PageObj_setDisplay({
 			inPageObj	: this.STR_WindowCtrl_Val.PageObj,
 			inKey		: DEF_GLOBAL_IND_CSSSW_MODE,
@@ -1181,6 +1243,48 @@ function __WindowCtrl_setCSSsw()
 			CLS_L({ inRes:wSubRes_Dst, inLevel: "B" }) ;
 			return wRes ;
 		}
+		//#############################
+		//# スイッチ情報の出力
+		//#############################
+		if( DEF_TEST_LOG==true )
+		{
+			CLS_L({ inRes:wRes, inLevel: "SR", inMessage: "CSS SW =disabled" }) ;
+		}
+		
+		///////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
+	
+	}
+	///////////////////////////////
+///	// CSSモード切替不可の場合
+///	//   モード切替スイッチを非表示にする
+	// CSS切替不可の場合
+	//   サイズ切替スイッチを非表示にする
+	if(( this.STR_WindowCtrl_Val.SW_Mode=="pconly" )||( this.STR_WindowCtrl_Val.SW_Mode=="mbonly" ))
+	{
+		///////////////////////////////
+		// サイズ切替スイッチの非表示
+		wSubRes_Dst = CLS_PageObj_setDisplay({
+			inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+			inKey		: DEF_GLOBAL_IND_CSSSW_MODE,
+			inView		: false
+		}) ;
+		if( wSubRes_Dst['Result']!=true )
+		{
+			//失敗
+			wRes['Reason'] = "CLS_PageObj_setDisplay is failed(2)" ;
+			CLS_L({ inRes:wSubRes_Dst, inLevel: "B" }) ;
+			return wRes ;
+		}
+		//#############################
+		//# スイッチ情報の出力
+		//#############################
+		if( DEF_TEST_LOG==true )
+		{
+			CLS_L({ inRes:wRes, inLevel: "SR", inMessage: "CSS mode SW =OFF" }) ;
+		}
 		
 		///////////////////////////////
 		// 正常
@@ -1189,12 +1293,16 @@ function __WindowCtrl_setCSSsw()
 	
 	}
 	
+///	//#############################
+///	//# CSS切替SW表示
+///	//#############################
 	//#############################
-	//# CSS切替SW表示
+	//# スイッチ情報の出力
 	//#############################
 	if( DEF_TEST_LOG==true )
 	{
-		CLS_L({ inRes:wRes, inLevel: "SC", inMessage: "set css sw ="+String(this.STR_WindowCtrl_Val.SW_Mode) }) ;
+///		CLS_L({ inRes:wRes, inLevel: "SC", inMessage: "set css sw ="+String(this.STR_WindowCtrl_Val.SW_Mode) }) ;
+		CLS_L({ inRes:wRes, inLevel: "SR", inMessage: "CSS SW =ON" }) ;
 	}
 	
 	///////////////////////////////
@@ -2119,6 +2227,9 @@ function CLS_WindowCtrl_FrameSetPage({
 		inPageObj	: this.ARR_WindowCtrl_Frame[inID].PageObj,
 		inComPath	: this.ARR_WindowCtrl_Frame[inID].Com.CHR_StylePath,
 		inOrgPath	: this.ARR_WindowCtrl_Frame[inID].Org.CHR_StylePath
+///		inOrgPath	: this.ARR_WindowCtrl_Frame[inID].Org.CHR_StylePath,
+///		inOrgName	: this.ARR_WindowCtrl_Frame[inID].Org.CHR_StyleName,
+///		inPC		: this.ARR_WindowCtrl_Frame[inID].FLG_PC
 	}) ;
 	if( wSubRes['Result']!=true )
 	{
@@ -2259,7 +2370,8 @@ function CLS_WindowCtrl_changeCSS()
 	// スタイル名取得
 	wSubRes = CLS_PageObj_getValue({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
-		inKey		: "iSelectCSS"
+///		inKey		: "iSelectCSS"
+		inKey		: DEF_GLOBAL_IND_CSSSW_STYLE
 	}) ;
 	if( wSubRes['Result']!=true )
 	{
@@ -2381,6 +2493,7 @@ function __WindowCtrl_changeCSS({
 	
 	wSTR_Param.PageObj = this.STR_WindowCtrl_Val.PageObj ;
 	wSTR_Param.MaterialDomain = this.STR_WindowCtrl_Val.MaterialDomain ;
+	wSTR_Param.CSSname = wStyle ;
 	wSTR_Param.FLG_PC  = wMode ;
 	wSTR_Param.SW_Mode = this.STR_WindowCtrl_Val.SW_Mode ;
 	wSTR_Param.Com.FrameObj      = this.STR_WindowCtrl_Val.FrameObj ;
@@ -2405,6 +2518,7 @@ function __WindowCtrl_changeCSS({
 	
 	///////////////////////////////
 	// パラメータ保存
+	this.STR_WindowCtrl_Val.CSSname = wSTR_Param.CSSname ;
 	this.STR_WindowCtrl_Val.FLG_PC = wSTR_Param.FLG_PC ;
 	this.STR_WindowCtrl_Val.Com.CHR_StyleName = wSTR_Param.Com.CHR_StyleName ;
 	this.STR_WindowCtrl_Val.Com.CHR_StylePath = wSTR_Param.Com.CHR_StylePath ;
@@ -2417,6 +2531,9 @@ function __WindowCtrl_changeCSS({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
 		inComPath	: this.STR_WindowCtrl_Val.Com.CHR_StylePath,
 		inOrgPath	: this.STR_WindowCtrl_Val.Org.CHR_StylePath
+///		inOrgPath	: this.STR_WindowCtrl_Val.Org.CHR_StylePath,
+///		inOrgName	: this.STR_WindowCtrl_Val.Org.CHR_StyleName,
+///		inPC		: this.STR_WindowCtrl_Val.FLG_PC
 	}) ;
 	if( wSubRes['Result']!=true )
 	{
