@@ -165,7 +165,7 @@ function CLS_WindowCtrl_PageSet({
 	inPageObj,
 	inMaterialDomain = null,
 	inStylePath,
-	inStyleName,
+///	inStyleName,
 	inMode       = "normal",
 	inStyleCommPath = null,
 	inIconPath = null
@@ -323,7 +323,22 @@ function CLS_WindowCtrl_PageSet({
 	}
 	wSTR_Param.Com.CHR_StyleName = "common" ;
 	wSTR_Param.Org.CHR_StyleCurr = inStylePath ;
-	wSTR_Param.Org.CHR_StyleName = inStyleName ;
+///	wSTR_Param.Org.CHR_StyleName = inStyleName ;
+	///////////////////////////////
+	// スタイル名取得
+	wSubRes = CLS_PageObj_getValue({
+		inPageObj	: wSTR_Param.PageObj,
+		inKey		: DEF_GLOBAL_IND_CSSSW_STYLE
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "CLS_PageObj_getValue is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	wSTR_Param.Org.CHR_StyleName = wSubRes.Responce ;
+	
 	wSubRes = __WindowCtrl_getCSS({
 ///		inParam : wSTR_Param
 		outParam : wSTR_Param

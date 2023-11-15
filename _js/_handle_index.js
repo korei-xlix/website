@@ -19,7 +19,7 @@ function __handle_PageLoad()
 	CLS_WindowCtrl_PageSet({
 	   inPageObj	: self.document,
 	   inStylePath	: "/_css/",
-	   inStyleName	: "default",
+///	   inStyleName	: "default",
 	   inMode		: "normal",
 //	   inMode		: "pconly",
 //	   inMode		: "mbonly",
