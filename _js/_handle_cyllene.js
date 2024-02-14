@@ -18,6 +18,7 @@ function __handle_PageLoad()
 	// CSSロード
 	CLS_WindowCtrl_PageSet({
 	   inPageObj	: self.document,
+	   inMaterialDomain	: "https://website.koreis-labo.com/",
 	   inStylePath	: "/_css/",
 ///	   inStyleName	: "default",
 	   inMode		: "normal",
