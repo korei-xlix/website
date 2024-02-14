@@ -33,6 +33,7 @@ var DEF_GLOBAL_HOST = new Array(
 	"website.koreis-labo.com",
 	"samafeald.koreis-labo.com",
 	"galaxy-fleet.koreis-labo.com",
+	"cyllene.koreis-labo.com",
 	"koreislabo.xsrv.jp"
 	) ;
 
