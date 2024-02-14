@@ -23,6 +23,12 @@ color				: #ff0000;
 span.com_FontColorBlue{
 color				: #0000ff;
 }
+span.com_FontColorGreen{
+color				: #00ff00;
+}
+span.com_FontColorBlack{
+color				: #000000;
+}
 
 /*** mark color ***/
 span.com_FontMarkRed{
@@ -32,6 +38,16 @@ text-decoration		: underline;
 }
 span.com_FontMarkBlue{
 color				: #0000ff;
+font-weight			: bold;
+text-decoration		: underline;
+}
+span.com_FontMarkGreen{
+color				: #00ff00;
+font-weight			: bold;
+text-decoration		: underline;
+}
+span.com_FontMarkBlack{
+color				: #000000;
 font-weight			: bold;
 text-decoration		: underline;
 }
