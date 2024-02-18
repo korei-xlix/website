@@ -5,6 +5,12 @@
 //# ::Class    : ハンドラ
 //#####################################################
 
+/////////////////////////////
+// ストレージインデックス
+var DEF_STORAGE_IDX_USE     = true ;
+var DEF_STORAGE_IDX_HEADER  = "SAMAFEALD_WEB" ;
+
+
 //#####################################################
 //# 初期ロード
 //#####################################################
@@ -19,20 +25,12 @@ function __handle_PageLoad()
 	CLS_WindowCtrl_PageSet({
 	   inPageObj	: self.document,
 	   inMaterialDomain	: "https://website.koreis-labo.com/",
-///	   inMaterialDomain	: "https://localhost:8989/",
 	   inStylePath	: "/_css/",
-///	   inStyleName	: "darkred",
 	   inMode		: "normal",
 	   inStyleCommPath	: null,
 	   inIconPath	: "/_pic/icon/koreilabo_icon.ico"
   	}) ;
 	
-///	///////////////////////////////
-///	// 翻訳モードのロード
-///	CLS_WindowCtrl_getTransrate({
-///		inKey	: DEF_GLOBAL_STORAGE_TRANSRATE
-///	}) ;
-///	
 	///////////////////////////////
 	//# 正常
 	wRes['Result'] = true ;
@@ -70,39 +68,6 @@ function __handle_SelectCSS_Mode( inMode )
 	}) ;
 	return ;
 }
-
-
-
-//#####################################################
-//# 翻訳モード設定
-//#####################################################
-function __handle_Transrate( inMode )
-{
-	CLS_WindowCtrl_setTransrate({
-		inKey	: DEF_GLOBAL_STORAGE_TRANSRATE,
-		inMode 	: inMode
-	}) ;
-	return ;
-}
-
-
-
-//#####################################################
-//# スタートクリック
-//#####################################################
-function __handle_Start()
-{
-	///////////////////////////////
-	// 応答形式の取得 (LogView)
-	let wRes = CLS_L_getRes({ inClassName : "__handle_index", inFuncName : "__handle_Start", inMark : true }) ;
-	
-	CLS_WindowCtrl_locationURL({
-		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
-		inURL		: "main.htm"
-	}) ;
-	return ;
-}
-
 
 
 //#####################################################

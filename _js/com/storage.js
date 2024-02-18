@@ -87,7 +87,8 @@ function CLS_Storage_AllClear()
 //#   =オリジン内ではデータ共有されるのでKey名注意
 //#####################################################
 function CLS_Storage_Lget({
-	in_Key
+	in_Key,
+	inError = true
 })
 {
 	///////////////////////////////
@@ -100,7 +101,11 @@ function CLS_Storage_Lget({
 	if( wSubRes==null )
 	{
 		wRes['Reason'] = "Strage取得失敗: [in_Key]="+String(in_Key) ;
-		CLS_L({ inRes:wRes, inLevel: "A" }) ;
+///		CLS_L({ inRes:wRes, inLevel: "A" }) ;
+		if( inError==true )
+		{
+			CLS_L({ inRes:wRes, inLevel: "A" }) ;
+		}
 		return wRes ;
 	}
 	

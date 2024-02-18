@@ -40,8 +40,18 @@ var DEF_GLOBAL_HOST = new Array(
 
 /////////////////////////////
 // ストレージインデックス(翻訳)
-var DEF_GLOBAL_STORAGE_HEADER = "GALAXY_FLEET" ;
-var DEF_GLOBAL_STORAGE_TRANSRATE = DEF_GLOBAL_STORAGE_HEADER + "_TRANSRATE" ;
+
+
+/////////////////////////////
+// ストレージインデックス(翻訳)
+///var DEF_GLOBAL_STORAGE_HEADER = "GALAXY_FLEET" ;
+///var DEF_GLOBAL_STORAGE_TRANSRATE = DEF_GLOBAL_STORAGE_HEADER + "_TRANSRATE" ;
+var DEF_GLOBAL_STORAGE_IDX_CSSNAME = this.DEF_STORAGE_IDX_HEADER + "_CSSNAME" ;
+var DEF_GLOBAL_STORAGE_IDX_MODE    = this.DEF_STORAGE_IDX_HEADER + "_MODE" ;
+
+// ストレージインデックス(翻訳)
+var DEF_GLOBAL_STORAGE_IDX_TRANSRATE = this.DEF_STORAGE_IDX_HEADER + "_TRANSRATE" ;
+
 
 ///////////////////////////////
 // 通知アイコンを表示する日数
@@ -88,7 +98,6 @@ var DEF_GLOBAL_IND_TITLE_SUB_TRANS_EN = "iTitleSubEN" ;
 // インデックス - CSS切替スイッチ
 var DEF_GLOBAL_IND_CSSSW_STYLE = "iCSSsw_Style" ;
 var DEF_GLOBAL_IND_CSSSW       = "iCSSsw" ;
-///var DEF_GLOBAL_IND_CSSSW_MODE = "iCSSsw_Mode-" ;
 var DEF_GLOBAL_IND_CSSSW_MODE  = "iCSSsw_Mode" ;
 
 /////////////////////////////
@@ -111,18 +120,6 @@ var DEF_GLOBAL_IND_SELECTOR_SET   = "iSelectorSet-" ;
 ///////////////////////////////
 // 翻訳モード
 var FLG_GLOBAL_JP = true ;			// true=日本語、false=英語
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
