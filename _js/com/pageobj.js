@@ -259,12 +259,16 @@ function CLS_PageObj_setValue({
 	inKey,
 	inCode = null,
 	inDirect = false,
-	inError = true
+	inError = true,
+	inSelect = false
 })
 {
 	///////////////////////////////
 	// 応答形式の取得
 	let wRes = CLS_L_getRes({ inClassName : "CLS_PageObj", inFuncName : "CLS_PageObj_setValue" }) ;
+	
+///	let wOption, wFLG_Detect, wSelected, wName ;
+	let wOption, wSelected, wName ;
 	
 	///////////////////////////////
 	// 入力チェック
@@ -300,11 +304,58 @@ function CLS_PageObj_setValue({
 		wObject = inPageObj ;
 	}
 	
+	wName = null ;
+	///////////////////////////////
+	// Selectチェック
+	if( inSelect==true )
+	{
+///		wFLG_Detect = false ;
+		wSelected = null ;
+		for( wOption of wObject.options )
+		{
+			if( wOption.value==inCode )
+			{
+				//入力候補あり
+///				wFLG_Detect = true ;
+				wName = inCode ;
+				break ;
+			}
+			if( wOption.selected==true )
+			{
+				wSelected = wOption.value ;
+			}
+		}
+///		if( wFLG_Detect==false )
+		if( wName==null )
+		{
+			//selectにoptionがない場合
+///			if( wName==null )
+			if( wSelected==null )
+			{
+				//selectedがない= 候補なし
+				wRes['Reason'] = "selected is not find: id=" + String(inKey) ;
+				CLS_L({ inRes:wRes, inLevel: "B" }) ;
+				return wRes ;
+			}
+			else
+			{
+				//候補がない場合、selectedにする
+				wName = wSelected ;
+			}
+		}
+	}
+	else
+	{
+		//Selectチェックなしの場合、入力値を入れる
+		wName = inCode ;
+	}
+	
 	///////////////////////////////
 	// データ設定
 	try
 	{
-		wObject.value = inCode ;
+///		wObject.value = inCode ;
+		wObject.value = wName ;
 	}
 	catch(e)
 	{
@@ -321,6 +372,7 @@ function CLS_PageObj_setValue({
 	
 	/////////////////////////////
 	// 正常
+	wRes['Responce'] = wName ;
 	wRes['Result'] = true ;
 	return wRes ;
 }
