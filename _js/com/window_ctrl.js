@@ -156,6 +156,7 @@ var STR_WindowCtrl_Val = new STR_WindowCtrl_CSSinfo_Str() ;
 //#####################################################
 function CLS_WindowCtrl_PageSet({
 	inPageObj,
+	inSTR_CSSinfo = [],
 	inMaterialDomain = null,
 	inStylePath,
 	inMode       = "normal",
@@ -193,6 +194,21 @@ function CLS_WindowCtrl_PageSet({
 		//失敗
 		wRes['Reason'] = "undefined mode: [inMode]=" + String(inMode)
 		CLS_L({ inRes:wRes, inLevel: "A" }) ;
+		return wRes ;
+	}
+	
+	//#############################
+	//# CSS選択設定
+	//#############################
+	wSubRes = __WindowCtrl_setCSSselect({
+		inPageObj : inPageObj,
+		inSTR_CSSinfo : inSTR_CSSinfo
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "__WindowCtrl_setCSSselect is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
 		return wRes ;
 	}
 	
@@ -1400,6 +1416,86 @@ function __WindowCtrl_changeTitle({
 		wRes['Reason'] = "__WindowCtrl_setPageTitle is failed(Com)" ;
 		CLS_L({ inRes:wRes, inLevel: "B" }) ;
 		return wRes ;
+	}
+	
+	///////////////////////////////
+	// 正常
+	wRes['Result'] = true ;
+	return wRes ;
+}
+
+///////////////////////////////////////////////////////
+// CSS選択設定
+function __WindowCtrl_setCSSselect({
+	inPageObj,
+	inSTR_CSSinfo = []
+})
+{
+	///////////////////////////////
+	// 応答形式の取得
+	let wRes = CLS_L_getRes({ inClassName : "CLS_WindowCtrl", inFuncName : "__WindowCtrl_setCSSselect" }) ;
+	
+	///////////////////////////////
+	// CSS設定のチェック
+	if( inSTR_CSSinfo.length==0 )
+	{
+		//#############################
+		//# ログ表示
+		//#############################
+		if( DEF_TEST_LOG==true )
+		{
+			CLS_L({ inRes:wRes, inLevel: "SC", inMessage: "● CSS select is unset" }) ;
+		}
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+	
+	let wStr, wFLG_F ;
+	
+	///////////////////////////////
+	// CSS option設定の作成
+	wFLG_F = false ;
+	wStr = "" ;
+	for( wOption of inSTR_CSSinfo )
+	{
+		wStr = wStr + "<option value='" ;
+		wStr = wStr + wOption[0] + "'"
+		if( wFLG_F==false )
+		{
+			wStr = wStr + " selected"
+			wFLG_F = true ;
+		}
+		wStr = wStr + ">" + wOption[1] + "</option>" + '\n' ;
+		
+		//#############################
+		//# ログ表示
+		//#############################
+		if( DEF_TEST_LOG==true )
+		{
+			CLS_L({ inRes:wRes, inLevel: "SC", inMessage: "CSS select option: " + wOption[0] + " : " + wOption[1] }) ;
+		}
+	}
+	
+	///////////////////////////////
+	// CSS選択設定
+	wSubRes = CLS_PageObj_setInner({
+		inPageObj	: inPageObj,
+		inKey		: this.DEF_GLOBAL_IND_CSSSW_STYLE,
+		inCode		: wStr
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		wRes['Reason'] = "CLS_PageObj_setInner is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	
+	//#############################
+	//# ログ表示
+	//#############################
+	if( DEF_TEST_LOG==true )
+	{
+		CLS_L({ inRes:wRes, inLevel: "SC", inMessage: "〇 CSS select set" }) ;
 	}
 	
 	///////////////////////////////

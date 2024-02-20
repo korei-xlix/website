@@ -21,9 +21,17 @@ function __handle_PageLoad()
 	let wRes = CLS_L_getRes({ inClassName : "__handle_index", inFuncName : "__handle_PageLoad", inMark : true }) ;
 	
 	///////////////////////////////
+	// CSS設定
+	let wSTR_CSSinfo = new Array() ;
+	wSTR_CSSinfo.push( new Array( "default",	"Default" ) ) ;
+	wSTR_CSSinfo.push( new Array( "darkred",	"Darkred" ) ) ;
+	wSTR_CSSinfo.push( new Array( "cursegray",	"Cursegray" ) ) ;
+	
+	///////////////////////////////
 	// CSSロード
 	CLS_WindowCtrl_PageSet({
 	   inPageObj	: self.document,
+	   inSTR_CSSinfo : wSTR_CSSinfo,
 	   inStylePath	: "/_css/",
 ///	   inStyleName	: "default",
 	   inMode		: "normal",
@@ -90,24 +98,6 @@ function __handle_Transrate( inMode )
 	CLS_WindowCtrl_setTransrate({
 		inKey	: DEF_GLOBAL_STORAGE_TRANSRATE,
 		inMode 	: inMode
-	}) ;
-	return ;
-}
-
-
-
-//#####################################################
-//# スタートクリック
-//#####################################################
-function __handle_Start()
-{
-	///////////////////////////////
-	// 応答形式の取得 (LogView)
-	let wRes = CLS_L_getRes({ inClassName : "__handle_index", inFuncName : "__handle_Start", inMark : true }) ;
-	
-	CLS_WindowCtrl_locationURL({
-		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
-		inURL		: "main.htm"
 	}) ;
 	return ;
 }
