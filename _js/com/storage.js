@@ -47,7 +47,6 @@ function __Storage_Check()
 	// sessionStorageの利用可否チェック
 	if( DEF_STORAGE_SESSION==false )
 	{
-///		CLS_L({ inRes:wRes, inLevel: "SR", inMessage: "session Strageは未使用" }) ;
 		wRes['Result'] = true ;
 		return wRes ;
 	}
@@ -101,7 +100,6 @@ function CLS_Storage_Lget({
 	if( wSubRes==null )
 	{
 		wRes['Reason'] = "Strage取得失敗: [in_Key]="+String(in_Key) ;
-///		CLS_L({ inRes:wRes, inLevel: "A" }) ;
 		if( inError==true )
 		{
 			CLS_L({ inRes:wRes, inLevel: "A" }) ;
@@ -173,6 +171,67 @@ function CLS_Storage_Lclear()
 	localStorage.clear() ;
 	return ;
 }
+
+///////////////////////////////////////////////////////
+// ローカルStrage一覧取得
+function CLS_Storage_Lget_List({
+	in_Key,
+	inError = true
+})
+{
+	///////////////////////////////
+	// 応答形式の取得
+	let wRes = CLS_L_getRes({ inClassName : "CLS_Storage", inFuncName : "CLS_Storage_Lget_List" }) ;
+	
+	let wKey, wVal, wGetVal, wLogStr, wList ;
+	
+	wList = {} ;
+	if( DEF_TEST_LOG==true )
+	{
+		wLogStr = "〇 start get storage list" ;
+		CLS_L({ inRes:wRes, inLevel: "SR", inMessage: wLogStr }) ;
+	}
+	///////////////////////////////
+	// Storageからキーが頭のデータを抽出する
+	for( wKey in localStorage )
+	{
+		if( localStorage.hasOwnProperty( wKey ) )
+		{
+			// Storageからキー取得
+///			wGetVal = localStorage.key( wKey ) ;
+			wGetVal = localStorage.getItem( wKey ) ;
+			if( wSubRes==null )
+			{
+				//取得失敗
+				continue ;
+			}
+			
+			// 頭がキーか
+			wVal = wKey.indexOf( in_Key ) ;
+			if( wVal==0 )
+			{
+				// 抽出したものをリストに保管
+				wList[wKey] = wGetVal ;
+			}
+			
+			if( DEF_TEST_LOG==true )
+			{
+				wLogStr = wKey + " : " + String( wGetVal ) ;
+				CLS_L({ inRes:wRes, inLevel: "SR", inMessage: wLogStr }) ;
+			}
+		}
+	}
+	
+	///////////////////////////////
+	// 正常
+	wRes['Responce'] = wList ;
+	wRes['Result'] = true ;
+	return wRes ;
+}
+
+
+
+
 
 
 
