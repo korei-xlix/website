@@ -53,8 +53,8 @@ function __handle_PageLoad()
 	   inPageObj	: self.document,
 	   inSTR_CSSinfo : wSTR_CSSinfo,
 	   inStylePath	: "/_css/",
-//	   inMode		: "normal",
-	   inMode		: "pcnone",
+	   inMode		: "normal",
+//	   inMode		: "pcnone",
 	   inStyleCommPath	: null,
 	   inIconPath	: "/_pic/icon/koreilabo_icon.ico"
 	}) ;
