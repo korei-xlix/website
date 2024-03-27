@@ -459,6 +459,22 @@ function Xsearch_Sel({
 	}
 	
 	///////////////////////////////
+	// 選択ボタンの色を変更する
+	wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
+	wSubRes = CLS_PageObj_setClassName({
+		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+		inKey		: this.DEF_XSEARCH_IDX_INPUTWORD,
+		inCode		: "xsearch_BTN_Sel"
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
 	// 正常
 	wRes['Result'] = true ;
 	return wRes ;
