@@ -174,7 +174,7 @@ function Xsearch_Pull()
 	wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
 	wSubRes = CLS_PageObj_setClassName({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
-		inKey		: this.DEF_XSEARCH_IDX_INPUTWORD,
+		inKey		: wKey,
 		inCode		: "xsearch_BTN"
 	}) ;
 	if( wSubRes['Result']!=true )
@@ -303,7 +303,7 @@ function Xsearch_Edit()
 	wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
 	wSubRes = CLS_PageObj_setClassName({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
-		inKey		: this.DEF_XSEARCH_IDX_INPUTWORD,
+		inKey		: wKey,
 		inCode		: "xsearch_BTN"
 	}) ;
 	if( wSubRes['Result']!=true )
@@ -374,7 +374,7 @@ function Xsearch_Del({
 		wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
 		wSubRes = CLS_PageObj_setClassName({
 			inPageObj	: this.STR_WindowCtrl_Val.PageObj,
-			inKey		: this.DEF_XSEARCH_IDX_INPUTWORD,
+			inKey		: wKey,
 			inCode		: "xsearch_BTN"
 		}) ;
 		if( wSubRes['Result']!=true )
@@ -463,7 +463,7 @@ function Xsearch_Sel({
 	wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
 	wSubRes = CLS_PageObj_setClassName({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
-		inKey		: this.DEF_XSEARCH_IDX_INPUTWORD,
+		inKey		: wKey,
 		inCode		: "xsearch_BTN_Sel"
 	}) ;
 	if( wSubRes['Result']!=true )
