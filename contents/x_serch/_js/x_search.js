@@ -156,11 +156,6 @@ function Xsearch_Pull()
 	}
 	
 	///////////////////////////////
-	// インデックスの更新
-	this.VAL_XSearch_Index++ ;
-	this.VAL_XSearch_SelIndex = -1 ;
-	
-	///////////////////////////////
 	// 入力をクリアする
 	wSubRes = CLS_PageObj_setValue({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
@@ -174,6 +169,26 @@ function Xsearch_Pull()
 		CLS_L({ inRes:wRes, inLevel: "B" }) ;
 		return wRes ;
 	}
+	
+	// 選択ボタンを戻す（選択→追加の対応）
+	wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
+	wSubRes = CLS_PageObj_setClassName({
+		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+		inKey		: this.DEF_XSEARCH_IDX_INPUTWORD,
+		inCode		: "xsearch_BTN"
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// インデックスの更新
+	this.VAL_XSearch_Index++ ;
+	this.VAL_XSearch_SelIndex = -1 ;
 	
 	///////////////////////////////
 	// 一覧の表示
@@ -270,11 +285,6 @@ function Xsearch_Edit()
 	}
 	
 	///////////////////////////////
-	// インデックスの更新
-///	this.VAL_XSearch_Index++ ;
-	this.VAL_XSearch_SelIndex = -1 ;
-	
-	///////////////////////////////
 	// 入力をクリアする
 	wSubRes = CLS_PageObj_setValue({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
@@ -288,6 +298,26 @@ function Xsearch_Edit()
 		CLS_L({ inRes:wRes, inLevel: "B" }) ;
 		return wRes ;
 	}
+	
+	// 選択ボタンを戻す
+	wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
+	wSubRes = CLS_PageObj_setClassName({
+		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+		inKey		: this.DEF_XSEARCH_IDX_INPUTWORD,
+		inCode		: "xsearch_BTN"
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// インデックスの更新
+///	this.VAL_XSearch_Index++ ;
+	this.VAL_XSearch_SelIndex = -1 ;
 	
 	///////////////////////////////
 	// 一覧の表示
@@ -336,6 +366,25 @@ function Xsearch_Del({
 	// データ削除
 	wIndex = Number( inKey ) ;
 	delete this.ARR_XSearch_List[wIndex] ;
+	
+	///////////////////////////////
+	// 選択ボタンを戻す（なんか選択してた場合）
+	if( this.VAL_XSearch_SelIndex!=-1 )
+	{
+		wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
+		wSubRes = CLS_PageObj_setClassName({
+			inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+			inKey		: this.DEF_XSEARCH_IDX_INPUTWORD,
+			inCode		: "xsearch_BTN"
+		}) ;
+		if( wSubRes['Result']!=true )
+		{
+			//失敗
+			wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
+			CLS_L({ inRes:wRes, inLevel: "B" }) ;
+			return wRes ;
+		}
+	}
 	
 	///////////////////////////////
 	// インデックスの更新
@@ -512,7 +561,7 @@ function __Xsearch_EditCel({
 	wDat = wDat + '\n' ;
 	
 	// 選択ボタン
-	wDat = wDat + '<input class="xsearch_BTN" type="button" value="選択" onclick="__handle_Button_Sel(' + String(inKey) + ')" />　' ;
+	wDat = wDat + '<input id="iBTN_Sel' + String(inKey) + '" class="xsearch_BTN" type="button" value="選択" onclick="__handle_Button_Sel(' + String(inKey) + ')" />　' ;
 	wDat = wDat + '\n' ;
 	
 	// リンク

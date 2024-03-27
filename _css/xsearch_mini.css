@@ -2,7 +2,7 @@
  ::Project  : web page
  ::Admin    : Korei (@korei-xlix)
  ::github   : https://github.com/korei-xlix/galaxyfleet/
- ::Style    : X Search Style - Wide
+ ::Style    : X Search Style - Mini
 ***************************************************** */
 
 /* margin / padding
@@ -63,9 +63,9 @@ cursor				: default;
 ===================================================== */
 
 #com_PageTitle div.com_TitleImage{
-background-image	: url(../_pic/title/koreilabo_title.png);
-width				: 800px;
-height				: 380px;
+background-image	: url(../_pic/title/koreilabo_title_bunner.png);
+width				: 200px;
+height				: 95px;
 }
 
 #com_PageTitle div.com_TitleText{
@@ -73,10 +73,6 @@ color				: #000000;
 background-color	: transparent;
 /*	font-size			: 32px !important;	*/
 /*	line-height			: 40px !important;	*/
-}
-
-div.com_MobileCaution{
-background-color	: red;
 }
 
 
@@ -95,19 +91,15 @@ height				: 100px;
    Body
 ===================================================== */
 
-/*
 body{
-background-color	: #DDDDDD;
+color				: black;
+background-color	: white;
 }
 
 #com_bodyOutline{
-background-color	: #DDDDDD;
 }
-*/
 
 #com_bodyInline{
-color				: #000000;
-background-color	: #FFFFFF;
 }
 
 
@@ -118,8 +110,8 @@ background-color	: #FFFFFF;
 
 header{
 background-color	: #6699FF;
-border-top			: solid 12px #0066CC;
-border-bottom		: solid 12px #0066CC;
+border-top			: solid 6px #0066CC;
+border-bottom		: solid 6px #0066CC;
 }
 
 header span.com_Menu_Select{
@@ -133,11 +125,6 @@ background-color	: #0066FF;
 
 }
 
-header a.com_Menu_Cel:hover{
-color				: #009933;
-background-color	: #66FF66;
-}
-
 header div.com_CSS_Menu{
 color				: #FFFFFF;
 }
@@ -147,11 +134,6 @@ color				: #FFFFFF;
 background-color	: #006699;
 }
 
-header a.com_CSS_Mode:hover{
-color				: #003333;
-background-color	: #CCFFCC;
-}
-
 
 
 /* =====================================================
@@ -159,23 +141,18 @@ background-color	: #CCFFCC;
 ===================================================== */
 
 footer{
-background-color	: #6699FF;
-border-top			: solid 8px #0066CC;
-border-bottom		: solid 8px #0066CC;
+background-color	: cornflowerblue;
+border-top			: solid 6px darkblue;
+border-bottom		: solid 8px darkblue;
 }
 
 footer div.com_Menu_Description{
-color				: #EEFFFF;
+color				: paleturquoise;
 }
 
 footer a.com_Menu_Cel{
-color				: #FFFFFF;
-background-color	: #0066FF;
-}
-
-footer a.com_Menu_Cel:hover{
-color				: #009933;
-background-color	: #66FF66;
+color				: paleturquoise;
+background-color	: royalblue;
 }
 
 
@@ -204,36 +181,20 @@ background-color	: #FFFFFF;
 color				: #FFFFFF;
 background-color	: #000080;
 }
-#com_CopyrightFooter div.com_Menu_Index:hover, #com_CopyrightFooter a.com_Menu_Index:hover{
-color				: #0000FF;
-background-color	: #c0c0FF;
-}
 
 #com_CopyrightFooter div.com_Menu_Ope, #com_CopyrightFooter a.com_Menu_Ope{
 color				: #FFFFFF;
 background-color	: #008000;
-}
-#com_CopyrightFooter div.com_Menu_Ope:hover, #com_CopyrightFooter a.com_Menu_Ope:hover{
-color				: #008000;
-background-color	: #00FF3B;
 }
 
 #com_CopyrightFooter div.com_Menu_Rule, #com_CopyrightFooter a.com_Menu_Rule{
 color				: #FFFFFF;
 background-color	: #aa1212;
 }
-#com_CopyrightFooter div.com_Menu_Rule:hover, #com_CopyrightFooter a.com_Menu_Rule:hover{
-color				: #FFFFFF;
-background-color	: #FF00FF;
-}
 
 #com_CopyrightFooter div.com_Menu_RSS, #com_CopyrightFooter a.com_Menu_RSS{
 color				: #FFFFFF;
 background-color	: #ee802f;
-}
-#com_CopyrightFooter div.com_Menu_RSS:hover, #com_CopyrightFooter a.com_Menu_RSS:hover{
-color				: #59270D;
-background-color	: #FFFF99;
 }
 
 #com_CopyrightFooter div.com_Menu_Github, #com_CopyrightFooter a.com_Menu_Github{
@@ -241,56 +202,31 @@ color				: #FFFFFF;
 background-color	: #7D4ABE;
 /*border-radius		: 0px !important;*/
 }
-#com_CopyrightFooter div.com_Menu_Github:hover, #com_CopyrightFooter a.com_Menu_Github:hover{
-color				: #500047;
-background-color	: #E2BAEF;
-}
 
-/*
 #com_CopyrightFooter div.com_Menu_Youtube, #com_CopyrightFooter a.com_Menu_Youtube{
 color				: #FFFFFF;
 background-color	: #FF0000;
 }
-#com_CopyrightFooter div.com_Menu_Youtube:hover, #com_CopyrightFooter a.com_Menu_Youtube:hover{
-color				: #FFFFFF;
-background-color	: #000000;
-}*/
 
 #com_CopyrightFooter div.com_Menu_Twitter, #com_CopyrightFooter a.com_Menu_Twitter{
 color				: #FFFFFF;
 background-color	: #469AF9;
 /*border-radius		: 0px !important;*/
 }
-#com_CopyrightFooter div.com_Menu_Twitter:hover, #com_CopyrightFooter a.com_Menu_Twitter:hover{
-color				: #FFFFFF;
-background-color	: #4000FF;
-}
 
 #com_CopyrightFooter div.com_Menu_Address, #com_CopyrightFooter a.com_Menu_Address{
 color				: #FFFFFF;
 background-color	: #333333;
-}
-#com_CopyrightFooter div.com_Menu_Address:hover, #com_CopyrightFooter a.com_Menu_Address:hover{
-color				: #333333;
-background-color	: #E6E6E6;
 }
 
 #com_CopyrightFooter div.com_Menu_Warnlist, #com_CopyrightFooter a.com_Menu_Warnlist{
 color				: #c00000;
 background-color	: #e0e000;
 }
-#com_CopyrightFooter div.com_Menu_Warnlist:hover, #com_CopyrightFooter a.com_Menu_Warnlist:hover{
-color				: #ffffff;
-background-color	: #ff0000;
-}
 
 #com_CopyrightFooter a.com_Menu_TwitterFT{
 color				: #0000FF;
 background-color	: #FFFFFF;
-}
-#com_CopyrightFooter a.com_Menu_TwitterFT:hover{
-color				: #FFFFFF;
-background-color	: #0000FF;
 }
 
 
@@ -311,11 +247,9 @@ background-color	: transparent;
 ===================================================== */
 
 #com_Navigation{
+color				: blue;
 background-color	: transparent;
 /*
-color				: blue;
-border-bottom		: solid 8px dimgray;
-border-top			: solid 8px dimgray;
 background-color	: cyan;
 */
 }
@@ -326,23 +260,13 @@ background-color	: #000066;
 }
 
 #com_Navigation a{
-color				: #0000FF;
+color				: blue;
 background-color	: transparent;
-}
-
-#com_Navigation a:hover{
-color				: #FFFFFF;
-background-color	: #0000FF;
 }
 
 a.com_Nav{
 color				: #444444;
 background-color	: #DDDDDD;
-}
-
-a.com_Nav:hover{
-color				: #009933;
-background-color	: #66FF66;
 }
 
 
@@ -352,10 +276,6 @@ background-color	: #66FF66;
 ===================================================== */
 
 .com_ContentsTitle{
-/*
-color				: white;
-background-color	: cornflowerblue;
-*/
 color				: #FFFFFF;
 background			: #0099FF;
 }
@@ -394,21 +314,11 @@ background			: #0099FF;
 border				: inset 6px #0066FF;
 }
 
-input[type="checkbox"].com_ContentsSelector_CBX:hover + .com_ContentsSelector_LAB{
-color				: #003333;
-background-color	: #CCFFCC;
-}
-
 							/* Open */
 input[type="checkbox"].com_ContentsSelector_CBX:checked + .com_ContentsSelector_LAB{
 color				: #FFFFFF;
 background-color	: #009900;
 border				: inset 6px #009900;
-}
-
-input[type="checkbox"].com_ContentsSelector_CBX:checked:hover + .com_ContentsSelector_LAB{
-color				: forestgreen;
-background-color	: lawngreen;
 }
 
 							/* Body */
@@ -447,7 +357,6 @@ cursor				: col-resize;
 cursor				: row-resize;
 */
 }
-
 
 
 /* =====================================================

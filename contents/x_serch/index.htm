@@ -41,7 +41,7 @@
 
 		<div class="com_Update">
 			<div class="com_UpdateDate" id="iUpdateDate">
-				LAST UPDATE：	2024-03-25
+				LAST UPDATE：	2024-03-27
 			</div>
 			<div class="com_UpdateIcon">
 				<img class="com_UpdateIcon_Img" id="iUpdateIcon" src="dummy.jpg" alt="更新されてます" />
@@ -94,16 +94,54 @@
 このページでは Xの検索ワードをお使いのブラウザストレージに保存します。<br />
 タグの保存や、よく使う検索ワードの保存にお使いください。<br />
 
-<p>
-注意点<br />
-・同じブラウザであれば、アカウントを切り替えても共用できます。<br />
-・ブラウザのストレージキャッシュをクリアすると消去されます。（これはブラウザの仕様です）<br />
-・別ブラウザや別スマホでは共用できません。<br />
-・当方のサーバには保尊しません。<br />
-</p>
-
 </section>
 
+
+
+
+
+<!-- ***項目2 *** -->
+<a name="aSelecttor_2" class="com_AnchorTag"></a>
+<section class="com_ContentsSection">
+	<img class="com_ContentsSelector_Img" alt="dum" src="../_pic/icon/dummy.jpg" onload="__handle_Sel('002')" />
+	<div class="com_ContentsSelector_Title" id="iSelectorTitle-002">▼ 使い方 ▼</div>
+	<input type="checkbox" id="iP-002" class="com_ContentsSelector_CBX">
+	<label class="com_ContentsSelector_LAB" id="iSelectorSet-002" for="iP-002"></label>
+	<div class="com_ContentsSelector_Body">
+
+<ul>
+
+<li>[追加]：テキストに入力したワードがタグが追加されます。（#は要りません）<br />
+	ブラウザストレージにも追加します。<br />
+	</li>
+
+<li>[変更]：[選択]で選択したワードをテキストで変更します。<br />
+	</li>
+
+<li>[LINK]：X上でワードで検索したリンクに飛びます。<br />
+	</li>
+
+<li>[削]：指定のワードを削除します。<br />
+	ブラウザストレージからも削除します。<br />
+	</li>
+
+<li>同じブラウザであれば、アカウントを切り替えても共用できます。<br />
+	</li>
+
+<li>ブラウザのストレージキャッシュをクリアするとワードも消去されます。<br />
+	（これはブラウザの仕様です）<br />
+	</li>
+
+<li>別ブラウザや別スマホでは共用できません。<br />
+	また、当方のサーバにデータは保尊しません。（データ収集も行ってません）<br />
+	</li>
+
+</ul>
+
+
+<div class="com_Nav"><a class="com_Nav" href="#aTop">[RETURN]</a></div>
+</div>
+</section>
 
 
 
@@ -116,7 +154,7 @@
 	<div class="com_ContentsBody">
 
 	<div id="iSearchList_Header">
-	<input type="text" id="iInputWord" size="40" />　
+	<input type="text" id="iInputWord" size="20" />　
 	<input class="xsearch_BTN" type="button" id="iBTN_Push" value="追加" onclick="__handle_Button_Pull()" />
 	<input class="xsearch_BTN" type="button" id="iBTN_Edit" value="変更" onclick="__handle_Button_Edit()" />
 	</div>
