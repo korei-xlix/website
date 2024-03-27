@@ -170,19 +170,22 @@ function Xsearch_Pull()
 		return wRes ;
 	}
 	
-	// 選択ボタンを戻す（選択→追加の対応）
-	wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
-	wSubRes = CLS_PageObj_setClassName({
-		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
-		inKey		: wKey,
-		inCode		: "xsearch_BTN"
-	}) ;
-	if( wSubRes['Result']!=true )
+	// 選択ボタンを戻す（選択されてた場合）
+	if( this.VAL_XSearch_SelIndex!=-1 )
 	{
-		//失敗
-		wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
-		CLS_L({ inRes:wRes, inLevel: "B" }) ;
-		return wRes ;
+		wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
+		wSubRes = CLS_PageObj_setClassName({
+			inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+			inKey		: wKey,
+			inCode		: "xsearch_BTN"
+		}) ;
+		if( wSubRes['Result']!=true )
+		{
+			//失敗
+			wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
+			CLS_L({ inRes:wRes, inLevel: "B" }) ;
+			return wRes ;
+		}
 	}
 	
 	///////////////////////////////
