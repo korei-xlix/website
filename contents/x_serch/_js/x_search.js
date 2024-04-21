@@ -17,6 +17,7 @@ function Xsearch_Init()
 	
 	let wKey, wIndex, wAnc ;
 	let wARR_List, wARR_Data ;
+	let wData, wText, wDelKey ;
 	
 	///////////////////////////////
 	// ローカルStrage一覧取得
@@ -38,19 +39,70 @@ function Xsearch_Init()
 	wIndex = 1 ;
 	for( wKey in wARR_List )
 	{
+		// 分解
+		wData = wARR_List[wKey].split( this.DEF_STORAGE_X_SEARCH_BOUNDARY ) ;
+		if( wData.length!=2 )
+		{
+			//古い書式
+			wData = new Array( "#", wARR_List[wKey] ) ;
+			
+			wText = wData[0] + this.DEF_STORAGE_X_SEARCH_BOUNDARY + wData[1] ;
+			///////////////////////////////
+			// ローカルStrage設定
+			wSubRes = CLS_Storage_Lset({
+				in_Key		: wKey,
+				in_Value	: wText
+			}) ;
+			if( wSubRes['Result']!=true )
+			{
+				//失敗
+				
+				// 削除するキーを作成
+				wDelKey = this.DEF_STORAGE_X_SEARCH + String( wKey ) ;
+				
+				// ローカルStrage削除
+				wSubRes = CLS_Storage_Lremove({
+					in_Key		: wDelKey
+				}) ;
+				wRes['Reason'] = "CLS_Storage_Lset is failed: key=" + String(wKey) ;
+				CLS_L({ inRes:wRes, inLevel: "B" }) ;
+				continue ;
+			}
+			
+			// Storage修正
+			CLS_L({ inRes:wRes, inLevel: "SC", inMessage : "Key Repare: key=" + String(wKey) }) ;
+			
+		}
+		if( (wData[0]!="#")&&(wData[0]!="") )
+		{
+			wData[0] = "#" ;
+		}
+		
 		// URLの作成
-		wAnc = this.DEF_XSEARCH_ANC_HEAD + wARR_List[wKey] + this.DEF_XSEARCH_ANC_FOOT ;
+//		wAnc = this.DEF_XSEARCH_ANC_HEAD + wARR_List[wKey] + this.DEF_XSEARCH_ANC_FOOT ;
+		if( wData[0]=="#" )
+		{
+///			wAnc = this.DEF_XSEARCH_ANC_HEAD + '%23' + wData[1] + this.DEF_XSEARCH_ANC_FOOT ;
+			wAnc = this.DEF_XSEARCH_ANC_HEAD + String("%23") + wData[1] + this.DEF_XSEARCH_ANC_FOOT ;
+		}
+		else
+		{
+			wAnc = this.DEF_XSEARCH_ANC_HEAD + wData[1] + this.DEF_XSEARCH_ANC_FOOT ;
+		}
 		
 		// データ保存
 		wARR_Data = new Array() ;
-		wARR_Data.push( wKey ) ;
-		wARR_Data.push( wARR_List[wKey] ) ;
-		wARR_Data.push( wAnc ) ;
+		wARR_Data.push( wKey ) ;			//0
+//		wARR_Data.push( wARR_List[wKey] ) ;	//1
+		wARR_Data.push( wData[0] ) ;		//1
+		wARR_Data.push( wData[1] ) ;		//2
+		wARR_Data.push( wAnc ) ;			//3
 		this.ARR_XSearch_List[wIndex] = wARR_Data ;
 		
 		wIndex++ ;
 	}
 	this.VAL_XSearch_Index = wIndex ;
+	this.FLG_XSearch_SON   = false ;
 	
 	///////////////////////////////
 	// 一覧の表示
@@ -82,7 +134,7 @@ function Xsearch_Pull()
 	
 	let wText, wKey, wFLG_Detect, wAnc ;
 ///	let wGetDat, wARR_Data, wIndex ;
-	let wARR_Data, wIndex ;
+	let wARR_Data, wIndex, wSON, wGetText ;
 	
 	///////////////////////////////
 	// 入力値の取得
@@ -111,7 +163,10 @@ function Xsearch_Pull()
 	wFLG_Detect = false ;
 	for( wKey in this.ARR_XSearch_List )
 	{
-		if( this.ARR_XSearch_List[wKey][1]==wText )
+//		if( this.ARR_XSearch_List[wKey][1]==wText )
+//		wGetText = this.ARR_XSearch_List[wKey][2].split( this.DEF_STORAGE_X_SEARCH_BOUNDARY ) ;
+//		if( wGetText[1]==wText )
+		if( this.ARR_XSearch_List[wKey][2]==wText )
 		{
 			wFLG_Detect = true ;
 			break ;
@@ -129,7 +184,17 @@ function Xsearch_Pull()
 	// データ追加
 	
 	// URLの作成
-	wAnc = this.DEF_XSEARCH_ANC_HEAD + wText + this.DEF_XSEARCH_ANC_FOOT ;
+///	wAnc = this.DEF_XSEARCH_ANC_HEAD + wText + this.DEF_XSEARCH_ANC_FOOT ;
+	if( this.FLG_XSearch_SON==true )
+	{// ON
+		wAnc = this.DEF_XSEARCH_ANC_HEAD + String("%23") + wText + this.DEF_XSEARCH_ANC_FOOT ;
+		wSON = "#" ;
+	}
+	else
+	{// OFF
+		wAnc = this.DEF_XSEARCH_ANC_HEAD + wText + this.DEF_XSEARCH_ANC_FOOT ;
+		wSON = "" ;
+	}
 	
 	// キー設定
 	wKey = this.DEF_STORAGE_X_SEARCH + String( this.VAL_XSearch_Index ) ;
@@ -137,10 +202,12 @@ function Xsearch_Pull()
 	// データ保存
 	wARR_Data = new Array() ;
 	wARR_Data.push( wKey ) ;
+	wARR_Data.push( wSON ) ;
 	wARR_Data.push( wText ) ;
 	wARR_Data.push( wAnc ) ;
 	this.ARR_XSearch_List[this.VAL_XSearch_Index] = wARR_Data ;
 	
+	wText = wSON + this.DEF_STORAGE_X_SEARCH_BOUNDARY + wText ;
 	///////////////////////////////
 	// ローカルStrage設定
 	wSubRes = CLS_Storage_Lset({
@@ -151,6 +218,24 @@ function Xsearch_Pull()
 	{
 		//失敗
 		wRes['Reason'] = "CLS_Storage_Lset is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// ＃ ボタンの色をクリア
+	wCode = "xsearch_BTN" ;
+	this.FLG_XSearch_SON   = false ;
+	wKey = "iBTN_SON" ;
+	wSubRes = CLS_PageObj_setClassName({
+		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+		inKey		: wKey,
+		inCode		: wCode
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
 		CLS_L({ inRes:wRes, inLevel: "B" }) ;
 		return wRes ;
 	}
@@ -222,7 +307,7 @@ function Xsearch_Edit()
 	let wRes = CLS_L_getRes({ inClassName : "Xsearch", inFuncName : "Xsearch_Edit" }) ;
 	
 	let wText, wKey, wFLG_Detect, wAnc ;
-	let wARR_Data, wIndex ;
+	let wARR_Data, wIndex, wSON, wCode ;
 	
 	///////////////////////////////
 	// 選択チェック
@@ -261,7 +346,18 @@ function Xsearch_Edit()
 	// データ更新
 	
 	// URLの作成
-	wAnc = this.DEF_XSEARCH_ANC_HEAD + wText + this.DEF_XSEARCH_ANC_FOOT ;
+///	wAnc = this.DEF_XSEARCH_ANC_HEAD + wText + this.DEF_XSEARCH_ANC_FOOT ;
+///	if( this.ARR_XSearch_List[this.VAL_XSearch_SelIndex][1]=="#" )
+	if( this.FLG_XSearch_SON==true )
+	{// ON
+		wAnc = this.DEF_XSEARCH_ANC_HEAD + String("%23") + wText + this.DEF_XSEARCH_ANC_FOOT ;
+		wSON = "#" ;
+	}
+	else
+	{// OFF
+		wAnc = this.DEF_XSEARCH_ANC_HEAD + wText + this.DEF_XSEARCH_ANC_FOOT ;
+		wSON = "" ;
+	}
 	
 	// キー設定
 	wKey = this.DEF_STORAGE_X_SEARCH + String( this.VAL_XSearch_SelIndex ) ;
@@ -269,10 +365,12 @@ function Xsearch_Edit()
 	// データ保存
 	wARR_Data = new Array() ;
 	wARR_Data.push( wKey ) ;
+	wARR_Data.push( wSON ) ;
 	wARR_Data.push( wText ) ;
 	wARR_Data.push( wAnc ) ;
 	this.ARR_XSearch_List[this.VAL_XSearch_SelIndex] = wARR_Data ;
 	
+	wText = wSON + this.DEF_STORAGE_X_SEARCH_BOUNDARY + wText ;
 	///////////////////////////////
 	// ローカルStrage設定
 	wSubRes = CLS_Storage_Lset({
@@ -283,6 +381,24 @@ function Xsearch_Edit()
 	{
 		//失敗
 		wRes['Reason'] = "CLS_Storage_Lset is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// ＃ ボタンの色をクリア
+	wCode = "xsearch_BTN" ;
+	this.FLG_XSearch_SON   = false ;
+	wKey = "iBTN_SON" ;
+	wSubRes = CLS_PageObj_setClassName({
+		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+		inKey		: wKey,
+		inCode		: wCode
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
 		CLS_L({ inRes:wRes, inLevel: "B" }) ;
 		return wRes ;
 	}
@@ -445,7 +561,8 @@ function Xsearch_Sel({
 	// 選択インデックスの保存
 	this.VAL_XSearch_SelIndex = Number( inKey ) ;
 	
-	wText = this.ARR_XSearch_List[inKey][1] ;
+//	wText = this.ARR_XSearch_List[inKey][1] ;
+	wText = this.ARR_XSearch_List[inKey][2] ;
 	///////////////////////////////
 	// 入力値にセット
 	wSubRes = CLS_PageObj_setValue({
@@ -462,12 +579,87 @@ function Xsearch_Sel({
 	}
 	
 	///////////////////////////////
+	// ＃ ボタンの色を変更する
+	if( this.ARR_XSearch_List[this.VAL_XSearch_SelIndex][1]=="#" )
+	{	// ON
+		wCode = "xsearch_BTN_On" ;
+		this.FLG_XSearch_SON   = true ;
+	}
+	else
+	{	// OFF
+		wCode = "xsearch_BTN" ;
+		this.FLG_XSearch_SON   = false ;
+	}
+	
+	wKey = "iBTN_SON" ;
+	wSubRes = CLS_PageObj_setClassName({
+		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+		inKey		: wKey,
+		inCode		: wCode
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
 	// 選択ボタンの色を変更する
 	wKey = "iBTN_Sel" + String(this.VAL_XSearch_SelIndex) ;
 	wSubRes = CLS_PageObj_setClassName({
 		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
 		inKey		: wKey,
 		inCode		: "xsearch_BTN_Sel"
+	}) ;
+	if( wSubRes['Result']!=true )
+	{
+		//失敗
+		wRes['Reason'] = "CLS_PageObj_setClassName is failed" ;
+		CLS_L({ inRes:wRes, inLevel: "B" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// 正常
+	wRes['Result'] = true ;
+	return wRes ;
+}
+
+
+
+//#####################################################
+//# X 検索 "#"ボタン
+//#####################################################
+function Xsearch_On()
+{
+	///////////////////////////////
+	// 応答形式の取得
+	let wRes = CLS_L_getRes({ inClassName : "Xsearch", inFuncName : "Xsearch_On" }) ;
+	
+	let wText, wCode ;
+	
+	///////////////////////////////
+	// 切り替え
+	if( this.FLG_XSearch_SON==true )
+	{	// ON → OFF
+		wCode = "xsearch_BTN" ;
+		this.FLG_XSearch_SON   = false ;
+	}
+	else
+	{	// OFF → ON
+		wCode = "xsearch_BTN_On" ;
+		this.FLG_XSearch_SON   = true ;
+	}
+	
+	///////////////////////////////
+	// 選択ボタンの色を変更する
+	wKey = "iBTN_SON" ;
+	wSubRes = CLS_PageObj_setClassName({
+		inPageObj	: this.STR_WindowCtrl_Val.PageObj,
+		inKey		: wKey,
+		inCode		: wCode
 	}) ;
 	if( wSubRes['Result']!=true )
 	{
@@ -584,10 +776,19 @@ function __Xsearch_EditCel({
 	wDat = wDat + '\n' ;
 	
 	// リンク
-	wDat = wDat + '<a class="xsearch_ANC" target="_blank" href="' + this.ARR_XSearch_List[inKey][2] + '" >[LINK]</a>　' ;
+//	wDat = wDat + '<a class="xsearch_ANC" target="_blank" href="' + this.ARR_XSearch_List[inKey][2] + '" >[LINK]</a>　' ;
+	wDat = wDat + '<a class="xsearch_ANC" target="_blank" href="' + this.ARR_XSearch_List[inKey][3] + '" >[LINK]</a>　' ;
 	
 	// 文字
-	wDat = wDat + this.ARR_XSearch_List[inKey][1] ;
+//	wDat = wDat + this.ARR_XSearch_List[inKey][1] ;
+	if( this.ARR_XSearch_List[inKey][1]=="#" )
+	{
+		wDat = wDat + "#" + this.ARR_XSearch_List[inKey][2] ;
+	}
+	else
+	{
+		wDat = wDat + this.ARR_XSearch_List[inKey][2] ;
+	}
 	wDat = wDat + '\n' ;
 	
 	wDat = wDat + "</p>" + '\n' ;

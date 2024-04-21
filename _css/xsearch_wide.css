@@ -39,6 +39,14 @@ border				: 2px solid #808080;
 padding				: 4px;
 }
 
+#iSearchList_Header .xsearch_BTN_On,
+#iSearchList .xsearch_BTN_On{
+color				: #000000;
+background-color	: #008000;
+border				: 2px solid #808080;
+padding				: 4px;
+}
+
 #iSearchList_Header .xsearch_BTN:hover,
 #iSearchList .xsearch_BTN:hover{
 color				: #0000ff;

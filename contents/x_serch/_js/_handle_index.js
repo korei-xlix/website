@@ -10,6 +10,7 @@
 var DEF_STORAGE_IDX_USE     = true ;
 var DEF_STORAGE_IDX_HEADER  = "KOREIS_X_SEARCH" ;
 var DEF_STORAGE_X_SEARCH  = DEF_STORAGE_IDX_HEADER + "_LISTS" ;
+var DEF_STORAGE_X_SEARCH_BOUNDARY = "|,|" ;
 
 
 /////////////////////////////
@@ -20,7 +21,8 @@ var DEF_XSEARCH_IDX_INPUTWORD = "iInputWord" ;
 
 /////////////////////////////
 // 定数
-var DEF_XSEARCH_ANC_HEAD = "https://twitter.com/search?q=%23" ;
+///var DEF_XSEARCH_ANC_HEAD = "https://twitter.com/search?q=%23" ;
+var DEF_XSEARCH_ANC_HEAD = "https://twitter.com/search?q=" ;
 var DEF_XSEARCH_ANC_FOOT = "&src=typed_query&f=live" ;
 
 
@@ -30,6 +32,7 @@ var ARR_XSearch_List = {} ;
 var CHR_XSearch_List = "" ;
 var VAL_XSearch_Index = 0 ;
 var VAL_XSearch_SelIndex = -1 ;
+var FLG_XSearch_SON = false ;
 
 
 
@@ -166,6 +169,22 @@ function __handle_Button_Sel( inKey )
 	///////////////////////////////
 	// X検索 選択
 	Xsearch_Sel({
+		inKey	: inKey
+	}) ;
+	
+	return ;
+}
+
+
+
+//#####################################################
+//# X 検索用："#"ボタン
+//#####################################################
+function __handle_Button_On( inKey )
+{
+	///////////////////////////////
+	// X検索 選択
+	Xsearch_On({
 		inKey	: inKey
 	}) ;
 	
