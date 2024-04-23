@@ -17,6 +17,8 @@ var DEF_STORAGE_X_SEARCH_BOUNDARY = "|,|" ;
 // ページインデックス
 var DEF_XSEARCH_IDX_LIST = "iSearchList" ;
 var DEF_XSEARCH_IDX_INPUTWORD = "iInputWord" ;
+var DEF_XSEARCH_IDX_TAGS   = "iSearchTags" ;
+var DEF_XSEARCH_IDX_SELTAG = "iSearchCelTag" ;
 
 
 /////////////////////////////
@@ -25,14 +27,52 @@ var DEF_XSEARCH_IDX_INPUTWORD = "iInputWord" ;
 var DEF_XSEARCH_ANC_HEAD = "https://twitter.com/search?q=" ;
 var DEF_XSEARCH_ANC_FOOT = "&src=typed_query&f=live" ;
 
+var DEF_XSEARCH_TAGS_SIDE_COL = 7 ;
+//var DEF_XSEARCH_ARR_TAGS = [
+//	"xsearch_ComBtn xsearch_TAG_Red",		//0
+//	"xsearch_ComBtn xsearch_TAG_Maeroon",	//1
+//	"xsearch_ComBtn xsearch_TAG_Orange",	//2
+//	"xsearch_ComBtn xsearch_TAG_Yellow",	//3
+//	"xsearch_ComBtn xsearch_TAG_Lime",		//4
+//	"xsearch_ComBtn xsearch_TAG_Green",		//5
+//	"xsearch_ComBtn xsearch_TAG_Aqua",		//6
+//	"xsearch_ComBtn xsearch_TAG_Blue",		//7
+//	"xsearch_ComBtn xsearch_TAG_Purple",	//8
+//	"xsearch_ComBtn xsearch_TAG_Pink",		//9
+//	"xsearch_ComBtn xsearch_TAG_Gray",		//10
+//	"xsearch_ComBtn xsearch_TAG_Silver",	//11
+//	"xsearch_ComBtn xsearch_TAG_White",		//12
+//	"xsearch_ComBtn xsearch_TAG_Black"		//13
+//] ;
+var DEF_XSEARCH_ARR_TAGS = {
+	 1 : "xsearch_ComBtn xsearch_TAG_Red",
+//	 2 : "xsearch_ComBtn xsearch_TAG_Maeroon",
+//	 3 : "xsearch_ComBtn xsearch_TAG_Orange",
+	 4 : "xsearch_ComBtn xsearch_TAG_Yellow",
+	 5 : "xsearch_ComBtn xsearch_TAG_Lime",
+	 6 : "xsearch_ComBtn xsearch_TAG_Green",
+	 7 : "xsearch_ComBtn xsearch_TAG_Aqua",
+	 8 : "xsearch_ComBtn xsearch_TAG_Blue",
+//	 9 : "xsearch_ComBtn xsearch_TAG_Purple",
+	10 : "xsearch_ComBtn xsearch_TAG_Pink",
+//	11 : "xsearch_ComBtn xsearch_TAG_Gray",
+//	12 : "xsearch_ComBtn xsearch_TAG_Silver",
+	13 : "xsearch_ComBtn xsearch_TAG_White",
+	14 : "xsearch_ComBtn xsearch_TAG_Black"
+} ;
+
+
 
 /////////////////////////////
 // グローバル値
 var ARR_XSearch_List = {} ;
 var CHR_XSearch_List = "" ;
-var VAL_XSearch_Index = 0 ;
-var VAL_XSearch_SelIndex = -1 ;
+var VAL_XSearch_Index = 0 ;				//空データポインタ
+var VAL_XSearch_SelIndex = -1 ;			//データ選択ポインタ
 var FLG_XSearch_SON = false ;
+///var ARR_XSearch_Tags = new Array() ;
+var ARR_XSearch_Tags = {} ;
+var VAL_XSearch_SelTagIndex = -1 ;		//タグ選択ポインタ
 
 
 
@@ -204,6 +244,63 @@ function __handle_Button_Del( inKey )
 		inKey	: inKey
 	}) ;
 	
+	return ;
+}
+
+
+
+//#####################################################
+//# X 検索用：タグ設定
+//#####################################################
+function __handle_Button_SetTags( inKey )
+{
+	///////////////////////////////
+	// X検索 削除
+	Xsearch_SetTags({
+		inKey	: inKey
+	}) ;
+	
+	return ;
+}
+
+
+
+//#####################################################
+//# X 検索用：タグ選択
+//#####################################################
+function __handle_Button_SelTag( inKey )
+{
+	///////////////////////////////
+	// X検索 削除
+	Xsearch_SelTag({
+		inKey	: inKey
+	}) ;
+	
+	return ;
+}
+
+
+
+function __handle_Button_Test()
+{
+	let wKey, wText, wKey2 ;
+
+	for( wKey in this.ARR_XSearch_List )
+	{
+		wText = this.ARR_XSearch_List[wKey][0] + ": " ;
+		wText = wText + this.ARR_XSearch_List[wKey][1] + ": " ;
+		wText = wText + this.ARR_XSearch_List[wKey][2] + ": " ;
+		wText = wText + this.ARR_XSearch_List[wKey][3] + ": " ;
+///		wText = wText + this.ARR_XSearch_List[wKey][4] ;
+		
+		for( wKey2 in this.ARR_XSearch_List[wKey][4] )
+		{
+			wText = wText + String(wKey2) + ":" ;
+			wText = wText + this.ARR_XSearch_List[wKey][4][wKey2] + "," ;
+		}
+		
+		alert(wText) ;
+	}
 	return ;
 }
 

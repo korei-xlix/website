@@ -63,6 +63,116 @@ cursor				: default;
 
 
 
+#iSearchTags{
+margin				: 4px;
+padding				: 0px;
+}
+
+#iSearchCelTag{
+border-bottom		: 4px solid #0099ff;
+margin				: 4px;
+margin-bottom		: 16px;
+padding				: 0px;
+}
+
+
+
+.xsearch_ComBtn{
+border				: 2px solid #000000;
+height				: 24px;
+width				: 20px;
+padding				: 0px;
+margin				: 2px 1px 2px;
+cursor				: default;
+}
+
+.xsearch_TAG_Btn{
+color				: transparent;
+background-color	: #eeeeee;
+cursor				: default;
+}
+
+.xsearch_TAG_Btn:hover{
+background-color	: #00ffff;
+cursor				: pointer;
+}
+
+.xsearch_TAG_BtnOn{
+color				: #000000;
+background-color	: #ccff33;
+}
+
+
+
+.xsearch_TAG_Red{
+color				: transparent;
+background-color	: #ff0000;
+}
+
+.xsearch_TAG_Maeroon{
+color				: transparent;
+background-color	: #800000;
+}
+
+.xsearch_TAG_Orange{
+color				: transparent;
+background-color	: #ff9900;
+}
+
+.xsearch_TAG_Yellow{
+color				: transparent;
+background-color	: #ffff00;
+}
+
+.xsearch_TAG_Lime{
+color				: transparent;
+background-color	: #00ff00;
+}
+
+.xsearch_TAG_Green{
+color				: transparent;
+background-color	: #008000;
+}
+
+.xsearch_TAG_Aqua{
+color				: transparent;
+background-color	: #00ffff;
+}
+
+.xsearch_TAG_Blue{
+color				: transparent;
+background-color	: #0000ff;
+}
+
+.xsearch_TAG_Purple{
+color				: transparent;
+background-color	: #800080;
+}
+
+.xsearch_TAG_Pink{
+color				: transparent;
+background-color	: #ffccff;
+}
+
+.xsearch_TAG_Gray{
+color				: transparent;
+background-color	: #808080;
+}
+
+.xsearch_TAG_Silver{
+color				: transparent;
+background-color	: #c0c0c0;
+}
+
+.xsearch_TAG_White{
+color				: transparent;
+background-color	: #ffffff;
+}
+
+.xsearch_TAG_Black{
+color				: transparent;
+background-color	: #000000;
+}
 
 
 

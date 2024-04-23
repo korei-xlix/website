@@ -41,7 +41,7 @@
 
 		<div class="com_Update">
 			<div class="com_UpdateDate" id="iUpdateDate">
-				LAST UPDATE：	2024-04-21
+				LAST UPDATE：	2024-04-23
 			</div>
 			<div class="com_UpdateIcon">
 				<img class="com_UpdateIcon_Img" id="iUpdateIcon" src="dummy.jpg" alt="更新されてます" />
@@ -111,7 +111,7 @@
 
 <ul>
 
-<li>[追加]：テキストに入力したワードがタグが追加されます。（#は要りません）<br />
+<li>[追加]：テキストに入力したワードがタグが追加されます。<br />
 	ブラウザストレージにも追加します。<br />
 	</li>
 
@@ -119,6 +119,10 @@
 	</li>
 
 <li>[ # ]：タグの先頭に # をつけます。緑=ON / 青=OFF<br />
+	</li>
+
+<li>カラータグを付けることで表示をグループ化できます。<br />
+	1つのワードに複数のカラータグがつけられます。<br />
 	</li>
 
 <li>[LINK]：X上でワードで検索したリンクに飛びます。<br />
@@ -150,22 +154,47 @@
 
 
 
-<!-- ***基本項目 *** -->
-<a name="aMain" class="com_AnchorTag"></a>
-<main class="com_ContentsSection">
-	<div class="com_ContentsTitle">X 検索ワード</div>
-	<div class="com_ContentsBody">
+<!-- ***項目1 *** -->
+<a name="aSelecttor_2" class="com_AnchorTag"></a>
+<section class="com_ContentsSection">
+	<img class="com_ContentsSelector_Img" alt="dum" src="../../_pic/icon/dummy.jpg" onload="__handle_Sel('002')" />
+	<div class="com_ContentsSelector_Title" id="iSelectorTitle-002">▼ X 検索ワード 設定 ▼</div>
+	<input type="checkbox" id="iP-002" class="com_ContentsSelector_CBX">
+	<label class="com_ContentsSelector_LAB" id="iSelectorSet-002" for="iP-002"></label>
+	<div class="com_ContentsSelector_Body">
 
 	<div id="iSearchList_Header">
-	<input class="xsearch_BTN" type="button" id="iBTN_SON" value=" # " onclick="__handle_Button_On()" />
-	<input type="text" id="iInputWord" size="20" />　
-	<input class="xsearch_BTN" type="button" id="iBTN_Push" value="追加" onclick="__handle_Button_Pull()" />
-	<input class="xsearch_BTN" type="button" id="iBTN_Edit" value="変更" onclick="__handle_Button_Edit()" />
+		<input class="xsearch_BTN" type="button" id="iBTN_SON" value=" # " onclick="__handle_Button_On()" />
+		<input type="text" id="iInputWord" size="20" />　
+		<input class="xsearch_BTN" type="button" id="iBTN_Push" value="追加" onclick="__handle_Button_Pull()" />
+		<input class="xsearch_BTN" type="button" id="iBTN_Edit" value="変更" onclick="__handle_Button_Edit()" />
+
+		<input class="xsearch_BTN" type="button" value="TEST" onclick="__handle_Button_Test()" />
+
 	</div>
+
+	<div id="iSearchTags"></div>
+
+	</div>
+<!-- <div class="com_Nav"><a class="com_Nav" href="#aTop">[RETURN]</a></div> -->
+</div>
+</section>
+
+
+
+
+
+<a name="aMain" class="com_AnchorTag"></a>
+<main class="com_ContentsSection">
+	<div class="com_ContentsTitle">検索ワード データ</div>
+	<div class="com_ContentsBody">
+
+	<div id="iSearchCelTag"></div>
 
 	<div id="iSearchList"></div>
 
 	</div>
+
 <div class="com_Nav"><a class="com_Nav" href="#aTop">[RETURN]</a></div>
 </main>
 
