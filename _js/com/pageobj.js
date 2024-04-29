@@ -728,6 +728,70 @@ function CLS_PageObj_setChecked({
 //#####################################################
 //# disabled設定
 //#####################################################
+function CLS_PageObj_getDisabled({
+	inPageObj,
+	inKey,
+	inDirect = false,
+	inError = true
+})
+{
+	///////////////////////////////
+	// 応答形式の取得
+	let wRes = CLS_L_getRes({ inClassName : "CLS_PageObj", inFuncName : "CLS_PageObj_getDisabled" }) ;
+	
+	let wValue ;
+	
+	if( inDirect==false )
+	{
+		///////////////////////////////
+		// オブジェクト取得
+		wSubRes = CLS_PageObj_getElement({
+			inPageObj	: inPageObj,
+			inKey		: inKey
+		}) ;
+		if( wSubRes['Result']!=true )
+		{
+			//失敗
+			wRes['Reason'] = "CLS_PageObj_getElement is failer" ;
+			CLS_L({ inRes:wRes, inLevel: "B" }) ;
+			return wRes ;
+		}
+		wObject = wSubRes['Responce'] ;
+		
+	}
+	else
+	{
+		///オブジェクト直接指定
+		wObject = inPageObj ;
+	}
+	
+	///////////////////////////////
+	// データ取得
+	try
+	{
+		wValue = wObject.disabled ;
+	}
+	catch(e)
+	{
+		if( inError==true )
+		{
+			///////////////////////////////
+			// 例外処理
+			wRes['Reason'] = "[Exception]=" + String( e.message ) ;
+			wRes['Reason'] = wRes['Reason'] + ": [inKey]=" + String(inKey) ;
+			CLS_L({ inRes:wRes, inLevel: "A" }) ;
+		}
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// 正常
+	wRes['Responce'] = wValue ;
+	wRes['Result']   = true ;
+	return wRes ;
+}
+
+///////////////////////////////////////////////////////
 function CLS_PageObj_setDisabled({
 	inPageObj,
 	inKey,
@@ -1006,6 +1070,67 @@ function CLS_PageObj_setFrameSize({
 	/////////////////////////////
 	// 正常
 	wRes['Result'] = true ;
+	return wRes ;
+}
+
+
+
+//#####################################################
+//# グループ選択 取得
+//#####################################################
+function CLS_PageObj_getGroupChoose({
+	inPageObj,
+	inName,
+	inError = true
+})
+{
+	///////////////////////////////
+	// 応答形式の取得
+	let wRes = CLS_L_getRes({ inClassName : "CLS_PageObj", inFuncName : "CLS_PageObj_getGroupChoose" }) ;
+	
+	let wValue, wObject, wSelector ;
+	
+	wSelector = '[name="' + String(inName) + '"]:checked' ;
+	///////////////////////////////
+	// オブジェクト取得
+	try
+	{
+	    wObject = inPageObj.querySelector( wSelector ) ;
+	}
+	catch(e)
+	{
+		///////////////////////////////
+		// 例外処理
+		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
+		wRes['Reason'] = wRes['Reason'] + ": [inName]=" + String(inName) ;
+		CLS_L({ inRes:wRes, inLevel: "A" }) ;
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// データ取得
+	try
+	{
+		wValue = wObject.value ;
+	}
+	catch(e)
+	{
+		if( inError==true )
+		{
+			///////////////////////////////
+			// 例外処理
+			wRes['Reason'] = "[Exception]=" + String( e.message ) ;
+			wRes['Reason'] = wRes['Reason'] + ": [inName]=" + String(inName) ;
+			wRes['Reason'] = wRes['Reason'] + ": [location]=" + String(inPageObj.location.href) ;
+			CLS_L({ inRes:wRes, inLevel: "A" }) ;
+		}
+		return wRes ;
+	}
+	
+	///////////////////////////////
+	// 正常
+	wRes['Responce'] = wValue ;
+	wRes['Result']   = true ;
 	return wRes ;
 }
 
