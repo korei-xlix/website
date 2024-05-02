@@ -25,6 +25,7 @@
 <script src="https://website.koreis-labo.com/_js/com/time.js"></script>
 <script src="https://website.koreis-labo.com/_js/com/popup_ctrl.js"></script>
 <script src="https://website.koreis-labo.com/_js/com/timer_ctrl.js"></script>
+
 <script src="https://website.koreis-labo.com/_js/com/pageobj.js"></script>
 <script src="https://website.koreis-labo.com/_js/com/math.js"></script>
 <script src="https://website.koreis-labo.com/_js/com/storage.js"></script>
@@ -41,7 +42,7 @@
 
 		<div class="com_Update">
 			<div class="com_UpdateDate" id="iUpdateDate">
-				LAST UPDATE：	2024-04-23
+				LAST UPDATE：	2024-05-02
 			</div>
 			<div class="com_UpdateIcon">
 				<img class="com_UpdateIcon_Img" id="iUpdateIcon" src="dummy.jpg" alt="更新されてます" />
@@ -169,9 +170,89 @@
 		<input class="xsearch_BTN" type="button" id="iBTN_Push" value="追加" onclick="__handle_Button_Pull()" />
 		<input class="xsearch_BTN" type="button" id="iBTN_Edit" value="変更" onclick="__handle_Button_Edit()" />
 
+		<input class="xsearch_BTN" type="button" value="TEST" onclick="__handle_Button_Test()" />
+
 	</div>
 
 	<div id="iSearchTags"></div>
+
+	<form name="aXSearchOpt"><!-- X検索オプション -->
+
+	<p>
+		<label for="aTEXT_ListID">リストID</label>
+		<input type="checkbox" name="aCBX_ListID" id="iCBX_ListID" onclick="__handle_Valid_ListID()" />
+		<input type="text" name="aTEXT_ListID" id="iTEXT_ListID" disabled />
+	</p>
+
+	<p>
+		<label for="aDATE_Since">指定日から現在までのポスト：</label>
+		<input type="checkbox" name="aCBX_Since" id="iCBX_Since" onclick="__handle_Valid_Date('since')" />
+		<input type="date" name="aDATE_Since" id="iDATE_Since" disabled />
+	</p>
+
+	<p>
+		<label for="aDATE_Until">過去から指定日までのポスト：</label>
+		<input type="checkbox" name="aCBX_Until" id="iCBX_Until" onclick="__handle_Valid_Date('until')" />
+		<input type="date" name="aDATE_Until" id="iDATE_Until" disabled />
+	</p>
+
+	<p>
+		<label for="aRAD_Rep">リプライ：</label>
+		<input type="radio" name="aRAD_Rep" id="iRAD_Rep_NON" value="無条件"/>
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Rep" id="iRAD_Rep_EXC" value="含めない" checked  />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_Image">画像　：</label>
+		<input type="radio" name="aRAD_Image" id="iRAD_Image_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Image" id="iRAD_Image_INC" value="含める" />
+		<label>含める</label>
+		<input type="radio" name="aRAD_Image" id="iRAD_Image_EXC" value="含めない" />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_Video">動画　：</label>
+		<input type="radio" name="aRAD_Video" id="iRAD_Video_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Video" id="iRAD_Video_INC" value="含める" />
+		<label>含める</label>
+		<input type="radio" name="aRAD_Video" id="iRAD_Video_EXC" value="含めない" />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_Link">リンク：</label>
+		<input type="radio" name="aRAD_Link" id="iRAD_Link_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Link" id="iRAD_Link_INC" value="含める" />
+		<label>含める</label>
+		<input type="radio" name="aRAD_Link" id="iRAD_Link_EXC" value="含めない" />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_Safe">センシティブ：</label>
+		<input type="radio" name="aRAD_Safe" id="iRAD_Safe_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Safe" id="iRAD_Safe_INC" value="含める" />
+		<label>含める</label>
+		<input type="radio" name="aRAD_Safe" id="iRAD_Safe_EXC" value="含めない" />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_JP">日本語のみ：</label>
+		<input type="radio" name="aRAD_JP" id="iRAD_JP_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_JP" id="iRAD_JP_INC" value="含める" />
+		<label>含める</label>
+	</p>
+
+	</form>
 
 	</div>
 <!-- <div class="com_Nav"><a class="com_Nav" href="#aTop">[RETURN]</a></div> -->

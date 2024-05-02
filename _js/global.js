@@ -68,6 +68,8 @@ var DEF_GLOBAL_VAL_PC_WIDTH = 415 ;
 //# ユーザ定数
 //#####################################################
 
+var DEF_GLOBAL_TEXT_NONE = "(none)" ;
+
 /////////////////////////////
 // タイマID
 var DEF_GLOBAL_TIMER_ID_FRAME_sample1 = "tm_Frame_sample1" ;

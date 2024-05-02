@@ -20,30 +20,58 @@ var DEF_XSEARCH_IDX_INPUTWORD = "iInputWord" ;
 var DEF_XSEARCH_IDX_TAGS   = "iSearchTags" ;
 var DEF_XSEARCH_IDX_SELTAG = "iSearchCelTag" ;
 
+var DEF_XSEARCH_IDX_LISTID_CBX  = "iCBX_ListID" ;
+var DEF_XSEARCH_IDX_LISTID_TEXT = "iTEXT_ListID" ;
+
+var DEF_XSEARCH_IDX_SINCE_CBX  = "iCBX_Since" ;
+var DEF_XSEARCH_IDX_SINCE_TEXT = "iDATE_Since" ;
+
+var DEF_XSEARCH_IDX_UNTIL_CBX  = "iCBX_Until" ;
+var DEF_XSEARCH_IDX_UNTIL_TEXT = "iDATE_Until" ;
+
+var DEF_XSEARCH_NAME_REP  = "aRAD_Rep" ;
+var DEF_XSEARCH_NAME_IMG  = "aRAD_Image" ;
+var DEF_XSEARCH_NAME_MOV  = "aRAD_Video" ;
+var DEF_XSEARCH_NAME_LINK = "aRAD_Link" ;
+var DEF_XSEARCH_NAME_SAFE = "aRAD_Safe" ;
+var DEF_XSEARCH_NAME_JP   = "aRAD_JP" ;
+
+var DEF_XSEARCH_IDX_REP     = "iRAD_Rep_EXC" ;
+var DEF_XSEARCH_IDX_REP_NON = "iRAD_Rep_NON" ;
+var DEF_XSEARCH_IDX_REP_EXC = "iRAD_Rep_EXC" ;
+
+var DEF_XSEARCH_IDX_IMG     = "iRAD_Image_NON" ;
+var DEF_XSEARCH_IDX_IMG_NON = "iRAD_Image_NON" ;
+var DEF_XSEARCH_IDX_IMG_INC = "iRAD_Image_INC" ;
+var DEF_XSEARCH_IDX_IMG_EXC = "iRAD_Image_EXC" ;
+
+var DEF_XSEARCH_IDX_MOV     = "iRAD_Video_NON" ;
+var DEF_XSEARCH_IDX_MOV_NON = "iRAD_Video_NON" ;
+var DEF_XSEARCH_IDX_MOV_INC = "iRAD_Video_INC" ;
+var DEF_XSEARCH_IDX_MOV_EXC = "iRAD_Video_EXC" ;
+
+var DEF_XSEARCH_IDX_LINK     = "iRAD_Link_NON" ;
+var DEF_XSEARCH_IDX_LINK_NON = "iRAD_Link_NON" ;
+var DEF_XSEARCH_IDX_LINK_INC = "iRAD_Link_INC" ;
+var DEF_XSEARCH_IDX_LINK_EXC = "iRAD_Link_EXC" ;
+
+var DEF_XSEARCH_IDX_SAFE     = "iRAD_Safe_NON" ;
+var DEF_XSEARCH_IDX_SAFE_NON = "iRAD_Safe_NON" ;
+var DEF_XSEARCH_IDX_SAFE_INC = "iRAD_Safe_INC" ;
+var DEF_XSEARCH_IDX_SAFE_EXC = "iRAD_Safe_EXC" ;
+
+var DEF_XSEARCH_IDX_JP     = "iRAD_JP_NON" ;
+var DEF_XSEARCH_IDX_JP_NON = "iRAD_JP_NON" ;
+var DEF_XSEARCH_IDX_JP_INC = "iRAD_JP_INC" ;
+
+
 
 /////////////////////////////
 // 定数
-///var DEF_XSEARCH_ANC_HEAD = "https://twitter.com/search?q=%23" ;
 var DEF_XSEARCH_ANC_HEAD = "https://twitter.com/search?q=" ;
 var DEF_XSEARCH_ANC_FOOT = "&src=typed_query&f=live" ;
 
 var DEF_XSEARCH_TAGS_SIDE_COL = 7 ;
-//var DEF_XSEARCH_ARR_TAGS = [
-//	"xsearch_ComBtn xsearch_TAG_Red",		//0
-//	"xsearch_ComBtn xsearch_TAG_Maeroon",	//1
-//	"xsearch_ComBtn xsearch_TAG_Orange",	//2
-//	"xsearch_ComBtn xsearch_TAG_Yellow",	//3
-//	"xsearch_ComBtn xsearch_TAG_Lime",		//4
-//	"xsearch_ComBtn xsearch_TAG_Green",		//5
-//	"xsearch_ComBtn xsearch_TAG_Aqua",		//6
-//	"xsearch_ComBtn xsearch_TAG_Blue",		//7
-//	"xsearch_ComBtn xsearch_TAG_Purple",	//8
-//	"xsearch_ComBtn xsearch_TAG_Pink",		//9
-//	"xsearch_ComBtn xsearch_TAG_Gray",		//10
-//	"xsearch_ComBtn xsearch_TAG_Silver",	//11
-//	"xsearch_ComBtn xsearch_TAG_White",		//12
-//	"xsearch_ComBtn xsearch_TAG_Black"		//13
-//] ;
 var DEF_XSEARCH_ARR_TAGS = {
 	 1 : "xsearch_ComBtn xsearch_TAG_Red",
 //	 2 : "xsearch_ComBtn xsearch_TAG_Maeroon",
@@ -61,11 +89,46 @@ var DEF_XSEARCH_ARR_TAGS = {
 	14 : "xsearch_ComBtn xsearch_TAG_Black"
 } ;
 
+var DEF_XSEARCH_SMOJI_SHARP = String("%23") ;
+///var DEF_XSEARCH_SMOJI_COLON = String("%20") ;
+///var DEF_XSEARCH_SMOJI_SPACE = String("%3A") ;
+var DEF_XSEARCH_SMOJI_COLON = String("%3A") ;
+var DEF_XSEARCH_SMOJI_SPACE = String("%20") ;
+
+
+
+/////////////////////////////
+// グローバル値：データリスト
+var ARR_XSearch_List = {} ;
+
+//// リスト配列
+var DEF_XSEARCH_IDX_LISTID_0 = 0 ;		//  [0]  : char型  : storageキー
+var DEF_XSEARCH_IDX_LISTID_1 = 1 ;		//  [1]  : char型  : 先頭 # の有無
+var DEF_XSEARCH_IDX_LISTID_2 = 2 ;		//  [2]  : char型  : 検索文字
+var DEF_XSEARCH_IDX_LISTID_3 = 3 ;		//  [3]  : char型  : LINKアンカー
+var DEF_XSEARCH_IDX_LISTID_4 = 4 ;		//  [4]  : Array型 : タグ設定
+var DEF_XSEARCH_IDX_LISTID_5 = 5 ;		//  [5]  : char型  : リストID
+var DEF_XSEARCH_IDX_LISTID_6 = 6 ;		//  [6]  : char型  : 指定した日から現在までのポスト since:年-月-日
+var DEF_XSEARCH_IDX_LISTID_7 = 7 ;		//  [7]  : char型  : 過去から指定した日までのポスト until:年-月-日
+var DEF_XSEARCH_IDX_LISTID_8 = 8 ;		//  [8]  : char型  : 動画か画像含まれた filter:media
+var DEF_XSEARCH_IDX_LISTID_9 = 9 ;		//  [9]  : char型  : 画像が含まれた     filter:images
+var DEF_XSEARCH_IDX_LISTID_10 = 10 ;	//  [10] : char型  : 動画が含まれた     filter:videos
+var DEF_XSEARCH_IDX_LISTID_11 = 11 ;	//  [11] : char型  : リンク             filter:links
+var DEF_XSEARCH_IDX_LISTID_12 = 12 ;	//  [12] : char型  : リプライ除外       exclude:replies  ※含めるは無効（エラーになる）
+var DEF_XSEARCH_IDX_LISTID_13 = 13 ;	//  [13] : char型  : 日本語のみ         lang:jp
+var DEF_XSEARCH_IDX_LISTID_14 = 14 ;	//  [14] : char型  : センシティブツイートを表示  -filter:safe
+
+var DEF_XSEARCH_STORAGE_LENGTH = 13 ;	// 3+10
+
+var DEF_XSEARCH_LISTDATA = {
+	"無条件"	: "non",
+	"含める" 	: "inc",
+	"含めない"	: "exc"
+} ;
 
 
 /////////////////////////////
 // グローバル値
-var ARR_XSearch_List = {} ;
 var CHR_XSearch_List = "" ;
 var VAL_XSearch_Index = 0 ;				//空データポインタ
 var VAL_XSearch_SelIndex = -1 ;			//データ選択ポインタ
@@ -281,6 +344,28 @@ function __handle_Button_SelTag( inKey )
 
 
 
+//#####################################################
+//# X 検索用：コントロール有効 / 
+//#####################################################
+function __handle_Valid_ListID()
+{
+	Xsearch_Valid_ListID() ;
+	return ;
+}
+
+function __handle_Valid_Date( inKey )
+{
+	Xsearch_Valid_Date({
+		inKey : inKey
+	}) ;
+	return ;
+}
+
+
+
+//#####################################################
+//# テスト：データ表示
+//#####################################################
 function __handle_Button_Test()
 {
 	let wKey, wText, wKey2 ;
@@ -291,7 +376,6 @@ function __handle_Button_Test()
 		wText = wText + this.ARR_XSearch_List[wKey][1] + ": " ;
 		wText = wText + this.ARR_XSearch_List[wKey][2] + ": " ;
 		wText = wText + this.ARR_XSearch_List[wKey][3] + ": " ;
-///		wText = wText + this.ARR_XSearch_List[wKey][4] ;
 		
 		for( wKey2 in this.ARR_XSearch_List[wKey][4] )
 		{
