@@ -514,13 +514,13 @@ function __Msgbox_getRootPath()
 	wARR_Href = wHref.split("/")
 	
 	wKouho = "" ;
-	for( wI=0 ; wI<top.DEF_GLOBAL_HOST.length ; wI++ )
+	for( wI=0 ; wI<top.DEF_HOSTS.length ; wI++ )
 	{
 		for( wK=0 ; wK<wARR_Href.length ; wK++ )
 		{
-			if( top.DEF_GLOBAL_HOST[wI]==wARR_Href[wK] )
+			if( top.DEF_HOSTS[wI]==wARR_Href[wK] )
 			{
-				wKouho = top.DEF_GLOBAL_HOST[wI]
+				wKouho = top.DEF_HOSTS[wI]
 				break;
 			}
 		}
@@ -836,16 +836,16 @@ function cSTRG_MSGBOX_Open( in_CBFunc="" )
 	top.cSTR_STRG_MegBox.Index = 0 ;
 	try
 	{
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//オブジェクトの取得
 		//  メッセージボックス
 		wObj = self.document.getElementById( "iMsg" ) ;
 		
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//最初のメッセージ書き出し
 		cSTRG_MSGBOX_Put() ;
 		
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//出現位置を調整して表示
 		if( top.cSTR_STRG_MegBox.Index>=0 )
 		{
@@ -901,16 +901,16 @@ function cSTRG_MSGBOX_Put()
 	
 	try
 	{
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//テキストの設定
 		wObj = self.document.getElementById( "iMsg-Text" ) ;
 		wObj.innerHTML = top.cSTR_STRG_MegBox.Msg[top.cSTR_STRG_MegBox.Index] ;
 		
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//テキストのハイライトをOffする
 		_hdl_STRG_MSGBOX_Text_OnOff( "Off" ) ;
 		
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//ボタンの設定
 		wIndex = 1 ;
 		wFLG_ValidBtn = true ;
@@ -964,11 +964,11 @@ function cSTRG_MSGBOX_Close()
 	
 	try
 	{
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//メッセージボックスの取得
 		wObj = self.document.getElementById( "iMsg" ) ;
 		
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//隠す
 		wObj.style.display = "none" ;
 		//ボタンも隠す
@@ -983,7 +983,7 @@ function cSTRG_MSGBOX_Close()
 		wSubObj = self.document.getElementById( "iMsg-Btn-5" ) ;
 		wSubObj.style.display = "none" ;
 		
-		////////////////////////////////////////
+		//////////////////////////////////////
 		//データ無効化
 		top.cSTR_STRG_MegBox.Index = -1 ;
 		top.cSTR_STRG_MegBox.Msg   = new Array() ;

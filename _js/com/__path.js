@@ -40,13 +40,13 @@ function CLS_Path_getMyPath({
 	///////////////////////////////
 	// まず設定してるHOSTで検索
 	wKouho = "" ;
-	for( wI=0 ; wI<DEF_GLOBAL_HOST.length ; wI++ )
+	for( wI=0 ; wI<DEF_HOSTS.length ; wI++ )
 	{
 		for( wK=0 ; wK<wARR_Href.length ; wK++ )
 		{
-			if( DEF_GLOBAL_HOST[wI]==wARR_Href[wK] )
+			if( DEF_HOSTS[wI]==wARR_Href[wK] )
 			{
-				wKouho = DEF_GLOBAL_HOST[wI]
+				wKouho = DEF_HOSTS[wI]
 				break;
 			}
 		}
@@ -128,13 +128,13 @@ function CLS_Path_getCurrPath({
 	///////////////////////////////
 	// まず設定してるHOSTで検索
 	wKouho = "" ;
-	for( wI=0 ; wI<DEF_GLOBAL_HOST.length ; wI++ )
+	for( wI=0 ; wI<DEF_HOSTS.length ; wI++ )
 	{
 		for( wK=0 ; wK<wARR_Href.length ; wK++ )
 		{
-			if( DEF_GLOBAL_HOST[wI]==wARR_Href[wK] )
+			if( DEF_HOSTS[wI]==wARR_Href[wK] )
 			{
-				wKouho = DEF_GLOBAL_HOST[wI]
+				wKouho = DEF_HOSTS[wI]
 				break;
 			}
 		}
@@ -195,12 +195,12 @@ function CLS_Path_getOutDomainPath({
 	///////////////////////////////
 	// まず設定してるHOSTで検索
 	wKouho = "" ;
-	for( wI=0 ; wI<DEF_GLOBAL_HOST.length ; wI++ )
+	for( wI=0 ; wI<DEF_HOSTS.length ; wI++ )
 	{
-		wIndex = inOutDomain.indexOf( DEF_GLOBAL_HOST[wI] ) ;
+		wIndex = inOutDomain.indexOf( DEF_HOSTS[wI] ) ;
 		if( wIndex>=0 )
 		{
-			wKouho = DEF_GLOBAL_HOST[wI]
+			wKouho = DEF_HOSTS[wI]
 			break;
 		}
 	}
@@ -246,7 +246,7 @@ function CLS_Path_getPageHref({
 	}
 	catch(e)
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
@@ -294,7 +294,7 @@ function CLS_Path_checkURL({
 	}
 	catch(e)
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [inPath]=" + String(inPath) + " [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;

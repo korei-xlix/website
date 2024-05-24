@@ -23,7 +23,7 @@ function CLS_Time_getTimeDate({
 	wARR_TimeDate = new Array() ;
 	try
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// 日時の取得
 		if( inTimeDate==null )
 		{
@@ -34,7 +34,7 @@ function CLS_Time_getTimeDate({
 			wOBJ_TimeDate = inTimeDate;
 		}
 		
-		///////////////////////////////
+		/////////////////////////////
 		// 配列に格納
 		wARR_TimeDate.push( wOBJ_TimeDate.getFullYear() ) ;
 		wARR_TimeDate.push( wOBJ_TimeDate.getMonth() + 1 ) ;
@@ -43,7 +43,7 @@ function CLS_Time_getTimeDate({
 		wARR_TimeDate.push( wOBJ_TimeDate.getMinutes() ) ;
 		wARR_TimeDate.push( wOBJ_TimeDate.getSeconds() ) ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// ゼロ補完
 		for( wI=0 ; wI<6 ; wI++ )
 		{
@@ -51,7 +51,7 @@ function CLS_Time_getTimeDate({
 			wARR_TimeDate[wI] = CLS_Math_ZeroPadding( wARR_TimeDate[wI] ) ;
 		}
 		
-		///////////////////////////////
+		/////////////////////////////
 		//  / , : の挿入しながら文字列化
 		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[0] + "-" ;
 		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[1] + "-" ;
@@ -61,7 +61,7 @@ function CLS_Time_getTimeDate({
 		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[5] ;
 	
 	} catch(e) {
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
@@ -101,7 +101,7 @@ function CLS_Time_extDateArray({
 	}
 	catch(e)
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;

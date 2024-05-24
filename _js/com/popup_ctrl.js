@@ -133,17 +133,17 @@ function CLS_PopupCtrl_setPopup({
 	// ポップアップ情報の設定
 	try
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// ページオブジェクトの設定
 		top.STR_PopupCtrl_PopupInfo_Val.PageObj = inPageObj ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// フレーム情報の設定
 		top.STR_PopupCtrl_PopupInfo_Val.FrameID   = inFrameID ;
 		top.STR_PopupCtrl_PopupInfo_Val.SubFrames = inSubFrames ;
 		top.STR_PopupCtrl_PopupInfo_Val.FLG_Init = true ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// ウィンドウ情報の設定
 		for( wI in inKeys )
 		{
@@ -161,7 +161,7 @@ function CLS_PopupCtrl_setPopup({
 	}
 	catch(e)
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [inKey]=" + String(inKey) + " [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
@@ -207,7 +207,8 @@ function __PopupCtrl_setWindowInfo({
 	
 	///////////////////////////////
 	// ポップアップオブジェクトの取得
-	wSubRes = CLS_PageObj_getElement({
+///	wSubRes = CLS_PageObj_getElement({
+	wSubRes = top.CLS_PageObj.sGetElement({
 		inPageObj	: top.STR_PopupCtrl_PopupInfo_Val.PageObj,
 		inKey		: wKey
 	}) ;
@@ -282,7 +283,7 @@ function CLS_PopupCtrl_openPopup({
 	
 	///////////////////////////////
 	// ポップアップ オープン/クローズ
-	wSubRes = CLS_PageObj_setDisplay({
+	wSubRes = top.CLS_PageObj.sSetDisplay({
 		inPageObj	: top.STR_PopupCtrl_PopupInfo_Val.Window[inKey].PopupObj,
 		inKey		: inKey,
 		inView		: inOpen,
@@ -355,18 +356,18 @@ function CLS_PopupCtrl_clickMovePopup({
 	// イベントの設定
 	try
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// メインページへのイベントの設定
 		top.STR_PopupCtrl_PopupInfo_Val.PageObj.onmousemove = __Popup_MouseMove ;
 		top.STR_PopupCtrl_PopupInfo_Val.PageObj.onmouseup   = __Popup_MousStop ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// サブフレームへのイベントの設定
 		for( wI in top.STR_PopupCtrl_PopupInfo_Val.SubFrames )
 		{
-			///////////////////////////////
+			/////////////////////////////
 			// ポップアップオブジェクトの取得
-			wSubRes = CLS_PageObj_getElement({
+			wSubRes = top.CLS_PageObj.sGetElement({
 				inPageObj	: top.STR_PopupCtrl_PopupInfo_Val.PageObj,
 				inKey		: top.STR_PopupCtrl_PopupInfo_Val.SubFrames[wI]
 			}) ;
@@ -379,7 +380,7 @@ function CLS_PopupCtrl_clickMovePopup({
 			}
 			wObj = wSubRes['Responce'] ;
 			
-			///////////////////////////////
+			/////////////////////////////
 			// イベントの設定
 			wObj.contentWindow.onmousemove = __Popup_MouseMove ;
 			wObj.contentWindow.onmouseup   = __Popup_MousStop ;
@@ -398,7 +399,7 @@ function CLS_PopupCtrl_clickMovePopup({
 	catch(e)
 	{
 		top.STR_PopupCtrl_PopupInfo_Val.MovingID = null ;
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
@@ -456,7 +457,7 @@ function __Popup_MouseMove( event )
 	
 	try
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// 最初だけ初期位置に合わせる
 		if( top.STR_PopupCtrl_PopupInfo_Val.Window[wKey].FLG_Init==false )
 		{
@@ -466,7 +467,7 @@ function __Popup_MouseMove( event )
 			top.STR_PopupCtrl_PopupInfo_Val.Window[wKey].PosY = wY - event.clientY ;
 			top.STR_PopupCtrl_PopupInfo_Val.Window[wKey].PosX = wX - event.clientX ;
 		}
-		///////////////////////////////
+		/////////////////////////////
 		// ウィンドウを動かす
 		else
 		{
@@ -482,7 +483,7 @@ function __Popup_MouseMove( event )
 	{
 		//イベント削除
 		top.__Popup_MousStop() ;
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [Key]=" + String(wKey) + " [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
@@ -550,9 +551,9 @@ function __Popup_MousStop()
 	// サブフレームのイベント削除
 	for( wI in top.STR_PopupCtrl_PopupInfo_Val.SubFrames )
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// ポップアップオブジェクトの取得
-		wSubRes = top.CLS_PageObj_getElement({
+		wSubRes = top.CLS_PageObj.sGetElement({
 			inPageObj	: top.STR_PopupCtrl_PopupInfo_Val.PageObj,
 			inKey		: top.STR_PopupCtrl_PopupInfo_Val.SubFrames[wI]
 		}) ;
@@ -565,7 +566,7 @@ function __Popup_MousStop()
 		}
 		wObj = wSubRes['Responce'] ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// イベントの削除
 		wObj.contentWindow.onmousemove = null ;
 		wObj.contentWindow.onmouseup   = null ;

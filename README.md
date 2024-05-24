@@ -1,18 +1,18 @@
 # Korei's Home Page　～ホームページ～  
-  
+
+## このドキュメントについて / About this document
+
 **★このリポジトリの改造、流用、配布、クローンは禁止です★**  
-**　　Modification, appropriation, distribution, and cloning of this repository are prohibited.**  
+    **Modification, diversion, distribution, and cloning of this repository are prohibited**  
   
 
-<h1 id="aHowto">このリポジトリについて</h1>  
 このリポジトリは、Korei's Labo ホームページのソースをを公開するためのものです。  
- 
 
 
 
 
 
-<h1 id="aRules">リポジトリの利用規約（共通） / Repository terms of use</h1>  
+## リポジトリの利用規約（共通） / Repository terms of use
 
 本項目では、githubの各リポジトリの共通的な利用規約について定めます。  
 
@@ -50,10 +50,7 @@
   * 仕様に関するお問い合わせ、不具合へのクレームは受け付けません。  
 
   * 第三者を介したトラブル解決の際、当方の名称を出すのはご遠慮ください。  
-  
   　　[[連絡先ページ]](https://website.koreis-labo.com/rules/address.htm)  
-  
-
 
 
 

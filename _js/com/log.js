@@ -1,154 +1,558 @@
 //#####################################################
-//# ::Project  : Galaxy Fleet
+//# ::Project  : 共通アプリ
 //# ::Admin    : Korei (@korei-xlix)
-//# ::github   : https://github.com/korei-xlix/galaxyfleet/
+//# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : ログクラス
 //#####################################################
-
-/*
-	///////////////////////////////
-	// 応答形式の取得
-	let wRes = CLS_L_getRes({ inClassName : "ClassName", inFuncName : "FuncName" }) ;
-	
-	///////////////////////////////
-	// 応答形式の取得 (Marked)
-	let wRes = CLS_L_getRes({ inClassName : "ClassName", inFuncName : "FuncName", inMark : true }) ;
-	
-	CLS_L({ inRes:wRes, inLevel: "A", inMessage: "test" }) ;
-	
-	CLS_L({ inRes:wRes, inLevel: "B" }) ;
-	
-	wRes['Reason']   = "error" ;
-	wRes['Responce'] = "harapeko" ;
-	
-	///////////////////////////////
-	// 正常
-	wRes['Result'] = true ;
-	return wRes ;
-	
-	///////////////////////////////
-	// 正常
-	wRes['Responce'] = true ;
-	wRes['Result']   = true ;
-	return wRes ;
-
-
-	CLS_Lobj( inObj ) ;
-
-
-
+//# 関数群     :
+//#
+//# 応答形式の取得
+//#	CLS_OSIF.sGet_Resp({ inClass:"Class", inFunc="Func" })
+//#		//###########################
+//#		//# 応答形式の取得
+//#		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+//#		let wRes = CLS_OSIF.sGet_Resp({ inClass:"Class", inFunc:"Func" }) ;
+//#
+//# ログセット
+//#		CLS_L.sL({ inRes:wRes, inLevel:"A", inMessage:"(none)", inDump:null, inBreak:false }) ;
+//#
+//# ログファイル出力
+//#		CLS_L.sO()
+//#
+//# ログ強制表示
+//#		CLS_L.sV()
+//#
+//# ログクリア
+//#		CLS_L.sC()
+//#
+//#####################################################
 
 //#####################################################
-//# (共通関数)
+class CLS_L {
 //#####################################################
+
+//#####################################################
+//# ロギング
+//#####################################################
+	static sL({
+		inRes,
+		inLevel,
+		inMessage=top.DEF_GVAL_NULL,
+///		inViewLog=false
+		inDump=top.DEF_GVAL_NULL
+///		inBreak=false
+	})
+	{
+		let wLevel, wViewLog, wMessage, wTimeDate ;
+		let wRes, wSubRes, wMyRes ;
+		
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		wRes = CLS_OSIF.sGet_Resp({}) ;
+		
+		//### 内部エラー用
+		wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"sL" }) ;
+		
+		/////////////////////////////
+		// 引数を取得
+		wRes['Result']   = inRes['Result'] ;
+		wRes['Class']    = inRes['Class'] ;
+		wRes['Func']     = inRes['Func'] ;
+		wRes['Reason']   = inRes['Reason'] ;
+		wRes['Responce'] = inRes['Responce'] ;
+		
+		/////////////////////////////
+		// パラメータチェック
+		
+		//### Class
+		if(( wRes['Class']=="") || ( wRes['Class']==top.DEF_GVAL_NULL ))
+		{
+			wRes['Class'] = top.DEF_GVAL_TEXT_NONE ;
+		}
+		
+		//### Func
+		if(( wRes['Func']=="") || ( wRes['Func']==top.DEF_GVAL_NULL ))
+		{
+			wRes['Func'] = top.DEF_GVAL_TEXT_NONE ;
+		}
+		
+		//### Reason
+		if(( wRes['Reason']=="") || ( wRes['Reason']==top.DEF_GVAL_NULL ))
+		{
+			wRes['Reason'] = top.DEF_GVAL_TEXT_NONE ;
+		}
+		
+		//### Responce
+		if(( wRes['Responce']=="") || ( wRes['Responce']==top.DEF_GVAL_NULL ))
+		{
+			wRes['Responce'] = top.DEF_GVAL_TEXT_NONE ;
+		}
+		
+		//### StatusCode
+		if(( wRes['StatusCode']=="") || ( wRes['StatusCode']==top.DEF_GVAL_NULL ))
+		{
+			wRes['StatusCode'] = top.DEF_GVAL_TEXT_NONE ;
+		}
+		
+		//### Messageのチェック
+		wMessage = top.DEF_GVAL_TEXT_NONE ;
+		if(( inMessage!="" ) && ( inMessage!=top.DEF_GVAL_NULL ))
+		{
+			wMessage = inMessage ;
+		}
+		
+		//### Messageのチェック
+		wMessage = top.DEF_GVAL_TEXT_NONE ;
+		if(( inMessage!="" ) && ( inMessage!=top.DEF_GVAL_NULL ))
+		{
+			wMessage = inMessage ;
+		}
+		
+		wLevel = top.DEF_GVAL_TEXT_NONE ;
+		/////////////////////////////
+		// レベルのチェック
+		if( !( inLevel in top.DEF_GVAL_LOG_LOG_LEVEL ) )
+		{
+			//この処理のエラーをセット
+			wMyRes['Reason'] = "Not Level(Next Line Error): " + String(inLevel) ;
+			this.__setLog({ inRes:wMyRes, inLevel:"A", inTimeDate:top.DEF_GVAL_TIMEDATE }) ;
+			
+			wLevel = "E" ;	//不明なエラー扱い
+		}
+		else
+		{
+			wLevel = inLevel ;
+		}
+		
+		wTimeDate = top.DEF_GVAL_TIMEDATE ;
+		/////////////////////////////
+		// 日時の取得
+		wSubRes = CLS_OSIF.sGetTime() ;
+		if( wSubRes['Result']!=true )
+		{
+			// 失敗: この処理のエラーをセット
+			wMyRes['Reason'] = "Get Time Date Error"
+			this.__setLog({ inRes:wMyRes, inLevel:"C", inTimeDate:top.DEF_GVAL_TIMEDATE }) ;
+		}
+		else
+		{
+			wTimeDate = wSubRes['TimeDate'] ;
+		}
+		
+		/////////////////////////////
+		// ログセット・出力
+		this.__setLog({ inRes:wRes, inLevel:wLevel, inTimeDate:wTimeDate, inMessage:wMessage, inDump:inDump }) ;
+		
+///		/////////////////////////////
+///		// ログ出力
+///		if( inViewLog==true )
+///		{
+///			this.__viewLog() ;
+///		}
+///		this.__viewLog() ;
+///		
+///		/////////////////////////////
+///		// 致命エラーの場合、全処理を終える
+///		if( inViewLog==true )
+///		{
+///			if(( wLevel=="A" ) || ( wLevel=="B" ) || ( wLevel=="C" ) || ( wLevel=="D" )
+///			   ( wLevel=="E" ) || ( wLevel=="I" ))
+///			{
+///				//###########################
+///				//# ログファイル出力
+///				//#   +処理停止
+///				this.sO() ;
+///				CLS_OSIF.sSystemExit() ;
+///				return ;
+///		}
+///	}
+///		/////////////////////////////
+///		// 入力エラーの場合、
+///		//   alertボックスを表示
+///		if(( wLevel=="I" ) && ( inMessage!=top.DEF_GVAL_NULL ))
+///		{
+///			wMessage = "*** Input Error ! ***" + '\n' ;
+///			wMessage = wMessage + inMessage + '\n' ;
+///			CLS_OSIF.sAlert({ inText:wMessage }) ;
+///		}
+///		
+///		/////////////////////////////
+///		// 強制停止の場合、全処理を終える
+///		if(( wLevel=="A" ) || ( inBreak==true ))
+///		if( inBreak==true )
+///		{
+///			//###########################
+///			//# ログファイル出力
+///			//#   +処理停止
+///			this.sO() ;
+///			CLS_OSIF.sSystemExit() ;
+///			CLS_Sys.sSystemExit() ;
+///			return ;
+///		}
+		return ;
+	}
+
+
 
 ///////////////////////////////////////////////////////
-// (ローカル関数)
-
-	///////////////////////////////
-	// 正常
-
-	//#############################
-	//# (ブロック)
-	//#############################
-
-
-	///////////////////////////////
-	// (処理)
-	try
+// ログセット
+///////////////////////////////////////////////////////
+	static __setLog({
+		inRes,
+		inLevel,
+		inTimeDate,
+		inMessage=gVal.DEF_NOTEXT,
+		inDump=top.DEF_GVAL_NULL
+	})
 	{
-		wObj = inPageObj.getElementById( inKey ) ;
+		let wKey ;
+///		let wIndex ;
+		
+		/////////////////////////////
+		// インデックスの更新
+		wKey = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_Log }) ;
+///		wIndex = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_Log }) ;
+///		top.gVAL_Log_pt = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_Log }) ;
+		
+		/////////////////////////////
+		// ログセット
+		top.gSTR_Log[wKey] = {
+///		top.gSTR_Log[top.gVAL_Log_pt] = {
+			"Logged"		: false,
+			"UserID"		: top.gSTR_SystemInfo.UserID,
+			"TimeDate"		: inTimeDate,
+			"Level"			: inLevel,
+			"Result"		: String(inRes['Result']),
+			"Class"			: String(inRes['Class']),
+			"Func"			: String(inRes['Func']),
+			"Reason"		: String(inRes['Reason']),
+			"Responce"		: String(inRes['Responce']),
+			"Message"		: inMessage,
+			"Dump"			: top.DEF_GVAL_NULL
+		} ;
+		
+		/////////////////////////////
+		// コンソール出力
+///		this.__viewConsole() ;
+		this.__viewConsole({ inKey:wKey }) ;
+		
+		return ;
 	}
-	catch(e)
+
+
+
+///////////////////////////////////////////////////////
+// ログ出力
+///////////////////////////////////////////////////////
+///	static __viewLog()
+///	{
+///		/////////////////////////////
+///		// コンソールに出力する
+///		for( let wKey in top.gSTR_Log )
+///		{
+///			//### 表示済ならスキップ
+///			if( top.gSTR_Log[wKey]['Logged']==true )
+///			{
+///				continue ;
+///		}
+///			this.__viewConsole({ inKey:wKey }) ;
+///		}
+///		return true ;
+///	}
+///
+///
+
+///////////////////////////////////////////////////////
+// コンソール出力
+///////////////////////////////////////////////////////
+	static __viewConsole({
+		inKey
+	})
 	{
-		///////////////////////////////
-		// 例外処理
-		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
-		wRes['Reason'] = wRes['Reason'] + ": [inKey]=" + String(inKey) ;
-		CLS_L({ inRes:wRes, inLevel: "A" }) ;
-		return wRes ;
+		let wCons ;
+		
+		wCons = "" ;
+		/////////////////////////////
+		// データ作成
+		wCons = wCons + top.gSTR_Log[inKey]['TimeDate'] + " [" ;
+		wCons = wCons + top.gSTR_Log[inKey]['Level'] + "]" ;
+		
+		if(( top.gSTR_Log[inKey]['Level']=="A" ) ||
+		   ( top.gSTR_Log[inKey]['Level']=="B" ) ||
+		   ( top.gSTR_Log[inKey]['Level']=="C" ) ||
+		   ( top.gSTR_Log[inKey]['Level']=="D" ) ||
+		   ( top.gSTR_Log[inKey]['Level']=="E" ) ||
+		   ( top.gSTR_Log[inKey]['Level']=="I" ) )
+		{
+			wCons = wCons + "[" + top.gSTR_Log[inKey]['Result'] + "] " ;
+		}
+		else
+		{
+			wCons = wCons + " " ;
+		}
+		
+		wCons = wCons + top.gSTR_Log[inKey]['Class'] + " :: " ;
+		wCons = wCons + top.gSTR_Log[inKey]['Func'] + " " ;
+		
+		if( top.gSTR_Log[inKey]['Reason']!=top.DEF_GVAL_TEXT_NONE )
+		{
+			wCons = wCons + '\n' + "  Reason: " + top.gSTR_Log[inKey]['Reason'] + " " ;
+		}
+		
+		if( top.gSTR_Log[inKey]['Message']!=top.DEF_GVAL_TEXT_NONE )
+		{
+			wCons = wCons + '\n' + "  Info: " + top.gSTR_Log[inKey]['Message'] + " " ;
+		}
+		
+		/////////////////////////////
+		// コンソール表示
+		if( top.gSTR_Log[inKey]['Level']=="A" )
+		{
+			CLS_OSIF.sConsError({ inText:wCons }) ;
+		}
+		else if(( top.gSTR_Log[inKey]['Level']=="B" ) ||
+		        ( top.gSTR_Log[inKey]['Level']=="C" ) ||
+		        ( top.gSTR_Log[inKey]['Level']=="D" ) ||
+		        ( top.gSTR_Log[inKey]['Level']=="E" ) ||
+		        ( top.gSTR_Log[inKey]['Level']=="I" ) )
+		{
+			CLS_OSIF.sConsWarn({ inText:wCons }) ;
+		}
+		else if( top.gSTR_Log[inKey]['Level']=="X" )
+		{
+			if( top.DEF_INDEX_TEST==true )
+			{
+				CLS_OSIF.sConsWarn({ inText:wCons }) ;
+			}
+		}
+		else if(( top.gSTR_Log[inKey]['Level']=="TS" ) ||
+		        ( top.gSTR_Log[inKey]['Level']=="TU" ) )
+		{
+			CLS_OSIF.sConsLog({ inText:wCons }) ;
+		}
+		else if( top.gSTR_Log[inKey]['Level']=="N" )
+		{
+			if( top.DEF_INDEX_TEST==true )
+			{
+				CLS_OSIF.sConsInfo({ inText:wCons }) ;
+			}
+		}
+		else
+		{
+			//システム、ユーザ、トラヒック
+			CLS_OSIF.sConsInfo({ inText:wCons }) ;
+		}
+		
+		/////////////////////////////
+		// ダンプの表示
+		if( top.gSTR_Log[inKey]['Dump']!=top.DEF_GVAL_NULL )
+		{
+			CLS_OSIF.sViewObj({ inObj:top.gSTR_Log[inKey]['Dump'] }) ;
+		}
+		
+		/////////////////////////////
+		// ログ済
+		top.gSTR_Log[inKey]['Logged'] = true ;
+		
+		return ;
 	}
 
 
-*/
+
+//#####################################################
+//# ログファイル出力
+//#####################################################
+	static sO()
+	{
+		let wTimeDate, wText, wSTR_Data ;
+		let wSubRes ;
+		
+		/////////////////////////////
+		// ファイル出力OFFなら、終わる
+		if( top.DEF_INDEX_LOG_OUTPUT==false )
+		{
+			wText = "Output Log File OFF" ;
+			CLS_OSIF.sConsInfo({ inText:wText }) ;
+			return true ;
+		}
+		
+		wTimeDate = top.DEF_GVAL_TIMEDATE ;
+		/////////////////////////////
+		// 日時の取得
+		wSubRes = CLS_OSIF.sGetTime() ;
+		if( wSubRes['Result']!=true )
+		{
+			wText = "Time Date is error(CLS_L::__viewLog)" ;
+			CLS_OSIF.sConsError({ inText:wText }) ;
+			return false ;
+		}
+		wTimeDate = wSubRes['TimeDate'] ;
+		
+		/////////////////////////////
+		// 出力データの作成
+		wSTR_Data = this.__createData() ;
+		if( CLS_OSIF.sGetObjectNum({ inObject:wSTR_Data['Cons'] })==0 )
+		{
+			wText = "No Log Data(CLS_L::__viewLog)" ;
+			CLS_OSIF.sConsWarn({ inText:wText }) ;
+			return true ;
+		}
+		
+		/////////////////////////////
+		// ログファイル出力
+		this.__outputFile({ inTimeDate:wTimeDate, inData:wSTR_Data['Cons'] }) ;
+		
+		return true ;
+	}
+
+
+
+///////////////////////////////////////////////////////
+// 出力データ作成
+///////////////////////////////////////////////////////
+	static __createData()
+	{
+		let wSTR_Data, wContCons, wOutput ;
+		let wIndex, wKey, wKey2, wSpace, wSpaceLen ;
+		
+		/////////////////////////////
+		// 出力データの応答
+		wSTR_Data = {
+			"Cons"	: new Array()
+		} ;
+		
+		/////////////////////////////
+		// 出力データの作成
+		wContCons = new Array() ;
+		for( wIndex in top.gSTR_Log )
+		{
+			for( wKey in top.gSTR_Log[wIndex] )
+			{
+				//### 項目スキップ
+				if( wKey=="Logged" )
+				{
+					continue ;
+				}
+				
+				if( wKey=="Dump" )
+				{///### Dumpの場合
+					if( top.gSTR_Log[wIndex]['Dump']==top.DEF_GVAL_NULL )
+					{
+						continue ;
+					}
+					//### Dump出力
+					//////////////////////////////
+					//////////////////////////////
+					continue ;
+				}
+				else
+				{
+					//### それ以外は、コンソール用出力
+					wOutput   = String( wKey ) ;
+					wSpaceLen = top.DEF_GVAL_LOG_KOUMOKU_LEN - wOutput.length ;
+					wSpace = " ".repeat( wSpaceLen ) ;
+					wOutput = wOutput + wSpace + ": " + String( top.gSTR_Log[wIndex][wKey] ) + '\n' ;
+					wContCons.push( wOutput ) ;
+				}
+			}
+			wContCons.push( '\n' ) ;
+		}
+		
+		/////////////////////////////
+		// 出力データの応答
+		wSTR_Data['Cons'] = wContCons ;
+		return wSTR_Data ;
+	}
+
+
+
+///////////////////////////////////////////////////////
+// ファイル出力
+///////////////////////////////////////////////////////
+	static __outputFile({
+		inTimeDate,
+		inData
+	})
+	{
+		let wTimeDate, wTime, wDate ;
+		let wPath, wText ;
+		
+		wText = "" ;
+		/////////////////////////////
+		// データ生成
+		for( let wKey in inData )
+		{
+			wText = wText + inData[wKey] ;
+		}
+		
+		/////////////////////////////
+		// ファイル名生成
+		wTimeDate = inTimeDate.split(" ") ;
+		wDate     = wTimeDate[0].replace( /-/g, "" ) ;
+		wTime     = wTimeDate[1].replace( /:/g, "" ) ;
+		wPath = top.DEF_GVAL_LOG_OUTPUT_FILE_HEADER + wDate + wTime + ".log" ;
+		
+		/////////////////////////////
+		// ファイル出力
+		CLS_File.sOutput({ inPath:wPath, inText:wText, inAuto:top.DEF_INDEX_LOG_AUTOOPEN }) ;
+		
+		/////////////////////////////
+		// コンソール表示
+		wText = "Output Log File: Path=" + String(wPath) ;
+		CLS_OSIF.sConsInfo({ inText:wText }) ;
+		
+		return ;
+	}
 
 
 
 //#####################################################
-//# ユーザ定数
+//# ログ強制表示
 //#####################################################
-
-///////////////////////////////
-// ログデータ長
-const DEF_LOG_LOGDATA_LEN = 20480 ;
-
-///////////////////////////////
-// デフォルトボックスデータ長
-const DEF_LOG_BOXDATA_LEN = 1024 ;
-
-
-
-///////////////////////////////
-// レベルの文字長（★いじらない）
-const DEF_LOG_LEVEL_LEN = 2 ;
-
-///////////////////////////////
-// 共通：ログ系
-const DEF_LOG_LEVEL = new Array(
-				// A     : alert + コンソール(*常時+error) + ログデータ
-				// B, C  : コンソールのみ(*常時+warn) + ログデータ
-				// D, E  : コンソールのみ(warn) + ログデータ
-		"A",	//致命的エラー: プログラム停止 ロジックエラーなどソフト側の問題
-		"B",	//内部的エラー: プログラム停止か実行不可 コール先からのエラー
-		"C",	//外部のエラー: プログラム停止か実行不可 外部モジュールやハードの問題
-		"D",	//潜在的エラー: ユーザ入力など予想外 or 後に問題を起こす可能性がある
-		"E",	//不明なエラー: 判断がつかないエラー ありえないルートなど
-		
-				//       : alert + ログデータ
-		"I",	//入力エラー  : 確定的なユーザ入力エラー
-		
-				//      : コンソール(info) + ログデータ
-		"S",	//システム    : botの実行、停止、再起動
-		"SC",	//システム    : システムの設定変更
-		"SR",	//システム    : システムの規制制御、自律制御
-		"SU",	//システム    : ユーザログイン（スーパユーザ）
-		
-				//      : ボックス + ログデータ
-		"R",	//ユーザ      : ユーザ登録、削除、抹消
-		"RC",	//ユーザ      : ユーザ設定変更
-		"RR",	//ユーザ      : ユーザ個別の規制制御、自律制御
-		"RU",	//ユーザ      : ユーザログイン（パーソナルユーザ）
-		
-				//      : ログデータのみ
-		"TS",	//トラヒック  : システムトラヒック、期間トラヒック、通信トラヒック(統計)
-				//      : ボックス + ログデータ
-		"TU",	//トラヒック  : ユーザトラヒック、期間トラヒック、通信トラヒック(統計)、獲得情報など
-		
-				// テストモード時のみ
-				//      : コンソール(log) + ログデータ(*常時)
-		"N",	//非表示の情報
-				//      : alert + コンソール(info) + ログデータ(*常時)
-		"X"		//テスト用ログ
-	) ;
+	static sV()
+	{
+///		this.__viewLog() ;
+		for( let wKey in top.gSTR_Log )
+		{
+			//### 表示済ならスキップ
+			if( top.gSTR_Log[wKey]['Logged']==true )
+			{
+				continue ;
+			}
+			this.__viewConsole({ inKey:wKey }) ;
+		}
+		return ;
+	}
 
 
 
 //#####################################################
-//# ユーザ変数
+//# ログクリア
 //#####################################################
+	static sC()
+	{
+		let wText ;
+		
+		top.gSTR_Log    = {} ;
+		top.gVAL_Log_pt = -1 ;
+		wText = "Log Data Clear" ;
+		CLS_OSIF.sConsError({ inText:wText }) ;
+		return ;
+	}
 
-///////////////////////////////
-// ログデータ
-var ARR_Log_LogData = new Array() ;
 
-///////////////////////////////
-// ボックスデータ
-var VAL_Log_BoxData_Len = DEF_LOG_BOXDATA_LEN ;
-var ARR_Log_BoxData = new Array() ;
-var OBJ_Log_BoxObject = null ;
+
+//#####################################################
+}
 
 
 
+
+
+
+
+/*
 //#####################################################
 //# ログデータ
 //#####################################################
@@ -193,7 +597,7 @@ function __Log_LogPush( inMsg )
 	///////////////////////////////
 	// ログ長が最大なら
 	//   先頭を削除する
-	if( this.ARR_Log_LogData.lengh>=DEF_LOG_LOGDATA_LEN )
+	if( this.ARR_Log_LogData.lengh>=top.DEF_USER_LOGDATA_LEN )
 	{
 		this.ARR_Log_LogData.shift() ;
 	}
@@ -224,7 +628,7 @@ function CLS_Log_unsetBox()
 function CLS_Log_setBox({
 	inPageObj,
 	inKey,
-	inLength = DEF_LOG_BOXDATA_LEN
+	inLength = top.DEF_USER_BOXDATA_LEN
 })
 {
 	///////////////////////////////
@@ -262,18 +666,18 @@ function CLS_Log_setBox({
 		}
 		
 	} catch(e) {
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wStr = "Exception [A] : [Result]=false: [Call]=CLS_Log_setBox: [Exception]=" + String( e.message ) ;
 ///		wStr = "A,,[A],[Result]=false,[Class]=CLS_Log,[Func]=CLS_Log_setBox,,,[Reason]=Exception:" + String( e.message ) + ",,"
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
 		CLS_L({ inRes:wRes, inLevel: "A" }) ;
 		
-///		///////////////////////////////
+///		/////////////////////////////
 ///		// コンソールへ表示
 ///		console.error( wStr ) ;
 ///		
-///		///////////////////////////////
+///		/////////////////////////////
 ///		// メッセージボックスの表示
 ///		alert( wStr ) ;
 		return ;
@@ -308,17 +712,17 @@ function CLS_Log_BoxClear()
 		this.OBJ_Log_BoxObject.value = "" ;
 		
 	} catch(e) {
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wStr = "Exception [A] : [Result]=false: [Call]=CLS_Log_BoxClear: [message]=" + String( e.message ) ;
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
 		CLS_L({ inRes:wRes, inLevel: "A" }) ;
 		
-///		///////////////////////////////
+///		/////////////////////////////
 ///		// コンソールへ表示
 ///		console.error( wStr ) ;
 ///		
-///		///////////////////////////////
+///		/////////////////////////////
 ///		// メッセージボックスの表示
 ///		alert( wStr ) ;
 		return ;
@@ -386,17 +790,17 @@ function __Log_BoxPush( inMsg )
 	} catch(e) {
 		
 		CLS_Log_unsetBox() ;
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 		wStr = "Exception [A] : [Result]=false: [Call]=__Log_BoxPush: [message]=" + String( e.message ) ;
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
 		CLS_L({ inRes:wRes, inLevel: "A" }) ;
 		
-///		///////////////////////////////
+///		/////////////////////////////
 ///		// コンソールへ表示
 ///		console.error( wStr ) ;
 ///		
-///		///////////////////////////////
+///		/////////////////////////////
 ///		// メッセージボックスの表示
 ///		alert( wStr ) ;
 		return ;
@@ -407,609 +811,5 @@ function __Log_BoxPush( inMsg )
 
 
 
-//#####################################################
-//# テストモード取得
-//#   topフレームに DEF_TEST_LOG があること
-//#####################################################
-function CLS_Log_getTest()
-{
-	let wFLG_Test ;
-	
-	wFLG_Test = false ;
-	try {
-		wFLG_Test = top.DEF_TEST_LOG ;
-	} catch(e) {
-		return false ;
-	}
-	return wFLG_Test ;
-}
-
-
-
-//#####################################################
-//# ログ処理
-//#####################################################
-function CLS_L({
-	inRes   = null,
-	inLevel = null,
-	inMessage = null,
-///	inLogView = true
-	inLogView = false,
-	inBox = false
-})
-{
-///	let wLevel, wMsg, wStr, wStatus, wTimeDate ;
-	let wLevel, wStr, wStr2, wStr3, wTimeDate, wFLG_Test ;
-	let wConsole, wMessage, wLogData, wBoxData ;
-	
-	//#############################
-	//# チェック処理
-	//#############################
-	///////////////////////////////
-	// レベルのチェック
-	if( DEF_LOG_LEVEL.indexOf( inLevel )<0 )
-	{//////設定外
-		wLevel = "X" ;
-	}
-	else
-	{
-		wLevel = inLevel ;
-	}
-	inRes['Level'] = wLevel ;
-	
-	///////////////////////////////
-	// 日時の取得
-	wSubRes = __Log_getTime() ;
-	if( wSubRes['Result']!=true )
-	{
-		/// 失敗
-		return ;
-	}
-///	wTimeDate = wSubRes['TimeDate'] ;
-	wTimeDate = wSubRes['Responce'] ;
-	
-	///////////////////////////////
-	// テストモードの取得
-	wFLG_Test = CLS_Log_getTest() ;
-	
-	//#############################
-	//# 表示するメッセージの組み立て
-	//#############################
-	wConsole = "" ;
-	wMessage = "" ;
-	wBoxData = "" ;
-	wLogData = "" ;
-	
-	///////////////////////////////
-	// ログデータ先頭
-	wLogData = wLogData + wLevel + "," ;
-	
-	///////////////////////////////
-	// 時間
-	wConsole = wConsole + wTimeDate ;
-	wMessage = wMessage + wTimeDate ;
-	wBoxData = wBoxData + wTimeDate + " " ;
-	wLogData = wLogData + wTimeDate ;
-	
-	///////////////////////////////
-	// レベル文字の桁補正
-	wStr = wLevel + " ".repeat( DEF_LOG_LEVEL_LEN - wLevel.length ) ;
-	
-	///////////////////////////////
-	// レベル文字
-	wConsole = wConsole + " [" + wStr + "] : " ;
-	wMessage = wMessage + " [" + wLevel + "] : " ;
-	wLogData = wLogData + ",[" + wLevel + "]," ;
-	
-	///////////////////////////////
-	// 結果
-	if(( wLevel=="N" ) || ( wLevel=="X" ))
-	{
-		wConsole = wConsole + "[Result]=" + String( inRes['Result'] ) + ": " ;
-		wMessage = wMessage + "[Result]=" + String( inRes['Result'] ) + '\n' ;
-	}
-	else
-	{
-		wMessage = wMessage + '\n' ;
-	}
-	wLogData = wLogData + "[Result]=" + String( inRes['Result'] ) + "," ;
-	
-	///////////////////////////////
-	// クラス、関数名
-//	wStr  = "[Call]=" + inRes['Class'] + ": " + inRes['Func'] ;
-	wStr  = "[Call]=" + inRes['Func'] ;
-	wStr3 = "[Class]=" + inRes['Class'] + ",[Func]=" + inRes['Func'] + "," ;
-	
-	wStr2 = null ;
-	if(( inRes['Src_Class']!=null ) && ( inRes['Src_Func']!=null ))
-	{
-//		wStr2 = "Src Call]=" + inRes['Src_Class'] + ": " + inRes['Src_Func'] ;
-		wStr2 = "[Src Call]=" + inRes['Src_Func'] ;
-		wStr3 = "[Src_Class]=" + inRes['Src_Class'] + ",[Src_Func]=" + inRes['Src_Func'] + "," ;
-	}
-	else
-	{
-		wStr3 = " , ," ;
-	}
-	
-	if(( wLevel=="A" ) || ( wLevel=="B" ) || ( wLevel=="C" ) || ( wLevel=="D" ) || ( wLevel=="E" ) ||
-	   ( wLevel=="N" ) || ( wLevel=="X" ) )
-	{
-		wConsole = wConsole + wStr + ": " ;
-		wMessage = wMessage + wStr + '\n' ;
-		if( wStr2!=null )
-		{
-			wConsole = wConsole + wStr2 + ": " ;
-			wMessage = wMessage + wStr2 + '\n' ;
-		}
-	}
-	wLogData = wLogData + wStr3 ;
-	
-	///////////////////////////////
-	// 理由
-	if( inRes['Reason']!=null )
-	{
-		wConsole = wConsole + "[Reason]=" + String( inRes['Reason'] ) ;
-		wMessage = wMessage + "[Reason]=" + String( inRes['Reason'] ) ;
-		wLogData = wLogData + "[Reason]=" + String( inRes['Reason'] ) ;
-	}
-	else
-	{
-		wLogData = wLogData + "," ;
-	}
-	
-	///////////////////////////////
-	// メッセージ
-	if( inMessage!=null )
-	{
-		///////////////////////////////
-		// 理由が設定されてたら改行なり仕切りなり入れる
-		if( inRes['Reason']!=null )
-		{
-			wConsole = wConsole + ": " ;
-			wMessage = wMessage + '\n' ;
-		}
-		
-		wConsole = wConsole + String( inMessage ) ;
-		if( wLevel=="I" )
-		{
-			//ユーザ入力エラーなら、メッセージだけ表示する
-			wMessage = String( inMessage ) ;
-		}
-		else
-		{
-			wMessage = wMessage + String( inMessage ) ;
-		}
-		
-		if(( wLevel=="R" ) || ( wLevel=="RC" ) || ( wLevel=="RR" ) || ( wLevel=="RU" ) || ( wLevel=="TU" ))
-		{
-			wBoxData = wBoxData + String( inMessage ) ;
-		}
-		else
-		{	//ユーザログ、ユーザトラヒック以外はボックス表示しない
-			wBoxData = "" ;
-		}
-		
-		wLogData = wLogData + String( inMessage ) + "," ;
-	}
-	else
-	{
-		wLogData = wLogData + "," ;
-		wBoxData = "" ;
-	}
-	
-	//#############################
-	//# 表示するデータのセット
-	//#############################
-	inRes['Console'] = wConsole ;
-	inRes['Message'] = wMessage ;
-	inRes['BoxData'] = wBoxData ;
-	inRes['LogData'] = wLogData ;
-	
-///	///////////////////////////////
-///	// 結果
-///	wStr = " [" + String( inRes['Result'] ) + "] " ;
-///	wStatus = wTimeDate + wStr ;
-///	
-///	///////////////////////////////
-///	// レベル文字の桁補正
-///	wStatus = wStatus + wLevel ;
-///	wStatus = wStatus + " ".repeat( DEF_LOG_LEVEL_LEN - wLevel.length ) + " : " ;
-///	
-///	///////////////////////////////
-///	// クラス、関数名
-///	wStr = inRes['Class'] + ": " + inRes['Func'] ;
-///	wStatus = wStatus + inRes['Func'] + ": " ;
-///	
-///	///////////////////////////////
-///	// 理由
-///	if( inRes.Reason!=null )
-///	{
-///		wStatus = wStatus + ": " + inRes['Reason'] ;
-///	}
-///	
-///	///////////////////////////////
-///	// メッセージ
-///	if( inMessage!=null )
-///	{
-///		wStatus = wStatus + ": message=" + inMessage ;
-///	}
-///	
-///	///////////////////////////////
-///	// 変数へ格納
-///	inRes['Res_Stat'] = wStatus ;
-///	
-	
-	//#############################
-	//# ログデータ格納
-	//#############################
-	__Log_LogPush( wLogData ) ;
-	
-	//#############################
-	//# ボックスデータ表示
-	//#############################
-///	if( inBox==true )
-///	{
-///		__Log_BoxPush( wBoxData ) ;
-///	}
-	__Log_BoxPush( wBoxData ) ;
-	
-	//#############################
-	//# コンソールへ表示
-	//#############################
-	
-	///////////////////////////////
-	// A: コンソール: error (*常時)
-	if( wLevel=="A" )
-	{
-		console.error( wConsole ) ;
-	}
-	///////////////////////////////
-	// B,C: コンソール: warn (*常時)
-	else if(( wLevel=="B" ) || ( wLevel=="C" ))
-	{
-		console.warn( wConsole ) ;
-	}
-	///////////////////////////////
-	// D,E: コンソール: warn (テスト時のみ)
-	else if((( wLevel=="D" ) || ( wLevel=="E" )) && ( wFLG_Test==true ))
-	{
-		console.warn( wConsole ) ;
-	}
-	///////////////////////////////
-	// システム: コンソール: info (テスト時のみ)
-	else if((( wLevel=="S" ) || ( wLevel=="SC" ) || ( wLevel=="SR" ) || ( wLevel=="SU" )) && ( wFLG_Test==true ))
-	{
-		console.info( wConsole ) ;
-	}
-	///////////////////////////////
-	// ユーザ: コンソール: info (テスト時のみ)  規制はなし
-	else if((( wLevel=="R" ) || ( wLevel=="RC" ) || ( wLevel=="RU" )) && ( wFLG_Test==true ))
-	{
-		console.info( wConsole ) ;
-	}
-	///////////////////////////////
-	// 非表示情報: コンソール: log (テスト時のみ)
-	else if(( wLevel=="N" ) && ( wFLG_Test==true ))
-	{
-		console.log( wConsole ) ;
-	}
-	///////////////////////////////
-	// テスト用: コンソール: info (テスト時のみ)
-	else if(( wLevel=="X" ) && ( wFLG_Test==true ))
-	{
-		console.info( wConsole ) ;
-	}
-	
-	//#############################
-	//# メッセージボックス表示
-	//#############################
-	
-	///////////////////////////////
-	// A (*常時)
-	if( wLevel=="A" )
-	{
-		alert( wMessage ) ;
-	}
-	///////////////////////////////
-	// I (*常時)
-	else if( wLevel=="I" )
-	{
-		alert( wMessage ) ;
-	}
-	///////////////////////////////
-	// X (テスト時のみ)
-	else if(( wLevel=="X" ) && ( wFLG_Test==true ))
-	{
-		alert( wMessage ) ;
-	}
-	///////////////////////////////
-	// 指定表示あり
-	else if( inLogView==true )
-	{
-		alert( wMessage ) ;
-	}
-	
-///	///////////////////////////////
-///	// コンソール: error
-///	if(( wLevel=="A" ) || ( wLevel=="B" ) || ( wLevel=="C" ))
-///	{
-///		console.error( wStatus ) ;
-///	}
-///	///////////////////////////////
-///	// コンソール: warn
-///	else if(( wLevel=="D" ) || ( wLevel=="E" ))
-///	{
-///		console.warn( wStatus ) ;
-///	}
-///	///////////////////////////////
-///	// コンソール: X warn
-///	else if( wLevel=="X" )
-///	{
-///		console.warn( wStatus ) ;
-///	}
-///	///////////////////////////////
-///	// コンソール: info
-///	else if(( wLevel=="S" ) || ( wLevel=="SC" ) || ( wLevel=="SR" ) ||
-///	        ( wLevel=="R" ) || ( wLevel=="RC" ) || ( wLevel=="RR" ) )
-///	{
-///		console.info( wStatus ) ;
-///	}
-///	///////////////////////////////
-///	// コンソール: なし  T N
-///	else
-///	{
-///		console.log( wStatus ) ;
-///	}
-///	
-///	///////////////////////////////
-///	// メッセージボックス表示
-///	if(( inRes.LogView==true ) && ( inLogView==true ))
-///	{
-///		wMsg = null ;
-///		///////////////////////////////
-///		// メッセージの編集
-///		if(( wLevel=="S" ) || ( wLevel=="SC" ) || ( wLevel=="SR" ) ||
-///		   ( wLevel=="R" ) || ( wLevel=="RC" ) || ( wLevel=="RR" ) || ( wLevel=="T" ))
-///		{
-///			if( inMessage!=null )
-///			{
-///				wMsg = inMessage + '\n' ;
-///	}
-///			inRes['Res_Msg']  = wMsg ;
-///	}
-///		else
-///		{
-///			wMsg = wTimeDate + " [" + String( inRes['Result'] ) + "] " ;
-///			wMsg = wMsg + "[" + wLevel + "]" + '\n' ;
-///			wMsg = wMsg + inRes['Class'] + ": " + inRes['Func'] ;
-///			if( inRes.Reason!=null )
-///			{
-///				wMsg = wMsg + "reason: " + inRes['Reason'] + '\n' ;
-///	}
-///			if( inRes.Responce!=null )
-///			{
-///				wMsg = wMsg + "responce: " + String(inRes['Responce']) + '\n' ;
-///	}
-///			if( inMessage!=null )
-///			{
-///				wMsg = wMsg + "message: " + inMessage + '\n' ;
-///	}
-///			inRes['Res_Msg']  = wMsg ;
-///	}
-///		
-///		if( wMsg!=null )
-///		{
-///			__LogView({ inRes : inRes }) ;
-///	}
-///	}
-	return ;
-}
-
-///////////////////////////////////////////////////////
-// ログ時刻取得
-function __Log_getTime()
-{
-	///////////////////////////////
-	// 応答形式の取得
-	let wRes = top.CLS_L_getRes({ inClassName : "CLS_Log", inFuncName : "__Log_getTime" }) ;
-	
-	let wI, wOBJ_TimeDate, wARR_TimeDate, wChr_TimeDate, wStr ; 
-	
-///	let wResult = {
-///		"Result"	: false,
-///		"TimeDate"	: null
-///	} ;
-///	
-	wChr_TimeDate = "" ;
-	wARR_TimeDate = new Array() ;
-	try {
-		///////////////////////////////
-		// 日時の取得
-		wOBJ_TimeDate = new Date();
-		
-		///////////////////////////////
-		// 配列に格納
-		wARR_TimeDate.push( wOBJ_TimeDate.getFullYear() ) ;
-		wARR_TimeDate.push( wOBJ_TimeDate.getMonth() + 1 ) ;
-		wARR_TimeDate.push( wOBJ_TimeDate.getDate() ) ;
-		wARR_TimeDate.push( wOBJ_TimeDate.getHours() ) ;
-		wARR_TimeDate.push( wOBJ_TimeDate.getMinutes() ) ;
-		wARR_TimeDate.push( wOBJ_TimeDate.getSeconds() ) ;
-		
-		///////////////////////////////
-		// ゼロ補完
-		for( wI=0 ; wI<6 ; wI++ )
-		{
-			wARR_TimeDate[wI] = CLS_Math_ValParse( wARR_TimeDate[wI] ) ;
-			wARR_TimeDate[wI] = CLS_Math_ZeroPadding( wARR_TimeDate[wI] ) ;
-		}
-		
-		///////////////////////////////
-		//  / , : の挿入しながら文字列化
-		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[0] + "-" ;
-		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[1] + "-" ;
-		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[2] + " " ;
-		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[3] + ":" ;
-		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[4] + ":" ;
-		wChr_TimeDate  = wChr_TimeDate + wARR_TimeDate[5] ;
-		
-	} catch(e) {
-		///////////////////////////////
-		// 例外処理
-///		wStr = "Exception [A] : [Result]=false: [Call]=__Log_getTime: [message]=" + String( e.message ) ;
-		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
-		CLS_L({ inRes:wRes, inLevel: "A" }) ;
-		
-///		///////////////////////////////
-///		// コンソールへ表示
-///		console.error( wStr ) ;
-///		
-///		///////////////////////////////
-///		// メッセージボックスの表示
-///		alert( wStr ) ;
-///		
-///		return wResult ;
-		return wRes ;
-	}
-	
-	///////////////////////////////
-	// 正常
-///	wResult['TimeDate'] = wChr_TimeDate ;
-///	wResult['Result']   = true ;
-///	return wResult ;
-	wRes['Responce'] = wChr_TimeDate ;
-	wRes['Result']   = true ;
-	return wRes ;
-}
-
-///////////////////////////////////////////////////////
-// ログ表示
-///function __LogView({
-///	inRes = null
-///})
-///{
-///	let wMsg ;
-///	
-///	///////////////////////////////
-///	// 入力チェック
-///	if(( inRes['Src_Class']==null ) ||
-///	   ( inRes['Src_Func']==null ) ||
-///	   ( inRes['Res_Msg']==null ) )
-///	{
-///		/// 失敗
-///		console.log( "log view error (1)" ) ;
-///		return false ;
-///	}
-///	
-///	wMsg = "" ;
-///	///////////////////////////////
-///	// 呼び元 クラス、関数名
-///	if(( inRes['Src_Class']!=inRes['Class']) || ( inRes['Src_Func']!=inRes['Func']))
-///	{
-///		wMsg = wMsg + inRes['Src_Class'] + ": " + inRes['Src_Func'] + '\n' + '\n' ;
-///	}
-///	///////////////////////////////
-///	// メッセージ
-///	wMsg = wMsg + inRes['Res_Msg'] ;
-///	
-///	///////////////////////////////
-///	// メッセージボックス表示
-///	alert( wMsg ) ;
-///	return true ;
-///}
-///
-///
-
-//#####################################################
-//# ログ応答オブジェクト生成
-//#####################################################
-///function CLS_Log_getRes( inClassName, inFuncName, inLogView=false )
-function CLS_L_getRes({
-	inClassName = null,
-	inFuncName  = null,
-///	inLogView   = false
-	inMark      = false
-})
-{
-	let wRes, wStr, wFLG_Marked ;
-	
-	let wClassName = String(inClassName) ;
-	let wFuncName  = String(inFuncName) ;
-	
-	wFLG_Marked = false ;
-	///////////////////////////////
-	// ログビューの起点表示
-	if(( inMark==true ) && (DEF_TEST_LOG==true ))
-	{
-		wStr = "***[PROGRAM START] " + wClassName + ": " + wFuncName + "***" ;
-		console.info( wStr ) ;
-		wFLG_Marked = true ;
-	}
-	
-	wRes = {
-		"Result"	: false,
-		
-///		"Src_Class"	: null,			//元クラス名
-///		"Src_Func"	: null,			//元関数名
-		"Class"		: wClassName,	//クラス名
-		"Func"		: wFuncName,	//関数名
-		
-		"Level"		: "X",			//ログレベル
-		"Reason"	: null,			//NG理由
-		"Responce"	: null,			//応答情報（自由）
-///		"Res_Stat"	: null,			//コンソール or ボックス表示するテキスト
-///		"Res_Msg"	: null,			//alert() 表示するテキスト
-		
-		"Console"	: null,			//コンソール表示する・したテキスト
-		"Message"	: null,			//alert() 表示する・したテキスト
-		"BoxData"	: null,			//ボックスデータ表示する・したテキスト
-		"LogData"	: null,			//ログデータ表示する・したテキスト
-		"Marked"	: wFLG_Marked	//起点表示
-///		
-///		"LogView"	: inLogView		//alert() 表示の有無 true=表示あり, false=表示なし
-	} ;
-///	
-///	if( inLogView==true )
-///	{
-///		wRes['Src_Class'] = wClassName ;
-///		wRes['Src_Func']  = wFuncName ;
-///	}
-	return wRes ;
-}
-
-
-
-//#####################################################
-//# コンソールクリア
-//#####################################################
-function CLS_Log_Clear()
-{
-	console.clear() ;
-	return ;
-}
-
-
-
-//#####################################################
-//# オブジェクトの中身
-//#####################################################
-function CLS_Lobj( inObj )
-{
-	console.dir( inObj ) ;
-	return ;
-}
-
-
-
-//#####################################################
-//# オブジェクトの中身
-//#####################################################
-function CLS_Lcon( inText )
-{
-	console.info( inText ) ;
-	return ;
-}
-
-
+*/
 

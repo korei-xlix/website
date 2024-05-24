@@ -15,21 +15,18 @@
 <title>X 検索保存</title>
 <meta name="description" content="Xの検索ワードをブラウザストレージに保存します。">
 
-<script src="./_js/_handle_index.js"></script>
-<script src="./_js/x_search.js"></script>
-<script src="https://website.koreis-labo.com/_js/global.js"></script>
+<script src="/_js/com/log.js"></script>
+<script src="/_js/com/pageobj.js"></script>
+<script src="/_js/com/storage.js"></script>
+<script src="/_js/com/systemif.js"></script>
+<script src="/_js/com/file_ctrl.js"></script>
+<script src="/_js/com/osif.js"></script>
+<script src="/_js/com/sel_ctrl.js"></script>
+<script src="/_js/com/window_ctrl.js"></script>
 
-<script src="https://website.koreis-labo.com/_js/com/log.js"></script>
-<script src="https://website.koreis-labo.com/_js/com/path.js"></script>
-
-<script src="https://website.koreis-labo.com/_js/com/time.js"></script>
-<script src="https://website.koreis-labo.com/_js/com/popup_ctrl.js"></script>
-<script src="https://website.koreis-labo.com/_js/com/timer_ctrl.js"></script>
-
-<script src="https://website.koreis-labo.com/_js/com/pageobj.js"></script>
-<script src="https://website.koreis-labo.com/_js/com/math.js"></script>
-<script src="https://website.koreis-labo.com/_js/com/storage.js"></script>
-<script src="https://website.koreis-labo.com/_js/com/window_ctrl.js"></script>
+<script src="/_js/x_search/x_search.js"></script>
+<script src="/_js/_handle_x_search.js"></script>
+<script src="/_js/global.js"></script>
 
 </head><body onLoad="__handle_PageLoad()"><div id="com_bodyOutline"><div id="com_bodyInline">
 
@@ -45,7 +42,7 @@
 				LAST UPDATE：	2024-05-02
 			</div>
 			<div class="com_UpdateIcon">
-				<img class="com_UpdateIcon_Img" id="iUpdateIcon" src="dummy.jpg" alt="更新されてます" />
+				<img class="com_UpdateIcon_Img" id="iUpdateIcon" src="https://website.koreis-labo.com/_pic/icon/dummy.jpg" alt="更新されてます" />
 			</div>
 			<br class="com_UpdatteEnd" />
 		</div>
@@ -78,7 +75,6 @@
 
 	<div class="com_CSS_Menu" id="iCSSsw">
 	CSS切替: <select name="selectcss" id="iCSSsw_Style" onchange="__handle_SelectCSS();">
-<!--	<option value="galaxyfleet_index" selected>Default</option> -->
 	<option value="default" selected>Default</option>
 	</select><div class="com_CSS_Menu_Mode" id="iCSSsw_Mode" >
 	<a class="com_CSS_Mode" title="PC CSS切替" href="javascript:__handle_SelectCSS_Mode('PC');">
@@ -104,7 +100,7 @@
 <!-- ***項目1 *** -->
 <a name="aSelecttor_1" class="com_AnchorTag"></a>
 <section class="com_ContentsSection">
-	<img class="com_ContentsSelector_Img" alt="dum" src="../../_pic/icon/dummy.jpg" onload="__handle_Sel('001')" />
+	<img class="com_ContentsSelector_Img" alt="dum" src="https://website.koreis-labo.com/_pic/icon/dummy.jpg" onload="__handle_Sel('001')" />
 	<div class="com_ContentsSelector_Title" id="iSelectorTitle-001">▼ 使い方 ▼</div>
 	<input type="checkbox" id="iP-001" class="com_ContentsSelector_CBX">
 	<label class="com_ContentsSelector_LAB" id="iSelectorSet-001" for="iP-001"></label>
@@ -158,7 +154,7 @@
 <!-- ***項目1 *** -->
 <a name="aSelecttor_2" class="com_AnchorTag"></a>
 <section class="com_ContentsSection">
-	<img class="com_ContentsSelector_Img" alt="dum" src="../../_pic/icon/dummy.jpg" onload="__handle_Sel('002')" />
+	<img class="com_ContentsSelector_Img" alt="dum" src="https://website.koreis-labo.com/_pic/icon/dummy.jpg" onload="__handle_Sel('002')" />
 	<div class="com_ContentsSelector_Title" id="iSelectorTitle-002">▼ X 検索ワード 設定 ▼</div>
 	<input type="checkbox" id="iP-002" class="com_ContentsSelector_CBX">
 	<label class="com_ContentsSelector_LAB" id="iSelectorSet-002" for="iP-002"></label>
@@ -166,12 +162,10 @@
 
 	<div id="iSearchList_Header">
 		<input class="xsearch_BTN" type="button" id="iBTN_SON" value=" # " onclick="__handle_Button_On()" />
-		<input type="text" id="iInputWord" size="20" />　
+		<input type="text" id="iInputWord" size="20" onchange="__handle_TextChange()" />　
 		<input class="xsearch_BTN" type="button" id="iBTN_Push" value="追加" onclick="__handle_Button_Pull()" />
 		<input class="xsearch_BTN" type="button" id="iBTN_Edit" value="変更" onclick="__handle_Button_Edit()" />
-
-		<input class="xsearch_BTN" type="button" value="TEST" onclick="__handle_Button_Test()" />
-
+		<!-- <input class="xsearch_BTN" type="button" value="TEST" onclick="__handle_Button_Test()" /> -->
 	</div>
 
 	<div id="iSearchTags"></div>
@@ -181,7 +175,7 @@
 	<p>
 		<label for="aTEXT_ListID">リストID</label>
 		<input type="checkbox" name="aCBX_ListID" id="iCBX_ListID" onclick="__handle_Valid_ListID()" />
-		<input type="text" name="aTEXT_ListID" id="iTEXT_ListID" disabled />
+		<input type="text" name="aTEXT_ListID" id="iTEXT_ListID" onchange="__handle_TextChange()" disabled />
 	</p>
 
 	<p>
@@ -246,9 +240,9 @@
 
 	<p>
 		<label for="aRAD_JP">日本語のみ：</label>
-		<input type="radio" name="aRAD_JP" id="iRAD_JP_NON" value="無条件" checked />
+		<input type="radio" name="aRAD_JP" id="iRAD_JP_NON" value="無条件" />
 		<label>無条件</label>
-		<input type="radio" name="aRAD_JP" id="iRAD_JP_INC" value="含める" />
+		<input type="radio" name="aRAD_JP" id="iRAD_JP_INC" value="含める" checked />
 		<label>含める</label>
 	</p>
 
@@ -302,7 +296,7 @@
 			INDEX</a></div>
 
 			<div class="com_Menu_Cel_Long">
-			X (auther): <a class="com_Menu_TwitterFT" target="_blank" title="for X" href="https://twitter.com/korei_xlix">
+			X (auther): <a class="com_Menu_TwitterFT" target="_blank" title="for X" href="https://x.com/korei_xlix">
 			korei_xlix@twitter.com</a></div>
 
 			<br class="com_Menu_End" />

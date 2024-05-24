@@ -6,46 +6,12 @@
 //#####################################################
 
 //#####################################################
-//# クラス定数
-//#####################################################
-
-const DEF_TIMERCTRL_TIMER_TIMEOUT = 100 ;	//タイムアウト秒数(デフォルト)
-const DEF_TIMERCTRL_TIMER_RETRY   = 300 ;	//リトライ回数
-///const DEF_TIMERCTRL_LOG_CNT       = 20 ;	//ログ表示カウンタ
-
-
-
-//#####################################################
-//# クラス構造体
-//#####################################################
-
-///////////////////////////////
-// 待ちタイマ
-function STR_TimerCtrl_TimerInfo_Str()
-{
-	this.FLG_Start   = false ;		//タイマ起動 true=起動中
-	this.FLG_Receive = false ;		//受信(ファイルロード済)
-	this.Object      = null ;		//タイマオブジェクト
-	
-	this.ID        = null ;			//タイマ名(フレーム名)
-	this.Value     = DEF_TIMERCTRL_TIMER_TIMEOUT ;	//タイマ値(再設定用)
-	this.Retry     = DEF_TIMERCTRL_TIMER_RETRY ;	//タイタリトライ回数
-	this.RetryCnt  = 0 ;
-	this.LogCnt    = 0 ;
-	this.Callback  = null ;			//コールバック
-	this.Arg       = null ;			//コールバック引数
-}
-var ARR_TimerCtrl_Val = new Object() ;
-
-
-
-//#####################################################
 //# タイマ設定
 //#####################################################
 function CLS_TimerCtrl_setTimer({
 	inTimerID = null,
-	inValue = DEF_TIMERCTRL_TIMER_TIMEOUT,
-	inRetry = DEF_TIMERCTRL_TIMER_RETRY,
+	inValue = DEF_GVAL_TIMERCTRL_DEFAULT_TIMEOUT,
+	inRetry = DEF_GVAL_TIMERCTRL_DEFAULT_RETRY,
 	inCallback = null,
 	inArg      = null
 })
@@ -83,7 +49,7 @@ function CLS_TimerCtrl_setTimer({
 	
 	///////////////////////////////
 	// 追加
-	this.ARR_TimerCtrl_Val[inTimerID] = wSTR_Param ;
+	this.gARR_TimerCtrlInfo[inTimerID] = wSTR_Param ;
 	
 	///////////////////////////////
 	// ログの記録
@@ -122,7 +88,7 @@ function __TimerCtrl_existTimer({
 	wRes['Responce'] = false ;
 	///////////////////////////////
 	// 存在チェック
-	if( inTimerID in this.ARR_TimerCtrl_Val )
+	if( inTimerID in this.gARR_TimerCtrlInfo )
 	{
 		wRes['Responce'] = true ;
 	}
@@ -164,7 +130,7 @@ function CLS_TimerCtrl_startTimer({
 	
 	///////////////////////////////
 	// タイマ状態
-	if( this.ARR_TimerCtrl_Val[inTimerID].FLG_Start==true )
+	if( this.gARR_TimerCtrlInfo[inTimerID].FLG_Start==true )
 	{
 		//タイマ作動中
 		wRes['Reason'] = "timer is started: [inTimerID]=" + String(inTimerID) ;
@@ -174,23 +140,23 @@ function CLS_TimerCtrl_startTimer({
 	
 	///////////////////////////////
 	// 受信リセット
-	this.ARR_TimerCtrl_Val[inTimerID].FLG_Receive = false ;
-	this.ARR_TimerCtrl_Val[inTimerID].RetryCnt    = 0 ;
+	this.gARR_TimerCtrlInfo[inTimerID].FLG_Receive = false ;
+	this.gARR_TimerCtrlInfo[inTimerID].RetryCnt    = 0 ;
 	
 	///////////////////////////////
 	// タイマ起動
 	try
 	{
-		this.ARR_TimerCtrl_Val[inTimerID].Object =
+		this.gARR_TimerCtrlInfo[inTimerID].Object =
 			setTimeout(
 				"__TimerCtrl_timerTimeout('" + String(inTimerID) + "')",
-				this.ARR_TimerCtrl_Val[inTimerID].Value
+				this.gARR_TimerCtrlInfo[inTimerID].Value
 				) ;
 		
 	}
 	catch(e)
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [inTimerID]=" + String(inTimerID) + " [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
@@ -204,8 +170,8 @@ function CLS_TimerCtrl_startTimer({
 ///	wStatus = "◎[TimerStart] [inTimerID]=" + String(inTimerID) ;
 	wStatus = "◎ Timer start" ;
 	wStatus = wStatus + ": [inTimerID]=" + String(inTimerID) ;
-	wStatus = wStatus + ": [Value]=" + String(this.ARR_TimerCtrl_Val[inTimerID].Value) ;
-	wStatus = wStatus + ": [Retry]=" + String(this.ARR_TimerCtrl_Val[inTimerID].Retry) ;
+	wStatus = wStatus + ": [Value]=" + String(this.gARR_TimerCtrlInfo[inTimerID].Value) ;
+	wStatus = wStatus + ": [Retry]=" + String(this.gARR_TimerCtrlInfo[inTimerID].Retry) ;
 	CLS_L({ inRes:wRes, inLevel: "SC", inMessage: wStatus }) ;
 	
 	///////////////////////////////
@@ -240,7 +206,7 @@ function __TimerCtrl_timerTimeout( inTimerID )
 	
 	///////////////////////////////
 	// タイマ停止
-	clearTimeout( this.ARR_TimerCtrl_Val[inTimerID].Object ) ;
+	clearTimeout( this.gARR_TimerCtrlInfo[inTimerID].Object ) ;
 	
 	///////////////////////////////
 	// ログの記録
@@ -251,23 +217,23 @@ function __TimerCtrl_timerTimeout( inTimerID )
 	
 	///////////////////////////////
 	// 受信チェック
-	if( this.ARR_TimerCtrl_Val[inTimerID].FLG_Receive==true )
+	if( this.gARR_TimerCtrlInfo[inTimerID].FLG_Receive==true )
 	{
 		//#############################
 		//# タイマ受信済み
 		//#############################
 		
-		///////////////////////////////
+		/////////////////////////////
 		// タイマ停止
-		this.ARR_TimerCtrl_Val[inTimerID].FLG_Start = false ;
+		this.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// コールバック起動
-		if( top.ARR_TimerCtrl_Val[inTimerID].Callback!=null )
+		if( top.gARR_TimerCtrlInfo[inTimerID].Callback!=null )
 		{
 			__TimerCtrl_callback({
-				callback	: this.ARR_TimerCtrl_Val[inTimerID].Callback,
-				inArg		: this.ARR_TimerCtrl_Val[inTimerID].Arg
+				callback	: this.gARR_TimerCtrlInfo[inTimerID].Callback,
+				inArg		: this.gARR_TimerCtrlInfo[inTimerID].Arg
 			}) ;
 		}
 		else
@@ -280,14 +246,14 @@ function __TimerCtrl_timerTimeout( inTimerID )
 			return wRes ;
 		}
 		
-		///////////////////////////////
+		/////////////////////////////
 		// ログの記録
 ///		wStatus = "△[TimeStop] Received [inTimerID]=" + String(inTimerID) ;
 		wStatus = "△ Time stop (Received)" ;
 		wStatus = wStatus + ": [inTimerID]=" + String(inTimerID) ;
 		CLS_L({ inRes:wRes, inLevel: "SC", inMessage: wStatus }) ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -296,25 +262,25 @@ function __TimerCtrl_timerTimeout( inTimerID )
 	//#############################
 	//# タイマ未受信
 	//#############################
-	this.ARR_TimerCtrl_Val[inTimerID].RetryCnt += 1 ;
-	if( this.ARR_TimerCtrl_Val[inTimerID].Retry<=this.ARR_TimerCtrl_Val[inTimerID].RetryCnt )
+	this.gARR_TimerCtrlInfo[inTimerID].RetryCnt += 1 ;
+	if( this.gARR_TimerCtrlInfo[inTimerID].Retry<=this.gARR_TimerCtrlInfo[inTimerID].RetryCnt )
 	{
 		//#############################
 		//# タイマリトライアウト
 		//#############################
 		
-		///////////////////////////////
+		/////////////////////////////
 		// タイマ停止
-		this.ARR_TimerCtrl_Val[inTimerID].FLG_Start = false ;
+		this.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// ログの記録
 ///		wStatus = "●[Timeout] [inTimerID]=" + String(inTimerID) ;
 		wStatus = "● Timeout (No receiv)" ;
 		wStatus = wStatus + ": [inTimerID]=" + String(inTimerID) ;
 		CLS_L({ inRes:wRes, inLevel: "SC", inMessage: wStatus }) ;
 		
-		///////////////////////////////
+		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -324,16 +290,16 @@ function __TimerCtrl_timerTimeout( inTimerID )
 	// タイマ再起動
 	try
 	{
-		this.ARR_TimerCtrl_Val[inTimerID].Object =
+		this.gARR_TimerCtrlInfo[inTimerID].Object =
 			setTimeout(
 				"__TimerCtrl_timerTimeout('" + String(inTimerID) + "')",
-				this.ARR_TimerCtrl_Val[inTimerID].Value
+				this.gARR_TimerCtrlInfo[inTimerID].Value
 				) ;
 		
 	}
 	catch(e)
 	{
-		///////////////////////////////
+		/////////////////////////////
 		// 例外処理
 ///		wRes['Reason'] = "Exception: [inTimerID]=" + String(inTimerID) + " [message]=" + String( e.message )
 		wRes['Reason'] = "[Exception]=" + String( e.message ) ;
@@ -378,7 +344,7 @@ function CLS_TimerCtrl_reciveTimer({
 	
 	///////////////////////////////
 	// 受信=ON
-	this.ARR_TimerCtrl_Val[inTimerID].FLG_Receive = true ;
+	this.gARR_TimerCtrlInfo[inTimerID].FLG_Receive = true ;
 	
 	///////////////////////////////
 	// ログの記録

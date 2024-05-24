@@ -5,53 +5,113 @@
 //# ::Class    : ハンドラ
 //#####################################################
 
-/////////////////////////////
-// ストレージインデックス
-var DEF_STORAGE_IDX_USE     = true ;
-var DEF_STORAGE_IDX_HEADER  = "KOREIS_WEB" ;
+//###########################
+//# ※ユーザ自由変更※
 
+//### ストレージインデックス
+var DEF_INDEX_USE_STORAGE		= true ;
+var DEF_INDEX_STORAGE_HEADER	= "KOREIS_WEB" ;
+
+//### 翻訳機能の有効・無効
+//var DEF_INDEX_TRANSRATE		= true ;
+var DEF_INDEX_TRANSRATE			= false ;
+
+//### ログファイル出力・自動オープン
+var DEF_INDEX_LOG_OUTPUT		= false ;
+var DEF_INDEX_LOG_AUTOOPEN		= false ;
+
+//### テストモード  true=テスト稼働
+//var DEF_INDEX_TEST			= true ;
+var DEF_INDEX_TEST				= false ;
+
+
+
+/// function __TestCall( inData )
+/// {
+/// 	console.log("!!! Called !!!"+inData);
+/// }
 
 //#####################################################
 //# 初期ロード
 //#####################################################
 function __handle_PageLoad()
 {
-	///////////////////////////////
-	// 応答形式の取得 (LogView)
-	let wRes = CLS_L_getRes({ inClassName : "__handle_index", inFuncName : "__handle_PageLoad", inMark : true }) ;
+	//###########################
+	//# 応答形式の取得
+	//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+	let wRes = CLS_OSIF.sGet_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
 	
-	///////////////////////////////
-	// CSS設定
-	let wSTR_CSSinfo = new Array() ;
-	wSTR_CSSinfo.push( new Array( "default",	"Default" ) ) ;
-	wSTR_CSSinfo.push( new Array( "darkred",	"Darkred" ) ) ;
-	wSTR_CSSinfo.push( new Array( "cursegray",	"Cursegray" ) ) ;
+	let wSubRes, wPageObj ;
 	
-	///////////////////////////////
-	// CSSロード
-	CLS_WindowCtrl_PageSet({
-	   inPageObj	: self.document,
-	   inSTR_CSSinfo : wSTR_CSSinfo,
-	   inStylePath	: "/_css/",
-///	   inStyleName	: "default",
-	   inMode		: "normal",
-//	   inMode		: "pconly",
-//	   inMode		: "mbonly",
-//	   inMode		: "pcnone",
-//	   inMode		: "mbnone",
-//	   inMode		: "elase",
-	   inStyleCommPath	: null,
-	   inIconPath	: "/_pic/icon/koreilabo_icon.ico"
+	wPageObj = self.document ;
+	/////////////////////////////
+	// システム情報設定
+	wSubRes = CLS_Sys.sSet({
+		inUserID		: "webmain",			//ユーザID
+		inSystemName	: "website",			//システム名
+		inPageObj		: wPageObj
+//		inCallback		: top.DEF_GVAL_NULL,
+//		inArg			: new Array()
 	}) ;
+	if( wSubRes['Result']!=true )
+	{///失敗
+		wRes['Reason'] = "CLS_Sys.sSet is failed" ;
+		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+		return wRes ;
+	}
 	
-///	///////////////////////////////
-///	// 翻訳モードのロード
-///	CLS_WindowCtrl_getTransrate({
-///		inKey	: DEF_STORAGE_IDX_TRANSRATE
-///	}) ;
-///	
-	///////////////////////////////
-	//# 正常
+	/////////////////////////////
+	// CSSロード
+	wSubRes = CLS_WinCtrl.sSet({
+///		inUserID		: "webmain",			//ユーザID
+///		inSystemName	: "website",			//システム名
+		inPageObj		: wPageObj,				//ページオブジェクト
+		inSTR_CSSinfo	: {						//CSSファイル情報
+							"default"	: "Default",
+							"darkred"	: "Darkred",
+							"cursegray"	: "Cursegray"
+							},
+		inOtherDomain	: top.DEF_GVAL_NULL,	//外部ドメインのCSS  https://www.example.com
+		inStylePath		: "/_css/",				//CSSカレントパス    /css/
+		inMode			: "normal",				//CSS変更可・サイズ自動切替
+//		inMode			: "pconly",				//CSS変更可・PCサイズのみ
+//		inMode			: "mbonly",				//CSS変更可・モバイルサイズのみ
+//		inMode			: "pcnone",				//CSS変更不可・PCサイズのみ
+//		inMode			: "mbnone",				//CSS変更不可・モバイルサイズのみ
+//		inMode			: "elase",				//ボタン非表示・サイズ自動切替
+		inStyleCommPath	: top.DEF_GVAL_NULL,	//Comm Styleのカレントパス（別フォルダの場合）
+		inIconPath		: "/_pic/icon/koreilabo_icon.ico",	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
+	}) ;
+	if( wSubRes['Result']!=true )
+	{///失敗
+		wRes['Reason'] = "CLS_WinCtrl.sSet is failer" ;
+///		CLS_L.sL({ inRes:wRes, inLevel:"B", inViewLog:true }) ;
+		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+		return wRes ;
+	}
+	
+	/////////////////////////////
+	// システム状態変更（→運用へ）
+	wSubRes = CLS_Sys.sChg({
+		inStatus	: top.DEF_GVAL_SYS_STAT_RUN
+	}) ;
+	if( wSubRes['Result']!=true )
+	{///失敗
+		wRes['Reason'] = "CLS_Sys.sChg is failed" ;
+		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+		return wRes ;
+	}
+	
+	/////////////////////////////
+	// システム情報表示
+	if( top.DEF_INDEX_TEST==true )
+	{
+		CLS_Sys.sView() ;
+	}
+	
+	/////////////////////////////
+	// 正常
 	wRes['Result'] = true ;
 	return ;
 }
@@ -59,45 +119,23 @@ function __handle_PageLoad()
 
 
 //#####################################################
-//# CSSセレクト(変更)
+//# CSSスタイル切り替え
 //#####################################################
 function __handle_SelectCSS()
 {
-	///////////////////////////////
-	// 応答形式の取得 (LogView)
-	let wRes = CLS_L_getRes({ inClassName : "__handle_index", inFuncName : "__handle_SelectCSS", inMark : true }) ;
-	
-	CLS_WindowCtrl_changeCSS() ;
+	CLS_WinCtrl.sChgCSSstyle() ;
 	return ;
 }
 
 
 
 //#####################################################
-//# CSSモードセレクト
+//# CSSモード切り替え
 //#####################################################
 function __handle_SelectCSS_Mode( inMode )
 {
-	///////////////////////////////
-	// 応答形式の取得 (LogView)
-	let wRes = CLS_L_getRes({ inClassName : "__handle_index", inFuncName : "__handle_SelectCSS_Mode", inMark : true }) ;
-	
-	CLS_WindowCtrl_changeCSSmode({
+	CLS_WinCtrl.sChgCSSmode({
 		inMode : inMode
-	}) ;
-	return ;
-}
-
-
-
-//#####################################################
-//# 翻訳モード設定
-//#####################################################
-function __handle_Transrate( inMode )
-{
-	CLS_WindowCtrl_setTransrate({
-		inKey	: DEF_GLOBAL_STORAGE_TRANSRATE,
-		inMode 	: inMode
 	}) ;
 	return ;
 }
@@ -109,8 +147,8 @@ function __handle_Transrate( inMode )
 //#####################################################
 function __handle_Sel( inNumber )
 {
-	CLS_WindowCtrl_setSelVal({
-		inNumber : inNumber
+	CLS_Sel.sRegVal({
+		inNum : inNumber
 	}) ;
 	return ;
 }

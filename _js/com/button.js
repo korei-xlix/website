@@ -662,7 +662,7 @@ function __Button_Log( inRes, inLevel, inMessage=null )
 	// コンソールへ表示
 	try
 	{//////テストモードが確認できたら表示
-		if( top.DEF_TEST_LOG==true )
+		if( top.DEF_INDEX_TEST==true )
 		{
 			console.log( wStatus ) ;
 		}
