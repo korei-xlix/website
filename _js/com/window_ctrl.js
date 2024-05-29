@@ -182,7 +182,8 @@ class CLS_WinCtrl {
 			{
 				wSTR_Param.FLG_PC = false ;
 			}
-			else if( wSTR_Param.WindowInfo.Width>=top.DEF_USER_PC_WIDTH )
+///			else if( wSTR_Param.WindowInfo.Width>=top.DEF_USER_PC_WIDTH )
+			else if( top.gSTR_PageInfo.Width>=top.DEF_USER_PC_WIDTH )
 			{
 				wSTR_Param.FLG_PC = true ;
 			}
