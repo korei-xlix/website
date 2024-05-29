@@ -10,6 +10,14 @@
 //#		CLS_PageObj.sGetElement({
 //#			in:		inPageObj, inKey
 //#			out:	Element Object
+//# エレメントタグ取得
+//#		CLS_PageObj.sGetElementTag({
+//#			in:		inPageObj, inKey
+//#			out:	Element Tag
+//# フレームドキュメント取得
+//#		CLS_PageObj.sGetFrameDocument({
+//#			in:		inPageObj, inKey
+//#			out:	Frame Document
 //#
 //# ページ情報取得
 //#		CLS_PageObj.sGetPageInfo({
@@ -127,6 +135,87 @@ class CLS_PageObj {
 		/////////////////////////////
 		// 正常
 		wRes['Responce'] = wObj ;
+		wRes['Result']   = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
+//# エレメントタグ取得
+//#####################################################
+	static sGetElementTag({
+		inPageObj,
+		inKey
+	})
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetElementTag" }) ;
+		
+		let wObj ;
+		
+		/////////////////////////////
+		// オブジェクト取得
+		try
+		{
+			wObj = inPageObj.getElementsByTagName( inKey ) ;
+		}
+		catch(e)
+		{
+			//###########################
+			//# 例外処理
+			let wError = "inKey=" + String(inKey) ;
+			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// 正常
+		wRes['Responce'] = wObj ;
+		wRes['Result']   = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
+//# フレームドキュメント取得
+//#####################################################
+	static sGetFrameDocument({
+		inPageObj,
+		inKey
+	})
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetFrameDocument" }) ;
+		
+		let wObj, wDoc ;
+		
+		/////////////////////////////
+		// オブジェクト取得
+		try
+		{
+			wObj = inPageObj.getElementsByTagName( inKey ) ;
+			wDoc = wObj[0].contentDocument ;
+		}
+		catch(e)
+		{
+			//###########################
+			//# 例外処理
+			let wError = "inKey=" + String(inKey) ;
+			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// 正常
+		wRes['Responce'] = wDoc ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
@@ -1518,43 +1607,10 @@ class CLS_PageObj {
 		
 		let wSubRes, wQuery ;
 		
-///		let wSubRes, wObj, wQuery ;
-///		
-///		/////////////////////////////
-///		// ダイレクトモードでなければ、
-///		//   オブジェクトを取得する
-///		if( inDirect==false )
-///		{
-///			/////////////////////////////
-///			// オブジェクト取得
-///			wSubRes = this.sGetElement({
-///				inPageObj	: inPageObj,
-///				inKey		: inKey
-///			}) ;
-///			if( wSubRes['Result']!=true )
-///			{
-///				//失敗
-///				wRes['Reason'] = "sGetElement is failer" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///				return wRes ;
-///			}
-///			wObj = wSubRes['Responce'] ;
-///			
-///		}
-///		/////////////////////////////
-///		// ダイレクトモードなので、
-///		//   オブジェクトを設定する
-///		else
-///		{
-///			///オブジェクト直接指定
-///			wObj = inPageObj ;
-///		}
-///		
 		/////////////////////////////
 		// データ取得
 		try
 		{
-///			wQuery = wObj.querySelectorAll( "[class^=" + inKey + "]" ) ;
 			wQuery = inPageObj.querySelectorAll( "[class^=" + inKey + "]" ) ;
 		}
 		catch(e)

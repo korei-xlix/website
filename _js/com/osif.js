@@ -16,6 +16,24 @@
 //# 処理停止
 //#		CLS_OSIF.sExit()
 //#
+//# コールバック
+//#		CLS_OSIF.sCallBack
+//#			in:		callback		//コールバックで呼ぶ関数名
+//#					inArg = []		//コールバックに渡す引数
+//#			out:	false=例外ON
+//#
+//#			Sample:
+//#				CLS_OSIF.sCallBack({
+//#					callback : __TestCall,  ←コールバックで呼ぶ関数名を入れる
+//#					inArg    :  "よびだし"
+//#				}) ;
+//#
+//#				//コールバックで呼ぶ関数
+//#				function __TestCall( inData )
+//#				{
+//#					console.log( "!!! Called !!! : " + inData );
+//#				}
+//#
 //# 時間を取得し、STR_Timeにセットする
 //#		CLS_OSIF.sUpdateGTD()
 //#			out:	"Result"	: false,				//True=正常 / False=異常
@@ -81,10 +99,15 @@
 //#		CLS_OSIF.sGetObjectNum
 //#			in:		inObject   判定Object(Array or 辞書型)
 //#			out:	Value      要素数    nullは例外
+//# 辞書型かチェック
+//#		CLS_OSIF.sCheckObject
+//#			in:		inObject, inKey
+//#			out:	true=含む  false=含まないor例外
 //# Array型・辞書型にKeyを含むか
 //#		CLS_OSIF.sGetInObject
 //#			in:		inObject   判定Object(Array or 辞書型)
 //#					inKey      検査Key
+//#					inDD 	   true=辞書型のデータ重複チェック false=キー重複チェック
 //#			out:	true=含む  false=含まないor例外
 //#
 //# 整数変換
@@ -111,7 +134,6 @@
 //#####################################################
 class CLS_OSIF {
 //#####################################################
-
 
 //#####################################################
 //# 応答形式の取得
@@ -143,7 +165,6 @@ class CLS_OSIF {
 //#####################################################
 //# 処理停止
 //#####################################################
-///	static sSystemExit()
 	static sExit()
 	{
 		//例外を投げて強制停止する
@@ -157,10 +178,35 @@ class CLS_OSIF {
 //#####################################################
 	static sCallBack({
 		callback,
-		inArg
+		inArg = []
 	})
 	{
-		callback( inArg ) ;
+		let wName ;
+		
+		try
+		{
+			wName = callback.name ;
+			callback( inArg ) ;
+		}
+		catch(e)
+		{
+			let wText = "CLS_OSIF.sCallBack: Func=" + String(callback.name) + '\n' ;
+			wText = wText + this.sExpStr({ inE:e }) ;
+			this.sConsError({ inText:wText }) ;
+			return false ;
+		}
+		
+		if( top.DEF_INDEX_TEST==true )
+		{
+			if(( wName!="__sCircleProcess" ) && ( wName!="__handle_Circle" ))
+			{
+				//### コールバックログの出力
+				//      定期処理のコールバックは除外
+				let wText = "CLS_OSIF.sCallBack: Called Callback: Func=" + String(callback.name) + '\n' ;
+				this.sConsInfo({ inText:wText });
+			}
+		}
+		return true ;
 	}
 
 
@@ -180,7 +226,6 @@ class CLS_OSIF {
 		
 		/////////////////////////////
 		// STR_Timeにセットする
-///		top.gSTR_Time['TimeDate'] = wRes['TimeDate'] ;
 		top.gSTR_Time.TimeDate = wRes['TimeDate'] ;
 		wRes['Result'] = true ;
 		return wRes ;
@@ -317,12 +362,6 @@ class CLS_OSIF {
 
 
 
-
-
-
-
-
-
 //#####################################################
 //# コンソール表示（console.log）
 //#####################################################
@@ -389,6 +428,13 @@ class CLS_OSIF {
 		let wText = String(inText) ;
 		alert( wText ) ;
 		return ;
+		
+		if( top.DEF_INDEX_TEST==true )
+		{
+			wText = "Open Alert Box" ;
+			wText = wText + '\n' + "  Input=" + String(wInput) ;
+			this.sConsInfo({ inText:wText });
+		}
 	}
 
 
@@ -405,7 +451,9 @@ class CLS_OSIF {
 		
 		if( top.DEF_INDEX_TEST==true )
 		{
-			wText = "Confirm Box: Input=" + String(wInput) + " Text=" + wText ;
+			wText = "Open Confirm Box" ;
+			wText = wText + '\n' + "  inText=" + String(inText) ;
+			wText = wText + '\n' + "  Input=" + String(wInput) ;
 			this.sConsInfo({ inText:wText });
 		}
 		return wInput ;
@@ -426,7 +474,9 @@ class CLS_OSIF {
 		
 		if( top.DEF_INDEX_TEST==true )
 		{
-			wText = "Window Prompt: Input=" + String(wInput) + " Text=" + wText ;
+			wText = "Open Window Prompt" ;
+			wText = wText + '\n' + "  inText=" + String(inText) ;
+			wText = wText + '\n' + "  Input=" + String(wInput) ;
 			this.sConsInfo({ inText:wText });
 		}
 		return wInput ;
@@ -458,10 +508,6 @@ class CLS_OSIF {
 
 
 
-
-
-
-
 //#####################################################
 //# 小文字変換
 //#####################################################
@@ -482,9 +528,6 @@ class CLS_OSIF {
 		}
 		return wString ;
 	}
-
-
-
 
 
 
@@ -549,14 +592,44 @@ class CLS_OSIF {
 
 
 //#####################################################
-//# Array型・辞書型にKeyを含むか
+//# 辞書型かチェック
 //#####################################################
-	static sGetInObject({
+	static sCheckObject({
 		inObject,
 		inKey
 	})
 	{
-		let wValue, wKeyList ;
+		let wValue ;
+		
+		wValue = false ;
+		try
+		{
+			/////////////////////////////
+			// 辞書型の場合
+			if( ( inObject instanceof Object )==true )
+			{
+				wValue = true ;
+			}
+		}
+		catch(e)
+		{///例外
+		}
+		return wValue ;
+	}
+
+
+
+//#####################################################
+//# Array型・辞書型にKeyを含むか
+//#####################################################
+	static sGetInObject({
+		inObject,
+		inKey,
+		inDD = false	// true=辞書型のデータ重複チェック false=キー重複チェック
+	})
+	{
+///		let wValue, wKeyList ;
+		let wValue, wKey ;
 		
 		wValue = false ;
 		try
@@ -574,9 +647,23 @@ class CLS_OSIF {
 			// 辞書型の場合
 			else if( ( inObject instanceof Object )==true )
 			{
-				if( inKey in inObject )
-				{
-					wValue = true ;
+				if( inDD==true )
+				{///データ重複チェック
+					for( wKey in inObject )
+					{
+						if( inObject[wKey]==inKey )
+						{
+							wValue = true ;
+							break ;
+						}
+					}
+				}
+				else
+				{///キー重複チェック
+					if( inKey in inObject )
+					{
+						wValue = true ;
+					}
 				}
 			}
 		}
@@ -585,9 +672,6 @@ class CLS_OSIF {
 		}
 		return wValue ;
 	}
-
-
-
 
 
 
@@ -672,31 +756,6 @@ class CLS_OSIF {
 	}
 
 
-
-/////#####################################################
-/////# 辞書型の数取得
-/////#####################################################
-///	static sDicNum({
-///		inObj
-///	})
-///	{
-///		let wValue, wText ;
-///		
-///		try
-///		{
-///			wValue = Object.keys( inObj ).length ;
-///	}
-///		catch(e)
-///		{
-///			//例外
-///			wValue = top.DEF_GVAL_NULL ;
-///			wText = "CLS_OSIF::sDicNum: exception: " + String(e) ;
-///			this.sConsError({ inText:wText });
-///	}
-///		return wValue ;
-///	}
-///
-///
 
 //#####################################################
 //# 例外メッセージの組み立て

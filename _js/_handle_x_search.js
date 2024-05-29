@@ -26,16 +26,14 @@ var DEF_INDEX_TEST				= false ;
 
 
 //###########################
-//# X検索専用 定数・変数
+//# X検索 用
+//#   定数・変数  DEF_XSEARCH_******
 
 /////////////////////////////
 // 定数
 
 //### X検索用 ストレージインデックス
 var DEF_XSEARCH_STORAGE_LIST_KEY = this.DEF_INDEX_STORAGE_HEADER + "_LISTS" ;
-///console.log("xxx1::: "+DEF_INDEX_STORAGE_HEADER);
-///console.log("xxx2::: "+DEF_XSEARCH_STORAGE_LIST_KEY);
-///var DEF_XSEARCH_STORAGE_LIST_KEY_BOUNDARY = "|,|" ;
 
 
 //### ページインデックス
@@ -66,33 +64,6 @@ var DEF_XSEARCH_NAME_LINK		= "aRAD_Link" ;
 var DEF_XSEARCH_NAME_SAFE		= "aRAD_Safe" ;
 var DEF_XSEARCH_NAME_JP			= "aRAD_JP" ;
 
-///var DEF_XSEARCH_IDX_REP			= "iRAD_Rep_EXC" ;
-///var DEF_XSEARCH_IDX_REP_NON		= "iRAD_Rep_NON" ;
-///var DEF_XSEARCH_IDX_REP_EXC		= "iRAD_Rep_EXC" ;
-///
-///var DEF_XSEARCH_IDX_IMG			= "iRAD_Image_NON" ;
-///var DEF_XSEARCH_IDX_IMG_NON		= "iRAD_Image_NON" ;
-///var DEF_XSEARCH_IDX_IMG_INC		= "iRAD_Image_INC" ;
-///var DEF_XSEARCH_IDX_IMG_EXC		= "iRAD_Image_EXC" ;
-///
-///var DEF_XSEARCH_IDX_MOV			= "iRAD_Video_NON" ;
-///var DEF_XSEARCH_IDX_MOV_NON		= "iRAD_Video_NON" ;
-///var DEF_XSEARCH_IDX_MOV_INC		= "iRAD_Video_INC" ;
-///var DEF_XSEARCH_IDX_MOV_EXC		= "iRAD_Video_EXC" ;
-///
-///var DEF_XSEARCH_IDX_LINK		= "iRAD_Link_NON" ;
-///var DEF_XSEARCH_IDX_LINK_NON	= "iRAD_Link_NON" ;
-///var DEF_XSEARCH_IDX_LINK_INC	= "iRAD_Link_INC" ;
-///var DEF_XSEARCH_IDX_LINK_EXC	= "iRAD_Link_EXC" ;
-///
-///var DEF_XSEARCH_IDX_SAFE		= "iRAD_Safe_NON" ;
-///var DEF_XSEARCH_IDX_SAFE_NON	= "iRAD_Safe_NON" ;
-///var DEF_XSEARCH_IDX_SAFE_INC	= "iRAD_Safe_INC" ;
-///var DEF_XSEARCH_IDX_SAFE_EXC	= "iRAD_Safe_EXC" ;
-///
-///var DEF_XSEARCH_IDX_JP			= "iRAD_JP_NON" ;
-///var DEF_XSEARCH_IDX_JP_NON		= "iRAD_JP_NON" ;
-///var DEF_XSEARCH_IDX_JP_INC		= "iRAD_JP_INC" ;
 var DEF_XSEARCH_DEFAULT_MED = "non" ;
 
 var DEF_XSEARCH_IDX_ARR_REP = {
@@ -181,24 +152,6 @@ var DEF_XSEARCH_ARR_TAGS		= {
 /////////////////////////////
 // X検索用 データ
 
-///var ARR_XSearch_List = {} ;
-///
-///var DEF_XSEARCH_IDX_LISTID_0	= 0 ;		//  [0]  : char型  : storageキー
-///var DEF_XSEARCH_IDX_LISTID_1	= 1 ;		//  [1]  : char型  : 先頭 # の有無
-///var DEF_XSEARCH_IDX_LISTID_2	= 2 ;		//  [2]  : char型  : 検索文字
-///var DEF_XSEARCH_IDX_LISTID_3	= 3 ;		//  [3]  : char型  : LINKアンカー
-///var DEF_XSEARCH_IDX_LISTID_4	= 4 ;		//  [4]  : Array型 : タグ設定
-///var DEF_XSEARCH_IDX_LISTID_5	= 5 ;		//  [5]  : char型  : リストID
-///var DEF_XSEARCH_IDX_LISTID_6	= 6 ;		//  [6]  : char型  : 指定した日から現在までのポスト since:年-月-日
-///var DEF_XSEARCH_IDX_LISTID_7	= 7 ;		//  [7]  : char型  : 過去から指定した日までのポスト until:年-月-日
-///var DEF_XSEARCH_IDX_LISTID_8	= 8 ;		//  [8]  : char型  : 動画か画像含まれた filter:media
-///var DEF_XSEARCH_IDX_LISTID_9	= 9 ;		//  [9]  : char型  : 画像が含まれた     filter:images
-///var DEF_XSEARCH_IDX_LISTID_10	= 10 ;		//  [10] : char型  : 動画が含まれた     filter:videos
-///var DEF_XSEARCH_IDX_LISTID_11	= 11 ;		//  [11] : char型  : リンク             filter:links
-///var DEF_XSEARCH_IDX_LISTID_12	= 12 ;		//  [12] : char型  : リプライ除外       exclude:replies  ※含めるは無効（エラーになる）
-///var DEF_XSEARCH_IDX_LISTID_13	= 13 ;		//  [13] : char型  : 日本語のみ         lang:jp
-///var DEF_XSEARCH_IDX_LISTID_14	= 14 ;		//  [14] : char型  : センシティブツイートを表示  -filter:safe
-
 var DEF_XSEARCH_STORAGE_LENGTH	= 13 ;		// ストレージデータ長  3+10
 		//	[0]  : char型  : 先頭 # の有無
 		//	[1]  : char型  : 検索文字
@@ -241,7 +194,6 @@ function STR_XSdata_Str()
 	this.OptJP					= top.DEF_XSEARCH_DEFAULT_JP ;		//日本語のみ         lang:jp
 	this.OptSafe				= top.DEF_XSEARCH_DEFAULT_SAFE ;	//センシティブツイートを表示  -filter:safe
 } ;
-///var STR_XSdata = new Object() ;
 var STR_XSdata = {} ;
 
 
@@ -256,7 +208,6 @@ var DEF_XSEARCH_SMOJI_SPACE		= String("%20") ;
 
 /////////////////////////////
 // グローバル値
-///var CHR_XSearch_List			= "" ;
 var VAL_XSearch_Index			= 0 ;		//空データポインタ
 var VAL_XSearch_SelIndex		= -1 ;		//データ選択ポインタ
 var FLG_XSearch_SON				= false ;
@@ -269,8 +220,11 @@ var OBJ_XS						= new CLS_X_Search() ;
 
 
 //#####################################################
-//# 初期ロード
+//# ハンドラ（共通）
 //#####################################################
+///////////////////////////////////////////////////////
+//  ページロード
+///////////////////////////////////////////////////////
 function __handle_PageLoad()
 {
 	//###########################
@@ -298,8 +252,6 @@ function __handle_PageLoad()
 	/////////////////////////////
 	// CSSロード
 	wSubRes = CLS_WinCtrl.sSet({
-///		inUserID		: "webmain",			//ユーザID
-///		inSystemName	: "X Search Tool",		//システム名
 		inPageObj		: wPageObj,				//ページオブジェクト
 		inSTR_CSSinfo	: {						//CSSファイル情報
 //							"default"	: "Default",
@@ -317,7 +269,6 @@ function __handle_PageLoad()
 	if( wSubRes['Result']!=true )
 	{
 		wRes['Reason'] = "CLS_WinCtrl.sSet is failer" ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"B", inViewLog:true }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 		return wRes ;
 	}
@@ -340,10 +291,7 @@ function __handle_PageLoad()
 	
 	/////////////////////////////
 	// システム情報表示
-	if( top.DEF_INDEX_TEST==true )
-	{
-		CLS_Sys.sView() ;
-	}
+	CLS_Sys.sView() ;
 	
 	/////////////////////////////
 	//# 正常
@@ -353,9 +301,9 @@ function __handle_PageLoad()
 
 
 
-//#####################################################
-//# CSSスタイル切り替え
-//#####################################################
+///////////////////////////////////////////////////////
+//  CSSスタイル切り替え
+///////////////////////////////////////////////////////
 function __handle_SelectCSS()
 {
 	CLS_WinCtrl.sChgCSSstyle() ;
@@ -364,9 +312,9 @@ function __handle_SelectCSS()
 
 
 
-//#####################################################
-//# CSSモード切り替え
-//#####################################################
+///////////////////////////////////////////////////////
+//  CSSモード切り替え
+///////////////////////////////////////////////////////
 function __handle_SelectCSS_Mode( inMode )
 {
 	CLS_WinCtrl.sChgCSSmode({
@@ -377,9 +325,9 @@ function __handle_SelectCSS_Mode( inMode )
 
 
 
-//#####################################################
-//# 初期ロード
-//#####################################################
+///////////////////////////////////////////////////////
+//  セレクタ番号の設定
+///////////////////////////////////////////////////////
 function __handle_Sel( inNumber )
 {
 	CLS_Sel.sRegVal({
@@ -391,8 +339,11 @@ function __handle_Sel( inNumber )
 
 
 //#####################################################
-//# X 検索用：検索文字・LIstID 変更
+//# ハンドラ（X検索ツール用）
 //#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用：検索文字・LIstID 変更
+///////////////////////////////////////////////////////
 function __handle_TextChange()
 {
 	/////////////////////////////
@@ -403,9 +354,9 @@ function __handle_TextChange()
 
 
 
-//#####################################################
-//# X 検索用：追加
-//#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用：追加
+///////////////////////////////////////////////////////
 function __handle_Button_Pull()
 {
 	OBJ_XS.UpdateData({ inInc:true }) ;
@@ -414,9 +365,9 @@ function __handle_Button_Pull()
 
 
 
-//#####################################################
-//# X 検索用：変更
-//#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用：変更
+///////////////////////////////////////////////////////
 function __handle_Button_Edit()
 {
 	OBJ_XS.UpdateData({ inInc:false }) ;
@@ -425,9 +376,9 @@ function __handle_Button_Edit()
 
 
 
-//#####################################################
-//# X 検索用：選択
-//#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用：選択
+///////////////////////////////////////////////////////
 function __handle_Button_Sel( inKey )
 {
 	OBJ_XS.Select({
@@ -438,9 +389,9 @@ function __handle_Button_Sel( inKey )
 
 
 
-//#####################################################
-//# X 検索用："#"ボタン
-//#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用："#"ボタン
+///////////////////////////////////////////////////////
 function __handle_Button_On( inKey )
 {
 	OBJ_XS.SharpClick() ;
@@ -449,9 +400,9 @@ function __handle_Button_On( inKey )
 
 
 
-//#####################################################
-//# X 検索用：削除
-//#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用：削除
+///////////////////////////////////////////////////////
 function __handle_Button_Del( inKey )
 {
 	OBJ_XS.DelData({
@@ -462,9 +413,9 @@ function __handle_Button_Del( inKey )
 
 
 
-//#####################################################
-//# X 検索用：タグ設定
-//#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用：タグ設定
+///////////////////////////////////////////////////////
 function __handle_Button_SetTags( inKey )
 {
 	OBJ_XS.SetTags({
@@ -475,9 +426,9 @@ function __handle_Button_SetTags( inKey )
 
 
 
-//#####################################################
-//# X 検索用：タグ選択
-//#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用：タグ選択
+///////////////////////////////////////////////////////
 function __handle_Button_SelTag( inKey )
 {
 	OBJ_XS.SelTag({
@@ -488,9 +439,9 @@ function __handle_Button_SelTag( inKey )
 
 
 
-//#####################################################
-//# X 検索用：コントロール有効 / 
-//#####################################################
+///////////////////////////////////////////////////////
+//  X 検索用：コントロール有効
+///////////////////////////////////////////////////////
 function __handle_Valid_ListID()
 {
 	OBJ_XS.ValidListID() ;

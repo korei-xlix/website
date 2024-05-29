@@ -26,14 +26,12 @@ var DEF_INDEX_TEST				= false ;
 
 
 
-/// function __TestCall( inData )
-/// {
-/// 	console.log("!!! Called !!!"+inData);
-/// }
-
 //#####################################################
-//# 初期ロード
+//# ハンドラ（共通）
 //#####################################################
+///////////////////////////////////////////////////////
+//  ページロード
+///////////////////////////////////////////////////////
 function __handle_PageLoad()
 {
 	//###########################
@@ -49,9 +47,12 @@ function __handle_PageLoad()
 	wSubRes = CLS_Sys.sSet({
 		inUserID		: "webmain",			//ユーザID
 		inSystemName	: "website",			//システム名
-		inPageObj		: wPageObj
-//		inCallback		: top.DEF_GVAL_NULL,
-//		inArg			: new Array()
+		inPageObj		: wPageObj,
+		inUseTimer		: true					//システムタイマ使用有無  true=使用
+//		inExitProc		= {
+//			"Callback"	: top.DEF_GVAL_NULL,
+//			"Arg"		: new Array()
+//			}
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
@@ -63,8 +64,6 @@ function __handle_PageLoad()
 	/////////////////////////////
 	// CSSロード
 	wSubRes = CLS_WinCtrl.sSet({
-///		inUserID		: "webmain",			//ユーザID
-///		inSystemName	: "website",			//システム名
 		inPageObj		: wPageObj,				//ページオブジェクト
 		inSTR_CSSinfo	: {						//CSSファイル情報
 							"default"	: "Default",
@@ -86,7 +85,6 @@ function __handle_PageLoad()
 	if( wSubRes['Result']!=true )
 	{///失敗
 		wRes['Reason'] = "CLS_WinCtrl.sSet is failer" ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"B", inViewLog:true }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 		return wRes ;
 	}
@@ -105,10 +103,7 @@ function __handle_PageLoad()
 	
 	/////////////////////////////
 	// システム情報表示
-	if( top.DEF_INDEX_TEST==true )
-	{
-		CLS_Sys.sView() ;
-	}
+	CLS_Sys.sView() ;
 	
 	/////////////////////////////
 	// 正常
@@ -118,9 +113,9 @@ function __handle_PageLoad()
 
 
 
-//#####################################################
-//# CSSスタイル切り替え
-//#####################################################
+///////////////////////////////////////////////////////
+//  CSSスタイル切り替え
+///////////////////////////////////////////////////////
 function __handle_SelectCSS()
 {
 	CLS_WinCtrl.sChgCSSstyle() ;
@@ -129,9 +124,9 @@ function __handle_SelectCSS()
 
 
 
-//#####################################################
-//# CSSモード切り替え
-//#####################################################
+///////////////////////////////////////////////////////
+//  CSSモード切り替え
+///////////////////////////////////////////////////////
 function __handle_SelectCSS_Mode( inMode )
 {
 	CLS_WinCtrl.sChgCSSmode({
@@ -142,9 +137,9 @@ function __handle_SelectCSS_Mode( inMode )
 
 
 
-//#####################################################
-//# 初期ロード
-//#####################################################
+///////////////////////////////////////////////////////
+//  セレクタ番号の設定
+///////////////////////////////////////////////////////
 function __handle_Sel( inNumber )
 {
 	CLS_Sel.sRegVal({

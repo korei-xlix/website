@@ -270,11 +270,20 @@ class CLS_L {
 		inKey
 	})
 	{
-		let wCons ;
+		let wCons, wHead, wDHead ;
 		
-		wCons = "" ;
+		wHead  = "***********************" ;
+		wDHead = "****** DUMP DATA ******" ;
+		wCons  = "" ;
 		/////////////////////////////
 		// データ作成
+		
+		//###非表示情報のヘッダ
+		if( top.gSTR_Log[inKey]['Level']=="N" )
+		{
+			wCons = wCons + wHead + '\n' ;
+		}
+		
 		wCons = wCons + top.gSTR_Log[inKey]['TimeDate'] + " [" ;
 		wCons = wCons + top.gSTR_Log[inKey]['Level'] + "]" ;
 		
@@ -283,7 +292,8 @@ class CLS_L {
 		   ( top.gSTR_Log[inKey]['Level']=="C" ) ||
 		   ( top.gSTR_Log[inKey]['Level']=="D" ) ||
 		   ( top.gSTR_Log[inKey]['Level']=="E" ) ||
-		   ( top.gSTR_Log[inKey]['Level']=="I" ) )
+		   ( top.gSTR_Log[inKey]['Level']=="I" ) ||
+		   ( top.gSTR_Log[inKey]['Level']=="N" ) )
 		{
 			wCons = wCons + "[" + top.gSTR_Log[inKey]['Result'] + "] " ;
 		}
@@ -303,6 +313,12 @@ class CLS_L {
 		if( top.gSTR_Log[inKey]['Message']!=top.DEF_GVAL_TEXT_NONE )
 		{
 			wCons = wCons + '\n' + "  Info: " + top.gSTR_Log[inKey]['Message'] + " " ;
+		}
+		
+		//###非表示情報のフッタ
+		if( top.gSTR_Log[inKey]['Level']=="N" )
+		{
+			wCons = wCons + '\n' + wHead ;
 		}
 		
 		/////////////////////////////
@@ -333,10 +349,7 @@ class CLS_L {
 		}
 		else if( top.gSTR_Log[inKey]['Level']=="N" )
 		{
-			if( top.DEF_INDEX_TEST==true )
-			{
-				CLS_OSIF.sConsInfo({ inText:wCons }) ;
-			}
+			CLS_OSIF.sConsInfo({ inText:wCons }) ;
 		}
 		else
 		{
@@ -348,6 +361,7 @@ class CLS_L {
 		// ダンプの表示
 		if( top.gSTR_Log[inKey]['Dump']!=top.DEF_GVAL_NULL )
 		{
+			CLS_OSIF.sConsInfo({ inText:wDHead }) ;
 			CLS_OSIF.sViewObj({ inObj:top.gSTR_Log[inKey]['Dump'] }) ;
 		}
 		

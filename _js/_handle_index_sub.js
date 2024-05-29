@@ -1,5 +1,5 @@
 //#####################################################
-//# ::Project  : Web Site (samafeald)
+//# ::Project  : Web Site (Timerなし)
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : ハンドラ
@@ -10,7 +10,7 @@
 
 //### ストレージインデックス
 var DEF_INDEX_USE_STORAGE		= true ;
-var DEF_INDEX_STORAGE_HEADER	= "SAMAFEALD_WEB" ;
+var DEF_INDEX_STORAGE_HEADER	= "KOREIS_WEB" ;
 
 //### 翻訳機能の有効・無効
 //var DEF_INDEX_TRANSRATE		= true ;
@@ -21,8 +21,8 @@ var DEF_INDEX_LOG_OUTPUT		= false ;
 var DEF_INDEX_LOG_AUTOOPEN		= false ;
 
 //### テストモード  true=テスト稼働
-//var DEF_INDEX_TEST			= true ;
-var DEF_INDEX_TEST				= false ;
+var DEF_INDEX_TEST				= true ;
+//var DEF_INDEX_TEST			= false ;
 
 
 
@@ -46,9 +46,12 @@ function __handle_PageLoad()
 	// システム情報設定
 	wSubRes = CLS_Sys.sSet({
 		inUserID		: "webmain",			//ユーザID
-		inSystemName	: "website(samafeald)",	//システム名
-		inPageObj		: wPageObj,
-		inUseTimer		: true					//システムタイマ使用有無  true=使用
+		inSystemName	: "website",			//システム名
+		inPageObj		: wPageObj
+//		inExitProc		= {
+//			"Callback"	: top.DEF_GVAL_NULL,
+//			"Arg"		: new Array()
+//			}
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
@@ -57,30 +60,29 @@ function __handle_PageLoad()
 		return wRes ;
 	}
 	
-	///////////////////////////////
+	/////////////////////////////
 	// CSSロード
-///	CLS_WindowCtrl_PageSet({
-///	   inPageObj	: self.document,
-///	   inOtherDomain	: "https://website.koreis-labo.com/",
-///	   inStylePath	: "/_css/",
-///	   inMode		: "normal",
-///	   inStyleCommPath	: null,
-///	   inIconPath	: "/_pic/icon/koreilabo_icon.ico"
-///	}) ;
 	wSubRes = CLS_WinCtrl.sSet({
-		inPageObj		: self.document,		//ページオブジェクト
+		inPageObj		: wPageObj,				//ページオブジェクト
 		inSTR_CSSinfo	: {						//CSSファイル情報
-							"darkred"	: "Darkred"
+							"default"	: "Default",
+							"darkred"	: "Darkred",
+							"cursegray"	: "Cursegray"
 							},
-		inOtherDomain	: "https://website.koreis-labo.com/",	//外部ドメインのCSS  https://www.example.com
+		inOtherDomain	: top.DEF_GVAL_NULL,	//外部ドメインのCSS  https://www.example.com
 		inStylePath		: "/_css/",				//CSSカレントパス    /css/
 		inMode			: "normal",				//CSS変更可・サイズ自動切替
+//		inMode			: "pconly",				//CSS変更可・PCサイズのみ
+//		inMode			: "mbonly",				//CSS変更可・モバイルサイズのみ
+//		inMode			: "pcnone",				//CSS変更不可・PCサイズのみ
+//		inMode			: "mbnone",				//CSS変更不可・モバイルサイズのみ
+//		inMode			: "elase",				//ボタン非表示・サイズ自動切替
 		inStyleCommPath	: top.DEF_GVAL_NULL,	//Comm Styleのカレントパス（別フォルダの場合）
 		inIconPath		: "/_pic/icon/koreilabo_icon.ico",	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
 		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	}) ;
 	if( wSubRes['Result']!=true )
-	{
+	{///失敗
 		wRes['Reason'] = "CLS_WinCtrl.sSet is failer" ;
 		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 		return wRes ;
@@ -102,8 +104,8 @@ function __handle_PageLoad()
 	// システム情報表示
 	CLS_Sys.sView() ;
 	
-	///////////////////////////////
-	//# 正常
+	/////////////////////////////
+	// 正常
 	wRes['Result'] = true ;
 	return ;
 }

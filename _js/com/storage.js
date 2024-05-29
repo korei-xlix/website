@@ -119,7 +119,8 @@ class CLS_Storage {
 //  Local Storage取得
 ///////////////////////////////////////////////////////
 	static sLget({
-		inKey
+		inKey,
+		inError = true
 	})
 	{
 		//###########################
@@ -134,8 +135,7 @@ class CLS_Storage {
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Local!=true )
 		{
-///			wRes['Responce'] = top.DEF_GVAL_TEXT_NONE ;
-			wRes['Result']   = true ;
+			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
@@ -146,9 +146,7 @@ class CLS_Storage {
 			wSubRes = localStorage.getItem( inKey ) ;
 			if( wSubRes==null )
 			{
-///				wRes['Reason'] = "Get Local Strage is failer: inKey="+String(inKey) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"C" }) ;
-				wRes['Result']   = true ;
+				wRes['Result'] = true ;
 				return wRes ;
 			}
 		}
@@ -162,11 +160,15 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソールへ表示
-///		let wMessage = "Get Local Storage: inKey=" + String(inKey) + " value=" + String(wSubRes) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
-///		
+		//### コンソールへ表示
+		if(( top.DEF_INDEX_TEST==true )&&( inError==true ))
+		{
+			let wMessage = "Get Local Storage" ;
+			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
+			wMessage = wMessage + '\n' + "  value=" + String(wSubRes) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Responce'] = wSubRes ;
@@ -193,7 +195,7 @@ class CLS_Storage {
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Local!=true )
 		{
-			wRes['Result']   = true ;
+			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
@@ -216,7 +218,8 @@ class CLS_Storage {
 		/////////////////////////////
 		// 設定できたか確認
 		let wSubRes = this.sLget({
-			inKey : inKey
+			inKey	: inKey,
+			inError	: false
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
@@ -226,11 +229,15 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソールへ表示
-///		let wMessage = "Set Local Storage: inKey=" + String(inKey) + " value=" + String(inValue) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
+		//### コンソールへ表示
+		if( top.DEF_INDEX_TEST==true )
+		{
+			let wMessage = "Set Local Storage" ;
+			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
+			wMessage = wMessage + '\n' + "  inValue=" + String(inValue) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -275,11 +282,14 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソールへ表示
-///		let wMessage = "Remove Local Storage: inKey=" + String(inKey) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
+		//### コンソールへ表示
+		if( top.DEF_INDEX_TEST==true )
+		{
+			let wMessage = "Remove Local Storage" ;
+			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
@@ -322,11 +332,13 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソールへ表示
-///		let wMessage = "Local Storage All Crear" ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
+		//### コンソールへ表示
+		if( top.DEF_INDEX_TEST==true )
+		{
+			let wMessage = "Clear Local Storage" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
@@ -382,10 +394,12 @@ class CLS_Storage {
 						// 抽出したものをリストに保管
 						wList[wKey] = wGetVal ;
 						
-						if( top.DEF_INDEX_TEST )
+						//### コンソールへ表示
+						if( top.DEF_INDEX_TEST==true )
 						{
-							//### コンソールへ表示
-							wMessage = "Get Local Storage List: Key=" + String(wKey) + " value=" + String(wGetVal) ;
+							wMessage = "Get Local Storage Lists" ;
+							wMessage = wMessage + '\n' + "  key=" + String(wKey) ;
+							wMessage = wMessage + '\n' + "  value=" + String(wGetVal) ;
 							CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
 						}
 					}
@@ -428,7 +442,8 @@ class CLS_Storage {
 //  Session Storage取得
 ///////////////////////////////////////////////////////
 	static sSget({
-		inKey
+		inKey,
+		inError = true
 	})
 	{
 		//###########################
@@ -443,8 +458,7 @@ class CLS_Storage {
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Session!=true )
 		{
-///			wRes['Responce'] = top.DEF_GVAL_TEXT_NONE ;
-			wRes['Result']   = true ;
+			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
@@ -455,9 +469,7 @@ class CLS_Storage {
 			wSubRes = sessionStorage.getItem( inKey ) ;
 			if( wSubRes==null )
 			{
-///				wRes['Reason'] = "Get Session Strage is failer: inKey="+String(inKey) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"C" }) ;
-				wRes['Result']   = true ;
+				wRes['Result'] = true ;
 				return wRes ;
 			}
 		}
@@ -471,11 +483,15 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソールへ表示
-///		let wMessage = "Get Session Storage: inKey=" + String(inKey) + " value=" + String(wSubRes) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
-///		
+		//### コンソールへ表示
+		if(( top.DEF_INDEX_TEST==true )&&( inError==true ))
+		{
+			let wMessage = "Get Session Storage" ;
+			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
+			wMessage = wMessage + '\n' + "  value=" + String(wSubRes) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Responce'] = wSubRes ;
@@ -525,7 +541,8 @@ class CLS_Storage {
 		/////////////////////////////
 		// 設定できたか確認
 		let wSubRes = this.sSget({
-			inKey : inKey
+			inKey	: inKey,
+			inError	: false
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
@@ -535,11 +552,15 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソールへ表示
-///		let wMessage = "Set Session Storage: inKey=" + String(inKey) + " value=" + String(inValue) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
+		//### コンソールへ表示
+		if( top.DEF_INDEX_TEST==true )
+		{
+			let wMessage = "Set Session Storage" ;
+			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
+			wMessage = wMessage + '\n' + "  inValue=" + String(inValue) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -584,11 +605,14 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソールへ表示
-///		let wMessage = "Remove Session Storage: inKey=" + String(inKey) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
+		//### コンソールへ表示
+		if( top.DEF_INDEX_TEST==true )
+		{
+			let wMessage = "Delete Session Storage" ;
+			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
@@ -631,11 +655,13 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソールへ表示
-///		let wMessage = "Session Storage All Crear" ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
+		//### コンソールへ表示
+		if( top.DEF_INDEX_TEST==true )
+		{
+			let wMessage = "Clear Session Storage" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result']   = true ;

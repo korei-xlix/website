@@ -79,16 +79,7 @@ class CLS_X_Search {
 		}
 		wARR_List = wSubRes['Responce'] ;
 		
-///		if( top.DEF_INDEX_TEST )
-///		{
-///			//### テスト出力
-///			CLS_OSIF.sConsInfo({ inText:"*** Get Storage Data ***" }) ;
-///			CLS_OSIF.sViewObj({ inObj: wARR_List });
-///			CLS_OSIF.sConsInfo({ inText:"*** End ***" }) ;
-///		}
-///		
 		top.STR_XSdata = {} ;
-///		top.STR_XSdata[0] = new STR_XSdata_Str() ;	//ダミー枠
 		/////////////////////////////
 		// storageデータの編集
 		for( wKey in wARR_List )
@@ -106,7 +97,7 @@ class CLS_X_Search {
 					in_Key		: wDelKey
 				}) ;
 				
-				//### スイッチ情報の出力
+				//### コンソール表示
 				wMessage = "Delete Old Storage: Key=" + String(wKey) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 				continue ;
@@ -149,12 +140,10 @@ class CLS_X_Search {
 		
 		/////////////////////////////
 		// データIndexの更新
-///		__Xsearch_updateIndex() ;
 		this.__UpdateIndex() ;
 		
 		/////////////////////////////
 		// 一覧の表示
-///		wSubRes = Xsearch_ViewList() ;
 		wSubRes = this.ViewList() ;
 		if( wSubRes['Result']!=true )
 		{
@@ -196,7 +185,6 @@ class CLS_X_Search {
 		wCHR_SetTags = "" ;
 		
 		wCHR_SelTag = "<p>" + '\n' ;
-///		wCHR_SelTag = wCHR_SelTag + '<input id="iBTN_SelTag0" class="xsearch_ComBtn xsearch_TAG_BtnOn" type="button" value="　" onclick=__handle_Button_SelTag(0) />' ;
 		wCHR_SelTag = wCHR_SelTag + "<input id='" + top.DEF_XSEARCH_IDX_TAGS_SEL_BUTTON_HEADER + "0' " ;
 		wCHR_SelTag = wCHR_SelTag + " class='" + top.DEF_XSEARCH_CLASS_SEL_BUTTON_ON + "' " ;
 		wCHR_SelTag = wCHR_SelTag + " type='button' value='　' onclick='__handle_Button_SelTag(0)' />" ;
@@ -224,9 +212,6 @@ class CLS_X_Search {
 			
 			/////////////////////////////
 			// タグ設定
-///			wCHR_SetTags = wCHR_SetTags + '<input id="iBTN_SetTags' + wKey + '" class="xsearch_ComBtn xsearch_TAG_Btn" type="button" value="　" ' ;
-///			wCHR_SetTags = wCHR_SetTags + 'onclick=__handle_Button_SetTags(' + wKey + ') />' ;
-///			wCHR_SetTags = wCHR_SetTags + '<span class="' + top.DEF_XSEARCH_ARR_TAGS[wKey] + '">　</span>　' + '\n' ;
 			wCHR_SetTags = wCHR_SetTags + "<input id='" +  top.DEF_XSEARCH_IDX_TAGS_BUTTON_HEADER + String(wKey) + "' " ;
 			wCHR_SetTags = wCHR_SetTags + "class='" + top.DEF_XSEARCH_CLASS_SEL_BUTTON_OFF + "' " ;
 			wCHR_SetTags = wCHR_SetTags + "type='button' value='　' onclick='__handle_Button_SetTags(" + String(wKey) + ")' />" ;
@@ -234,7 +219,6 @@ class CLS_X_Search {
 			
 			/////////////////////////////
 			// タグ選択
-///			wCHR_SelTag = wCHR_SelTag + '<input id="iBTN_SelTag' + wKey + '" class="xsearch_ComBtn xsearch_TAG_Btn" type="button" value="　" ' ;
 			wCHR_SelTag = wCHR_SelTag + "<input id='" + top.DEF_XSEARCH_IDX_TAGS_SEL_BUTTON_HEADER + String(wKey) + "' " ;
 			wCHR_SelTag = wCHR_SelTag + "class='" + top.DEF_XSSEARCH_CLASS_SEL_BUTTON_OFF + "' " ;
 			wCHR_SelTag = wCHR_SelTag + "type='button' value='　' onclick='__handle_Button_SelTag(" + String(wKey) + ")' />" ;
@@ -423,8 +407,6 @@ class CLS_X_Search {
 					//### 番号のタグを有効にする
 					for( wKey2 in wData )
 					{
-///						top.ARR_XSearch_Tags[wKey2] = true ;
-///						wSTR_Data.STR_Tags[wKey2]    = true ;
 						top.ARR_XSearch_Tags[wData[wKey2]] = true ;
 						wSTR_Data.STR_Tags[wData[wKey2]]   = true ;
 					}
@@ -625,7 +607,6 @@ class CLS_X_Search {
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
-///			wSTR_Data.OptExcReps = wValue ;
 			wSTR_Data.OptExcReps = top.DEF_XSEARCH_LISTDATA[wValue] ;
 		}
 		//### データ補完
@@ -657,7 +638,6 @@ class CLS_X_Search {
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
-///			wSTR_Data.OptImages = wValue ;
 			wSTR_Data.OptImages = top.DEF_XSEARCH_LISTDATA[wValue] ;
 		}
 		//### データ補完
@@ -689,7 +669,6 @@ class CLS_X_Search {
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
-///			wSTR_Data.OptVideos = wValue ;
 			wSTR_Data.OptVideos = top.DEF_XSEARCH_LISTDATA[wValue] ;
 		}
 		//### データ補完
@@ -721,7 +700,6 @@ class CLS_X_Search {
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
-///			wSTR_Data.OptLnks = wValue ;
 			wSTR_Data.OptLnks = top.DEF_XSEARCH_LISTDATA[wValue] ;
 		}
 		//### データ補完
@@ -753,7 +731,6 @@ class CLS_X_Search {
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
-///			wSTR_Data.OptJP = wValue ;
 			wSTR_Data.OptJP = top.DEF_XSEARCH_LISTDATA[wValue] ;
 		}
 		//### データ補完
@@ -785,7 +762,6 @@ class CLS_X_Search {
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
-///			wSTR_Data.OptSafe = wValue ;
 			wSTR_Data.OptSafe = top.DEF_XSEARCH_LISTDATA[wValue] ;
 		}
 		//### データ補完
@@ -815,7 +791,8 @@ class CLS_X_Search {
 		
 		/////////////////////////////
 		//  URLの作成：リストID
-		if( wSTR_Data.OptListID!=top.DEF_XSEARCH_DEFAULT_TEXT )
+///		if( wSTR_Data.OptListID!=top.DEF_XSEARCH_DEFAULT_TEXT )
+		if( wSTR_Data.OptListID!=top.DEF_XSEARCH_DEFAULT_NOLIST )
 		{
 			wAnc = wAnc + "list" + top.DEF_XSEARCH_SMOJI_COLON + wSTR_Data.OptListID + top.DEF_XSEARCH_SMOJI_SPACE ;
 		}
@@ -846,10 +823,6 @@ class CLS_X_Search {
 			{///含める
 				wAnc = wAnc + "filter:images" + top.DEF_XSEARCH_SMOJI_SPACE ;
 			}
-///			else
-///			{
-///				wSTR_Data.OptImages = top.DEF_XSEARCH_DEFAULT_REP ;
-///			}
 		}
 		
 		/////////////////////////////
@@ -864,10 +837,6 @@ class CLS_X_Search {
 			{///含める
 				wAnc = wAnc + "filter:videos" + top.DEF_XSEARCH_SMOJI_SPACE ;
 			}
-///			else
-///			{
-///				wSTR_Data.OptVideos = top.DEF_XSEARCH_DEFAULT_IMG ;
-///			}
 		}
 		
 		/////////////////////////////
@@ -882,10 +851,6 @@ class CLS_X_Search {
 			{///含める
 				wAnc = wAnc + "filter:links" + top.DEF_XSEARCH_SMOJI_SPACE ;
 			}
-///			else
-///			{
-///				wSTR_Data.OptLnks = top.DEF_XSEARCH_LISTDATA['無条件'] ;
-///			}
 		}
 		
 		/////////////////////////////
@@ -900,10 +865,6 @@ class CLS_X_Search {
 			{///含める
 				wAnc = wAnc + "filter:safe" + top.DEF_XSEARCH_SMOJI_SPACE ;
 			}
-///			else
-///			{
-///				wSTR_Data.OptSafe = top.DEF_XSEARCH_LISTDATA['無条件'] ;
-///			}
 		}
 		
 		/////////////////////////////
@@ -914,10 +875,6 @@ class CLS_X_Search {
 			{///含めない
 				wAnc = wAnc + "exclude:replies" + top.DEF_XSEARCH_SMOJI_SPACE ;
 			}
-///			else
-///			{
-///				wSTR_Data.OptExcReps = top.DEF_XSEARCH_LISTDATA['無条件'] ;
-///			}
 		}
 		
 		/////////////////////////////
@@ -928,10 +885,6 @@ class CLS_X_Search {
 			{///含める
 				wAnc = wAnc + "lang:jp" + top.DEF_XSEARCH_SMOJI_SPACE ;
 			}
-///			else
-///			{
-///				wSTR_Data.OptJP = top.DEF_XSEARCH_LISTDATA['無条件'] ;
-///			}
 		}
 		
 		/////////////////////////////
@@ -1006,26 +959,17 @@ class CLS_X_Search {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"X Search", inFunc:"__UpdateIndex" }) ;
 		
-///		let wSubRes, wKey, wIndex, wARR_Keys ;
-		let wSubRes, wKey, wIndex ;
-		let wPrevI ;
+		let wSubRes, wMessage ;
+		let wPrevI, wKey, wIndex ;
 		
 		wPrevI = "" + String(top.VAL_XSearch_Index) ;
-///		/////////////////////////////
-///		//  キー一覧の取得
-///		wARR_Keys = CLS_OSIF.sGetObjectList({
-///			inObject : top.STR_XSdata
-///		}) ;
-///		
 		/////////////////////////////
 		//  キー一覧にない番号を検索
 		wIndex = 1 ;
 		for( wKey in top.STR_XSdata )
 		{
 			wSubRes = CLS_OSIF.sGetInObject({
-///				inObject : wARR_Keys,
 				inObject : top.STR_XSdata,
-///				inKey    : wKey
 				inKey    : wIndex
 			}) ;
 			if( wSubRes==true )
@@ -1041,11 +985,13 @@ class CLS_X_Search {
 		//  インデックスキーの更新
 		top.VAL_XSearch_Index = wIndex ;
 		
-		if( top.DEF_INDEX_TEST )
+		//### コンソール表示
+		if( top.DEF_INDEX_TEST==true )
 		{
-			//### スイッチ情報の出力
-			let wMessage = "Update X Search Index: Prev=" + String(wPrevI) + " Now=" + String(top.VAL_XSearch_Index) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+			wMessage = "Update X Search Index" 
+			wMessage = wMessage + '\n' + "  Pre=" + String(wPrevI) ;
+			wMessage = wMessage + '\n' + "  Now=" + String(top.VAL_XSearch_Index) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
 		}
 		
 		/////////////////////////////
@@ -1068,21 +1014,17 @@ class CLS_X_Search {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"X Search", inFunc:"Select" }) ;
 		
-///		let wFLG_Stat, wNowDate, wKey ;
-///		let wARR_Key, wFLG_Stat2 ;
-///		let wSubRes, wARR_Stat, wSetKey ;
-		let wSubRes, wARR_Stat, wValue, wSetKey, wNowDate ;
+		let wSubRes, wMessage ;
+		let wARR_Stat, wValue, wSetKey, wNowDate ;
 		
 		/////////////////////////////
 		// 選択されていたら、OFFにする
 		if( top.VAL_XSearch_SelIndex!=-1 )
 		{
-///			wSetKey = top.DEF_XSEARCH_IDX_TAGS_BUTTON_HEADER + String(top.VAL_XSearch_SelIndex) ;
 			wSetKey = top.DEF_XSEARCH_IDX_SEL_LIST_BUTTON_HEADER + String(top.VAL_XSearch_SelIndex) ;
 			wSubRes = CLS_PageObj.sSetClassName({
 				inPageObj	: top.gSTR_WinCtrlInfo.PageObj,
 				inKey		: wSetKey,
-///				inCode		: top.DEF_XSEARCH_CLASS_SEL_BUTTON_OFF
 				inCode		: top.DEF_XSEARCH_CLASS_WORD_BUTTON_OFF
 			}) ;
 			if( wSubRes['Result']!=true )
@@ -1091,18 +1033,6 @@ class CLS_X_Search {
 				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 				return wRes ;
 			}
-			
-///			wSubRes = CLS_PageObj.sSetValue({
-///				inPageObj	: top.gSTR_WinCtrlInfo.PageObj,
-///				inKey		: wSetKey,
-///				inCode		: "　"
-///				}) ;
-///			if( wSubRes['Result']!=true )
-///			{///失敗
-///				wRes['Reason'] = "CLS_PageObj.sSetValue is failed(0-2)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///				return wRes ;
-///			}
 		}
 		
 		/////////////////////////////
@@ -1181,20 +1111,6 @@ class CLS_X_Search {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// 日付の取得
-///		wSubRes = CLS_Time_getTimeDate({}) ;
-///		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "CLS_Time_getTimeDate is failed" ;
-///			CLS_L({ inRes:wRes, inLevel: "B" }) ;
-///			return wRes ;
-///		}
-///		wNowDate = wSubRes['Responce'] ;
-///		wNowDate = wNowDate.split(" ") ;
-///		wNowDate = wNowDate[0] ;
-///		
 		/////////////////////////////
 		// リストID
 		wARR_Stat = {
@@ -1468,6 +1384,21 @@ class CLS_X_Search {
 			return wRes ;
 		}
 		
+		//### コンソール表示
+		if( top.DEF_INDEX_TEST==true )
+		{
+			wMessage = "Select X Search Data" 
+			if( top.STR_XSdata[top.VAL_XSearch_SelIndex].Text!=top.DEF_GVAL_TEXT_NONE )
+			{
+				wMessage = wMessage + '\n' + "  Text=" + String(top.STR_XSdata[top.VAL_XSearch_SelIndex].Text) ;
+			}
+			if( top.STR_XSdata[top.VAL_XSearch_SelIndex].OptListID!=top.DEF_XSEARCH_DEFAULT_NOLIST )
+			{
+				wMessage = wMessage + '\n' + "  ListID=" + String(top.STR_XSdata[top.VAL_XSearch_SelIndex].OptListID) ;
+			}
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -1479,8 +1410,6 @@ class CLS_X_Search {
 //#####################################################
 //# データ更新
 //#####################################################
-///	function Xsearch_Pull()
-///	UpdateData()
 	UpdateData({
 		inInc = false	// true=追加 / false=更新
 	})
@@ -1490,24 +1419,11 @@ class CLS_X_Search {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"X Search", inFunc:"UpdateData" }) ;
 		
-///		let wText, wKey, wFLG_Detect, wAnc ;
-///		let wARR_Data, wIndex, wSON, wGetText, wTags ;
-///		let wFLG_Check, wListID, wKey2 ;
-		let wSubRes, wSTR_Input, wStorage ;
+		let wSubRes, wSTR_Input, wStorage, wMessage ;
 		let wKey, wIndex ;
 		
 		/////////////////////////////
 		// Indexの正当性チェック（念のため）
-///		if( inInc==true )
-///		{///追加
-///			if( top.VAL_XSearch_SelIndex!=-1 )
-///			{///失敗
-///				wRes['Reason'] = "VAL_XSearch_SelIndex value error: Button=Include Value=" + String(top.VAL_XSearch_SelIndex) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-///				return wRes ;
-///			}
-///		}
-///		else
 		if( inInc==false )
 		{///更新
 			if( top.VAL_XSearch_SelIndex==-1 )
@@ -1534,8 +1450,6 @@ class CLS_X_Search {
 		/////////////////////////////
 		// 追加 もしくは 更新で編集の場合
 		//   重複チェック
-///		if(( top.VAL_XSearch_SelIndex==-1 ) ||
-///		   (( top.VAL_XSearch_SelIndex!=-1 )&&( top.FLG_XSearch_EditON==true )) )
 		if(( inInc==true ) ||
 		   (( inInc==false )&&( top.FLG_XSearch_EditON==true )) )
 		{
@@ -1553,7 +1467,6 @@ class CLS_X_Search {
 		
 		/////////////////////////////
 		// 成功した場合、データを更新する
-///		if( top.VAL_XSearch_SelIndex==-1 )
 		if( inInc==true )
 		{///追加の場合
 			wIndex = top.VAL_XSearch_Index ;
@@ -1565,17 +1478,13 @@ class CLS_X_Search {
 		
 		/////////////////////////////
 		// Storageキー作成
-///		wKey = top.DEF_XSEARCH_STORAGE_LIST_KEY + String( top.VAL_XSearch_Index ) ;
 		wKey = top.DEF_XSEARCH_STORAGE_LIST_KEY + String( wIndex ) ;
 		
 		/////////////////////////////
 		// データセット
 		wSubRes = this.__SetData({
-///			inIndex	: top.VAL_XSearch_Index,
 			inIndex	: wIndex,
 			inKey	: wKey			//Storage Key
-///			inKey	: wKey,			//Storage Key
-///			inData	: wData			//full data
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///失敗
@@ -1601,7 +1510,6 @@ class CLS_X_Search {
 		
 		/////////////////////////////
 		// 未選択（追加）の場合
-///		if( top.VAL_XSearch_SelIndex==-1 )
 		if( inInc==true )
 		{
 			/////////////////////////////
@@ -1651,6 +1559,26 @@ class CLS_X_Search {
 			return wRes ;
 		}
 		
+		//### コンソール表示
+		wMessage = "Update X Search Data: " 
+		if( inInc==true )
+		{
+			wMessage = wMessage + "Data Insert" ;
+		}
+		else
+		{
+			wMessage = wMessage + "Data Update" ;
+		}
+		if( top.STR_XSdata[wIndex].Text!=top.DEF_GVAL_TEXT_NONE )
+		{
+			wMessage = wMessage + '\n' + "  Text=" + String(top.STR_XSdata[wIndex].Text) ;
+		}
+		if( top.STR_XSdata[wIndex].OptListID!=top.DEF_XSEARCH_DEFAULT_NOLIST )
+		{
+			wMessage = wMessage + '\n' + "  ListID=" + String(top.STR_XSdata[wIndex].OptListID) ;
+		}
+		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -1662,7 +1590,6 @@ class CLS_X_Search {
 //#####################################################
 //# X 検索 削除
 //#####################################################
-///	function Xsearch_Del({
 	DelData({
 		inKey
 	})
@@ -1672,25 +1599,29 @@ class CLS_X_Search {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"X Search", inFunc:"DelData" }) ;
 		
-///		let wKey ;
-///		let wARR_Data, wIndex ;
-		let wSubRes, wMessage ;
+		let wSubRes, wMessage, wWord, wListID ;
 		let wKey, wIndex ;
 		
 		/////////////////////////////
 		// Index作成
 		wIndex = CLS_OSIF.sValParse({ inValue:inKey }) ;
 		
+		wWord   = String(top.STR_XSdata[wIndex].Text) ;
+		wListID = String(top.STR_XSdata[wIndex].OptListID) ;
 		/////////////////////////////
 		// 削除の確認
 		wMessage = "キーを削除します" + '\n' ;
-		if( top.STR_XSdata[wIndex].Text!=top.DEF_GVAL_TEXT_NONE )
+///		if( top.STR_XSdata[wIndex].Text!=top.DEF_GVAL_TEXT_NONE )
+		if( wWord!=top.DEF_GVAL_TEXT_NONE )
 		{
-			wMessage = wMessage + "[検索文字]：" + top.STR_XSdata[wIndex].Text + '\n' ;
+///			wMessage = wMessage + "[検索文字]：" + top.STR_XSdata[wIndex].Text + '\n' ;
+			wMessage = wMessage + "[検索文字]：" + wWord + '\n' ;
 		}
-		if( top.STR_XSdata[wIndex].OptListID!=top.DEF_XSEARCH_DEFAULT_NOLIST )
+///		if( top.STR_XSdata[wIndex].OptListID!=top.DEF_XSEARCH_DEFAULT_NOLIST )
+		if( wListID!=top.DEF_XSEARCH_DEFAULT_NOLIST )
 		{
-			wMessage = wMessage + "[リストID]：" + top.STR_XSdata[wIndex].OptListID + '\n' ;
+///			wMessage = wMessage + "[リストID]：" + top.STR_XSdata[wIndex].OptListID + '\n' ;
+			wMessage = wMessage + "[リストID]：" + wListID + '\n' ;
 		}
 		wSubRes = CLS_OSIF.sConfirm({
 			inText	: wMessage
@@ -1703,7 +1634,6 @@ class CLS_X_Search {
 		
 		/////////////////////////////
 		// Storageキー作成
-///		wIndex = CLS_OSIF.sValParse({ inValue:inKey }) ;
 		wKey = top.DEF_XSEARCH_STORAGE_LIST_KEY + String( wIndex ) ;
 		
 		/////////////////////////////
@@ -1758,6 +1688,18 @@ class CLS_X_Search {
 			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 			return wRes ;
 		}
+		
+		//### コンソール表示
+		wMessage = "Delete X Search Data" 
+		if( wWord!=top.DEF_GVAL_TEXT_NONE )
+		{
+			wMessage = wMessage + '\n' + "  Text=" + wWord ;
+		}
+		if( wListID!=top.DEF_XSEARCH_DEFAULT_NOLIST )
+		{
+			wMessage = wMessage + '\n' + "  ListID=" + wListID ;
+		}
+		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
 		// 正常
@@ -1862,7 +1804,6 @@ class CLS_X_Search {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"X Search", inFunc:"__CheckPullData" }) ;
 		
-///		let wKey, wKey2, wFLG_Det, wMessage ;
 		let wKey, wFLG_Det, wMessage ;
 		
 		/////////////////////////////
@@ -1887,18 +1828,6 @@ class CLS_X_Search {
 		{
 			for( wKey in top.STR_XSdata )
 			{
-///				if( top.STR_XSdata[wKey].OptListID==inListID )
-///				{
-///					for( wKey2 in top.STR_XSdata )
-///					{
-///						if( top.STR_XSdata[wKey2].Text==top.DEF_GVAL_TEXT_NONE )
-///						{
-///							//### 検索文字なし・ListID重複あり がある
-///							wFLG_Det = true ;
-///							break ;
-///						}
-///					}
-///				}
 				if(( top.STR_XSdata[wKey].Text==top.DEF_GVAL_TEXT_NONE ) &&
 				   ( top.STR_XSdata[wKey].OptListID==inListID ))
 				{
@@ -1914,18 +1843,6 @@ class CLS_X_Search {
 		{
 			for( wKey in top.STR_XSdata )
 			{
-///				if( top.STR_XSdata[wKey].Text==inWord )
-///				{
-///					for( wKey2 in top.STR_XSdata )
-///					{
-///						if( top.STR_XSdata[wKey2].OptListID==top.DEF_XSEARCH_DEFAULT_NOLIST )
-///						{
-///							//### 検索文字あり・ListIDなし がある
-///							wFLG_Det = true ;
-///							break ;
-///						}
-///					}
-///				}
 				if(( top.STR_XSdata[wKey].Text==inWord ) &&
 				   ( top.STR_XSdata[wKey].OptListID==top.DEF_XSEARCH_DEFAULT_NOLIST ))
 				{
@@ -1941,18 +1858,6 @@ class CLS_X_Search {
 		{
 			for( wKey in top.STR_XSdata )
 			{
-///				if( top.STR_XSdata[wKey].Text==inWord )
-///				{
-///					for( wKey2 in top.STR_XSdata )
-///					{
-///						if( top.STR_XSdata[wKey2].OptListID==inListID )
-///						{
-///							//### 検索文字重複あり かつ ListID重複あり
-///							wFLG_Det = true ;
-///							break ;
-///						}
-///					}
-///				}
 				if(( top.STR_XSdata[wKey].Text==inWord ) &&
 				   ( top.STR_XSdata[wKey].OptListID==inListID ))
 				{
@@ -1987,7 +1892,6 @@ class CLS_X_Search {
 ///////////////////////////////////////////////////////
 // 入力クリア
 ///////////////////////////////////////////////////////
-///	function __Xsearch_optionClear()
 	__InputClear()
 	{
 		//###########################
@@ -2080,15 +1984,6 @@ class CLS_X_Search {
 		
 		/////////////////////////////
 		// 日付の取得
-///		wSubRes = CLS_Time_getTimeDate({}) ;
-///		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "CLS_Time_getTimeDate is failed(2)" ;
-///			CLS_L({ inRes:wRes, inLevel: "B" }) ;
-///			return wRes ;
-///		}
-///		wNowDate = wSubRes['Responce'] ;
 		wNowDate = top.gSTR_Time.TimeDate.split(" ") ;
 		wNowDate = wNowDate[0] ;
 		
@@ -2277,7 +2172,6 @@ class CLS_X_Search {
 ///////////////////////////////////////////////////////
 // タグ設定ボタンカラーの変更
 ///////////////////////////////////////////////////////
-///	function __Xsearch_chgSetTagsButton()
 	__ChgSetTagsButton()
 	{
 		//###########################
@@ -2351,7 +2245,6 @@ class CLS_X_Search {
 //#####################################################
 //# X 検索 "#"ボタン
 //#####################################################
-///	function Xsearch_On()
 	SharpClick()
 	{
 		//###########################
@@ -2359,7 +2252,6 @@ class CLS_X_Search {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"X Search", inFunc:"SharpClick" }) ;
 		
-///		let wText, wCode ;
 		let wSubRes, wCode ;
 		
 		/////////////////////////////
@@ -2377,7 +2269,6 @@ class CLS_X_Search {
 		
 		/////////////////////////////
 		// 選択ボタンの色を変更する
-///		wKey = "iBTN_SON" ;
 		wSubRes = CLS_PageObj.sSetClassName({
 			inPageObj	: top.gSTR_WinCtrlInfo.PageObj,
 			inKey		: top.DEF_XSEARCH_IDX_SON_BTTTON,
@@ -2401,7 +2292,6 @@ class CLS_X_Search {
 //#####################################################
 //# X 検索 リストID有効
 //#####################################################
-///	function Xsearch_Valid_ListID()
 	ValidListID()
 	{
 		//###########################
@@ -2461,7 +2351,6 @@ class CLS_X_Search {
 //#####################################################
 //# X 検索 日付有効
 //#####################################################
-///	function Xsearch_Valid_Date({
 	ValidDate({
 		inKey
 	})
@@ -2611,7 +2500,6 @@ class CLS_X_Search {
 //#####################################################
 //# X 検索 タグ設定
 //#####################################################
-///	function Xsearch_SetTags({
 	SetTags({
 		inKey
 	})
@@ -2623,29 +2511,24 @@ class CLS_X_Search {
 		
 		let wSubRes, wKey, wCode, wCodeText ;
 		
-///		wKey = Number( inKey ) ;
 		wKey = CLS_OSIF.sValParse({ inValue:inKey }) ;
 		/////////////////////////////
 		// 切り替え
-///		if( top.STR_XSdata[wKey]==true )
 		if( top.ARR_XSearch_Tags[wKey]==true )
 		{	// ON → OFF
 			wCode = top.DEF_XSEARCH_CLASS_SEL_BUTTON_OFF ;
 			wCodeText = "　" ;
-///			top.STR_XSdata[wKey] = false ;
 			top.ARR_XSearch_Tags[wKey] = false ;
 		}
 		else
 		{	// OFF → ON
 			wCode = top.DEF_XSEARCH_CLASS_SEL_BUTTON_ON ;
 			wCodeText = "◆" ;
-///			top.STR_XSdata[wKey] = true ;
 			top.ARR_XSearch_Tags[wKey] = true ;
 		}
 		
 		/////////////////////////////
 		// 選択ボタンの色を変更する
-///		wKey = "iBTN_SetTags" + String(inKey) ;
 		wKey = top.DEF_XSEARCH_IDX_TAGS_BUTTON_HEADER + String(inKey) ;
 		wSubRes = CLS_PageObj.sSetClassName({
 			inPageObj	: top.gSTR_WinCtrlInfo.PageObj,
@@ -2682,7 +2565,6 @@ class CLS_X_Search {
 //#####################################################
 //# X 検索 タグ選択
 //#####################################################
-///	function Xsearch_SelTag({
 	SelTag({
 		inKey
 	})
@@ -2692,7 +2574,7 @@ class CLS_X_Search {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"X Search", inFunc:"SelTag" }) ;
 		
-		let wSubRes, wKey1, wCode1 ;
+		let wSubRes, wKey1, wCode1, wMessage ;
 		let wKey2, wCode2 ;
 		
 		/////////////////////////////
@@ -2750,6 +2632,15 @@ class CLS_X_Search {
 			return wRes ;
 		}
 		
+		//### コンソール表示
+		if( top.DEF_INDEX_TEST==true )
+		{
+			wMessage = "Select X Search Select Tag: " 
+			wMessage = wMessage + '\n' + "  Prev=" + wKey2 ;
+			wMessage = wMessage + '\n' + "  Next=" + wKey1 ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+		}
+		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -2764,7 +2655,6 @@ class CLS_X_Search {
 ///////////////////////////////////////////////////////
 // 一覧表示
 ///////////////////////////////////////////////////////
-///	function Xsearch_ViewList()
 	ViewList()
 	{
 		//###########################
@@ -2815,7 +2705,6 @@ class CLS_X_Search {
 ///////////////////////////////////////////////////////
 // データリスト編集
 ///////////////////////////////////////////////////////
-///	function __Xsearch_EditList()
 	__ViewList_EditList()
 	{
 		let wKey, wText, wGetDat ;
@@ -2853,7 +2742,6 @@ class CLS_X_Search {
 ///////////////////////////////////////////////////////
 // データリストのセル設定
 ///////////////////////////////////////////////////////
-///	function __Xsearch_EditCel({
 	__ViewList_EditCel({
 		inKey
 	})

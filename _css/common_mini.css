@@ -270,12 +270,6 @@ padding				: 0px;
 text-align			:left;
 }
 
-#com_CopyrightHeader div.com_Corp{
-margin				: 0px;
-padding				: 0px;
-text-align			:right;
-}
-
 #com_CopyrightHeader img.com_UpdateIcon_OFF{
 display				: none;
 }
