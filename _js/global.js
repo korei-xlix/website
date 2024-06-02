@@ -166,11 +166,6 @@ var DEF_GVAL_SYS_STAT			= new Array(					// チェック用
 var DEF_GVAL_SYS_TID_TIMER		= "tid_SysTimer" ;				// システムタイマ
 var DEF_GVAL_SYS_TID_CIRCLE		= "tid_SysCircle" ;				// 周期処理タイマ
 var DEF_GVAL_SYS_TIMER_VALUE	= 1000 ;						// システム・周期処理 タイマ値(ms)
-///var DEF_GVAL_SYS_TIMER_15		= 15 * 60 - 5 ;			// 15分周期
-////var DEF_GVAL_SYS_TIMER_15		= 55 ;					// 15分周期
-///var DEF_GVAL_SYS_TIMER_30		= 30 * 60 - 7 ;			// 30分周期
-///var DEF_GVAL_SYS_TIMER_60		= 60 * 60 - 9 ;			// 60分周期
-///var DEF_GVAL_SYS_TIMER_RESET	= this.DEF_GVAL_SYS_TIMER_60 ;		//  カウントリセット カウント
 var DEF_GVAL_SYS_TIMER_15		= 15 * 60 ;						//  15分周期カウント値
 var DEF_GVAL_SYS_TIMER_30		= 30 * 60 ;						//  30分周期カウント値
 var DEF_GVAL_SYS_TIMER_60		= 60 * 60 ;						//  60分周期カウント値+リセット
@@ -190,18 +185,15 @@ function gSTR_SystemCircle_Str()
 	this.FLG_15					= false ;						//  15分処理
 	this.FLG_30					= false ;						//  30分処理
 	this.FLG_60					= false ;						//  60分処理
-	
-///	this.Callback				= top.DEF_GVAL_NULL ;			//  定期処理
-///	this.Arg					= [] ;							//  定期処理へ渡す引数データ  array型
 }
 var gSTR_SystemCircle = new gSTR_SystemCircle_Str() ;
 
-function gSTR_SystemExit_Str()
-{																//終了処理
+function gSTR_CallbackInfo_Str()
+{																//コールバック情報
 	this.Callback				= top.DEF_GVAL_NULL ;			//  コールバック関数
 	this.Arg					= [] ;							//  コールバックへ渡す引数データ  array型
 }
-var gSTR_SystemExit = new gSTR_SystemExit_Str() ;
+var gSTR_SystemExit = new gSTR_CallbackInfo_Str() ;				//終了処理
 
 function gSTR_SystemInfo_Str()
 {
@@ -214,7 +206,6 @@ function gSTR_SystemInfo_Str()
 	this.Version				= top.DEF_USER_VERSION ;		//ソースバージョン
 	
 	this.Status					= top.DEF_GVAL_SYS_STAT_STOP ;	//システム状態
-///	this.FLG_UseTimer			= false ;						//システムタイマ使用有無  true=使用
 }
 var gSTR_SystemInfo = new gSTR_SystemInfo_Str() ;
 
@@ -266,8 +257,8 @@ var DEF_GVAL_TIMERCTRL_LOG_COUNT		= 10 ;					//テストログ出力カウント
 var DEF_GVAL_TIMERCTRL_TST_IDLE			= "ts_IDLE" ;			//  待機（無遷移）
 																//  フレーム管理用
 var DEF_GVAL_TIMERCTRL_TST_FRM_LOCATION	= "ts_frmLocation" ;	//    フレームロード中
-var DEF_GVAL_TIMERCTRL_TST_FRM_ONLOAD	= "ts_frmOnload" ;		//    フレームロード完了
-var DEF_GVAL_TIMERCTRL_TST_FRM_TIMEOUT	= "ts_frmTimeout" ;		//    フレームロード失敗（タイムアウト）
+var DEF_GVAL_TIMERCTRL_TST_FRM_INIT		= "ts_frmInit" ;		//    フレームページ設定中
+var DEF_GVAL_TIMERCTRL_TST_FRM_PROOESS	= "ts_frmProc" ;		//    ロード後プロセス中
 
 var DEF_GVAL_TIMERCTRL_KIND	= new Array(						//タイマ種類
 	"normal",													//  ノーマルタイマ（リトライなし 1回タイマ）    Retry=未設定
@@ -279,14 +270,14 @@ var DEF_GVAL_TIMERCTRL_KIND	= new Array(						//タイマ種類
 
 function gSTR_TimerCtrlInfo_Str()
 {
-///	this.TimerObj				= top.DEF_GVAL_NULL ;			//タイマオブジェクト
-	this.TimerID				= top.DEF_GVAL_NULL ;			//タイマID（windowが返す値）
 	this.ID						= top.DEF_GVAL_NULL ;			//タイマ名(フレーム名)
 	this.Kind					= top.DEF_GVAL_NULL ;			//タイマ種類
 	
-	this.FLG_Start				= false ;						//タイマ起動      true=起動中
-	this.FLG_Tout				= false ;						//タイムアウト    true=タイムアウト
-	this.FLG_Rout				= false ;						//リトライアウト  true=リトライアウト
+	this.FLG_Start				= false ;						//タイマ起動          true=起動中
+	this.FLG_Stop				= false ;						//タイマ停止通知      true=停止中
+	this.FLG_Run				= false ;						//コールバック処理中  true=処理中
+	this.FLG_Tout				= false ;						//タイムアウト        true=タイムアウト
+	this.FLG_Rout				= false ;						//リトライアウト      true=リトライアウト
 	
 	this.Status					= top.DEF_GVAL_TIMERCTRL_TST_IDLE ;	//状態遷移管理
 	
@@ -296,9 +287,7 @@ function gSTR_TimerCtrlInfo_Str()
 	this.RetryCnt				= 0 ;
 	this.tLogCnt				= 0 ;
 	
-																//コールバック
-	this.Callback				= top.DEF_GVAL_NULL ;			//  コールバック関数
-	this.Arg					= top.DEF_GVAL_NULL ;			//  コールバック引数
+	this.NextProcess	= new gSTR_CallbackInfo_Str() ;			//  コールバック情報
 }
 var gARR_TimerCtrlInfo = {} ;
 
@@ -321,17 +310,6 @@ var gSTR_StorageInfo = new gSTR_StorageInfo_Str() ;
 
 
 //###########################
-//# セレクタ制御クラス用
-function gSTR_SelCtrlInfo_Str()
-{
-	this.Name					= top.DEF_GVAL_NULL ;			//名前
-	this.Open					= false ;						//オープン状態
-}
-///var gARR_SelCtrlInfo			= new Object() ;				//セレクタ情報
-var gARR_SelCtrlInfo			= {} ;							//セレクタ情報
-
-
-//###########################
 //# Window制御クラス用
 
 var DEF_GVAL_WINCTRL_DUMMY_FRAME		= "/frame/_blank/_blank.htm" ;
@@ -345,13 +323,6 @@ var DEF_GVAL_WINCTRL_CSS_MODE	= new Array(					//CSSモード
 	"mbnone",													//  CSS変更不可・モバイルサイズのみ
 	"elase"														//  ボタン非表示・サイズ自動切替
 	) ;
-
-///var DEF_GVAL_WINCTRL_FRAMEINFO = {
-///	"ID"		: "DEFAULT",
-///	"PATH" 		: top.DEF_GVAL_WINCTRL_DUMMY_FRAME,
-///	"HEIGHT"	: top.DEF_GVAL_NULL,
-///	"WIDTH"		: 200
-///} ;	
 
 var DEF_GVAL_WINCTRL_CSS_FOOTER_PC = "_wide.css" ;				//CSSファイル名後尾（PC用）
 var DEF_GVAL_WINCTRL_CSS_FOOTER_MB = "_mini.css" ;				//CSSファイル名後尾（スマホ用）
@@ -379,37 +350,41 @@ var DEF_GVAL_WINCTRL_CSS_FOOTER_MB = "_mini.css" ;				//CSSファイル名後尾
 ///var STR_WindowCtrl_SubWindowInfo = new Array() ;
 
 
+//### セレクタ制御
+function gSTR_SelInfo_Str()
+{
+	this.Name					= top.DEF_GVAL_NULL ;			//名前
+	this.Open					= false ;						//オープン状態
+}
+
+
 //### フレーム情報
 function gSTR_FrameCtrlInfo_Str()
 {
-//	this.PageObj				= top.DEF_GVAL_NULL ;			//  親フレーム ページオブジェクト
-	this.ChildObj				= top.DEF_GVAL_NULL ;			//  子フレーム ページオブジェクト
+	this.WindowObj				= top.DEF_GVAL_NULL ;			//  windowオブジェクト（子フレーム）
+	this.PageObj				= top.DEF_GVAL_NULL ;			//  ページオブジェクト（子フレーム）
 	this.FrameObj				= top.DEF_GVAL_NULL ;			//  iframeオブジェクト
 	this.Path					= top.DEF_GVAL_NULL ;			//  HTMLファイルパス
 	
 	this.ID						= top.DEF_GVAL_NULL ;			//  フレームID
-///	this.Key					= top.DEF_GVAL_NULL ;			//  iframe id
-	
 	this.FLG_Popup				= false ;						//  true = ポップアップフレーム  false=インラインフレーム
+	this.FLG_Ttile				= false ;						//  true = 親フレームタイトル変更
+	
 	this.FLG_Open				= false ;						//  true = オープン開始（親フレーム側）
 	this.FLG_Load				= false ;						//  true = ロード完了（子フレーム側 onload）
-	this.FLG_Init				= false ;						//  true = フレーム全設定完了
+	this.FLG_Init				= false ;						//  true = ページ設定完了（ロード後処理）
+	this.FLG_Run				= false ;						//  コールバック処理中  true=処理中
+	this.FLG_Comp				= false ;						//  true = フレーム全設定完了
 	
 	this.PageInfo 		= new gSTR_PageInfo_Str() ;				//  ページ情報
+	this.NextProcess	= new gSTR_CallbackInfo_Str() ;			//  ロード後処理
+	this.SelInfo				= {} ;							//  セレクタ情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
 }
 var gARR_FrameCtrlInfo = {} ;
 
 
 //### Window情報群
-///function gSTR_WinCtrl_WindowInfo_Str()
-///{																//Window情報
-///	this.PageObj				= top.DEF_GVAL_NULL ;			//  ページオブジェクト
-///	this.Title					= top.DEF_GVAL_NULL ;			//  Windowタイトル
-///	this.Width					= 0 ;							//  Window幅
-///	this.Height					= 0 ;							//  Window高さ
-///}
-
 function gSTR_WinCtrl_Update_Str()
 {																//Window更新情報
 	this.TimeDate				= top.DEF_GVAL_NULL ;			//  取得時 日時
@@ -440,7 +415,7 @@ function gSTR_WinCtrl_TransInfo_Str()
 //### メイン情報
 function gSTR_WinCtrlInfo_Str()
 {																//Window情報（メイン）
-//	this.Window					= top.DEF_GVAL_NULL ;			//  Windowオブジェクト
+	this.Window					= top.DEF_GVAL_NULL ;			//  Windowオブジェクト
 	this.PageObj				= top.DEF_GVAL_NULL ;			//  ページオブジェクト
 	this.OtherDomain			= top.DEF_GVAL_NULL ;			//  外部ドメインのCSSの場合のドメイン名
 	
@@ -448,13 +423,13 @@ function gSTR_WinCtrlInfo_Str()
 	this.FLG_PC					= true ;						//  ページがPC版か
 	this.SW_Mode				= top.DEF_GVAL_NULL ;			//  CSSスイッチ表示
 	this.CSSInfo				= {} ;							//  CSSオプション
-
-///	this.WindowInfo 	= new gSTR_WinCtrl_WindowInfo_Str() ;	//  Window情報
+	
 	this.Com			= new gSTR_WinCtrl_CSSfile_Str() ;		//  CSSファイル(comm)
 	this.Org			= new gSTR_WinCtrl_CSSfile_Str() ;		//  CSSファイル(Orgin)
 	this.PageIcon		= new gSTR_WinCtrl_File_Str() ;			//  ページアイコン
 	this.UpIcon			= new gSTR_WinCtrl_File_Str() ;			//  更新アイコン
 	this.UpdateInfo 	= new gSTR_WinCtrl_Update_Str() ;		//  更新情報
+	this.SelInfo				= {} ;							//  セレクタ情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
 }
 var gSTR_WinCtrlInfo = new gSTR_WinCtrlInfo_Str() ;
@@ -489,6 +464,7 @@ var DEF_GVAL_LOG_LOG_LEVEL = {
 		"TS"		: "システムトラヒック",	//システムトラヒック、期間トラヒック、通信トラヒック(統計)
 		"TU"		: "ユーザトラヒック",	//ユーザトラヒック、期間トラヒック、通信トラヒック(統計)、獲得情報など
 		
+		"CB"		: "コールバック",		//コールバック系ログ
 		"N"			: "非表示の情報",		//非表示の情報
 		"X"			: "テスト用ログ",		//テスト用ログ
 		"(dummy)"	: ""

@@ -10,10 +10,6 @@
 //#		CLS_PageObj.sGetElement({
 //#			in:		inPageObj, inKey
 //#			out:	Element Object
-//# エレメントタグ取得
-//#		CLS_PageObj.sGetElementTag({
-//#			in:		inPageObj, inKey
-//#			out:	Element Tag
 //# フレームドキュメント取得
 //#		CLS_PageObj.sGetFrameDocument({
 //#			in:		inPageObj, inKey
@@ -141,45 +137,45 @@ class CLS_PageObj {
 
 
 
-//#####################################################
-//# エレメントタグ取得
-//#####################################################
-	static sGetElementTag({
-		inPageObj,
-		inKey
-	})
-	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetElementTag" }) ;
-		
-		let wObj ;
-		
-		/////////////////////////////
-		// オブジェクト取得
-		try
-		{
-			wObj = inPageObj.getElementsByTagName( inKey ) ;
-		}
-		catch(e)
-		{
-			//###########################
-			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-			return wRes ;
-		}
-		
-		/////////////////////////////
-		// 正常
-		wRes['Responce'] = wObj ;
-		wRes['Result']   = true ;
-		return wRes ;
-	}
-
-
+/////#####################################################
+/////# エレメントタグ取得
+/////#####################################################
+///	static sGetElementTag({
+///		inPageObj,
+///		inKey
+///	})
+///	{
+///		//###########################
+///		//# 応答形式の取得
+///		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+///		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetElementTag" }) ;
+///		
+///		let wObj ;
+///		
+///		/////////////////////////////
+///		// オブジェクト取得
+///		try
+///		{
+///			wObj = inPageObj.getElementsByTagName( inKey ) ;
+///		}
+///		catch(e)
+///		{
+///			//###########################
+///			//# 例外処理
+///			let wError = "inKey=" + String(inKey) ;
+///			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+///			return wRes ;
+///		}
+///		
+///		/////////////////////////////
+///		// 正常
+///		wRes['Responce'] = wObj ;
+///		wRes['Result']   = true ;
+///		return wRes ;
+///	}
+///
+///
 
 //#####################################################
 //# フレームドキュメント取得
@@ -194,14 +190,17 @@ class CLS_PageObj {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetFrameDocument" }) ;
 		
-		let wObj, wDoc ;
+///		let wObj, wDoc ;
+		let wObj ;
 		
 		/////////////////////////////
 		// オブジェクト取得
 		try
 		{
-			wObj = inPageObj.getElementsByTagName( inKey ) ;
-			wDoc = wObj[0].contentDocument ;
+///			wObj = inPageObj.getElementsByTagName( inKey ).contentWindow ;
+			wObj = inPageObj.getElementById( inKey ).contentWindow.document ;
+///			wObj = self.document.getElementById( inKey ).contentWindow.document ;
+///			wDoc = wObj[0].contentDocument ;
 		}
 		catch(e)
 		{
@@ -215,7 +214,8 @@ class CLS_PageObj {
 		
 		/////////////////////////////
 		// 正常
-		wRes['Responce'] = wDoc ;
+///		wRes['Responce'] = wDoc ;
+		wRes['Responce'] = wObj ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
@@ -289,6 +289,53 @@ class CLS_PageObj {
 		/////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
+//# ページタイトル設定
+//#####################################################
+	static sSetPageTitle({
+		inPageObj,
+		inCode = top.DEF_GVAL_NULL
+	})
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetPageTitle" }) ;
+		
+		/////////////////////////////
+		// 入力チェック
+		if( inCode==top.DEF_GVAL_NULL )
+		{
+			//失敗
+			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// データ設定
+		try
+		{
+			inPageObj.title = inCode ;
+		}
+		catch(e)
+		{
+			//###########################
+			//# 例外処理
+			let wError = "inCode=" + String(inCode) ;
+			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
 		return wRes ;
 	}
 
@@ -1567,8 +1614,7 @@ class CLS_PageObj {
 			wObj.style.height = wARR_Value['Height'] ;
 			wObj.style.width  = wARR_Value['Width'] ;
 			
-			//###########################
-			//# コンソール表示
+			//### コンソール表示
 			let wMessage = "Change Frame Size: inKey=" + String(inKey) + " inHeight=" + String(inHeight) + " inWidth=" + String(inWidth) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		}

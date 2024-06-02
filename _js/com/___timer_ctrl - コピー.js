@@ -13,17 +13,13 @@
 //#					inValue				//タイマ値
 //#					inRetry				//リトライ値
 //#					intLog				//ログカウント値
-//#					inNextProc
-//#						"Callback"		//受信時にコールバック
-//#						"Arg"			//コールバックに渡す引数
+//#					inCallback			//受信時にコールバック
+//#					inArg				//コールバックに渡す引数
 //#					inOW				//上書き設定  true=上書き設定
 //#
 //# タイマ起動
 //#		CLS_Timer.sStart
-//#			in:		inTimerID, inStatus
-//# タイマリセット
-//#		CLS_Timer.sReset
-//#			in:		inTimerID, inStatus
+//#			in:		inTimerID
 //# タイマ停止
 //#		CLS_Timer.sStop
 //#			in:		inTimerID
@@ -32,133 +28,13 @@
 //#		CLS_Timer.sGetStatus
 //#			in:		inTimerID
 //#			out:	
-//#					wRes['Responce']['FLG_Start']	//タイマ起動      true=起動中
-//#					wRes['Responce']['FLG_Stop']	//タイマ停止通知  true=停止ON
-//#					wRes['Responce']['FLG_Tout']	//タイムアウト
-//#					wRes['Responce']['FLG_Rout']	//リトライアウト
+//#					wRes['Responce']['FLG_Start']	//タイマ起動  true=起動中
 //#					wRes['Responce']['Status']		//状態遷移
-//#					wRes['Responce']['Value']		//タイマ値
-//#					wRes['Responce']['Retry']		//リトライ値
 //# 状態設定
-//#		CLS_Timer.sSetStatus
+//#		CLS_Timer.sStart
 //#			in:		inTimerID, inStatus
 //#
 //#####################################################
-
-
-
-//#####################################################
-//# 非同期コールバック
-//#####################################################
-	async function async_CLS_Timer_Callback({
-		inTimerID = top.DEF_GVAL_NULL
-	})
-	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"async_CLS_Timer_Callback" }) ;
-		
-		let wSubRes, wName ;
-		
-		/////////////////////////////
-		// タイマ存在チェック
-		wSubRes = CLS_Timer.__sExist({
-			inTimerID : inTimerID
-		}) ;
-		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
-		{///タイマが存在しないか、不正の場合
-			wRes['Reason'] = "Timer is not exist: inTimerID=" + String(inTimerID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-///			return wRes ;
-			return ;
-		}
-		
-		/////////////////////////////
-		// 排他
-		if( top.gARR_TimerCtrlInfo[inTimerID].FLG_Run==true )
-		{///既に排他中の場合は、終わる
-			wRes['Reason'] = "Running callback process: inTimerID=" + String(inTimerID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D" }) ;
-///			return wRes ;
-			return ;
-		}
-		//### 排他ON
-		top.gARR_TimerCtrlInfo[inTimerID].FLG_Run = true ;
-		
-		/////////////////////////////
-		// コールバック起動（フレーム受信後処理）
-		if( top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback!=top.DEF_GVAL_NULL )
-		{///コールバック設定ありの場合
-			wName = top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name ;
-			
-			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
-			{
-				if(( wName!="__sCircleProcess" ) && ( wName!="__handle_Circle" ))
-				{
-					wMessage = "Befour callback: inTimerID=" + String(inTimerID) + " Func=" + wName ;
-					CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage }) ;
-				}
-			}
-			
-			//### コールバック起動
-			wSubRes = CLS_OSIF.sCallBack({
-				callback	: top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback,
-				inArg		: top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Arg
-			}) ;
-		}
-		else
-		{///コールバック設定なしの場合
-			wName = "__sDefaultCallback" ;
-			
-			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
-			{
-				wMessage = "Befour callback: inTimerID=" + String(inTimerID) + " Func=" + wName ;
-				CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage }) ;
-			}
-			
-			//### コールバック起動
-			wSubRes = CLS_Timer.__sDefaultCallback({
-				inTimerID : inTimerID
-			}) ;
-		}
-		if( wSubRes!=true )
-		{///失敗
-			wRes['Reason'] = "Callback error: inTimerID=" + String(inTimerID) + " Func=" + wName ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-			
-			//### タイマ停止通知＆排他解除
-			top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop = true ;
-			top.gARR_TimerCtrlInfo[inTimerID].FLG_Run  = false ;
-			
-///			return wRes ;
-			return ;
-		}
-		
-		/////////////////////////////
-		// 排他OFF
-		top.gARR_TimerCtrlInfo[inTimerID].FLG_Run = false ;
-		
-		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
-		{
-			if(( wName!="__sCircleProcess" ) && ( wName!="__handle_Circle" ))
-			{
-				wMessage = "After callback: inTimerID=" + String(inTimerID) + " Func=" + wName ;
-				CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage }) ;
-			}
-		}
-		
-		/////////////////////////////
-		// 正常
-		wRes['Result'] = true ;
-///		return wRes ;
-		return ;
-	}
-
-
 
 //#####################################################
 class CLS_Timer {
@@ -173,10 +49,8 @@ class CLS_Timer {
 		inValue		= top.DEF_GVAL_TIMERCTRL_DEFAULT_TIMEOUT,	//タイマ値
 		inRetry		= top.DEF_GVAL_TIMERCTRL_DEFAULT_RETRY,		//リトライ値
 		intLog		= top.DEF_GVAL_TIMERCTRL_LOG_COUNT,			//ログカウント値
-		inNextProc		= {
-			"Callback"	: top.DEF_GVAL_NULL,
-			"Arg"		: new Array()
-			},
+		inCallback	= top.DEF_GVAL_NULL,					//受信時にコールバック
+		inArg		= top.DEF_GVAL_NULL,					//コールバックに渡す引数
 		inOW		= false									//上書き設定  true=上書き設定
 	})
 	{
@@ -251,21 +125,6 @@ class CLS_Timer {
 			return wRes ;
 		}
 		
-		//### コールバック情報
-		if(( CLS_OSIF.sCheckObject({ inObject:inNextProc, inKey:"Callback" })!=true ) ||
-		   ( CLS_OSIF.sCheckObject({ inObject:inNextProc, inKey:"Arg" })!=true ))
-		{///失敗
-			wRes['Reason'] = "inNextProc is incorrect" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-			return wRes ;
-		}
-		if( inNextProc['Callback']==top.DEF_GVAL_NULL )
-		{///失敗
-			wRes['Reason'] = "Unset inNextProc['Callback']" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-			return wRes ;
-		}
-		
 		//###########################
 		//# パラメータの作成
 		wSTR_Param = new gSTR_TimerCtrlInfo_Str() ;
@@ -275,8 +134,8 @@ class CLS_Timer {
 		wSTR_Param.Value	= inValue ;
 		wSTR_Param.Retry	= inRetry ;
 		wSTR_Param.tLog		= intLog ;
-		wSTR_Param.NextProcess.Callback	= inNextProc['Callback'] ;
-		wSTR_Param.NextProcess.Arg		= inNextProc['Arg'] ;
+		wSTR_Param.Callback	= inCallback ;
+		wSTR_Param.Arg		= inArg ;
 		
 		/////////////////////////////
 		// 追加
@@ -289,9 +148,9 @@ class CLS_Timer {
 			wMessage = wMessage + '\n' + "  Kind=" + String(inTimerKind) ;
 			wMessage = wMessage + '\n' + "  Value=" + String(inValue) ;
 			wMessage = wMessage + '\n' + "  Retry=" + String(inRetry) ;
-			if( inNextProc['Callback']!=top.DEF_GVAL_NULL )
+			if( inCallback!=top.DEF_GVAL_NULL )
 			{
-				wMessage = wMessage + '\n' + "  Callback=" + String(inNextProc['Callback'].name) ;
+				wMessage = wMessage + '\n' + "  Callback=" + String(inCallback.name) ;
 			}
 		}
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -385,9 +244,6 @@ class CLS_Timer {
 		
 		/////////////////////////////
 		// 状態リセット
-		top.gARR_TimerCtrlInfo[inTimerID].FLG_Start	= false ;
-		top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop	= false ;
-//		top.gARR_TimerCtrlInfo[inTimerID].FLG_Run	= false ;	//排他はプロセス側で処理する
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Tout	= false ;
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Rout	= false ;
 		top.gARR_TimerCtrlInfo[inTimerID].Status	= top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
@@ -418,26 +274,29 @@ class CLS_Timer {
 			   ( top.gARR_TimerCtrlInfo[inTimerID].Kind=="system" ))
 			{
 				//### 定期実行タイマ・システムタイマ
-				top.gSTR_WinCtrlInfo.Window.setTimeout(
-					"CLS_Timer.__sTimeoutCircle('" + String(inTimerID) + "')",
-					top.gARR_TimerCtrlInfo[inTimerID].Value
+				top.gARR_TimerCtrlInfo[inTimerID].TimerID =
+					window.setTimeout(
+						"CLS_Timer.__sTimeoutCircle('" + String(inTimerID) + "')",
+						top.gARR_TimerCtrlInfo[inTimerID].Value
 				) ;
 			}
 			else if(( top.gARR_TimerCtrlInfo[inTimerID].Kind=="wait" ) ||
 			        ( top.gARR_TimerCtrlInfo[inTimerID].Kind=="frame" ))
 			{
 				//### 状態待ちタイマ・フレーム受信待ち
-				top.gSTR_WinCtrlInfo.Window.setTimeout(
-					"CLS_Timer.__sTimeoutWait('" + String(inTimerID) + "')",
-					top.gARR_TimerCtrlInfo[inTimerID].Value
+				top.gARR_TimerCtrlInfo[inTimerID].TimerID =
+					window.setTimeout(
+						"CLS_Timer.__sTimeoutWait('" + String(inTimerID) + "')",
+						top.gARR_TimerCtrlInfo[inTimerID].Value
 				) ;
 			}
 			else
 			{
 				//### ノーマルタイマ
-				top.gSTR_WinCtrlInfo.Window.setTimeout(
-					"CLS_Timer.__sTimeout('" + String(inTimerID) + "')",
-					top.gARR_TimerCtrlInfo[inTimerID].Value
+				top.gARR_TimerCtrlInfo[inTimerID].TimerID =
+					window.setTimeout(
+						"CLS_Timer.__sTimeout('" + String(inTimerID) + "')",
+						top.gARR_TimerCtrlInfo[inTimerID].Value
 				) ;
 			}
 		}
@@ -462,98 +321,9 @@ class CLS_Timer {
 			wMessage = wMessage + '\n' + "  Kind=" + String(top.gARR_TimerCtrlInfo[inTimerID].Kind) ;
 			wMessage = wMessage + '\n' + "  Value=" + String(top.gARR_TimerCtrlInfo[inTimerID].Value) ;
 			wMessage = wMessage + '\n' + "  Retry=" + String(top.gARR_TimerCtrlInfo[inTimerID].Retry) ;
-			if( top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback!=top.DEF_GVAL_NULL )
+			if( top.gARR_TimerCtrlInfo[inTimerID].Callback!=top.DEF_GVAL_NULL )
 			{
-				wMessage = wMessage + '\n' + "  Callback=" + String(top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name) ;
-			}
-		}
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-		
-		/////////////////////////////
-		// 正常
-		wRes['Result'] = true ;
-		return wRes ;
-	}
-
-
-
-//#####################################################
-//# タイマリセット
-//#####################################################
-	static sReset({
-		inTimerID = top.DEF_GVAL_NULL,
-		inStatus  = top.DEF_GVAL_TIMERCTRL_TST_IDLE
-	})
-	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"sReset" }) ;
-		
-		let wSubRes, wMessage ;
-		
-		/////////////////////////////
-		// タイマ存在チェック
-		wSubRes = this.__sExist({
-			inTimerID : inTimerID
-		}) ;
-		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
-		{///タイマが存在しないか、不正の場合
-			wRes['Reason'] = "Timer is not exist: inTimerID=" + String(inTimerID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-			return wRes ;
-		}
-		
-		/////////////////////////////
-		// タイマ種別チェック
-		if(( top.gARR_TimerCtrlInfo[inTimerID].Kind!="frame" ) &&
-		   ( top.gARR_TimerCtrlInfo[inTimerID].Kind!="wait" ))
-		{/// frame か wait 以外
-			wRes['Reason'] = "This timer cannot be reset: inTimerID=" + String(inTimerID) + " Kind=" + top.gARR_TimerCtrlInfo[inTimerID].Kind ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-			return wRes ;
-		}
-		
-		/////////////////////////////
-		// タイマ状態
-		if( top.gARR_TimerCtrlInfo[inTimerID].FLG_Start==false )
-		{///タイマ停止中
-			wRes['Reason'] = "Timer is stopped: inTimerID=" + String(inTimerID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-			return wRes ;
-		}
-		
-		/////////////////////////////
-		// タイマリセット
-		top.gARR_TimerCtrlInfo[inTimerID].RetryCnt	= 0 ;
-		top.gARR_TimerCtrlInfo[inTimerID].tLogCnt	= 0 ;
-		
-		/////////////////////////////
-		// 待ち状態の指定があれば設定する
-		if( inStatus!=top.DEF_GVAL_TIMERCTRL_TST_IDLE )
-		{
-			this.sSetStatus({
-				inTimerID : inTimerID,
-				inStatus  : inStatus
-			}) ;
-			if( wSubRes['Result']!=true )
-			{///失敗
-				wRes['Reason'] = "sSetStatus is failed" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-				return wRes ;
-			}
-		}
-		
-		//### コンソール表示
-		wMessage = "Start Timer: inTimerID=" + String(inTimerID) ;
-		if( top.DEF_INDEX_TEST==true )
-		{///テストモード時
-			wMessage = wMessage + '\n' + "  Kind=" + String(top.gARR_TimerCtrlInfo[inTimerID].Kind) ;
-			wMessage = wMessage + '\n' + "  Value=" + String(top.gARR_TimerCtrlInfo[inTimerID].Value) ;
-			wMessage = wMessage + '\n' + "  Retry=" + String(top.gARR_TimerCtrlInfo[inTimerID].Retry) ;
-			if( top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback!=top.DEF_GVAL_NULL )
-			{
-				wMessage = wMessage + '\n' + "  Callback=" + String(top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name) ;
+				wMessage = wMessage + '\n' + "  Callback=" + String(top.gARR_TimerCtrlInfo[inTimerID].Callback.name) ;
 			}
 		}
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -593,33 +363,35 @@ class CLS_Timer {
 		}
 		
 		/////////////////////////////
-		// タイマ起動状態の確認
-		//   停止中ならログを出して終わる
-		if( top.gARR_TimerCtrlInfo[inTimerID].FLG_Start==false )
+		// タイマ一旦停止
+		try
 		{
-			//### いちお停止通知は発行する
-			top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop = true ;
-			top.gARR_TimerCtrlInfo[inTimerID].Status = top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
-			
-			wRes['Reason'] = "Timer is Stopped(Dual issued stop command): inTimerID=" + String(inTimerID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"E" }) ;
-			return wRes ;
+			window.clearTimeout( top.gARR_TimerCtrlInfo[inTimerID].TimerID ) ;
 		}
-		if( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true )
+		catch(e)
 		{
-			wRes['Reason'] = "Dual issued stop command: inTimerID=" + String(inTimerID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"E" }) ;
+			//###########################
+			//# 例外処理
+			wError = "inTimerID=" + String(inTimerID) ;
+			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
 			return wRes ;
 		}
 		
 		/////////////////////////////
-		// タイマ停止通知 発行
-		top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop = true ;
-		top.gARR_TimerCtrlInfo[inTimerID].Status = top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
-		
-		//### コンソール表示
-		wMessage = "Timer stop: Issue stop command: inTimerID=" + String(inTimerID) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		// タイマ起動停止（OFF）
+		if( top.gARR_TimerCtrlInfo[inTimerID].FLG_Start==true )
+		{
+			//### コンソール表示
+			wMessage = "Stopped Timer: Timer Stop: inTimerID=" + String(inTimerID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		}
+		else
+		{///停止中の停止発行
+			wRes['Reason'] = "Timer is Stopped(illigal error): inTimerID=" + String(inTimerID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"E" }) ;
+		}
+		top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;
 		
 		/////////////////////////////
 		// 正常
@@ -657,20 +429,46 @@ class CLS_Timer {
 		}
 		
 		/////////////////////////////
-		// タイマ停止＆タイムアウト
+		// タイマ停止
+		try
+		{
+			clearTimeout( top.gARR_TimerCtrlInfo[inTimerID].TimerID ) ;
+		}
+		catch(e)
+		{
+			//###########################
+			//# 例外処理
+			wError = "inTimerID=" + String(inTimerID) ;
+			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// タイマ停止
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;
-		top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop  = true ; //いちお停止通知も発行
-		top.gARR_TimerCtrlInfo[inTimerID].FLG_Tout  = true ;
 		
 		/////////////////////////////
-		// 非同期コールバック起動
-		async_CLS_Timer_Callback({
-			inTimerID : inTimerID
-		}) ;
-		
-		/////////////////////////////
-		// 状態をアイドルに戻す
-		top.gARR_TimerCtrlInfo[inTimerID].Status	= top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
+		// コールバック起動（フレーム受信後処理）
+		if( top.gARR_TimerCtrlInfo[inTimerID].Callback!=top.DEF_GVAL_NULL )
+		{///コールバック設定ありの場合
+			wSubRes = CLS_OSIF.sCallBack({
+				callback	: top.gARR_TimerCtrlInfo[inTimerID].Callback,
+				inArg		: top.gARR_TimerCtrlInfo[inTimerID].Arg
+			}) ;
+		}
+		else
+		{///コールバック設定なしの場合
+			wSubRes = this.__sDefaultCallback({
+				inTimerID : inTimerID
+			}) ;
+		}
+		if( wSubRes!=true )
+		{///失敗
+			wRes['Reason'] = "Callback error: inTimerID=" + String(inTimerID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			return wRes ;
+		}
 		
 		//### コンソール表示
 		wMessage = "Stopped Timer: Normal timer stopped: inTimerID=" + String(inTimerID) ;
@@ -709,22 +507,32 @@ class CLS_Timer {
 		}
 		
 		/////////////////////////////
-		// 既に止まっているか、
-		// 停止通知が発行されていたら、終わる
-		if(( top.gARR_TimerCtrlInfo[inTimerID].FLG_Start==false ) ||
-		   ( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true ))
+		// 既に止まっていたら、終わる
+		if( top.gARR_TimerCtrlInfo[inTimerID].FLG_Start==false )
 		{
-			top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;	//起動OFF
-			top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop  = true ; 	//停止通知ON
-			top.gARR_TimerCtrlInfo[inTimerID].Status	= top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
-			
 			//### コンソール表示
-			wMessage = "Stopped Timer: inTimerID=" + String(inTimerID) ;
+			wMessage = "Stopped Timer: FLG_Start is false: inTimerID=" + String(inTimerID) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			
 			/////////////////////////////
 			// 正常
 			wRes['Result'] = true ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// タイマ停止
+		try
+		{
+			window.clearTimeout( top.gARR_TimerCtrlInfo[inTimerID].TimerID ) ;
+		}
+		catch(e)
+		{
+			//###########################
+			//# 例外処理
+			wError = "inTimerID=" + String(inTimerID) ;
+			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
 			return wRes ;
 		}
 		
@@ -735,20 +543,39 @@ class CLS_Timer {
 			if( top.gARR_TimerCtrlInfo[inTimerID].tLogCnt>=top.gARR_TimerCtrlInfo[inTimerID].tLog )
 			{
 				wMessage = "Circle timer to check: inTimerID=" + String(inTimerID) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage }) ;
 				top.gARR_TimerCtrlInfo[inTimerID].tLogCnt = 0 ;
 			}
 		}
 		
 		/////////////////////////////
-		// タイムアウト表示（いちお）
+		// タイムアウト表示
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Tout = true ;
 		
 		/////////////////////////////
-		// 非同期コールバック起動
-		async_CLS_Timer_Callback({
-			inTimerID : inTimerID
-		}) ;
+		// コールバック起動
+		if( top.gARR_TimerCtrlInfo[inTimerID].Callback!=top.DEF_GVAL_NULL )
+		{///コールバック設定ありの場合
+			wSubRes = CLS_OSIF.sCallBack({
+				callback	: top.gARR_TimerCtrlInfo[inTimerID].Callback,
+				inArg		: top.gARR_TimerCtrlInfo[inTimerID].Arg
+			}) ;
+		}
+		else
+		{///コールバック設定なしの場合
+			wSubRes = this.__sDefaultCallback({
+				inTimerID : inTimerID
+			}) ;
+		}
+		if( wSubRes!=true )
+		{///失敗
+			//### タイマ停止
+			top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;
+			
+			wRes['Reason'] = "Callback error: inTimerID=" + String(inTimerID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			return wRes ;
+		}
 		
 		/////////////////////////////
 		// タイマ再起動
@@ -758,11 +585,11 @@ class CLS_Timer {
 		
 		try
 		{
-			//### タイマ再起動
-			top.gSTR_WinCtrlInfo.Window.setTimeout(
-				"CLS_Timer.__sTimeoutCircle('" + String(inTimerID) + "')",
-				top.gARR_TimerCtrlInfo[inTimerID].Value
-			) ;
+			top.gARR_TimerCtrlInfo[inTimerID].TimerID =
+				window.setTimeout(
+					"CLS_Timer.__sTimeoutCircle('" + String(inTimerID) + "')",
+					top.gARR_TimerCtrlInfo[inTimerID].Value
+					) ;
 			
 		}
 		catch(e)
@@ -808,18 +635,32 @@ class CLS_Timer {
 		}
 		
 		/////////////////////////////
-		// 既に止まっているか、
-		// 停止通知が発行されていたら、終わる
-		if(( top.gARR_TimerCtrlInfo[inTimerID].FLG_Start==false ) ||
-		   ( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true ))
+		// 既に止まっていたら、終わる
+		if( top.gARR_TimerCtrlInfo[inTimerID].FLG_Start==false )
 		{
 			//### コンソール表示
-			wMessage = "Stopped Timer: inTimerID=" + String(inTimerID) ;
+			wMessage = "Stopped Timer: FLG_Start is false: inTimerID=" + String(inTimerID) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			
 			/////////////////////////////
 			// 正常
 			wRes['Result'] = true ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// タイマ停止
+		try
+		{
+			window.clearTimeout( top.gARR_TimerCtrlInfo[inTimerID].TimerID ) ;
+		}
+		catch(e)
+		{
+			//###########################
+			//# 例外処理
+			wError = "inTimerID=" + String(inTimerID) ;
+			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
 			return wRes ;
 		}
 		
@@ -830,7 +671,7 @@ class CLS_Timer {
 			if( top.gARR_TimerCtrlInfo[inTimerID].tLog<=top.gARR_TimerCtrlInfo[inTimerID].tLogCnt )
 			{
 				wMessage = "Wait timer to check: inTimerID=" + String(inTimerID) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage }) ;
 				top.gARR_TimerCtrlInfo[inTimerID].tLogCnt = 0 ;
 			}
 		}
@@ -840,10 +681,29 @@ class CLS_Timer {
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Tout = true ;
 		
 		/////////////////////////////
-		// 非同期コールバック起動
-		async_CLS_Timer_Callback({
-			inTimerID : inTimerID
-		}) ;
+		// コールバック起動
+		if( top.gARR_TimerCtrlInfo[inTimerID].Callback!=top.DEF_GVAL_NULL )
+		{///コールバック設定ありの場合
+			wSubRes = CLS_OSIF.sCallBack({
+				callback	: top.gARR_TimerCtrlInfo[inTimerID].Callback,
+				inArg		: top.gARR_TimerCtrlInfo[inTimerID].Arg
+			}) ;
+		}
+		else
+		{///コールバック設定なしの場合
+			wSubRes = this.__sDefaultCallback({
+				inTimerID : inTimerID
+			}) ;
+		}
+		if( wSubRes!=true )
+		{///失敗
+			//### タイマ停止
+			top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;
+			
+			wRes['Reason'] = "Callback error: inTimerID=" + String(inTimerID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			return wRes ;
+		}
 		
 		/////////////////////////////
 		// リトライアウトか
@@ -853,10 +713,11 @@ class CLS_Timer {
 		
 		if( top.gARR_TimerCtrlInfo[inTimerID].Retry<=top.gARR_TimerCtrlInfo[inTimerID].RetryCnt )
 		{
-			top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;	//起動OFF
-			top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop  = true ; 	//停止通知ON
-			top.gARR_TimerCtrlInfo[inTimerID].FLG_Rout  = true ; 	//リトライアウト
-			top.gARR_TimerCtrlInfo[inTimerID].Status	= top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
+			//### タイマ停止
+			top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;
+			
+			//### リトライアウトON
+			top.gARR_TimerCtrlInfo[inTimerID].FLG_Rout  = true ;
 			
 			//### コンソール表示
 			wMessage = "Stopped Timer: Wait retry out: inTimerID=" + String(inTimerID) ;
@@ -876,11 +737,11 @@ class CLS_Timer {
 		
 		try
 		{
-			//### タイマ再起動
-			top.gSTR_WinCtrlInfo.Window.setTimeout(
-				"CLS_Timer.__sTimeoutWait('" + String(inTimerID) + "')",
-				top.gARR_TimerCtrlInfo[inTimerID].Value
-			) ;
+			top.gARR_TimerCtrlInfo[inTimerID].TimerID =
+				window.setTimeout(
+					"CLS_Timer.__sTimeoutWait('" + String(inTimerID) + "')",
+					top.gARR_TimerCtrlInfo[inTimerID].Value
+					) ;
 			
 		}
 		catch(e)
@@ -916,13 +777,8 @@ class CLS_Timer {
 		let wSubRes ;
 		
 		wRes['Responce'] = {
-			"FLG_Start"	: false,
-			"FLG_Stop"	: false,
-			"FLG_Tout"	: false,
-			"FLG_Rout"	: false,
-			"Status"	: top.DEF_GVAL_TIMERCTRL_TST_IDLE,
-			"Value"		: false,
-			"Retry"		: false
+			"FLG_Start" : false,
+			"Status"    : top.DEF_GVAL_TIMERCTRL_TST_IDLE
 		} ;
 		
 		/////////////////////////////
@@ -939,13 +795,8 @@ class CLS_Timer {
 		
 		/////////////////////////////
 		// 状態を設定
-		wRes['Responce']['FLG_Start']	= top.gARR_TimerCtrlInfo[inTimerID].FLG_Start ;
-		wRes['Responce']['FLG_Stop']	= top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop ;
-		wRes['Responce']['FLG_Tout']	= top.gARR_TimerCtrlInfo[inTimerID].FLG_Tout ;
-		wRes['Responce']['FLG_Rout']	= top.gARR_TimerCtrlInfo[inTimerID].FLG_Rout ;
-		wRes['Responce']['Status']		= top.gARR_TimerCtrlInfo[inTimerID].Status ;
-		wRes['Responce']['Value']		= top.gARR_TimerCtrlInfo[inTimerID].Value ;
-		wRes['Responce']['Retry']		= top.gARR_TimerCtrlInfo[inTimerID].Retry ;
+		wRes['Responce']['FLG_Start'] = top.gARR_TimerCtrlInfo[inTimerID].FLG_Start ;
+		wRes['Responce']['Status']    = top.gARR_TimerCtrlInfo[inTimerID].Status ;
 		
 		/////////////////////////////
 		// 正常
@@ -968,7 +819,7 @@ class CLS_Timer {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"sSetStatus" }) ;
 		
-		let wSubRes, wStatus, wMessage ;
+		let wSubRes ;
 		
 		/////////////////////////////
 		// タイマ存在チェック
@@ -984,14 +835,7 @@ class CLS_Timer {
 		
 		/////////////////////////////
 		// 状態を設定
-		wStatus = top.gARR_TimerCtrlInfo[inTimerID].Status ;
 		top.gARR_TimerCtrlInfo[inTimerID].Status = inStatus ;
-		
-		//### コンソール表示
-		wMessage = "Change Timer Status: inTimerID=" + String(inTimerID) ;
-		wMessage = wMessage + '\n' + "  Pre=" + String( wStatus ) ;
-		wMessage = wMessage + '\n' + "  New=" + String( top.gARR_TimerCtrlInfo[inTimerID].Status ) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
 		// 正常
@@ -1023,7 +867,7 @@ class CLS_Timer {
 			
 			//### コンソール表示
 			let wMessage = "Called Default Callback: inTimerID=" + String(inTimerID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage }) ;
 		}
 		return true ;
 	}

@@ -18,11 +18,14 @@ var DEF_CLD_NULL	= null ;
 function STR_ChildFrameInfo_Str()
 {
 	this.PageObj				= top.DEF_CLD_NULL ;			//  親フレーム ページオブジェクト
-	this.ChildObj				= top.DEF_CLD_NULL ;			//  子フレーム ページオブジェクト
+	this.cWindowObj				= top.DEF_CLD_NULL ;			//  子フレーム windowオブジェクト
+	this.cPageObj				= top.DEF_CLD_NULL ;			//  子フレーム ページオブジェクト
 	
 	this.ID						= top.DEF_CLD_NULL ;			//  フレームID
 }
 var gSTR_CldInfo = new STR_ChildFrameInfo_Str() ;
+
+var gSTR_CldPSelInfo = new Array() ;							//  セレクタ仮登録番号
 
 var gCLS_OSIF	= this.DEF_CLD_NULL ;
 var gCLS_Sys	= this.DEF_CLD_NULL ;
@@ -40,8 +43,8 @@ class CLS_FrameCld {
 		inPageObj = null
 	})
 	{
-		let wOBJ_Op, wSubRes, wResLoad, wResPage, wSTR_URL, wMessage ;
-		let wFrameID, wText, wURL, wKey, wARR_Text ;
+		let wOBJ_Op, wOBJ_Win, wSubRes, wResLoad, wSTR_URL, wMessage ;
+		let wFrameID, wText, wURL, wKey, wARR_Text, wFLG_Inline ;
 		
 		wResLoad = {
 			"Result"	: false,
@@ -62,65 +65,103 @@ class CLS_FrameCld {
 			return wResLoad ;
 		}
 		
+		wFLG_Inline = false ;
 		/////////////////////////////
-		// フレーム情報の取得
-		//   親window情報の取得（親フレーム）
-		//   子window情報の取得（自分）
+		// Windowオープンの取得
 		try
 		{
-///			wOBJ_Op = window.parent.opener ;
-///			wOBJ_Op = window.parent ;
-			wOBJ_Op = window.opener ;
+			wOBJ_Op = window.opener ;		//親フレーム ページオブジェクト
 			wText   = wOBJ_Op.DEF_USER_AUTHOR ;
 			
-			if( top.DEF_INDEX_TEST==true )
-			{///デバッグ用
-				console.dir( inPageObj ) ;
-//				console.dir( window ) ;
-//				console.dir( window.opener ) ;
-				console.dir( window.parent ) ;
-			}
-			top.gSTR_CldInfo.PageObj  = wOBJ_Op ;
-			top.gSTR_CldInfo.ChildObj = window ;
+			//### 子フレーム情報のセット
+			wOBJ_Win = window ;
+			wOBJ_Win.gSTR_CldInfo.PageObj		= wOBJ_Op ;
+			wOBJ_Win.gSTR_CldInfo.cWindowObj	= wOBJ_Win ;	//windowオブジェクト
+			wOBJ_Win.gSTR_CldInfo.cPageObj		= inPageObj ;	//ページオブジェクト
 			
 			/////////////////////////////
 			// 正常
+			console.log( "This is Window Open Frame" ) ;
 			wResLoad['Result'] = true ;
 		}
 		catch(e)
 		{///失敗
-			wResLoad['Reason'] = "CLS_FrameCld.sLoad: Exception=" + String(e) ;
+			wResLoad['Reason'] = "CLS_FrameCld.sLoad: Window: " + String(e) ;
+			console.info( wResLoad['Reason'] ) ;
+		}
+		
+		/////////////////////////////
+		// フレームオープンの取得
+		if( wText==null )
+		{
+			try
+			{
+				wOBJ_Op = window.parent ;	//親フレーム ページオブジェクト
+				wText   = wOBJ_Op.DEF_USER_AUTHOR ;
+				
+				//### 子フレーム情報のセット
+				wOBJ_Win = window ;
+				wOBJ_Win.gSTR_CldInfo.PageObj		= wOBJ_Op ;
+				wOBJ_Win.gSTR_CldInfo.cWindowObj	= wOBJ_Win ;	//windowオブジェクト
+				wOBJ_Win.gSTR_CldInfo.cPageObj		= inPageObj ;	//ページオブジェクト
+				
+				/////////////////////////////
+				// 正常
+				wFLG_Inline = true ;	//インラインフレームの場合
+				console.log( "This is Inline Frame" ) ;
+				wResLoad['Result'] = true ;
+			}
+			catch(e)
+			{///失敗
+				wResLoad['Reason'] = "CLS_FrameCld.sLoad: Inline: " + String(e) ;
+				console.info( wResLoad['Reason'] ) ;
+			}
+		}
+		
+		//### 成否判定
+		if( wResLoad['Result']!=true )
+		{///失敗
+			wResLoad['Reason'] = "CLS_FrameCld.sLoad: Unget frame info" ;
 			console.error( wResLoad['Reason'] ) ;
+			
+			//### デバッグ用
+			console.log( "*** debug ***" ) ;
+			console.dir( inPageObj ) ;
+			console.dir( window ) ;
+			// console.dir( window.opener ) ;
+			// console.dir( window.parent ) ;
+			console.log( "*************" ) ;
+			
 			return wResLoad ;
 		}
 		
 	/////////////////////////////
 	// window.parent.opener 正常
 		
-///		let wCLS_OSIF = wOBJ_Op.gCLS_OSIF.constructor ;
-///		let wCLS_Sys  = wOBJ_Op.gCLS_Sys.constructor ;
-///		let wCLS_L    = wOBJ_Op.gCLS_L.constructor ;
-		top.gCLS_OSIF	= wOBJ_Op.gCLS_OSIF.constructor ;
-		top.gCLS_Sys	= wOBJ_Op.gCLS_Sys.constructor ;
-		top.gCLS_L		= wOBJ_Op.gCLS_L.constructor ;
+		wOBJ_Win.gCLS_OSIF	= wOBJ_Op.gCLS_OSIF.constructor ;
+		wOBJ_Win.gCLS_Sys	= wOBJ_Op.gCLS_Sys.constructor ;
+		wOBJ_Win.gCLS_L		= wOBJ_Op.gCLS_L.constructor ;
 		
 		//###########################
 		//# 応答形式の取得
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = top.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sLoad" }) ;
+		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sLoad" }) ;
 		
 		/////////////////////////////
 		// ページ情報の取得
-		wSubRes = top.gCLS_Sys.sGetSTRpage({
+		wSubRes = wOBJ_Win.gCLS_Sys.sGetSTRpage({
 			inPageObj		: inPageObj
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed" ;
-			top.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 			
-			wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
-			console.error( wResLoad['Reason'] ) ;
+			if( wFLG_Inline==false )
+			{///windowの場合、子フレームコンソール表示
+				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
+				console.error( wResLoad['Reason'] ) ;
+			}
 			return wRes ;
 		}
 		
@@ -145,10 +186,13 @@ class CLS_FrameCld {
 		if( wText.length!=2 )
 		{///失敗
 			wResLoad['Reason'] = "Location Error: URL=" + String(wURL) ;
-			top.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 			
-			wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
-			console.error( wResLoad['Reason'] ) ;
+			if( wFLG_Inline==false )
+			{///windowの場合、子フレームコンソール表示
+				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
+				console.error( wResLoad['Reason'] ) ;
+			}
 			return wRes ;
 		}
 		wText = wText[1] ;
@@ -161,10 +205,13 @@ class CLS_FrameCld {
 			if( wText.length!=2 )
 			{///失敗
 				wResLoad['Reason'] = "Location Error: URL=" + String(wURL) + " Line=" + String(wARR_Text[wKey]) ;
-				top.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 				
-				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
-				console.error( wResLoad['Reason'] ) ;
+				if( wFLG_Inline==false )
+				{///windowの場合、子フレームコンソール表示
+					wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
+					console.error( wResLoad['Reason'] ) ;
+				}
 				return wRes ;
 			}
 			if( wText[0]==wOBJ_Op.DEF_GVAL_WINCTRL_URL_PARAM_FRAMEID )
@@ -175,28 +222,56 @@ class CLS_FrameCld {
 		if( wFrameID==null )
 		{///失敗
 			wResLoad['Reason'] = "Location Error: URL=" + String(wURL) ;
-			top.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 			
-			wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
-			console.error( wResLoad['Reason'] ) ;
+			if( wFLG_Inline==false )
+			{///windowの場合、子フレームコンソール表示
+				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
+				console.error( wResLoad['Reason'] ) ;
+			}
 			return wRes ;
 		}
-		top.gSTR_CldInfo.ID = wFrameID ;
+		wOBJ_Win.gSTR_CldInfo.ID = wFrameID ;
+		
+		/////////////////////////////
+		// フレームセレクタ値登録
+		wSubRes = this.sRegFrameVal() ;
+		if( wSubRes['Result']!=true )
+		{///失敗
+			wRes['Reason'] = "sRegFrameVal is failed" ;
+			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			
+			if( wFLG_Inline==false )
+			{///windowの場合、子フレームコンソール表示
+				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
+				console.error( wResLoad['Reason'] ) ;
+			}
+			return wRes ;
+		}
 		
 		/////////////////////////////
 		// 自分のページオブジェクトを渡す
-		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].ChildObj = inPageObj ;
+		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].WindowObj	= wOBJ_Win.gSTR_CldInfo.cWindowObj ;
+		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].PageObj	= wOBJ_Win.gSTR_CldInfo.cPageObj ;
+		
+		/////////////////////////////
+		// 自分のwindowオブジェクト、ページオブジェクトをページ情報に渡す
+		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].PageInfo.WindowObj = wOBJ_Win.gSTR_CldInfo.cWindowObj ;
+		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].PageInfo.PageObj   = wOBJ_Win.gSTR_CldInfo.cPageObj ;
 		
 		/////////////////////////////
 		// ロード通知（→親フレーム）
 		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].FLG_Load = true ;
 		
 		//### コンソール表示（親フレーム・自分）
-		wMessage = "Successful frame load: FrameID=" + String(wFrameID) ;
-		top.gCLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+		wMessage = "Successful frame load(for Sub Frame): FrameID=" + String(wFrameID) ;
+		wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 		
-		wMessage = "CLS_FrameCld.sLoad: " + wMessage ;
-		console.info( wMessage ) ;
+		if( wFLG_Inline==false )
+		{///windowの場合、子フレームコンソール表示
+			wMessage = "CLS_FrameCld.sLoad: " + wMessage ;
+			console.info( wMessage ) ;
+		}
 		
 		/////////////////////////////
 		// 正常
@@ -211,32 +286,102 @@ class CLS_FrameCld {
 //#####################################################
 	static sUnLoad()
 	{
+		let wOBJ_Win = window ;
 		//###########################
 		//# 応答形式の取得
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = top.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sUnLoad" }) ;
+		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sUnLoad" }) ;
 		
 		let wOBJ_Op, wFrameID, wMessage ;
 		
-		wOBJ_Op  = top.gSTR_CldInfo.PageObj ;
-		wFrameID = top.gSTR_CldInfo.ID ;
+		wOBJ_Op  = wOBJ_Win.gSTR_CldInfo.PageObj ;
+		wFrameID = wOBJ_Win.gSTR_CldInfo.ID ;
 		/////////////////////////////
-		// ロード通知を落とす（→親フレーム）
-		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].FLG_Load = false ;
-		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].FLG_Init = false ;
-		wOBJ_Op.gARR_FrameCtrlInfo[wFrameID].FLG_Open = false ;
+		// 非同期 アンロード
+		wOBJ_Op.async_CLS_FrameCtrl_UnLoad({
+			inFrameID : wFrameID
+		}) ;
 		
 		//### コンソール表示（親フレーム・自分）
-		wMessage = "Frame unloaded: FrameID=" + String(wFrameID) ;
-		top.gCLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
-		
-		wMessage = "CLS_FrameCld.sUnLoad: " + wMessage ;
-		console.info( wMessage ) ;
+		wMessage = "Frame unloaded(for Sub Frame): FrameID=" + String(wFrameID) ;
+		wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
+	}
+
+
+
+//#####################################################
+//# フレームセレクタ値登録
+//#####################################################
+	static sRegFrameVal()
+	{
+		let wOBJ_Win = window ;
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sRegFrameVal" }) ;
+		
+		let wOBJ_Op, wSubRes, wSTR_Cell, wError ;
+		let wKey, wNum ;
+		
+		wOBJ_Op = wOBJ_Win.gSTR_CldInfo.PageObj ;
+		for( wKey in wOBJ_Win.gSTR_CldPSelInfo )
+		{
+			wNum = wOBJ_Win.gSTR_CldPSelInfo[wKey] ;
+			
+			/////////////////////////////
+			// 存在チェック
+			wSubRes = wOBJ_Win.gCLS_OSIF.sGetInObject({
+				inObject	: wOBJ_Win.gARR_FrameCtrlInfo[wOBJ_Win.gSTR_CldInfo.ID].SelInfo,
+				inKey		: wNum
+			}) ;
+			if( wSubRes==true )
+			{///失敗
+				wRes['Reason'] = "this number is exist: FrameID=" + String(wOBJ_Win.gSTR_CldInfo.ID) + " Num=" + String(wNum) ;
+				wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				return wRes ;
+			}
+			
+			/////////////////////////////
+			// 枠の作成
+			wSTR_Cell = new wOBJ_Op.gSTR_SelInfo_Str() ;
+			wSTR_Cell.Name = inNum ;
+			
+			/////////////////////////////
+			// 追加
+			wOBJ_Win.gARR_FrameCtrlInfo[wOBJ_Win.gSTR_CldInfo.ID].SelInfo[inNum] = wSTR_Cell ;
+			
+		}
+		wOBJ_Win.gSTR_CldPSelInfo = new Array() ;//フレーム情報に登録したので不要。消去。
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
+//# セレクタ値 仮登録
+//#####################################################
+	static sPRegVal({
+		inNum = null
+	})
+	{
+		if( inNum==null )
+		{
+			return ;
+		}
+		
+		/////////////////////////////
+		// 仮番号を追加
+		window.gSTR_CldPSelInfo.append(inNum) ;
+		return ;
 	}
 
 

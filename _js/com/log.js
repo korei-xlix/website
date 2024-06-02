@@ -38,9 +38,7 @@ class CLS_L {
 		inRes,
 		inLevel,
 		inMessage=top.DEF_GVAL_NULL,
-///		inViewLog=false
 		inDump=top.DEF_GVAL_NULL
-///		inBreak=false
 	})
 	{
 		let wLevel, wViewLog, wMessage, wTimeDate ;
@@ -144,52 +142,6 @@ class CLS_L {
 		// ログセット・出力
 		this.__setLog({ inRes:wRes, inLevel:wLevel, inTimeDate:wTimeDate, inMessage:wMessage, inDump:inDump }) ;
 		
-///		/////////////////////////////
-///		// ログ出力
-///		if( inViewLog==true )
-///		{
-///			this.__viewLog() ;
-///		}
-///		this.__viewLog() ;
-///		
-///		/////////////////////////////
-///		// 致命エラーの場合、全処理を終える
-///		if( inViewLog==true )
-///		{
-///			if(( wLevel=="A" ) || ( wLevel=="B" ) || ( wLevel=="C" ) || ( wLevel=="D" )
-///			   ( wLevel=="E" ) || ( wLevel=="I" ))
-///			{
-///				//###########################
-///				//# ログファイル出力
-///				//#   +処理停止
-///				this.sO() ;
-///				CLS_OSIF.sSystemExit() ;
-///				return ;
-///		}
-///	}
-///		/////////////////////////////
-///		// 入力エラーの場合、
-///		//   alertボックスを表示
-///		if(( wLevel=="I" ) && ( inMessage!=top.DEF_GVAL_NULL ))
-///		{
-///			wMessage = "*** Input Error ! ***" + '\n' ;
-///			wMessage = wMessage + inMessage + '\n' ;
-///			CLS_OSIF.sAlert({ inText:wMessage }) ;
-///		}
-///		
-///		/////////////////////////////
-///		// 強制停止の場合、全処理を終える
-///		if(( wLevel=="A" ) || ( inBreak==true ))
-///		if( inBreak==true )
-///		{
-///			//###########################
-///			//# ログファイル出力
-///			//#   +処理停止
-///			this.sO() ;
-///			CLS_OSIF.sSystemExit() ;
-///			CLS_Sys.sSystemExit() ;
-///			return ;
-///		}
 		return ;
 	}
 
@@ -207,18 +159,14 @@ class CLS_L {
 	})
 	{
 		let wKey ;
-///		let wIndex ;
 		
 		/////////////////////////////
 		// インデックスの更新
 		wKey = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_Log }) ;
-///		wIndex = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_Log }) ;
-///		top.gVAL_Log_pt = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_Log }) ;
 		
 		/////////////////////////////
 		// ログセット
 		top.gSTR_Log[wKey] = {
-///		top.gSTR_Log[top.gVAL_Log_pt] = {
 			"Logged"		: false,
 			"UserID"		: top.gSTR_SystemInfo.UserID,
 			"TimeDate"		: inTimeDate,
@@ -234,34 +182,12 @@ class CLS_L {
 		
 		/////////////////////////////
 		// コンソール出力
-///		this.__viewConsole() ;
 		this.__viewConsole({ inKey:wKey }) ;
 		
 		return ;
 	}
 
 
-
-///////////////////////////////////////////////////////
-// ログ出力
-///////////////////////////////////////////////////////
-///	static __viewLog()
-///	{
-///		/////////////////////////////
-///		// コンソールに出力する
-///		for( let wKey in top.gSTR_Log )
-///		{
-///			//### 表示済ならスキップ
-///			if( top.gSTR_Log[wKey]['Logged']==true )
-///			{
-///				continue ;
-///		}
-///			this.__viewConsole({ inKey:wKey }) ;
-///		}
-///		return true ;
-///	}
-///
-///
 
 ///////////////////////////////////////////////////////
 // コンソール出力
@@ -323,10 +249,13 @@ class CLS_L {
 		
 		/////////////////////////////
 		// コンソール表示
+		
+		//### 致命的エラー
 		if( top.gSTR_Log[inKey]['Level']=="A" )
 		{
 			CLS_OSIF.sConsError({ inText:wCons }) ;
 		}
+		//### エラー
 		else if(( top.gSTR_Log[inKey]['Level']=="B" ) ||
 		        ( top.gSTR_Log[inKey]['Level']=="C" ) ||
 		        ( top.gSTR_Log[inKey]['Level']=="D" ) ||
@@ -335,6 +264,14 @@ class CLS_L {
 		{
 			CLS_OSIF.sConsWarn({ inText:wCons }) ;
 		}
+		//### トラヒック
+		else if(( top.gSTR_Log[inKey]['Level']=="TS" ) ||
+		        ( top.gSTR_Log[inKey]['Level']=="TU" ) )
+		{
+///			CLS_OSIF.sConsLog({ inText:wCons }) ;
+			CLS_OSIF.sConsInfo({ inText:wCons }) ;
+		}
+		//### テストログ
 		else if( top.gSTR_Log[inKey]['Level']=="X" )
 		{
 			if( top.DEF_INDEX_TEST==true )
@@ -342,18 +279,21 @@ class CLS_L {
 				CLS_OSIF.sConsWarn({ inText:wCons }) ;
 			}
 		}
-		else if(( top.gSTR_Log[inKey]['Level']=="TS" ) ||
-		        ( top.gSTR_Log[inKey]['Level']=="TU" ) )
-		{
-			CLS_OSIF.sConsLog({ inText:wCons }) ;
-		}
-		else if( top.gSTR_Log[inKey]['Level']=="N" )
+		//### 非表示・コールバック
+		else if(( top.gSTR_Log[inKey]['Level']=="CB" ) ||
+		        ( top.gSTR_Log[inKey]['Level']=="N" ) )
 		{
 			CLS_OSIF.sConsInfo({ inText:wCons }) ;
 		}
+		//### 操作記録（システム起動・システム設定）
+		else if(( top.gSTR_Log[inKey]['Level']=="S" ) ||
+		        ( top.gSTR_Log[inKey]['Level']=="SC" ) )
+		{
+			CLS_OSIF.sConsLog({ inText:wCons }) ;
+		}
+		//### 操作記録（システム規制・ユーザ操作）
 		else
 		{
-			//システム、ユーザ、トラヒック
 			CLS_OSIF.sConsInfo({ inText:wCons }) ;
 		}
 		
@@ -526,7 +466,6 @@ class CLS_L {
 //#####################################################
 	static sV()
 	{
-///		this.__viewLog() ;
 		for( let wKey in top.gSTR_Log )
 		{
 			//### 表示済ならスキップ

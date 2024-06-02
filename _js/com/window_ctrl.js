@@ -132,17 +132,13 @@ class CLS_WinCtrl {
 		//# パラメータの作成
 		wSTR_Param = new top.gSTR_WinCtrlInfo_Str() ;
 		
-		wSTR_Param.PageObj		= top.gSTR_PageInfo.PageObj ;
+		wSTR_Param.Window		= top.gSTR_WinCtrlInfo.Window ;	//設定済みを反映
+		wSTR_Param.PageObj		= top.gSTR_PageInfo.PageObj ;	//設定済みを反映
 		wSTR_Param.OtherDomain	= inOtherDomain ;
 		wSTR_Param.UpdateInfo.TimeDate = top.gSTR_Time.TimeDate ;
 		wSTR_Param.CSSInfo		= inSTR_CSSinfo ;
 		wSTR_Param.TransInfo.FLG_Trans	= inTrans ;
 		
-///		wSTR_Param.WindowInfo.PageObj	= top.gSTR_PageInfo.PageObj ;
-///		wSTR_Param.WindowInfo.Title		= top.gSTR_PageInfo.Title ;
-///		wSTR_Param.WindowInfo.Width		= top.gSTR_PageInfo.Width ;
-///		wSTR_Param.WindowInfo.Height	= top.gSTR_PageInfo.Height ;
-///		
 		//###########################
 		//# Storage取得
 		
@@ -182,7 +178,6 @@ class CLS_WinCtrl {
 			{
 				wSTR_Param.FLG_PC = false ;
 			}
-///			else if( wSTR_Param.WindowInfo.Width>=top.DEF_USER_PC_WIDTH )
 			else if( top.gSTR_PageInfo.Width>=top.DEF_USER_PC_WIDTH )
 			{
 				wSTR_Param.FLG_PC = true ;
@@ -449,13 +444,6 @@ class CLS_WinCtrl {
 			inValue	: inCSSname
 		}) ;
 		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wResp['valid'] = false ;
-///			wRes['Reason'] = "CLS_Storage_Lset is failed(cssname)" ;
-///			CLS_L({ inRes:wRes, inLevel: "B" }) ;
-///			return wRes ;
-///		}
 		{///失敗
 			wRes['Reason'] = "CLS_Storage.sLset is failed(cssname)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
@@ -473,13 +461,6 @@ class CLS_WinCtrl {
 			inValue	: wMode
 		}) ;
 		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wResp['valid'] = false ;
-///			wRes['Reason'] = "CLS_Storage_Lset is failed(mode)" ;
-///			CLS_L({ inRes:wRes, inLevel: "B" }) ;
-///			return wRes ;
-///		}
 		{///失敗
 			wRes['Reason'] = "CLS_Storage.sLset is failed(mode)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
@@ -557,12 +538,6 @@ class CLS_WinCtrl {
 			outSubParam	: pParam.Com
 		}) ;
 		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "__sGetCSSFilepath is failed(Com)" ;
-///			CLS_L({ inRes:wRes, inLevel: "B" }) ;
-///			return wRes ;
-///		}
 		{///失敗
 			wRes['Reason'] = "__sGetCSSFilepath is failed(Com)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
@@ -586,12 +561,6 @@ class CLS_WinCtrl {
 			outSubParam	: pParam.Org
 		}) ;
 		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "__sGetCSSFilepath is failed(Org)" ;
-///			CLS_L({ inRes:wRes, inLevel: "B" }) ;
-///			return wRes ;
-///		}
 		{///失敗
 			wRes['Reason'] = "__sGetCSSFilepath is failed(Org)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
@@ -786,7 +755,6 @@ class CLS_WinCtrl {
 		pParam.FLG_ON = false ;
 		if( top.DEF_USER_UPDATE_PAST>=pParam.Days )
 		{///期間内 = 更新あり
-///			pParam.UpdateInfo.FLG_ON = true ;
 			pParam.FLG_ON = true ;
 		}
 		
@@ -895,14 +863,14 @@ class CLS_WinCtrl {
 		
 		/////////////////////////////
 		// 翻訳（取得・設置・翻訳実行）
-		wSubRes = this.__sGetTransrate({
+		wSubRes = this.sGetTransrate({
 			inPageObj		: pParam.PageObj,
 			outSubParam		: pParam.TransInfo
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
 			//失敗
-			wRes['Reason'] = "__sGetTransrate is failed(7)" ;
+			wRes['Reason'] = "sGetTransrate is failed(7)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 			return wRes ;
 		}
@@ -1383,12 +1351,6 @@ class CLS_WinCtrl {
 				inCode		: inParam.UpIcon.CHR_FilePath
 			}) ;
 			if( wSubRes['Result']!=true )
-///			{
-///				//失敗
-///				wRes['Reason'] = "CLS_PageObj_setSrc is failed" ;
-///				CLS_L({ inRes:wSubRes_Dst, inLevel: "B" }) ;
-///				return wRes ;
-///			}
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sSetSrc is failed" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
@@ -1592,12 +1554,6 @@ class CLS_WinCtrl {
 			outSubParam	: wSTR_Param
 		}) ;
 		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "__sGetCSSFilepath is failed(Org)" ;
-///			CLS_L({ inRes:wRes, inLevel: "B" }) ;
-///			return wRes ;
-///		}
 		{///失敗
 			wRes['Reason'] = "__sGetCSSFilepath is failed" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
@@ -1690,12 +1646,56 @@ class CLS_WinCtrl {
 
 
 //#####################################################
+//# ページタイトル変更
+//#####################################################
+	static sChgTitle({
+		inTitle = top.DEF_GVAL_NULL
+	})
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sChgTitle" }) ;
+		
+		let wSubRes ;
+		
+		/////////////////////////////
+		// ページタイトル設定
+		wSubRes = CLS_PageObj.sSetPageTitle({
+			inPageObj	: top.gSTR_WinCtrlInfo.PageObj,
+			inCode		: inTitle
+		}) ;
+		if( wSubRes['Result']!=true )
+		{
+			//失敗
+			wRes['Reason'] = "CLS_PageObj.sSetPageTitle is failed" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// ページ情報変更
+		top.gSTR_PageInfo.Title = inTitle ;
+		
+		//### コンソール表示
+		let wMessage = "Change page title: page title=" + String(inTitle) ;
+		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
 //# ページ翻訳
 //#####################################################
 ///////////////////////////////////////////////////////
 //  翻訳（取得・設置・翻訳実行）
 ///////////////////////////////////////////////////////
-	static __sGetTransrate({
+	static sGetTransrate({
 		inPageObj = top.DEF_GVAL_NULL,
 		outSubParam
 	})
@@ -1703,7 +1703,7 @@ class CLS_WinCtrl {
 		//###########################
 		//# 応答形式の取得
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"__sGetTransrate" }) ;
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sGetTransrate" }) ;
 		
 		let pParam, wSubRes, wMessage, wTrans ;
 		let wHTML, wEng, wText ;
@@ -1830,12 +1830,6 @@ class CLS_WinCtrl {
 					inCode		: wHTML
 				}) ;
 				if( wSubRes['Result']!=true )
-///				{
-///					//失敗
-///					wRes['Reason'] = "CLS_PageObj.sSetInner is failed" ;
-///					CLS_L({ inRes:wSubRes_Dst, inLevel: "B" }) ;
-///					return wRes ;
-///				}
 				{///失敗
 					wRes['Reason'] = "CLS_PageObj.sSetInner is failed" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;

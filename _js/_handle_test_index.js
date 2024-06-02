@@ -126,7 +126,6 @@ function __handle_PageLoad()
 		return wRes ;
 	}
 	
-/////////////////////////////
 	wFrameID = top.DEF_TESTPAGE_FID_FRAME1 ;
 	wPath    = top.DEF_TESTPAGE_PATH_FRAME1 ;
 	/////////////////////////////
@@ -134,7 +133,21 @@ function __handle_PageLoad()
 	wSubRes = CLS_FrameCtrl.sSet({
 		inFrameID	: wFrameID,					//フレームID
 		inPath		: wPath,					//HTMLファイルパス
-		inPopup		: true						//true = ポップアップフレーム  false=インラインフレーム
+//		inPopup		: true,						//true = ポップアップフレーム  false=インラインフレーム
+//		inTitle		: false,					//true = 親フレームタイトル変更
+		inPopup		: false,					//true = ポップアップフレーム  false=インラインフレーム
+		inTitle		: true,						//true = 親フレームタイトル変更
+//		inTimer		: {							//カスタムタイマ（※特に設定不要）
+//			"Value" : top.DEF_GVAL_TIMERCTRL_DEFAULT_TIMEOUT,	//タイマ値(再設定用)
+//			"Retry" : top.DEF_GVAL_TIMERCTRL_DEFAULT_RETRY,		//タイタリトライ回数
+//			"tLog"  : top.DEF_GVAL_TIMERCTRL_LOG_COUNT			//テストログ出力カウント
+//			},
+		inNextProc	: {
+//			"Callback"	: top.DEF_GVAL_NULL,
+			"Callback"	: __handle_AfterLoadProcess,
+			"Arg"		: new Array()
+			},
+		inTrans		: false						//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
@@ -143,8 +156,7 @@ function __handle_PageLoad()
 		return wRes ;
 	}
 	
-	/////////////////////////////
-	// フレーム設定
+	//### フレームオープン
 	wSubRes = CLS_FrameCtrl.sOpen({
 		inFrameID	: wFrameID					//フレームID
 	}) ;
@@ -154,7 +166,6 @@ function __handle_PageLoad()
 		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 		return wRes ;
 	}
-/////////////////////////////
 	
 	/////////////////////////////
 	// システム状態変更（→運用へ）
@@ -367,6 +378,33 @@ function __handle_iframeOnload( inFrameID )
 		inFrameID : inFrameID
 	}) ;
 	return ;
+}
+
+
+
+//#####################################################
+//# ハンドラ（ロード後プロセス・テスト用）
+//#####################################################
+function __handle_AfterLoadProcess()
+{
+	//###########################
+	//# 応答形式の取得
+	//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+	let wRes = CLS_OSIF.sGet_Resp({ inClass:"__handle", inFunc:"__handle_Circle" }) ;
+	
+	//###########################
+	//# ↓↓↓   処理     ↓↓↓
+	
+	wMessage = "Running after load process" ;
+	CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+	
+	//# ↑↑↑ここまで    ↑↑↑
+	//###########################
+	
+	/////////////////////////////
+	// 正常
+	wRes['Result'] = true ;
+	return wRes ;
 }
 
 

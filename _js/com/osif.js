@@ -34,6 +34,10 @@
 //#					console.log( "!!! Called !!! : " + inData );
 //#				}
 //#
+//# 遅延処理
+//#		CLS_OSIF.sSleep
+//#			in:		inMsec			// スリーブ時間(ms)
+//#
 //# 時間を取得し、STR_Timeにセットする
 //#		CLS_OSIF.sUpdateGTD()
 //#			out:	"Result"	: false,				//True=正常 / False=異常
@@ -208,6 +212,29 @@ class CLS_OSIF {
 		}
 		return true ;
 	}
+
+
+
+//#####################################################
+//# 遅延処理
+//#####################################################
+	static sSleep({
+		inMsec = 1000
+	})
+	{
+		return new Promise( function( resolve ) {
+			setTimeout( resolve, inMsec ) ;
+		}) ;
+	}
+	// Promise: 非同期処理の完了（もしくは失敗）の結果およびその結果の値を表します。
+	//   待機 (pending): 初期状態。成功も失敗もしていません。
+	//   履行 (fulfilled): 処理が成功して完了したことを意味します。
+	//   拒否 (rejected): 処理が失敗したことを意味します。
+	// 
+	// resolve  非同期で実行する関数
+	// reject   実行時エラーになった時に実行する関数
+	// 
+	// 参考: https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
 
 

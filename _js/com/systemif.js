@@ -115,11 +115,13 @@ class CLS_Sys {
 		/////////////////////////////
 		// データ初期化
 		top.gSTR_SystemInfo	= new top.gSTR_SystemInfo_Str() ;
-		top.gSTR_SystemExit = new gSTR_SystemExit_Str() ;
+///		top.gSTR_SystemExit = new gSTR_SystemExit_Str() ;
+		top.gSTR_SystemExit = new gSTR_CallbackInfo_Str() ;
 		top.gSTR_SystemCircle = new gSTR_SystemCircle_Str() ;
 		top.gSTR_PageInfo	= new top.gSTR_PageInfo_Str() ;
 		top.gSTR_Time		= new top.gSTR_Time_Str() ;
 		top.gARR_TimerCtrlInfo = {} ;
+		top.gSTR_WinCtrlInfo = new top.gSTR_WinCtrlInfo_Str() ;
 		
 		/////////////////////////////
 		// システム情報設定
@@ -165,6 +167,8 @@ class CLS_Sys {
 		top.gSTR_PageInfo.Hash		= wSubRes['Responce'].Hash ;
 		top.gSTR_PageInfo.Port		= wSubRes['Responce'].Port ;
 		top.gSTR_PageInfo.Search	= wSubRes['Responce'].Search ;
+		
+		top.gSTR_WinCtrlInfo.Window	= wSubRes['Responce'].WindowObj ;	//Window情報
 		
 		/////////////////////////////
 		// 定期処理の設定
@@ -239,7 +243,10 @@ class CLS_Sys {
 				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER,
 				inTimerKind	: "system",
 				inValue		: top.DEF_GVAL_SYS_TIMER_VALUE,
-				inCallback	: CLS_Sys.__sCircleProcess
+///				inCallback	: CLS_Sys.__sCircleProcess
+				inNextProc	: {
+					"Callback"	: CLS_Sys.__sCircleProcess
+					}
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///失敗
@@ -266,7 +273,10 @@ class CLS_Sys {
 					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE,
 					inTimerKind	: "system",
 					inValue		: top.DEF_GVAL_SYS_TIMER_VALUE,
-					inCallback	: __handle_Circle
+///					inCallback	: __handle_Circle
+					inNextProc	: {
+						"Callback"	: __handle_Circle
+						}
 				}) ;
 				if( wSubRes['Result']!=true )
 				{///失敗
@@ -830,7 +840,9 @@ class CLS_Sys {
 		CLS_OSIF.sViewObj({ inObj: top.gSTR_SystemInfo });
 		CLS_OSIF.sViewObj({ inObj: top.gSTR_PageInfo });
 		CLS_OSIF.sViewObj({ inObj: top.gSTR_Time });
+		CLS_OSIF.sViewObj({ inObj: top.gARR_TimerCtrlInfo });
 		CLS_OSIF.sViewObj({ inObj: top.gSTR_WinCtrlInfo });
+		CLS_OSIF.sViewObj({ inObj: top.gARR_FrameCtrlInfo });
 		
 		return ;
 	}
