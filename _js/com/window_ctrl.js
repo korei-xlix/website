@@ -20,7 +20,8 @@
 //#						: "mbnone",			//CSS変更不可・モバイルサイズのみ
 //#						: "elase",			//ボタン非表示・サイズ自動切替
 //#					inStyleCommPath		//Comm Styleのパス（別フォルダの場合）
-//#					inIconPath			//更新アイコンパス
+//#					inPgIconPath		//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+//#					inUpIconPath		//更新アイコン   カレントパス  /_pic/icon/new_icon.gif
 //#					inTrans				//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 //#
 //# CSSスタイル切り替え
@@ -63,7 +64,9 @@ class CLS_WinCtrl {
 		inStylePath		= top.DEF_GVAL_NULL,		//CSSカレントパス    /css/
 		inMode			= top.DEF_GVAL_NULL,		//CSS変更可・サイズ自動切替
 		inStyleCommPath	= top.DEF_GVAL_NULL,		//Comm Styleのカレントパス（別フォルダの場合）
-		inIconPath		= top.DEF_GVAL_NULL,		//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+///		inIconPath		= top.DEF_GVAL_NULL,		//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+		inPgIconPath	= top.DEF_GVAL_PGICON_PATH,	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+		inUpIconPath	= top.DEF_GVAL_UPICON_PATH,	//更新アイコン   カレントパス  /_pic/icon/new_icon.gif
 		inTrans			= false						//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	})
 	{
@@ -223,7 +226,8 @@ class CLS_WinCtrl {
 		//# ページアイコンパスの設定
 		wSubRes = this.__sGetFilePath({
 			inOtherDomain	: wSTR_Param.OtherDomain,
-			inPath			: inIconPath,
+///			inPath			: inIconPath,
+			inPath			: inPgIconPath,
 			outSubParam		: wSTR_Param.PageIcon
 		}) ;
 		if( wSubRes['Result']!=true )
@@ -238,7 +242,8 @@ class CLS_WinCtrl {
 		//# 更新アイコンパスの設定
 		wSubRes = this.__sGetFilePath({
 			inOtherDomain	: wSTR_Param.OtherDomain,
-			inPath			: top.DEF_GVAL_UPICON_PATH,
+///			inPath			: top.DEF_GVAL_UPICON_PATH,
+			inPath			: inUpIconPath,
 			outSubParam		: wSTR_Param.UpIcon
 		}) ;
 		if( wSubRes['Result']!=true )

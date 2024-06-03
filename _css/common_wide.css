@@ -589,6 +589,11 @@ display				: none;
 opacity				: 1;
 }
 
+div.wordTrans_JP, div.wordTrans_EN{
+margin				: 4px 0px;
+padding				: 0px;
+}
+
 
 
 /* =====================================================

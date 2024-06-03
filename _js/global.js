@@ -9,7 +9,7 @@
 //# ※ユーザ自由変更※
 
 //### システム情報
-var DEF_USER_VERSION	= "1.1.0.0" ;
+var DEF_USER_VERSION	= "1.1.1.0" ;
 var DEF_USER_AUTHOR		= 'korei (X:@korei_xlix)' ;	//HTMLのauthor表示
 var DEF_USER_GITHUB		= "https://github.com/korei-xlix/website/" ;
 var DEF_USER_SITEURL	= "https://website.koreis-labo.com/" ;
@@ -93,7 +93,7 @@ var DEF_GVAL_IDX_SELECTOR_SET	= "iSelectorSet-" ;
 
 var DEF_GVAL_NAME_TRANSRATE		= "aRAD_Transrate" ;
 var DEF_GVAL_IDX_TRANSRATE		= "iRAD_Transrate" ;
-var DEF_GVAL_QS_TRANSRATE_HEADER = "gf_Trans_" ;
+var DEF_GVAL_QS_TRANSRATE_HEADER = "wordTrans_" ;
 var DEF_GVAL_TRANSRATE			= {
 	"JP"	: "日本語",
 	"EN"	: "英語"
@@ -125,7 +125,8 @@ var DEF_GVAL_TRANSRATE_SYSTEM_IS_NOT_RUN = {	//運用中ではない時の操作
 //#####################################################
 
 /////////////////////////////
-// 通知アイコンの相対パス
+// アイコンのデフォルト相対パス
+var DEF_GVAL_PGICON_PATH		= "/_pic/icon/koreilabo_icon.ico" ;
 var DEF_GVAL_UPICON_PATH		= "/_pic/icon/new_icon.gif" ;
 
 /////////////////////////////

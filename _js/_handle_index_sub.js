@@ -78,7 +78,7 @@ function __handle_PageLoad()
 //		inMode			: "mbnone",				//CSS変更不可・モバイルサイズのみ
 //		inMode			: "elase",				//ボタン非表示・サイズ自動切替
 		inStyleCommPath	: top.DEF_GVAL_NULL,	//Comm Styleのカレントパス（別フォルダの場合）
-		inIconPath		: "/_pic/icon/koreilabo_icon.ico",	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+///		inIconPath		: "/_pic/icon/koreilabo_icon.ico",	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
 		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	}) ;
 	if( wSubRes['Result']!=true )
