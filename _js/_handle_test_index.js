@@ -13,8 +13,8 @@ var DEF_INDEX_USE_STORAGE		= true ;
 var DEF_INDEX_STORAGE_HEADER	= "KOREIS_TEST_SITE" ;
 
 //### 翻訳機能の有効・無効
-//var DEF_INDEX_TRANSRATE		= true ;
-var DEF_INDEX_TRANSRATE			= false ;
+var DEF_INDEX_TRANSRATE			= true ;
+//var DEF_INDEX_TRANSRATE		= false ;
 
 //### ログファイル出力・自動オープン
 var DEF_INDEX_LOG_OUTPUT		= false ;
@@ -117,7 +117,8 @@ function __handle_PageLoad()
 //		inMode			: "elase",				//ボタン非表示・サイズ自動切替
 		inStyleCommPath	: top.DEF_GVAL_NULL,	//Comm Styleのカレントパス（別フォルダの場合）
 		inIconPath		: "/_pic/icon/koreilabo_icon.ico",	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
-		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
+		inTrans			: true					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
+//		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗

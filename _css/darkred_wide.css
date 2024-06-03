@@ -301,24 +301,14 @@ color				: #000000;
 background-color	: #FFFFFF;
 }
 
-/* *** Red / Therms ***/
+/* *** Yellow / Therms ***/
 #com_CopyrightFooter div.com_Menu_Rule, #com_CopyrightFooter a.com_Menu_Rule{
-color				: #FFFFFF;
-background-color	: #F00000;
+color				: #F00000;
+background-color	: #FFFF00;
 }
 #com_CopyrightFooter div.com_Menu_Rule:hover, #com_CopyrightFooter a.com_Menu_Rule:hover{
-color				: #FFFFFF;
-background-color	: #FF00FF;
-}
-
-/* *** Maroon / Deverop ***/
-#com_CopyrightFooter div.com_Menu_Deverop, #com_CopyrightFooter a.com_Menu_Deverop{
-color				: #FFFFFF;
-background-color	: #600000;
-}
-#com_CopyrightFooter div.com_Menu_Deverop:hover, #com_CopyrightFooter a.com_Menu_Deverop:hover{
-color				: #FFFFFF;
-background-color	: #000066;
+color				: #F00000;
+background-color	: #FFD5EC;
 }
 
 /* *** Orange / Update ***/
@@ -331,14 +321,14 @@ color				: #59270D;
 background-color	: #FFFF99;
 }
 
-/* *** Yellow / Youyube ***/
-#com_CopyrightFooter div.com_Menu_Youtube, #com_CopyrightFooter a.com_Menu_Youtube{
-color				: #202020;
-background-color	: #FFFF66;
-}
-#com_CopyrightFooter div.com_Menu_Youtube:hover, #com_CopyrightFooter a.com_Menu_Youtube:hover{
+/* *** Dark Blue / Mentenance ***/
+#com_CopyrightFooter div.com_Menu_Mente, #com_CopyrightFooter a.com_Menu_Mente{
 color				: #FFFFFF;
-background-color	: #CC0000;
+background-color	: #999900;
+}
+#com_CopyrightFooter div.com_Menu_Mente:hover, #com_CopyrightFooter a.com_Menu_Mente:hover{
+color				: #59270D;
+background-color	: #FFFF99;
 }
 
 /* *** Green / Information ***/
@@ -347,8 +337,8 @@ color				: #FFFFFF;
 background-color	: #008000;
 }
 #com_CopyrightFooter div.com_Menu_Info:hover, #com_CopyrightFooter a.com_Menu_Info:hover{
-color				: #008000;
-background-color	: #00FF3B;
+color				: #006633;
+background-color	: #CCFF99;
 }
 
 /* *** Dark green / Documents ***/
@@ -357,49 +347,69 @@ color				: #FFFFFF;
 background-color	: #003300;
 }
 #com_CopyrightFooter div.com_Menu_Doc:hover, #com_CopyrightFooter a.com_Menu_Doc:hover{
-color				: #006633;
-background-color	: #CCFF99;
+color				: #003300;
+background-color	: #00DD00;
 }
 
-/* *** Blue / Author ***/
-#com_CopyrightFooter div.com_Menu_Author, #com_CopyrightFooter a.com_Menu_Author{
-color				: #FFFFFF;
-background-color	: #000066;
-}
-#com_CopyrightFooter div.com_Menu_Author:hover, #com_CopyrightFooter a.com_Menu_Author:hover{
-color				: #FFFFFF;
-background-color	: #600000;
-}
-
-/* *** Sky Blue / Index ***/
+/* *** Blue / Index ***/
 #com_CopyrightFooter div.com_Menu_Index, #com_CopyrightFooter a.com_Menu_Index{
 color				: #FFFFFF;
-background-color	: #469AF9;
+background-color	: #0000FF;
 }
 #com_CopyrightFooter div.com_Menu_Index:hover, #com_CopyrightFooter a.com_Menu_Index:hover{
 color				: #3333FF;
 background-color	: #CCFFFF;
 }
 
-/* *** Pink / Public ***/
-#com_CopyrightFooter div.com_Menu_Public, #com_CopyrightFooter a.com_Menu_Public{
+/* *** Pink / Acknowrage ***/
+#com_CopyrightFooter div.com_Menu_Acknow, #com_CopyrightFooter a.com_Menu_Acknow{
 color				: #FFFFFF;
-background-color	: #FF82B2;
+background-color	: #FF55FF;
 }
-#com_CopyrightFooter div.com_Menu_Public:hover, #com_CopyrightFooter a.com_Menu_Public:hover{
-color				: #F00000;
-background-color	: #FFEEFF;
+#com_CopyrightFooter div.com_Menu_Acknow:hover, #com_CopyrightFooter a.com_Menu_Acknow:hover{
+color				: #FFFFFF;
+background-color	: #F00000;
+}
+
+/* *** Purple / How to Use ***/
+#com_CopyrightFooter div.com_Menu_Howto, #com_CopyrightFooter a.com_Menu_Howto{
+color				: #FFFFFF;
+background-color	: #6927FF;
+}
+#com_CopyrightFooter div.com_Menu_Howto:hover, #com_CopyrightFooter a.com_Menu_Howto:hover{
+color				: #FFFFFF;
+background-color	: #CC99FF;
+/*background-color	: #660066;*/
+}
+
+/* *** Red / Youyube ***/
+#com_CopyrightFooter div.com_Menu_Youtube, #com_CopyrightFooter a.com_Menu_Youtube{
+color				: #FFFFFF;
+background-color	: #EF180F;
+}
+#com_CopyrightFooter div.com_Menu_Youtube:hover, #com_CopyrightFooter a.com_Menu_Youtube:hover{
+color				: #FFFFFF;
+background-color	: #010101;
 }
 
 /* *** Purple / Github ***/
 #com_CopyrightFooter div.com_Menu_Github, #com_CopyrightFooter a.com_Menu_Github{
 color				: #FFFFFF;
-background-color	: #7D4ABE;
-/*border-radius		: 0px !important;*/
+background-color	: #B064C6;
 }
 #com_CopyrightFooter div.com_Menu_Github:hover, #com_CopyrightFooter a.com_Menu_Github:hover{
-color				: #500047;
-background-color	: #E2BAEF;
+color				: #EEEEEE;
+background-color	: #7491FF;
+}
+
+/* *** Black / Warnlist ***/
+#com_CopyrightFooter div.com_Menu_Warnlist, #com_CopyrightFooter a.com_Menu_Warnlist{
+color				: #F00000;
+background-color	: #222222;
+}
+#com_CopyrightFooter div.com_Menu_Warnlist:hover, #com_CopyrightFooter a.com_Menu_Warnlist:hover{
+color				: #F00000;
+background-color	: #FFFFCC;
 }
 
 /* *** Light gray / Contact ***/
@@ -412,14 +422,34 @@ color				: #111111;
 background-color	: #EEEEEE;
 }
 
-/* *** Black / Warnlist ***/
-#com_CopyrightFooter div.com_Menu_Warnlist, #com_CopyrightFooter a.com_Menu_Warnlist{
+/* *** Pink / X :: Public ***/
+#com_CopyrightFooter div.com_Menu_X_Pub, #com_CopyrightFooter a.com_Menu_X_Pub{
 color				: #FFFFFF;
-background-color	: #222222;
+background-color	: #FF367F;
 }
-#com_CopyrightFooter div.com_Menu_Warnlist:hover, #com_CopyrightFooter a.com_Menu_Warnlist:hover{
-color				: #DD0000;
-background-color	: #DDDDDD;
+#com_CopyrightFooter div.com_Menu_X_Pub:hover, #com_CopyrightFooter a.com_Menu_X_Pub:hover{
+color				: #FFFFFF;
+background-color	: #7491FF;
+}
+
+/* *** Blue / X :: Author ***/
+#com_CopyrightFooter div.com_Menu_X_Auth, #com_CopyrightFooter a.com_Menu_X_Auth{
+color				: #FFFFFF;
+background-color	: #7491FF;
+}
+#com_CopyrightFooter div.com_Menu_X_Auth:hover, #com_CopyrightFooter a.com_Menu_X_Auth:hover{
+color				: #FFFFFF;
+background-color	: #C63735;
+}
+
+/* *** Maroon / X :: Deverop ***/
+#com_CopyrightFooter div.com_Menu_X_Dev, #com_CopyrightFooter a.com_Menu_X_Dev{
+color				: #FFFFFF;
+background-color	: #C63735;
+}
+#com_CopyrightFooter div.com_Menu_X_Dev:hover, #com_CopyrightFooter a.com_Menu_X_Dev:hover{
+color				: #FFFFFF;
+background-color	: #7491FF;
 }
 
 #com_CopyrightFooter a.com_Menu_TwitterFT{

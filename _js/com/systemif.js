@@ -58,12 +58,6 @@ class CLS_Sys {
 		inPageObj		= top.DEF_GVAL_NULL,
 		inUseTimer		= false,
 		inUseCircle		= false,
-///		inCallback		= top.DEF_GVAL_NULL,
-///		inArg			= new Array()
-///		inCircleProc	= {
-///			"Callback"	: top.DEF_GVAL_NULL,
-///			"Arg"		: new Array()
-///			},
 		inExitProc		= {
 			"Callback"	: top.DEF_GVAL_NULL,
 			"Arg"		: new Array()
@@ -97,13 +91,6 @@ class CLS_Sys {
 			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
 			return wRes ;
 		}
-///		if(( CLS_OSIF.sCheckObject({ inObject:inCircleProc, inKey:"Callback" })!=true ) ||
-///		   ( CLS_OSIF.sCheckObject({ inObject:inCircleProc, inKey:"Arg" })!=true ))
-///		{///失敗
-///			wRes['Reason'] = "inCircleProc is incorrect" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-///			return wRes ;
-///		}
 		if(( CLS_OSIF.sCheckObject({ inObject:inExitProc, inKey:"Callback" })!=true ) ||
 		   ( CLS_OSIF.sCheckObject({ inObject:inExitProc, inKey:"Arg" })!=true ))
 		{///失敗
@@ -115,7 +102,6 @@ class CLS_Sys {
 		/////////////////////////////
 		// データ初期化
 		top.gSTR_SystemInfo	= new top.gSTR_SystemInfo_Str() ;
-///		top.gSTR_SystemExit = new gSTR_SystemExit_Str() ;
 		top.gSTR_SystemExit = new gSTR_CallbackInfo_Str() ;
 		top.gSTR_SystemCircle = new gSTR_SystemCircle_Str() ;
 		top.gSTR_PageInfo	= new top.gSTR_PageInfo_Str() ;
@@ -128,7 +114,6 @@ class CLS_Sys {
 		top.gSTR_SystemInfo.Status		= top.DEF_GVAL_SYS_STAT_INIT ;	//初期化
 		top.gSTR_SystemInfo.UserID		= String( inUserID ) ;
 		top.gSTR_SystemInfo.SystemName	= String( inSystemName ) ;
-///		top.gSTR_SystemInfo.FLG_UseTimer = inUseTimer ;
 		
 		/////////////////////////////
 		// 時間の取得
@@ -174,25 +159,9 @@ class CLS_Sys {
 		// 定期処理の設定
 		top.gSTR_SystemCircle.FLG_UseTimer  = inUseTimer ;
 		top.gSTR_SystemCircle.FLG_UseCircle = inUseCircle ;
-///		if( inCircleProc['Callback']!=top.DEF_GVAL_NULL )
-///		{
-///			if( top.gSTR_SystemCircle.FLG_UseTimer==false )
-///			{///システムタイマが無効なら、定期処理はできない
-///				wRes['Reason'] = "Unset callback: Invalid System timer" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"D" }) ;
-///	}
-///			else
-///			{
-///				//### 定期コールバックの設定
-///				top.gSTR_SystemExit.Callback = inCircleProc['Callback'] ;
-///				top.gSTR_SystemExit.Arg      = inCircleProc['Arg'] ;
-///			}
-///	}
 		
 		/////////////////////////////
 		// コールバックの設定
-///		top.gSTR_SystemExit.Callback = inCallback ;
-///		top.gSTR_SystemExit.Arg      = inArg ;
 		top.gSTR_SystemExit.Callback = inExitProc['Callback'] ;
 		top.gSTR_SystemExit.Arg      = inExitProc['Arg'] ;
 		
@@ -243,7 +212,6 @@ class CLS_Sys {
 				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER,
 				inTimerKind	: "system",
 				inValue		: top.DEF_GVAL_SYS_TIMER_VALUE,
-///				inCallback	: CLS_Sys.__sCircleProcess
 				inNextProc	: {
 					"Callback"	: CLS_Sys.__sCircleProcess
 					}
@@ -273,7 +241,6 @@ class CLS_Sys {
 					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE,
 					inTimerKind	: "system",
 					inValue		: top.DEF_GVAL_SYS_TIMER_VALUE,
-///					inCallback	: __handle_Circle
 					inNextProc	: {
 						"Callback"	: __handle_Circle
 						}
@@ -418,24 +385,12 @@ class CLS_Sys {
 			wSubRes = CLS_Timer.sStop({
 				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER
 			}) ;
-///			if( wSubRes['Result']!=true )
-///			{///失敗
-///				wRes['Reason'] = "CLS_Timer.sStop is failed(TIMER)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///				return wRes ;
-///			}
 			
 			if( top.gSTR_SystemCircle.FLG_UseCircle==true )
 			{
 				wSubRes = CLS_Timer.sStop({
 					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE
 				}) ;
-///				if( wSubRes['Result']!=true )
-///				{///失敗
-///					wRes['Reason'] = "CLS_Timer.sStop is failed(CIRCLE)" ;
-///					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///					return wRes ;
-///				}
 			}
 			
 			/////////////////////////////
@@ -443,11 +398,6 @@ class CLS_Sys {
 			wSubRes = this.sChg({
 				inStatus : top.DEF_GVAL_SYS_STAT_STOP
 			}) ;
-///			{///失敗
-///				wRes['Reason'] = "CLS_Sys.sChg is failed(3)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///				return wRes ;
-///			}
 			
 			//### コンソール表示
 			if( top.gSTR_SystemCircle.FLG_Error==true )
@@ -575,75 +525,6 @@ class CLS_Sys {
 			}
 		}
 		
-///		/////////////////////////////
-///		// 定期処理中でない、かつ、
-///		// 15分、30分、60分いずれかがONの場合、
-///		//   外部処理をコールバックする
-///		if(( top.gSTR_SystemCircle.FLG_Rock==false ) &&
-///		   (( top.gSTR_SystemCircle.FLG_15==true ) ||
-///		    ( top.gSTR_SystemCircle.FLG_30==true ) ||
-///		    ( top.gSTR_SystemCircle.FLG_60==true )))
-///		{
-///			//### 処理中
-///			top.gSTR_SystemCircle.FLG_Rock = true ;
-///			top.gSTR_SystemCircle.FLG_Comp = false ;
-///			
-///			//### コールバック
-///			wSubRes = CLS_OSIF.sCallBack({
-//////				callback	: top.gSTR_SystemCircle.Callback,
-//////				inArg		: top.gSTR_SystemCircle.Arg
-///				callback	: __handle_Circle
-///			}) ;
-///			if(( wSubRes!=true ) || ( top.gSTR_SystemCircle.FLG_Comp==false ))
-///			{///失敗
-///				if( wSubRes!=true )
-///				{
-///					wRes['Reason'] = "Callback error" ;
-///					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///				}
-///				if( top.gSTR_SystemCircle.FLG_Comp==false )
-///				{
-///					wRes['Reason'] = "Circle process is not complete" ;
-///					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///				}
-///				
-///				//### システムタイマ停止
-///				wSubRes = CLS_Timer.sStop({
-///					inTimerID	: top.DEF_GVAL_SYS_TID_TIMER
-///				}) ;
-///				if( wSubRes['Result']!=true )
-///				{///失敗
-///					wRes['Reason'] = "CLS_Timer.sStop is failed(TIMER)" ;
-///					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///				}
-///				
-///				wSubRes = CLS_Timer.sStop({
-///					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE
-///				}) ;
-///				if( wSubRes['Result']!=true )
-///				{///失敗
-///					wRes['Reason'] = "CLS_Timer.sStop is failed(CIRCLE)" ;
-///					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-///				}
-///				
-///				return wRes ;
-///			}
-///			
-///			//### 処理終了
-///			top.gSTR_SystemCircle.FLG_Rock = false ;
-///		}
-///		
-///		/////////////////////////////
-///		// カウントリセット
-///		if( top.gSTR_SystemCircle.Cnt>=top.DEF_GVAL_SYS_TIMER_RESET )
-///		{
-///			top.gSTR_SystemCircle.Cnt = 0 ;
-///			
-///			//### コンソール表示
-///			wMessage = "Circle Cnt Reset" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
-///		}
-///		
 		/////////////////////////////
 		// 正常終了
 		wRes['Result'] = true ;

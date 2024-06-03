@@ -1810,17 +1810,28 @@ class CLS_WinCtrl {
 					//日本語テキスト
 					wText = top.DEF_GVAL_TRANSRATE[wKey] ;
 					
+///					//HTMLの作成
+///					wHTML = wHTML + "<input type='radio' class='Button' name='" + top.DEF_GVAL_NAME_TRANSRATE + "' " ;
+///					wHTML = wHTML + "id='" + top.DEF_GVAL_IDX_TRANSRATE + "_" + wEng + "' " ;
+///					wHTML = wHTML + "value='" + wEng + "' " ;
+///					wHTML = wHTML + "onclick='CLS_WinCtrl.sChgLang({ inLang:\"" + wEng + "\"})' " ;
+///					if( pParam.Lang==wEng )
+///					{///設定言語なら、チェックONする
+///						wHTML = wHTML + "checked " ;
+///					}
+///					wHTML = wHTML + "/>" + '\n' ;
+///					wHTML = wHTML + "<label class='Label'>" + wText + " [" + wEng + "]</label>" + '\n' ;
 					//HTMLの作成
-					wHTML = wHTML + "<input type='radio' name='" + top.DEF_GVAL_NAME_TRANSRATE + "' " ;
-					wHTML = wHTML + "id='" + top.DEF_GVAL_IDX_TRANSRATE + "_" + wEng + "' " ;
-					wHTML = wHTML + "value='" + wEng + "' " ;
-					wHTML = wHTML + "onclick='CLS_WinCtrl.sChgLang({ inLang:\"" + wEng + "\"})' " ;
+					wHTML = wHTML + "<input type='radio' class='Button' name='" + top.DEF_GVAL_NAME_TRANSRATE + "' " ;
+					wHTML = wHTML + "id='" + top.DEF_GVAL_IDX_TRANSRATE + "_" + wEng + "'" ;
 					if( pParam.Lang==wEng )
 					{///設定言語なら、チェックONする
-						wHTML = wHTML + "checked " ;
+						wHTML = wHTML + " checked " ;
 					}
 					wHTML = wHTML + "/>" + '\n' ;
-					wHTML = wHTML + "<label>" + wText + "</label>" + '\n' ;
+					wHTML = wHTML + "<label class='Label' for='" + top.DEF_GVAL_IDX_TRANSRATE + "_" + wEng + "' " ;
+					wHTML = wHTML + "onclick='CLS_WinCtrl.sChgLang({ inLang:\"" + wEng + "\"})'>" ;
+					wHTML = wHTML + wText + " [" + wEng + "]</label>" + '\n' ;
 				}
 				
 				//### 翻訳ボタンの出力
