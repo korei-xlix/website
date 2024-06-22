@@ -69,7 +69,7 @@ class CLS_Sys {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sSet" }) ;
 		
-		let wSubRes, wSubRes2, wObj, wMessage, wExitProc ;
+		let wSubRes, wSubRes2, wObj, wMessage, wExitProc, wSelInfo ;
 		
 		/////////////////////////////
 		// 入力チェック
@@ -134,6 +134,9 @@ class CLS_Sys {
 			wExitProc['Arg'] = inExitProc['Arg'] ;
 		}
 		
+		//### セレクタのセーブ
+		wSelInfo = top.gSTR_WinCtrlInfo.SelInfo ;
+		
 		/////////////////////////////
 		// データ初期化
 		top.gSTR_SystemInfo	= new top.gSTR_SystemInfo_Str() ;
@@ -143,6 +146,9 @@ class CLS_Sys {
 		top.gSTR_Time		= new top.gSTR_Time_Str() ;
 		top.gARR_TimerCtrlInfo = {} ;
 		top.gSTR_WinCtrlInfo = new top.gSTR_WinCtrlInfo_Str() ;
+		
+		//### セレクタのロード
+		top.gSTR_WinCtrlInfo.SelInfo = wSelInfo ;
 		
 		/////////////////////////////
 		// システム情報設定
