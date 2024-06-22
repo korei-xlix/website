@@ -192,7 +192,7 @@ class CLS_Sel {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sel", inFunc:"sRegVal" }) ;
 		
-		let wSubRes, wSTR_Cell ;
+		let wSubRes, wSTR_Cell, wMessage ;
 		
 		/////////////////////////////
 		// 存在チェック

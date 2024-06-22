@@ -907,20 +907,20 @@ class CLS_WinCtrl {
 ///			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 ///			return wRes ;
 ///		}
-///		
-		/////////////////////////////
-		// mousemove設定
-		wSubRes = this.sAddMouseMoveIvent({
-			inPageObj		: pParam.PageObj
-		}) ;
-		if( wSubRes['Result']!=true )
-		{
-			//失敗
-			wRes['Reason'] = "sAddMouseMoveIvent is failed(9)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-			return wRes ;
-		}
 		
+//		/////////////////////////////
+//		// mousemove設定
+//		wSubRes = this.sAddMouseMoveIvent({
+//			inPageObj		: pParam.PageObj
+//		}) ;
+//		if( wSubRes['Result']!=true )
+//		{
+//			//失敗
+//			wRes['Reason'] = "sAddMouseMoveIvent is failed(9)" ;
+//			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+//			return wRes ;
+//		}
+//		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
