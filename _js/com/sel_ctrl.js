@@ -221,6 +221,10 @@ console.dir(top.gSTR_WinCtrlInfo.SelInfo);
 		// 追加
 		top.gSTR_WinCtrlInfo.SelInfo[inNum] = wSTR_Cell ;
 		
+
+console.dir(top.gSTR_WinCtrlInfo.SelInfo);
+
+
 		if( top.DEF_INDEX_TEST==true )
 		{
 			wMessage = "Selector Reg: inNum=" + String(inNum) ;
