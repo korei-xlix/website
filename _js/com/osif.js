@@ -94,6 +94,25 @@
 //#		CLS_OSIF.sStrLow
 //#			in:		inString
 //#			out:	String
+//# 文字分割
+//#		CLS_OSIF.sSplit
+//#			in:		inString		//対象文字列
+//#					inPattern		//分割パターン
+//#			out:	wString			//分割文字(Array型)  nullは例外
+//# 検索
+//#		CLS_OSIF.sIndexOf
+//#			in:		inString		//検索文字列
+//#					inPattern		//検索パターン
+//#					inIndex			//検索開始位置
+//#			out:	Value			// 0以上でヒット、-1はノーヒットor例外
+//# 文字切り抜き
+//#		CLS_OSIF.sSubString
+//#			in:		inString		//対象文字列
+//#					inStart			//切り抜き開始位置 0が先頭
+//#					inLength		//切り抜き範囲   -1か未指定だと、最後まで切り抜く
+//#			out:	wString			// 0以上でヒット、-1はノーヒットor例外
+//#                                 りんご          inStart=1              んご
+//#                                 デストロイヤー  inStart=2  inLength=2  トロ
 //#
 //# 辞書型のキー一覧を返す
 //#		CLS_OSIF.sGetObjectList
@@ -105,8 +124,8 @@
 //#			out:	Value      要素数    nullは例外
 //# 辞書型かチェック
 //#		CLS_OSIF.sCheckObject
-//#			in:		inObject, inKey
-//#			out:	true=含む  false=含まないor例外
+//#			in:		inObject
+//#			out:	true=辞書型  false=辞書型ではないor例外
 //# Array型・辞書型にKeyを含むか
 //#		CLS_OSIF.sGetInObject
 //#			in:		inObject   判定Object(Array or 辞書型)
@@ -117,6 +136,10 @@
 //# 整数変換
 //#		CLS_OSIF.sValParse({
 //#			in:		inValue	//数値（String）
+//#			out:	Value	//数値（int）
+//# 小数変換
+//#		CLS_OSIF.sFloorParse({
+//#			in:		inValue	//数値（String? Int?）
 //#			out:	Value	//数値（int）
 //# １桁なら先頭０埋め
 //#		CLS_OSIF.sZeroPadding({
@@ -185,7 +208,7 @@ class CLS_OSIF {
 		inArg = []
 	})
 	{
-		let wName ;
+		let wSubRes, wName ;
 		
 		try
 		{
@@ -202,8 +225,13 @@ class CLS_OSIF {
 		
 		if( top.DEF_INDEX_TEST==true )
 		{
-			if(( wName!="__sCircleProcess" ) && ( wName!="__handle_Circle" ))
-			{
+///			if(( wName!="__sCircleProcess" ) && ( wName!="__handle_Circle" ))
+			wSubRes = this.sGetInObject({
+				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
+				inKey	 : wName
+			}) ;
+			if( wSubRes==false )
+			{////除外がなければログ出力する
 				//### コールバックログの出力
 				//      定期処理のコールバックは除外
 				let wText = "CLS_OSIF.sCallBack: Called Callback: Func=" + String(callback.name) + '\n' ;
@@ -559,6 +587,87 @@ class CLS_OSIF {
 
 
 //#####################################################
+//# 文字分割
+//#####################################################
+	static sSplit({
+		inString,
+		inPattern
+	})
+	{
+		let wString ;
+		
+		try
+		{
+			wString = inString.split( inPattern ) ;
+		}
+		catch(e)
+		{
+			//例外
+			wString = top.DEF_GVAL_NULL ;
+		}
+		return wString ;
+	}
+
+
+
+//#####################################################
+//# 検索
+//#####################################################
+	static sIndexOf({
+		inString,
+		inPattern,
+		inIndex = 0
+	})
+	{
+		let wValue ;
+		
+		try
+		{
+			wValue = inString.indexOf( inPattern, inIndex ) ;
+		}
+		catch(e)
+		{
+			//例外
+			wValue = -1 ;
+		}
+		return wValue ;
+	}
+
+
+
+//#####################################################
+//# 文字切り抜き
+//#####################################################
+	static sSubString({
+		inString,
+		inStart = 0,
+		inLength = -1
+	})
+	{
+		let wString ;
+		
+		try
+		{
+			if( inLength==-1 )
+			{///開始位置から、最後まで切り抜く
+				wString = inString.substring( inStart ) ;
+			}
+			else
+			{///検索位置から、指定範囲まで切り抜く
+				wString = inString.substring( inStart, inLength ) ;
+			}
+		}
+		catch(e)
+		{
+			//例外
+			wString = top.DEF_GVAL_NULL ;
+		}
+		return wString ;
+	}
+
+
+
+//#####################################################
 //# 辞書型のキー一覧を返す
 //#####################################################
 	static sGetObjectList({
@@ -622,8 +731,8 @@ class CLS_OSIF {
 //# 辞書型かチェック
 //#####################################################
 	static sCheckObject({
-		inObject,
-		inKey
+		inObject
+///		inKey
 	})
 	{
 		let wValue ;
@@ -719,6 +828,34 @@ class CLS_OSIF {
 				//失敗
 				wValue = top.DEF_GVAL_NULL ;
 			}
+		}
+		catch(e)
+		{
+			//例外
+			wValue = top.DEF_GVAL_NULL ;
+		}
+		return wValue ;
+	}
+
+
+
+//#####################################################
+//# 少数変換
+//#####################################################
+	static sFloorParse({
+		inValue
+	})
+	{
+		let wValue ;
+		
+		try
+		{
+			wValue = Math.floor( inValue ) ;
+//			if( isNaN(wValue)==true )
+//			{	// floorはNaNではなく 0 を返すのでいらないかも
+//				//失敗
+//				wValue = top.DEF_GVAL_NULL ;
+//			}
 		}
 		catch(e)
 		{

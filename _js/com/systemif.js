@@ -69,34 +69,69 @@ class CLS_Sys {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sSet" }) ;
 		
-		let wSubRes, wSubRes2, wObj, wMessage ;
+		let wSubRes, wSubRes2, wObj, wMessage, wExitProc ;
 		
 		/////////////////////////////
 		// 入力チェック
 		if(( inPageObj=="" ) || ( inPageObj==top.DEF_GVAL_NULL ) )
 		{///失敗
-			wRes['Reason'] = "PageObj is incorrect" ;
+			wRes['Reason'] = "PageObj is incorrect(1-1)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
 			return wRes ;
 		}
 		if(( inUserID=="" ) || ( inUserID==top.DEF_GVAL_TEXT_NONE ) || ( inUserID==top.DEF_GVAL_NULL ) )
 		{///失敗
-			wRes['Reason'] = "UserID is incorrect: " + String( inUserID ) ;
+			wRes['Reason'] = "UserID is incorrect(1-2): " + String( inUserID ) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
 			return wRes ;
 		}
 		if(( inSystemName=="" ) || ( inSystemName==top.DEF_GVAL_TEXT_NONE ) || ( inSystemName==top.DEF_GVAL_NULL ) )
 		{///失敗
-			wRes['Reason'] = "SystemName is incorrect: " + String( inSystemName ) ;
+			wRes['Reason'] = "SystemName is incorrect(1-3): " + String( inSystemName ) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
 			return wRes ;
 		}
-		if(( CLS_OSIF.sCheckObject({ inObject:inExitProc, inKey:"Callback" })!=true ) ||
-		   ( CLS_OSIF.sCheckObject({ inObject:inExitProc, inKey:"Arg" })!=true ))
-		{///失敗
-			wRes['Reason'] = "inExitProc is incorrect" ;
+///		if(( CLS_OSIF.sCheckObject({ inObject:inExitProc, inKey:"Callback" })!=true ) ||
+///		   ( CLS_OSIF.sCheckObject({ inObject:inExitProc, inKey:"Arg" })!=true ))
+///		{///失敗
+///			wRes['Reason'] = "inExitProc is incorrect" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+///			return wRes ;
+///		}
+		
+		wExitProc = {} ;
+		//### コールバック情報
+		if( CLS_OSIF.sCheckObject({ inObject:inExitProc })!=true )
+		{///不正
+			wRes['Reason'] = "inExitProc is not dictionary(1-4)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
 			return wRes ;
+		}
+		
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject : inExitProc,
+			inKey    : "Callback"
+		}) ;
+		if( wSubRes!=true )
+		{///不正
+			wRes['Reason'] = "Unset inExitProc['Callback'] in dictionary: keys=" + String( Object.keys(inExitProc) ) + " (1-5)" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			return wRes ;
+		}
+		wExitProc['Callback'] = inExitProc['Callback'] ;
+		
+		//### コールバック引数
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject : inExitProc,
+			inKey    : "Arg"
+		}) ;
+		if( wSubRes!=true )
+		{///未設定の場合、空を設定
+			wExitProc['Arg'] = new Array() ;
+		}
+		else
+		{///設定
+			wExitProc['Arg'] = inExitProc['Arg'] ;
 		}
 		
 		/////////////////////////////
@@ -153,7 +188,8 @@ class CLS_Sys {
 		top.gSTR_PageInfo.Port		= wSubRes['Responce'].Port ;
 		top.gSTR_PageInfo.Search	= wSubRes['Responce'].Search ;
 		
-		top.gSTR_WinCtrlInfo.Window	= wSubRes['Responce'].WindowObj ;	//Window情報
+///		top.gSTR_WinCtrlInfo.Window	= wSubRes['Responce'].WindowObj ;	//Window情報
+		top.gSTR_WinCtrlInfo.WindowObj = wSubRes['Responce'].WindowObj ;	//Window情報
 		
 		/////////////////////////////
 		// 定期処理の設定
@@ -162,8 +198,10 @@ class CLS_Sys {
 		
 		/////////////////////////////
 		// コールバックの設定
-		top.gSTR_SystemExit.Callback = inExitProc['Callback'] ;
-		top.gSTR_SystemExit.Arg      = inExitProc['Arg'] ;
+///		top.gSTR_SystemExit.Callback = inExitProc['Callback'] ;
+///		top.gSTR_SystemExit.Arg      = inExitProc['Arg'] ;
+		top.gSTR_SystemExit.Callback = wExitProc['Callback'] ;
+		top.gSTR_SystemExit.Arg      = wExitProc['Arg'] ;
 		
 		/////////////////////////////
 		// 日時挿入オブジェクトの取得

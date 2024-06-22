@@ -107,7 +107,7 @@ class CLS_Sel {
 		
 		/////////////////////////////
 		// フレーム存在チェック
-		wSubRes = CLS_FrameCtrl.__sCheckFrameID({
+		wSubRes = CLS_FrameCtrl.sCheckFrameID({
 			inFrameID : inFrameID
 		}) ;
 		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))

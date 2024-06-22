@@ -135,8 +135,9 @@ class CLS_WinCtrl {
 		//# パラメータの作成
 		wSTR_Param = new top.gSTR_WinCtrlInfo_Str() ;
 		
-		wSTR_Param.Window		= top.gSTR_WinCtrlInfo.Window ;	//設定済みを反映
-		wSTR_Param.PageObj		= top.gSTR_PageInfo.PageObj ;	//設定済みを反映
+///		wSTR_Param.Window		= top.gSTR_WinCtrlInfo.Window ;	//設定済みを反映
+		wSTR_Param.WindowObj	= top.gSTR_WinCtrlInfo.WindowObj ;	//設定済みを反映
+		wSTR_Param.PageObj		= top.gSTR_PageInfo.PageObj ;		//設定済みを反映
 		wSTR_Param.OtherDomain	= inOtherDomain ;
 		wSTR_Param.UpdateInfo.TimeDate = top.gSTR_Time.TimeDate ;
 		wSTR_Param.CSSInfo		= inSTR_CSSinfo ;
@@ -282,6 +283,7 @@ class CLS_WinCtrl {
 		//# ・ページアイコン設定
 		//# ・翻訳（取得・設置・翻訳実行）
 		//# ・セレクタ設定
+		//# ・ボタン設定
 		wSubRes = this.__sSetPageSetting({
 			outParam	: wSTR_Param
 		}) ;
@@ -889,6 +891,32 @@ class CLS_WinCtrl {
 		{
 			//失敗
 			wRes['Reason'] = "CLS_Sel.sSetSel is failed(8)" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			return wRes ;
+		}
+		
+///		/////////////////////////////
+///		// ボタン設定
+///		wSubRes = CLS_ButtonCtrl.sSetButton({
+///			inPageObj		: pParam.PageObj
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{
+///			//失敗
+///			wRes['Reason'] = "CLS_ButtonCtrl.sSetButton is failed(8)" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+///			return wRes ;
+///		}
+///		
+		/////////////////////////////
+		// mousemove設定
+		wSubRes = this.sAddMouseMoveIvent({
+			inPageObj		: pParam.PageObj
+		}) ;
+		if( wSubRes['Result']!=true )
+		{
+			//失敗
+			wRes['Reason'] = "sAddMouseMoveIvent is failed(9)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 			return wRes ;
 		}
@@ -2065,6 +2093,126 @@ class CLS_WinCtrl {
 		// システム状態の確認
 		wRes = CLS_Sys.sRunCheck() ;
 		
+		return wRes ;
+	}
+
+
+
+//#####################################################
+//# マウスムーブイベント
+//#####################################################
+///////////////////////////////////////////////////////
+//  mousemove設定
+///////////////////////////////////////////////////////
+	static sAddMouseMoveIvent()
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sAddMouseMoveIvent" }) ;
+		
+		let wWindowObj, wMessage ;
+		
+		/////////////////////////////
+		// ページオブジェクト取得
+		wWindowObj = top.gSTR_WinCtrlInfo.WindowObj ;
+		
+		/////////////////////////////
+		// 拡張プロパティの追加：フレームID
+		wWindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = top.DEF_GVAL_PARENT_FRAME_ID ;
+		
+		/////////////////////////////
+		// イベント設定：マウスムーブ
+		wWindowObj.addEventListener( "mousemove", function (){
+			CLS_WinCtrl.__sMoveMouseMove() ;
+			}, false ) ;
+		
+		//### コンソール表示
+		wMessage = "Window mouse move ivent set" ;
+		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+///////////////////////////////////////////////////////
+//  mousemove移動
+///////////////////////////////////////////////////////
+	static __sMoveMouseMove()
+	{
+		//### 高速化のためチェックはしない
+		
+
+
+console.log("xx1234");
+console.dir(this);
+
+
+		/////////////////////////////
+		// ポップアップ移動中でない場合、終わる
+		if( top.gSTR_WinCtrlInfo.MouseMove.FLG_Move==false )
+		{///移動中ではないので、終わる
+			return true ;
+		}
+		
+		/////////////////////////////
+		// ポップアップWindow移動中  (優先度・高)
+		if( top.gSTR_WinCtrlInfo.MouseMove.FLG_Win==true )
+		{
+			CLS_PopupCtrl.__sPopupWindow_BarMove({
+				inPopupID : top.gSTR_WinCtrlInfo.MouseMove.PopupWinID
+			}) ;
+		}
+		/////////////////////////////
+		// ポップアップヘルプ移動中
+		else if( top.gSTR_WinCtrlInfo.MouseMove.FLG_Help==true )
+		{
+///			CLS_PopupCtrl.__sPopupHelp_View({
+///				inDistID : top.gSTR_WinCtrlInfo.MouseMove.PopupHelpID
+			CLS_PopupCtrl.__sPopupHelp_Move({
+
+				inPopupID : top.gSTR_WinCtrlInfo.MouseMove.PopupHelpID
+			}) ;
+		}
+		
+		return true ;
+	}
+
+
+
+///////////////////////////////////////////////////////
+//  mousemove解除
+///////////////////////////////////////////////////////
+	static sDelMouseMoveIvent()
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sDelMouseMoveIvent" }) ;
+		
+		let wWindowObj, wMessage ;
+		
+		/////////////////////////////
+		// ページオブジェクト取得
+		wWindowObj = top.gSTR_WinCtrlInfo.WindowObj ;
+		
+		/////////////////////////////
+		// イベント解除：マウスムーブ
+		wWindowObj.removeEventListener( "mousemove", function (){
+			CLS_WinCtrl.__sMoveMouseMove() ;
+			}, false ) ;
+		
+		//### コンソール表示
+		wMessage = "Window mouse move ivent remove" ;
+		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
 		return wRes ;
 	}
 

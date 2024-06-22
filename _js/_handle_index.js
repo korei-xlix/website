@@ -21,8 +21,8 @@ var DEF_INDEX_LOG_OUTPUT		= false ;
 var DEF_INDEX_LOG_AUTOOPEN		= false ;
 
 //### テストモード  true=テスト稼働
-//var DEF_INDEX_TEST			= true ;
-var DEF_INDEX_TEST				= false ;
+var DEF_INDEX_TEST			= true ;
+//var DEF_INDEX_TEST				= false ;
 
 
 
@@ -79,7 +79,8 @@ function __handle_PageLoad()
 //		inMode			: "mbnone",				//CSS変更不可・モバイルサイズのみ
 //		inMode			: "elase",				//ボタン非表示・サイズ自動切替
 		inStyleCommPath	: top.DEF_GVAL_NULL,	//Comm Styleのカレントパス（別フォルダの場合）
-///		inIconPath		: "/_pic/icon/koreilabo_icon.ico",	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+		inPgIconPath	: "/_pic/icon/koreilabo_icon.ico",		//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+		inUpIconPath	: "/_pic/icon/new_icon.gif",			//更新アイコン   カレントパス  /_pic/icon/new_icon.gif
 		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	}) ;
 	if( wSubRes['Result']!=true )
