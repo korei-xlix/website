@@ -24,12 +24,17 @@ class CLS_Sel {
 		let wSubRes, wMessage ;
 		let wSelNum, wCnt, wKey, wSetKey, wText ;
 		
-///		wSelNum = CLS_OSIF.sGetObjectNum({ inObject:top.gARR_SelCtrlInfo }) ;
 		wSelNum = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_WinCtrlInfo.SelInfo }) ;
 		/////////////////////////////
 		// セットなしは無処理
 		if( wSelNum==0 )
 		{
+			if( top.DEF_INDEX_TEST==true )
+			{
+				wMessage = "Selector is unset: SelNum=" + String(wSelNum) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			}
+			
 			/////////////////////////////
 			// 正常終了
 			wRes['Result'] = true ;
@@ -39,12 +44,10 @@ class CLS_Sel {
 		/////////////////////////////
 		// タイトルの取り込み
 		wCnt = 0 ;	//処理数
-///		for( wKey in top.gARR_SelCtrlInfo )
 		for( wKey in top.gSTR_WinCtrlInfo.SelInfo )
 		{
 			/////////////////////////////
 			// セレクター取り込み
-///			wSetKey = top.DEF_GVAL_IDX_SELECTOR_TITLE + top.gARR_SelCtrlInfo[wKey].Name ;
 			wSetKey = top.DEF_GVAL_IDX_SELECTOR_TITLE + top.gSTR_WinCtrlInfo.SelInfo[wKey].Name ;
 			wSubRes = CLS_PageObj.sGetInner({
 				inPageObj	: inPageObj,
@@ -60,7 +63,6 @@ class CLS_Sel {
 			
 			/////////////////////////////
 			// セレクター設定
-///			wSetKey = top.DEF_GVAL_IDX_SELECTOR_SET + top.gARR_SelCtrlInfo[wKey].Name ;
 			wSetKey = top.DEF_GVAL_IDX_SELECTOR_SET + top.gSTR_WinCtrlInfo.SelInfo[wKey].Name ;
 			wSubRes = CLS_PageObj.sSetInner({
 				inPageObj	: inPageObj,
@@ -93,7 +95,6 @@ class CLS_Sel {
 //# フレームセレクタ設定
 //#####################################################
 	static sSetFrameSel({
-///		inPageObj = top.DEF_GVAL_NULL
 		inFrameID = top.DEF_GVAL_NULL
 	})
 	{
@@ -107,7 +108,7 @@ class CLS_Sel {
 		
 		/////////////////////////////
 		// フレーム存在チェック
-		wSubRes = CLS_FrameCtrl.__sCheckFrameID({
+		wSubRes = CLS_FrameCtrl.sCheckFrameID({
 			inFrameID : inFrameID
 		}) ;
 		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
@@ -191,12 +192,11 @@ class CLS_Sel {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sel", inFunc:"sRegVal" }) ;
 		
-		let wSubRes, wSTR_Cell ;
+		let wSubRes, wSTR_Cell, wMessage ;
 		
 		/////////////////////////////
 		// 存在チェック
 		wSubRes = CLS_OSIF.sGetInObject({
-///			inObject	: top.gARR_SelCtrlInfo,
 			inObject	: top.gSTR_WinCtrlInfo.SelInfo,
 			inKey		: inNum
 		}) ;
@@ -209,14 +209,18 @@ class CLS_Sel {
 		
 		/////////////////////////////
 		// 枠の作成
-///		wSTR_Cell = new gSTR_SelCtrlInfo_Str() ;
 		wSTR_Cell = new gSTR_SelInfo_Str() ;
 		wSTR_Cell.Name = inNum ;
 		
 		/////////////////////////////
 		// 追加
-///		top.gARR_SelCtrlInfo[inNum] = wSTR_Cell ;
 		top.gSTR_WinCtrlInfo.SelInfo[inNum] = wSTR_Cell ;
+		
+		if( top.DEF_INDEX_TEST==true )
+		{
+			wMessage = "Selector Reg: inNum=" + String(inNum) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+		}
 		
 		/////////////////////////////
 		// 正常

@@ -234,7 +234,9 @@ class CLS_PageObj {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetPageInfo" }) ;
 		
-		let wURL, wHref ;
+		let wURL, wHref, wMessage ;
+		let wARR_Data, wSearch, wIndex, wF_Ind ;
+		let wKey, wDataKey, wData, wCHR_Com, wPt ;
 		
 		wRes['Responce'] = {
 			"Title"		: top.DEF_GVAL_NULL,
@@ -247,7 +249,9 @@ class CLS_PageObj {
 			"Pathname"	: top.DEF_GVAL_NULL,
 			"Hash"		: top.DEF_GVAL_NULL,
 			"Port"		: top.DEF_GVAL_NULL,
-			"Search"	: top.DEF_GVAL_NULL
+			"Search"	: top.DEF_GVAL_NULL,
+			
+			"Commands"	: {}
 		} ;
 		
 		wHref = top.DEF_GVAL_TEXT_NONE ;
@@ -275,6 +279,104 @@ class CLS_PageObj {
 			wRes['Responce']['Hash']     = String( wURL.hash ) ;
 			wRes['Responce']['Port']     = String( wURL.port ) ;
 			wRes['Responce']['Search']   = String( wURL.search ) ;
+			
+			/////////////////////////////
+			// コマンドの取得
+			
+			//### "?"部分の解析
+			wSearch = String( wURL.search ) ;
+			wIndex = CLS_OSIF.sIndexOf({
+				inString	: wSearch,
+				inPattern	: "?"
+			}) ;
+			if( wIndex>=0 )
+			{///ヒット
+				
+				//### "?"以下の取得＆分解
+				wSearch = CLS_OSIF.sSubString({
+					inString	: wSearch,
+					inStart		: wIndex
+				}) ;
+				wSearch = CLS_OSIF.sSplit({
+					inString	: wSearch,
+					inPattern	: "&"
+				}) ;
+				
+				//### 各コマンドの取得
+				wARR_Data = {} ;
+				wCHR_Com  = "Comm" ;
+				wPt       = 1 ;
+				for( wKey in wSearch )
+				{
+					//### "="で分解
+					wIndex = CLS_OSIF.sIndexOf({
+						inString	: wSearch[wKey],
+						inPattern	: "="
+					}) ;
+					if( wIndex>=0 )
+					{///ヒット
+						
+						//  0123456789
+						//      * .. index=4
+						//### キー部分の取得
+						wDataKey = CLS_OSIF.sSubString({
+							inString	: wSearch[wKey],
+							inStart		: 0,
+							inLength	: wIndex
+						}) ;
+						wData = CLS_OSIF.sSubString({
+							inString	: wSearch[wKey],
+							inStart		: wIndex
+						}) ;
+					}
+					else
+					{///ノーヒット
+						//### "="がない場合、キーを Comm* で、データ全突っ込む
+						
+						wDataKey = wCHR_Com + String(wPt) ;
+						wData    = wSearch[wKey] ;
+						wPt++
+					}
+					
+					//### セット
+					wARR_Data[wDataKey] = wData ;
+					
+				}
+				
+				//### 取得コマンドを返答に詰める
+				for( wKey in wARR_Data )
+				{
+					wRes['Responce']['Commands'][wKey] = wARR_Data[wKey] ;
+				}
+			}
+			
+			/////////////////////////////
+			// ページ情報の取得
+			if( top.DEF_INDEX_TEST==true )
+			{
+				wMessage = "Get page info" ;
+				wMessage = wMessage + '\n' + "  Url=" + wRes['Responce']['Url'] ;
+				wMessage = wMessage + '\n' + "  Host Url=" + wRes['Responce']['Protocol'] + "//" + wRes['Responce']['Host'] ;
+				if( wRes['Responce']['Port']!="" )
+				{
+					wMessage = wMessage + ":" + wRes['Responce']['Port'] ;
+				}
+				wMessage = wMessage + '\n' + "  Title=" + wRes['Responce']['Title'] ;
+				wMessage = wMessage + '\n' + "  Height=" + wRes['Responce']['Height'] + " Width=" + wRes['Responce']['Width'] ;
+				wMessage = wMessage + '\n' + "  Pathname=" + wRes['Responce']['Pathname'] ;
+				wMessage = wMessage + '\n' + "  Hash=" + wRes['Responce']['Hash'] ;
+				wMessage = wMessage + '\n' + "  Search=" + wRes['Responce']['Search'] ;
+				
+				wMessage = wMessage + '\n' + "  Commands ::" ;
+				for( wKey in wRes['Responce']['Commands'] )
+				{
+					wMessage = wMessage + '\n' + "    " + String(wKey) + "=" + wRes['Responce']['Commands'][wKey] ;
+				}
+				
+				//### コンソール表示
+				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				
+			}
 		}
 		catch(e)
 		{

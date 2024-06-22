@@ -27,9 +27,10 @@ var gSTR_CldInfo = new STR_ChildFrameInfo_Str() ;
 
 var gSTR_CldPSelInfo = new Array() ;							//  セレクタ仮登録番号
 
-var gCLS_OSIF	= this.DEF_CLD_NULL ;
-var gCLS_Sys	= this.DEF_CLD_NULL ;
-var gCLS_L		= this.DEF_CLD_NULL ;
+var gCLS_PageObj = this.DEF_CLD_NULL ;
+var gCLS_OSIF	 = this.DEF_CLD_NULL ;
+var gCLS_Sys	 = this.DEF_CLD_NULL ;
+var gCLS_L		 = this.DEF_CLD_NULL ;
 
 
 //#####################################################
@@ -138,9 +139,10 @@ class CLS_FrameCld {
 	/////////////////////////////
 	// window.parent.opener 正常
 		
-		wOBJ_Win.gCLS_OSIF	= wOBJ_Op.gCLS_OSIF.constructor ;
-		wOBJ_Win.gCLS_Sys	= wOBJ_Op.gCLS_Sys.constructor ;
-		wOBJ_Win.gCLS_L		= wOBJ_Op.gCLS_L.constructor ;
+		wOBJ_Win.gCLS_PageObj = wOBJ_Op.gCLS_PageObj.constructor ;
+		wOBJ_Win.gCLS_OSIF	  = wOBJ_Op.gCLS_OSIF.constructor ;
+		wOBJ_Win.gCLS_Sys	  = wOBJ_Op.gCLS_Sys.constructor ;
+		wOBJ_Win.gCLS_L		  = wOBJ_Op.gCLS_L.constructor ;
 		
 		//###########################
 		//# 応答形式の取得
@@ -148,8 +150,10 @@ class CLS_FrameCld {
 		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sLoad" }) ;
 		
 		/////////////////////////////
-		// ページ情報の取得
-		wSubRes = wOBJ_Win.gCLS_Sys.sGetSTRpage({
+		// フレームIDの取得
+		
+		//### ページ情報の取得
+		wSubRes = wOBJ_Win.gCLS_PageObj.sGetPageInfo({
 			inPageObj		: inPageObj
 		}) ;
 		if( wSubRes['Result']!=true )
@@ -165,63 +169,18 @@ class CLS_FrameCld {
 			return wRes ;
 		}
 		
-		/////////////////////////////
-		// FrameIDの取り込み
-		
-		//### URLの取得
-		wURL = inPageObj.location.href ;
-		
-		//### ページ情報
-		wSTR_URL = new URL( wURL ) ;
-///		wRes['Responce']['Url']      = String( wHref ) ;
-///		wRes['Responce']['Protocol'] = String( wURL.protocol ) ;
-///		wRes['Responce']['Host']     = String( wURL.host ) ;
-///		wRes['Responce']['Pathname'] = String( wURL.pathname ) ;
-///		wRes['Responce']['Hash']     = String( wURL.hash ) ;
-///		wRes['Responce']['Port']     = String( wURL.port ) ;
-		wText = String( wSTR_URL.search ) ;	// ? 以下を取得
-		
-		//### FrameIDの取り出し
-		wText = wText.split("?") ;
-		if( wText.length!=2 )
-		{///失敗
-			wResLoad['Reason'] = "Location Error: URL=" + String(wURL) ;
-			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-			
-			if( wFLG_Inline==false )
-			{///windowの場合、子フレームコンソール表示
-				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
-				console.error( wResLoad['Reason'] ) ;
-			}
-			return wRes ;
-		}
-		wText = wText[1] ;
-		wARR_Text = wText.split("&") ;
-		
-		wFrameID = null ;
-		for( wKey in wARR_Text )
+		wFrameID = wOBJ_Win.DEF_CLD_NULL ;
+		for( wKey in wSubRes['Responce']['Commands'] )
 		{
-			wText = wARR_Text[wKey].split("=") ;
-			if( wText.length!=2 )
-			{///失敗
-				wResLoad['Reason'] = "Location Error: URL=" + String(wURL) + " Line=" + String(wARR_Text[wKey]) ;
-				wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-				
-				if( wFLG_Inline==false )
-				{///windowの場合、子フレームコンソール表示
-					wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
-					console.error( wResLoad['Reason'] ) ;
-				}
-				return wRes ;
-			}
-			if( wText[0]==wOBJ_Op.DEF_GVAL_WINCTRL_URL_PARAM_FRAMEID )
+			if( wKey==wOBJ_Op.DEF_GVAL_WINCTRL_URL_PARAM_FRAMEID )
 			{
-				wFrameID = wText[1] ;
+				wFrameID = wSubRes['Responce']['Commands'][wKey] ;
+				break ;
 			}
 		}
-		if( wFrameID==null )
+		if( wFrameID==wOBJ_Win.DEF_CLD_NULL )
 		{///失敗
-			wResLoad['Reason'] = "Location Error: URL=" + String(wURL) ;
+			wRes['Reason'] = "Frame id is not found" ;
 			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 			
 			if( wFLG_Inline==false )

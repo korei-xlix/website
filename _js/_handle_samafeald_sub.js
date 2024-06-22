@@ -47,7 +47,8 @@ function __handle_PageLoad()
 	wSubRes = CLS_Sys.sSet({
 		inUserID		: "webmain",			//ユーザID
 		inSystemName	: "website(samafeald)",	//システム名
-		inPageObj		: wPageObj
+		inPageObj		: wPageObj,
+		inUseTimer		: true					//システムタイマ使用有無  true=使用
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
