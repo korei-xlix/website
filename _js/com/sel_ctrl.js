@@ -24,6 +24,11 @@ class CLS_Sel {
 		let wSubRes, wMessage ;
 		let wSelNum, wCnt, wKey, wSetKey, wText ;
 		
+
+
+console.dir(top.gSTR_WinCtrlInfo.SelInfo);
+
+
 		wSelNum = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_WinCtrlInfo.SelInfo }) ;
 		/////////////////////////////
 		// セットなしは無処理

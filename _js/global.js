@@ -6,7 +6,7 @@
 //#####################################################
 //# 更新履歴
 //# 1.1.1.0		2024-5-30	website用リリース
-//# 1.1.2.0		2024-6-xx	ログクラス改良
+//# 1.1.1.1		2024-6-23	Selクラスのバグ修正
 //#
 //#
 //#
@@ -16,7 +16,7 @@
 //# ※ユーザ自由変更※
 
 //### システム情報
-var DEF_USER_VERSION	= "1.1.2.0" ;
+var DEF_USER_VERSION	= "1.1.1.1" ;
 var DEF_USER_AUTHOR		= 'korei (X:@korei_xlix)' ;	//HTMLのauthor表示
 var DEF_USER_GITHUB		= "https://github.com/korei-xlix/website/" ;
 var DEF_USER_SITEURL	= "https://website.koreis-labo.com/" ;
