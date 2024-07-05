@@ -102,10 +102,6 @@ function __handle_PageLoad()
 	}
 	
 	/////////////////////////////
-	// システム情報表示
-	CLS_Sys.sView() ;
-	
-	/////////////////////////////
 	// 正常
 	wRes['Result'] = true ;
 	return ;
