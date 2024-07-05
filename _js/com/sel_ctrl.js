@@ -56,7 +56,7 @@ class CLS_Sel {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "sGetInner is failed(1)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wText = wSubRes['Responce'] ;
@@ -72,7 +72,7 @@ class CLS_Sel {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "sSetInner is failed(2)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wCnt++ ;
@@ -92,7 +92,7 @@ class CLS_Sel {
 
 
 //#####################################################
-//# フレームセレクタ設定
+//# フレーム セレクタ設定
 //#####################################################
 	static sSetFrameSel({
 		inFrameID = top.DEF_GVAL_NULL
@@ -103,7 +103,7 @@ class CLS_Sel {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sel", inFunc:"sSetFrameSel" }) ;
 		
-		let wSubRes, wMessage ;
+		let wSubRes, wMessage, wOBJ_CldWin, wSTR_Cell ;
 		let wSelNum, wCnt, wKey, wSetKey, wText ;
 		
 		/////////////////////////////
@@ -114,10 +114,45 @@ class CLS_Sel {
 		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
 		{///フレームが存在しないか、不正の場合
 			wRes['Reason'] = "Frame is not exist: inFrameID=" + String(inFrameID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
-			return ;
 		}
+		
+		//###########################
+		//# 子フレーム側から、仮セレクタ設定値を取り出す
+		wOBJ_CldWin = top.gARR_FrameCtrlInfo[inFrameID].WindowObj ;
+///		for( wKey in wOBJ_CldWin.gSTR_CldPSelInfo )
+		for( wKey in wOBJ_CldWin.gARR_CldPreReg_SelInfo )
+		{
+///			wSelNum = wOBJ_CldWin.gSTR_CldPSelInfo[wKey] ;
+			wSelNum = wOBJ_CldWin.gARR_CldPreReg_SelInfo[wKey] ;
+			
+			/////////////////////////////
+			// 存在チェック
+			wSubRes = CLS_OSIF.sGetInObject({
+				inObject : top.gARR_FrameCtrlInfo[inFrameID].SelInfo,
+				inKey	 : wSelNum
+			}) ;
+			if( wSubRes==true )
+			{///失敗
+				wRes['Reason'] = "this number is exist: inFrameID=" + String(inFrameID) + " Num=" + String(wSelNum) ;
+				wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"D", inLine:wOBJ_Win.__LINE__ }) ;
+				return wRes ;
+			}
+			
+			/////////////////////////////
+			// 枠の作成
+			wSTR_Cell = new gSTR_SelInfo_Str() ;
+			wSTR_Cell.Name = wSelNum ;
+			
+			/////////////////////////////
+			// 追加
+			top.gARR_FrameCtrlInfo[inFrameID].SelInfo[wSelNum] = wSTR_Cell ;
+			
+		}
+		//  wOBJ_Win.gARR_CldPreReg_SelInfo = new Array() ;//フレーム情報に登録したので不要。消去。
+		//###
+		//###########################
 		
 		wSelNum = CLS_OSIF.sGetObjectNum({ inObject:top.gARR_FrameCtrlInfo[inFrameID].SelInfo }) ;
 		/////////////////////////////
@@ -139,13 +174,14 @@ class CLS_Sel {
 			// セレクター取り込み
 			wSetKey = top.DEF_GVAL_IDX_SELECTOR_TITLE + top.gARR_FrameCtrlInfo[inFrameID].SelInfo[wKey].Name ;
 			wSubRes = CLS_PageObj.sGetInner({
-				inPageObj	: inPageObj,
+///				inPageObj	: inPageObj,
+				inPageObj	: top.gARR_FrameCtrlInfo[inFrameID].PageObj,
 				inKey		: wSetKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "sGetInner is failed(1): inFrameID=" + String(inFrameID) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wText = wSubRes['Responce'] ;
@@ -154,14 +190,15 @@ class CLS_Sel {
 			// セレクター設定
 			wSetKey = top.DEF_GVAL_IDX_SELECTOR_SET + top.gARR_FrameCtrlInfo[inFrameID].SelInfo[wKey].Name ;
 			wSubRes = CLS_PageObj.sSetInner({
-				inPageObj	: inPageObj,
+///				inPageObj	: inPageObj,
+				inPageObj	: top.gARR_FrameCtrlInfo[inFrameID].PageObj,
 				inKey		: wSetKey,
 				inCode		: wText
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "sSetInner is failed(2): inFrameID=" + String(inFrameID) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wCnt++ ;
@@ -169,7 +206,7 @@ class CLS_Sel {
 		
 		/////////////////////////////
 		// コンソール表示
-		wMessage = "Set Selector: inFrameID=" + String(inFrameID) + " Num=" + String(wCnt) ;
+		wMessage = "Set Frame Selector: inFrameID=" + String(inFrameID) + " Num=" + String(wCnt) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -203,7 +240,7 @@ class CLS_Sel {
 		if( wSubRes==true )
 		{///失敗
 			wRes['Reason'] = "this number is exist: inNum=" + String(inNum) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -232,6 +269,4 @@ class CLS_Sel {
 
 //#####################################################
 }
-
-
 

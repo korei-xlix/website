@@ -49,10 +49,6 @@ function __handle_PageLoad()
 		inSystemName	: "website",			//システム名
 		inPageObj		: wPageObj,
 		inUseTimer		: true					//システムタイマ使用有無  true=使用
-//		inExitProc		= {
-//			"Callback"	: top.DEF_GVAL_NULL,
-//			"Arg"		: new Array()
-//			}
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
@@ -62,7 +58,7 @@ function __handle_PageLoad()
 	}
 	
 	/////////////////////////////
-	// CSSロード
+	// 親フレームの設定
 	wSubRes = CLS_WinCtrl.sSet({
 		inPageObj		: wPageObj,				//ページオブジェクト
 		inSTR_CSSinfo	: {						//CSSファイル情報
@@ -79,7 +75,8 @@ function __handle_PageLoad()
 //		inMode			: "mbnone",				//CSS変更不可・モバイルサイズのみ
 //		inMode			: "elase",				//ボタン非表示・サイズ自動切替
 		inStyleCommPath	: top.DEF_GVAL_NULL,	//Comm Styleのカレントパス（別フォルダの場合）
-///		inIconPath		: "/_pic/icon/koreilabo_icon.ico",	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+		inPgIconPath	: "/_pic/icon/koreilabo_icon.ico",			//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+		inUpIconPath	: "/_pic/icon/new_icon.gif",				//更新アイコン   カレントパス  /_pic/icon/new_icon.gif
 		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	}) ;
 	if( wSubRes['Result']!=true )
@@ -90,6 +87,36 @@ function __handle_PageLoad()
 	}
 	
 	/////////////////////////////
+	// 設定完了待ち
+	wSubRes = CLS_WinCtrl.sStby() ;
+	if( wSubRes['Result']!=true )
+	{///失敗
+		wRes['Reason'] = "CLS_WinCtrl.sStby is failer" ;
+		CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+		return wRes ;
+	}
+	
+	/////////////////////////////
+	// 正常
+	wRes['Result'] = true ;
+	return ;
+}
+
+
+
+///////////////////////////////////////////////////////
+//  ページロード完了
+///////////////////////////////////////////////////////
+function __handle_PageLoad_Complete()
+{
+	//###########################
+	//# 応答形式の取得
+	//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+	let wRes = CLS_OSIF.sGet_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad_Complete" }) ;
+	
+	let wSubRes ;
+	
+	/////////////////////////////
 	// システム状態変更（→運用へ）
 	wSubRes = CLS_Sys.sChg({
 		inStatus	: top.DEF_GVAL_SYS_STAT_RUN
@@ -97,7 +124,7 @@ function __handle_PageLoad()
 	if( wSubRes['Result']!=true )
 	{///失敗
 		wRes['Reason'] = "CLS_Sys.sChg is failed" ;
-		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+		CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 		return wRes ;
 	}
 	
@@ -108,6 +135,17 @@ function __handle_PageLoad()
 	/////////////////////////////
 	// 正常
 	wRes['Result'] = true ;
+	return ;
+}
+
+
+
+///////////////////////////////////////////////////////
+//  ページリサイズ
+///////////////////////////////////////////////////////
+function __handle_PageResize()
+{
+	CLS_WinCtrl.sChgPageResize() ;
 	return ;
 }
 
@@ -131,19 +169,6 @@ function __handle_SelectCSS_Mode( inMode )
 {
 	CLS_WinCtrl.sChgCSSmode({
 		inMode : inMode
-	}) ;
-	return ;
-}
-
-
-
-///////////////////////////////////////////////////////
-//  セレクタ番号の設定
-///////////////////////////////////////////////////////
-function __handle_Sel( inNumber )
-{
-	CLS_Sel.sRegVal({
-		inNum : inNumber
 	}) ;
 	return ;
 }

@@ -175,22 +175,31 @@ function CLS_FileCtrl_ReadFile({
 		wReader.onload = function(ev)
 		{
 			//改行で区切る
-			wARR_Text = wReader.result.split('\n') ;
+			wARR_Text = CLS_OSIF.sSplit({
+				inString  : wReader.result,
+				inPattern : '\n'
+			}) ;
+			if( wARR_Text['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "CLS_OSIF.sSplit is failed" ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				return wRes ;
+			}
 			
 			wARR_GetFile = new Array() ;
-			wLen = wARR_Text.length ;
+			wLen = wARR_Text['Length'] ;
 			for( wI=0 ; wI<wLen ; wI++ )
 			{
 				if( inInfo['Option'].inSpace==true )
 				{
-					wCHR_Line = wARR_Text[wI].replace(/\s+/g, "") ;
+					wCHR_Line = wARR_Text['Data'][wI].replace(/\s+/g, "") ;
 				}
 				else
 				{
 					//両端の空白を切り落とす
 					if( inInfo['Option'].inTrim==true )
 					{
-						wCHR_Line = wARR_Text[wI].trim() ;
+						wCHR_Line = wARR_Text['Data'][wI].trim() ;
 					}
 				}
 				//空白行のスキップ

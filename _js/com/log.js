@@ -14,7 +14,7 @@
 //#		let wRes = CLS_OSIF.sGet_Resp({ inClass:"Class", inFunc:"Func" }) ;
 //#
 //# ログセット
-//#		CLS_L.sL({ inRes:wRes, inLevel:"A", inMessage:"(none)", inDump:null, inBreak:false }) ;
+//#		CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:"(none)", inMessage:"(none)", inDump:null, inBreak:false }) ;
 //#
 //# ログファイル出力
 //#		CLS_L.sO()
@@ -36,6 +36,52 @@
 //#####################################################
 
 //#####################################################
+//# ログ用のスタック・ラインを windowオブジェクト に追加する
+//#####################################################
+
+	/////////////////////////////
+	// スタック生成
+	Object.defineProperty( window, '__STACK__', {
+		get: function(){
+			let wOrigin, wErr, wStack ;
+			
+			wOrigin = Error.prepareStackTrace ;
+			Error.prepareStackTrace = function(_, stack){ return stack; } ;
+			wErr = new Error ;
+			Error.captureStackTrace( wErr, arguments.callee ) ;
+			wStack = wErr.stack ;
+			Error.prepareStackTrace = wOrigin ;
+			return wStack ;
+		}
+	}) ;
+	
+	/////////////////////////////
+	// ライン取得 生成
+	//   ファイル名:行数
+	Object.defineProperty( window, '__LINE__', {
+		get: function(){
+			let wFileName, wLine ;
+			
+			//### ファイルパス/ファイル名
+			wFileName = __STACK__[1].getFileName().replace(location.origin, "").replace(window.location.search, "");
+			if(!wFileName)
+			{
+				wFileName = "/" ;
+			}
+			
+			//### 行数
+			wLine = __STACK__[1].getLineNumber() ;
+			
+			//### 結合
+			wLine = wFileName + ": "+ wLine ;
+			
+			return wLine ;
+		}
+	}) ;
+
+
+
+//#####################################################
 class CLS_L {
 //#####################################################
 
@@ -44,12 +90,13 @@ class CLS_L {
 //#####################################################
 	static sL({
 		inRes,
-		inLevel,
-		inMessage=top.DEF_GVAL_NULL,
-		inDump=top.DEF_GVAL_NULL
+		inLevel,						// ログレベル
+		inMessage = top.DEF_GVAL_NULL,	// メッセージ
+		inLine = top.DEF_GVAL_NULL,		// エラー行		__FILE__:__LINE__
+		inDump = top.DEF_GVAL_NULL		// ダンプデータ
 	})
 	{
-		let wLevel, wViewLog, wMessage, wTimeDate ;
+		let wLevel, wViewLog, wMessage, wTimeDate, wLine ;
 		let wRes, wSubRes, wMyRes ;
 		
 		//###########################
@@ -108,11 +155,11 @@ class CLS_L {
 			wMessage = inMessage ;
 		}
 		
-		//### Messageのチェック
-		wMessage = top.DEF_GVAL_TEXT_NONE ;
-		if(( inMessage!="" ) && ( inMessage!=top.DEF_GVAL_NULL ))
+		//### Line のチェック  __FILE__:__LINE__
+		wLine = top.DEF_GVAL_TEXT_NONE ;
+		if(( inLine!="" ) && ( inLine!=top.DEF_GVAL_NULL ))
 		{
-			wMessage = inMessage ;
+			wLine = inLine ;
 		}
 		
 		wLevel = top.DEF_GVAL_TEXT_NONE ;
@@ -122,7 +169,7 @@ class CLS_L {
 		{
 			//この処理のエラーをセット
 			wMyRes['Reason'] = "Not Level(Next Line Error): " + String(inLevel) ;
-			this.__setLog({ inRes:wMyRes, inLevel:"A", inTimeDate:top.DEF_GVAL_TIMEDATE }) ;
+			this.__setLog({ inRes:wMyRes, inLevel:"A", inTimeDate:top.DEF_GVAL_TIMEDATE, inLine:__LINE__ }) ;
 			
 			wLevel = "E" ;	//不明なエラー扱い
 		}
@@ -165,7 +212,7 @@ class CLS_L {
 		{
 			// 失敗: この処理のエラーをセット
 			wMyRes['Reason'] = "Get Time Date Error"
-			this.__setLog({ inRes:wMyRes, inLevel:"C", inTimeDate:top.DEF_GVAL_TIMEDATE }) ;
+			this.__setLog({ inRes:wMyRes, inLevel:"C", inTimeDate:top.DEF_GVAL_TIMEDATE, inLine:__LINE__ }) ;
 		}
 		else
 		{
@@ -174,7 +221,7 @@ class CLS_L {
 		
 		/////////////////////////////
 		// ログセット・出力
-		this.__setLog({ inRes:wRes, inLevel:wLevel, inTimeDate:wTimeDate, inMessage:wMessage, inDump:inDump }) ;
+		this.__setLog({ inRes:wRes, inLevel:wLevel, inTimeDate:wTimeDate, inMessage:wMessage, inLine:wLine, inDump:inDump }) ;
 		
 		return ;
 	}
@@ -188,20 +235,15 @@ class CLS_L {
 		inRes,
 		inLevel,
 		inTimeDate,
-		inMessage=gVal.DEF_NOTEXT,
-		inDump=top.DEF_GVAL_NULL
+		inMessage = gVal.DEF_NOTEXT,
+		inLine = gVal.DEF_NOTEXT,
+		inDump = top.DEF_GVAL_NULL
 	})
 	{
-///		let wKey ;
 		let wSTR_Data, wNum ;
 		
-///		/////////////////////////////
-///		// インデックスの更新
-///		wKey = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_Log }) ;
-///		
 		/////////////////////////////
 		// ログセット
-///		top.gSTR_Log[wKey] = {
 		wSTR_Data = {
 			"Logged"		: false,
 			"UserID"		: top.gSTR_SystemInfo.UserID,
@@ -213,12 +255,12 @@ class CLS_L {
 			"Reason"		: String(inRes['Reason']),
 			"Responce"		: String(inRes['Responce']),
 			"Message"		: inMessage,
+			"Line"			: inLine,
 			"Dump"			: top.DEF_GVAL_NULL
 		} ;
 		
 		/////////////////////////////
 		// コンソール出力
-///		this.__viewConsole({ inKey:wKey }) ;
 		this.__viewConsole({ inData:wSTR_Data }) ;
 		
 		/////////////////////////////
@@ -252,14 +294,14 @@ class CLS_L {
 // コンソール出力
 ///////////////////////////////////////////////////////
 	static __viewConsole({
-///		inKey
 		inData
 	})
 	{
-		let wCons, wHead, wDHead ;
+///		let wCons, wHead, wDHead ;
+		let wCons ;
 		
-		wHead  = "***********************" ;
-		wDHead = "****** DUMP DATA ******" ;
+///		wHead  = "***********************" ;
+///		wDHead = "****** DUMP DATA ******" ;
 		wCons  = "" ;
 		/////////////////////////////
 		// データ作成
@@ -267,7 +309,8 @@ class CLS_L {
 		//###非表示情報のヘッダ
 		if( inData['Level']=="N" )
 		{
-			wCons = wCons + wHead + '\n' ;
+///			wCons = wCons + wHead + '\n' ;
+			wCons = wCons + top.DEF_GVAL_LOG_HEADER + '\n' ;
 		}
 		
 		wCons = wCons + inData['TimeDate'] + " [" ;
@@ -278,33 +321,77 @@ class CLS_L {
 		   ( inData['Level']=="C" ) ||
 		   ( inData['Level']=="D" ) ||
 		   ( inData['Level']=="E" ) ||
-		   ( inData['Level']=="I" ) ||
-		   ( inData['Level']=="N" ) )
+		   ( inData['Level']=="I" ) )
 		{
-			wCons = wCons + "[" + inData['Result'] + "] " ;
+///			wCons = wCons + "[" + inData['Result'] + "] " ;
+			wCons = top.DEF_GVAL_LOG_ERROR_HEADER + '\n' + wCons + "[" + inData['Result'] + "] " ;
+			wCons = wCons + inData['Class'] + " :: " ;
+			wCons = wCons + inData['Func'] ;
+			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+			{
+				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+			}
+		}
+		else if(( inData['Level']=="CB" ) ||
+			    ( inData['Level']=="N" ) ||
+			    ( inData['Level']=="X" ) )
+		{
+			wCons = wCons + " " ;
+			wCons = wCons + inData['Class'] + " :: " ;
+			wCons = wCons + inData['Func'] ;
+			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+			{
+				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+			}
+		}
+		else if( inData['Level']=="S" )
+		{
+			wCons = top.DEF_GVAL_LOG_SYSRUN_HEADER + '\n' + wCons + " " ;
+			wCons = wCons + inData['Class'] + " :: " ;
+			wCons = wCons + inData['Func'] ;
+		}
+		else if( inData['Level']=="SC" )
+		{
+			wCons = top.DEF_GVAL_LOG_SYSCTRL_HEADER + '\n' + wCons + " " ;
+			wCons = wCons + inData['Class'] + " :: " ;
+			wCons = wCons + inData['Func'] ;
+		}
+		else if(( inData['Level']=="SU" ) ||
+		        ( inData['Level']=="RU" ) )
+		{
+			wCons = top.DEF_GVAL_LOG_LOGIN_HEADER + '\n' + wCons + " " ;
+			wCons = wCons + inData['Class'] + " :: " ;
+			wCons = wCons + inData['Func'] ;
+		}
+		else if(( inData['Level']=="R" ) ||
+		        ( inData['Level']=="RC" ) )
+		{
+			wCons = top.DEF_GVAL_LOG_USECTRL_HEADER + '\n' + wCons + " " ;
+			wCons = wCons + inData['Class'] + " :: " ;
+			wCons = wCons + inData['Func'] ;
 		}
 		else
 		{
 			wCons = wCons + " " ;
+			wCons = wCons + inData['Class'] + " :: " ;
+			wCons = wCons + inData['Func'] ;
 		}
-		
-		wCons = wCons + inData['Class'] + " :: " ;
-		wCons = wCons + inData['Func'] + " " ;
 		
 		if( inData['Reason']!=top.DEF_GVAL_TEXT_NONE )
 		{
-			wCons = wCons + '\n' + "  Reason: " + inData['Reason'] + " " ;
+			wCons = wCons + '\n' + "  Reason: " + inData['Reason'] ;
 		}
 		
 		if( inData['Message']!=top.DEF_GVAL_TEXT_NONE )
 		{
-			wCons = wCons + '\n' + "  Info: " + inData['Message'] + " " ;
+			wCons = wCons + '\n' + "  Info: " + inData['Message'] ;
 		}
 		
 		//###非表示情報のフッタ
 		if( inData['Level']=="N" )
 		{
-			wCons = wCons + '\n' + wHead ;
+///			wCons = wCons + '\n' + wHead ;
+			wCons = wCons + '\n' + top.DEF_GVAL_LOG_HEADER ;
 		}
 		
 		/////////////////////////////
@@ -360,7 +447,8 @@ class CLS_L {
 		// ダンプの表示
 		if( inData['Dump']!=top.DEF_GVAL_NULL )
 		{
-			CLS_OSIF.sConsInfo({ inText:wDHead }) ;
+///			CLS_OSIF.sConsInfo({ inText:wDHead }) ;
+			CLS_OSIF.sConsInfo({ inText:top.DEF_GVAL_LOG_DUMP_HEADER }) ;
 			CLS_OSIF.sViewObj({ inObj:inData['Dump'] }) ;
 		}
 		
@@ -420,27 +508,6 @@ class CLS_L {
 		
 		/////////////////////////////
 		// ボックスへ表示
-///		
-///		//### データ作成
-///		wData = "" ;
-///		for( let wKey in top.gSTR_LogBox.Data )
-///		{
-///			wData = wData + top.gSTR_LogBox.Data[wKey] ;
-///		}
-///		
-///		//### textareaへセット
-///		wSubRes = CLS_PageObj.sSetValue({
-///			inPageObj	: top.gSTR_LogBox.BoxObj,
-///			inKey		: top.DEF_GVAL_IDX_LOGBOX_MESSAGE,
-///			inCode		: wData,
-///			inDirect	: true
-///		}) ;
-///		if( wSubRes['Result']!=true )
-///		{
-///			wRes['Reason'] = "CLS_PageObj.sSetValue is failer" ;
-///			this.sL({ inRes:wRes, inLevel:"B" }) ;
-///			return false ;
-///		}
 		try
 		{
 			top.gSTR_LogBox.BoxObj.push( wData ) ;
@@ -450,7 +517,7 @@ class CLS_L {
 			//###########################
 			//# 例外処理
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return false ;
 		}
 		
@@ -458,131 +525,6 @@ class CLS_L {
 	}
 
 
-
-//////////////////////////////////////////////////////////
-///// コンソール出力
-//////////////////////////////////////////////////////////
-///	static __viewConsole({
-///		inKey
-///	})
-///	{
-///		let wCons, wHead, wDHead ;
-///		
-///		wHead  = "***********************" ;
-///		wDHead = "****** DUMP DATA ******" ;
-///		wCons  = "" ;
-///		/////////////////////////////
-///		// データ作成
-///		
-///		//###非表示情報のヘッダ
-///		if( top.gSTR_Log[inKey]['Level']=="N" )
-///		{
-///			wCons = wCons + wHead + '\n' ;
-///		}
-///		
-///		wCons = wCons + top.gSTR_Log[inKey]['TimeDate'] + " [" ;
-///		wCons = wCons + top.gSTR_Log[inKey]['Level'] + "]" ;
-///		
-///		if(( top.gSTR_Log[inKey]['Level']=="A" ) ||
-///		   ( top.gSTR_Log[inKey]['Level']=="B" ) ||
-///		   ( top.gSTR_Log[inKey]['Level']=="C" ) ||
-///		   ( top.gSTR_Log[inKey]['Level']=="D" ) ||
-///		   ( top.gSTR_Log[inKey]['Level']=="E" ) ||
-///		   ( top.gSTR_Log[inKey]['Level']=="I" ) ||
-///		   ( top.gSTR_Log[inKey]['Level']=="N" ) )
-///		{
-///			wCons = wCons + "[" + top.gSTR_Log[inKey]['Result'] + "] " ;
-///		}
-///		else
-///		{
-///			wCons = wCons + " " ;
-///		}
-///		
-///		wCons = wCons + top.gSTR_Log[inKey]['Class'] + " :: " ;
-///		wCons = wCons + top.gSTR_Log[inKey]['Func'] + " " ;
-///		
-///		if( top.gSTR_Log[inKey]['Reason']!=top.DEF_GVAL_TEXT_NONE )
-///		{
-///			wCons = wCons + '\n' + "  Reason: " + top.gSTR_Log[inKey]['Reason'] + " " ;
-///		}
-///		
-///		if( top.gSTR_Log[inKey]['Message']!=top.DEF_GVAL_TEXT_NONE )
-///		{
-///			wCons = wCons + '\n' + "  Info: " + top.gSTR_Log[inKey]['Message'] + " " ;
-///		}
-///		
-///		//###非表示情報のフッタ
-///		if( top.gSTR_Log[inKey]['Level']=="N" )
-///		{
-///			wCons = wCons + '\n' + wHead ;
-///		}
-///		
-///		/////////////////////////////
-///		// コンソール表示
-///		
-///		//### 致命的エラー
-///		if( top.gSTR_Log[inKey]['Level']=="A" )
-///		{
-///			CLS_OSIF.sConsError({ inText:wCons }) ;
-///		}
-///		//### エラー
-///		else if(( top.gSTR_Log[inKey]['Level']=="B" ) ||
-///		        ( top.gSTR_Log[inKey]['Level']=="C" ) ||
-///		        ( top.gSTR_Log[inKey]['Level']=="D" ) ||
-///		        ( top.gSTR_Log[inKey]['Level']=="E" ) ||
-///		        ( top.gSTR_Log[inKey]['Level']=="I" ) )
-///		{
-///			CLS_OSIF.sConsWarn({ inText:wCons }) ;
-///		}
-///		//### トラヒック
-///		else if(( top.gSTR_Log[inKey]['Level']=="TS" ) ||
-///		        ( top.gSTR_Log[inKey]['Level']=="TU" ) )
-///		{
-//////			CLS_OSIF.sConsLog({ inText:wCons }) ;
-///			CLS_OSIF.sConsInfo({ inText:wCons }) ;
-///		}
-///		//### テストログ
-///		else if( top.gSTR_Log[inKey]['Level']=="X" )
-///		{
-///			if( top.DEF_INDEX_TEST==true )
-///			{
-///				CLS_OSIF.sConsWarn({ inText:wCons }) ;
-///			}
-///		}
-///		//### 非表示・コールバック
-///		else if(( top.gSTR_Log[inKey]['Level']=="CB" ) ||
-///		        ( top.gSTR_Log[inKey]['Level']=="N" ) )
-///		{
-///			CLS_OSIF.sConsInfo({ inText:wCons }) ;
-///		}
-///		//### 操作記録（システム起動・システム設定）
-///		else if(( top.gSTR_Log[inKey]['Level']=="S" ) ||
-///		        ( top.gSTR_Log[inKey]['Level']=="SC" ) )
-///		{
-///			CLS_OSIF.sConsLog({ inText:wCons }) ;
-///		}
-///		//### 操作記録（システム規制・ユーザ操作）
-///		else
-///		{
-///			CLS_OSIF.sConsInfo({ inText:wCons }) ;
-///		}
-///		
-///		/////////////////////////////
-///		// ダンプの表示
-///		if( top.gSTR_Log[inKey]['Dump']!=top.DEF_GVAL_NULL )
-///		{
-///			CLS_OSIF.sConsInfo({ inText:wDHead }) ;
-///			CLS_OSIF.sViewObj({ inObj:top.gSTR_Log[inKey]['Dump'] }) ;
-///		}
-///		
-///		/////////////////////////////
-///		// ログ済
-///		top.gSTR_Log[inKey]['Logged'] = true ;
-///		
-///		return ;
-///	}
-///
-///
 
 //#####################################################
 //# ログファイル出力
@@ -594,16 +536,12 @@ class CLS_L {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"sO" }) ;
 		
-///		let wTimeDate, wText, wSTR_Data ;
-///		let wSubRes ;
 		let wSubRes, wTimeDate, wSTR_Data, wMessage ;
 		
 		/////////////////////////////
 		// ファイル出力OFFなら、終わる
 		if( top.DEF_INDEX_LOG_OUTPUT==false )
 		{
-///			wText = "Output Log File OFF" ;
-///			CLS_OSIF.sConsInfo({ inText:wText }) ;
 			wMessage = "Output Log File OFF" ;
 			this.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			return true ;
@@ -615,8 +553,6 @@ class CLS_L {
 		wSubRes = CLS_OSIF.sGetTime() ;
 		if( wSubRes['Result']!=true )
 		{
-///			wText = "Time Date is error(CLS_L::__viewLog)" ;
-///			CLS_OSIF.sConsError({ inText:wText }) ;
 			wRes['Reason'] = "Time Date is error" ;
 			this.sL({ inRes:wRes, inLevel:"C" }) ;
 			return false ;
@@ -626,10 +562,8 @@ class CLS_L {
 		/////////////////////////////
 		// 出力データの作成
 		wSTR_Data = this.__createData() ;
-		if( CLS_OSIF.sGetObjectNum({ inObject:wSTR_Data['Cons'] })==0 )
+		if( CLS_OSIF.sGetObjectNum({ inObject:wSTR_Data['Cons'] })<=0 )
 		{
-///			wText = "No Log Data(CLS_L::__viewLog)" ;
-///			CLS_OSIF.sConsWarn({ inText:wText }) ;
 			wMessage = "No Log data" ;
 			this.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			return true ;
@@ -716,7 +650,7 @@ class CLS_L {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"__outputFile" }) ;
 		
-		let wTimeDate, wTime, wDate ;
+		let wSubRes, wTimeDate, wTime, wDate ;
 		let wPath, wText ;
 		
 		wText = "" ;
@@ -729,7 +663,17 @@ class CLS_L {
 		
 		/////////////////////////////
 		// ファイル名生成
-		wTimeDate = inTimeDate.split(" ") ;
+		wSubRes = CLS_OSIF.sSplit({
+			inString  : inTimeDate,
+			inPattern : " "
+		}) ;
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=2 ))
+		{///失敗
+			wRes['Reason'] = "CLS_OSIF.sSplit is failed" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			return ;
+		}
+		wTimeDate = wSubRes['Data'] ;
 		wDate     = wTimeDate[0].replace( /-/g, "" ) ;
 		wTime     = wTimeDate[1].replace( /:/g, "" ) ;
 		wPath = top.DEF_GVAL_LOG_OUTPUT_FILE_HEADER + wDate + wTime + ".log" ;
@@ -740,8 +684,6 @@ class CLS_L {
 		
 		/////////////////////////////
 		// コンソール表示
-///		wText = "Output Log File: Path=" + String(wPath) ;
-///		CLS_OSIF.sConsInfo({ inText:wText }) ;
 		wText = "Output Log file: Path=" + String(wPath) ;
 		this.sL({ inRes:wRes, inLevel:"SC", inMessage:wText }) ;
 		
@@ -755,16 +697,13 @@ class CLS_L {
 //#####################################################
 	static sV()
 	{
-///		for( let wKey in top.gSTR_Log )
 		for( let wKey in top.gARR_Log )
 		{
 			//### 表示済ならスキップ
-///			if( top.gSTR_Log[wKey]['Logged']==true )
 			if( top.gARR_Log[wKey]['Logged']==true )
 			{
 				continue ;
 			}
-///			this.__viewConsole({ inKey:wKey }) ;
 			this.__viewConsole({ inData:top.gARR_Log[wKey] }) ;
 		}
 		return ;
@@ -786,9 +725,6 @@ class CLS_L {
 		
 		/////////////////////////////
 		// ログクリア
-///		top.gSTR_Log    = {} ;
-///		top.gVAL_Log_pt = -1 ;
-///		CLS_OSIF.sConsError({ inText:wText }) ;
 		top.gARR_Log = new Array() ;
 		top.gSTR_LogBox.Data = new Array() ;
 		
@@ -810,7 +746,7 @@ class CLS_L {
 				//###########################
 				//# 例外処理
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 				return false ;
 			}
 		}
@@ -926,7 +862,7 @@ class CLS_L {
 			//###########################
 			//# 例外処理
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return false ;
 		}
 		
@@ -968,7 +904,7 @@ class CLS_L {
 			//###########################
 			//# 例外処理
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return false ;
 		}
 		
@@ -983,6 +919,4 @@ class CLS_L {
 
 //#####################################################
 }
-
-
 

@@ -5,10 +5,14 @@
 //# ::Class    : グローバル定数/変数
 //#####################################################
 //# 更新履歴
-//# 1.1.1.0		2024-5-30	website用リリース
-//# 1.1.1.1		2024-6-23	Selクラスのバグ修正
-//#
-//#
+//# 1.1.1.0		2024-05-30	website用リリース
+//# 1.1.1.1		2024-06-23	Selクラスのバグ修正
+//# 1.1.1.2		2024-06-24	ポップアップヘルプの改修
+//# 1.1.1.3		2024-06-26	splitをOS/IFのものを使うようにした
+//# 1.1.1.4		2024-06-26	ログクラス改修（エラー行番号表示）
+//# 1.1.1.5		2024-06-26	ポップアップWindowの改修（移動、開閉）
+//# 1.1.2.0		2024-06-28	ボタン制御の追加
+//# 1.2.0.0		2024-07-05	ポップアップヘルプ/制御/ボタン の設定I/F変更
 //#
 //#####################################################
 
@@ -16,7 +20,7 @@
 //# ※ユーザ自由変更※
 
 //### システム情報
-var DEF_USER_VERSION	= "1.1.1.1" ;
+var DEF_USER_VERSION	= "1.2.0.0" ;
 var DEF_USER_AUTHOR		= 'korei (X:@korei_xlix)' ;	//HTMLのauthor表示
 var DEF_USER_GITHUB		= "https://github.com/korei-xlix/website/" ;
 var DEF_USER_SITEURL	= "https://website.koreis-labo.com/" ;
@@ -112,6 +116,14 @@ var DEF_GVAL_IDX_EXTOBJ_FRAME_ID = "gFrameID" ;		// 拡張プロパティ フレ
 
 
 //#####################################################
+//# 定数（ページ更新）
+//#####################################################
+
+var DEF_GVAL_PAGEUPDATE_PATTERN	= "LAST UPDATE：\t" ;
+
+
+
+//#####################################################
 //# 定数（翻訳）
 //#####################################################
 
@@ -123,7 +135,6 @@ var DEF_GVAL_TRANSRATE			= {
 	"EN"	: "英語"
 	} ;
 var DEF_GVAL_TRANSRATE_SELECT	= "JP" ;
-///var DEF_GVAL_TRANSRATE_OFF	= "OFF" ;
 
 /////////////////////////////
 // タグ例
@@ -167,6 +178,15 @@ var DEF_GVAL_NULL				= null ;
 // sSystemExit時にコンソール表示する文字
 var DEF_GVAL_SYSTEM_EXIT		= "● System Exit (User call) ●" ;
 
+/////////////////////////////
+// ログヘッダなど仕切り
+var DEF_GVAL_LOG_HEADER			= "***********************" ;
+var DEF_GVAL_LOG_ERROR_HEADER	= "**** ERROR ************" ;
+var DEF_GVAL_LOG_DUMP_HEADER	= "**** DUMP DATA ********" ;
+var DEF_GVAL_LOG_SYSRUN_HEADER	= "==== SYSTEM RUN ====" ;
+var DEF_GVAL_LOG_SYSCTRL_HEADER	= "++++ SYSTEM CTRL ++++" ;
+var DEF_GVAL_LOG_USECTRL_HEADER = "---- USER CTRL ----" ;
+var DEF_GVAL_LOG_LOGIN_HEADER	= "<<<< LOGIN >>>>" ;
 
 
 //#####################################################
@@ -198,6 +218,9 @@ var DEF_GVAL_SYS_TIMER_VALUE	= 1000 ;						// システム・周期処理 タイ
 var DEF_GVAL_SYS_TIMER_15		= 15 * 60 ;						//  15分周期カウント値
 var DEF_GVAL_SYS_TIMER_30		= 30 * 60 ;						//  30分周期カウント値
 var DEF_GVAL_SYS_TIMER_60		= 60 * 60 ;						//  60分周期カウント値+リセット
+
+var DEF_GVAL_SYS_TID_COMP_TIMER	  = "tid_PageSetCompTimer" ;	// ページ設定完了待ちタイマ
+var DEF_GVAL_SYS_COMP_TIMER_VALUE = 10000 ;						// タイマ値(ms)
 
 function gSTR_SystemCircle_Str()
 {																//システムカウント（定期処理用）
@@ -299,6 +322,7 @@ var DEF_GVAL_TIMERCTRL_KIND	= new Array(						//タイマ種類
 
 function gSTR_TimerCtrlInfo_Str()
 {
+	this.TimerObj				= top.DEF_GVAL_NULL ;			//タイマオブジェクト(window発行のタイマID)
 	this.ID						= top.DEF_GVAL_NULL ;			//タイマ名(フレーム名)
 	this.Kind					= top.DEF_GVAL_NULL ;			//タイマ種類
 	
@@ -344,56 +368,37 @@ function gSTR_StorageInfo_Str()
 var gSTR_StorageInfo = new gSTR_StorageInfo_Str() ;
 
 
-//###########################
-//# シナリオ制御クラス用
-																// メッセージ種別
-var DEF_GVAL_SENARIO_KIND_MESSAGE = "SN_MESSAGE" ;				//   メッセージ
-
-
-
-
-function gSTR_SenarioData_Str()
-{
-	this.ID						= top.DEF_GVAL_NULL ;			// シナリオID
-	this.Kind					= top.DEF_GVAL_NULL ;			// シナリオ種別
-	
-	this.FLG_Run				= false ;						// メッセージ実行中  true=実行中
-	this.Message				= new Array() ;					// メッセージデータ
-
-
-
-
-
-}
-
-function gSTR_SenarioStack_Str()
-{
-	this.ID						= top.DEF_GVAL_NULL ;			// シナリオID
-	
-	this.FLG_Run				= false ;						// シナリオ実行中  true=実行中
-	this.Run_ID					= top.DEF_GVAL_NULL ;			// 実行中シナリオデータID
-	this.Data					= {} ;							// シナリオデータ  gSTR_SenarioData_Str()
-}
-
-function gSTR_SenarioCtrl_Str()
-{
-	this.FLG_Run				= false ;						// シナリオ実行中  true=実行中
-	this.Run_ID					= top.DEF_GVAL_NULL ;			// 実行中シナリオID
-	this.Data					= {} ;							// シナリオスタック  gSTR_SenarioStack_Str()
-}
-var gSTR_SenarioCtrl = {} ;
-
-
 
 //###########################
 //# ボタン制御クラス用
+
+//### ボタンID
+//    id=XXXXX-GGGGG-IIIII-KKKKK
+//
+//    XXXXX=IndexID		        Popup Window Indexなど  PopupでなくてもOK
+//    GGGGG=ボタングループID
+//    IIIII=ボタンID
+//	  KKKKK=ボタン種別
+
+//### ボタングループID
+//    id=XXXXX-GGGGG
+//
+//    XXXXX=IndexID		        Popup Window Indexなど  PopupでなくてもOK
+//    GGGGG=ボタングループID
+
+//### ボタングループ情報構造
+//      gSTR_ButtonGroup[フレームID][ボタングループID]
+
+//### ボタン情報構造
+//      gSTR_ButtonCtrl[フレームID][ボタンID]
+
 																// ボタン種別
-var DEF_GVAL_BTN_KIND_NORMAL	= "NBTN" ;						//   ノーマルボタン
-var DEF_GVAL_BTN_KIND_HOLD		= "HBTN" ;						//   ホールドボタン
-var DEF_GVAL_BTN_KIND_CLICK		= "CBTN" ;						//   クリックボタン
-var DEF_GVAL_BTN_KIND_MESSAGE	= "MBTN" ;						//   メッセージボタン
-var DEF_GVAL_BTN_KIND_RADIO		= "RADB" ;						//   ラジオボタン
-var DEF_GVAL_BTN_KIND_CHECK		= "CBXB" ;						//   チェックボタン
+var DEF_GVAL_BTN_KIND_NORMAL	= "DEFBTN" ;					//   ノーマルボタン
+var DEF_GVAL_BTN_KIND_HOLD		= "HLDBTN" ;					//   ホールドボタン
+var DEF_GVAL_BTN_KIND_CLICK		= "CLKBTN" ;					//   クリックボタン
+var DEF_GVAL_BTN_KIND_MESSAGE	= "MSGBTN" ;					//   メッセージボタン
+var DEF_GVAL_BTN_KIND_RADIO		= "RADBTN" ;					//   ラジオボタン
+var DEF_GVAL_BTN_KIND_CHECK		= "CBXBTN" ;					//   チェックボタン
 
 var DEF_GVAL_BTN_KIND			= new Array(					// チェック用
 	top.DEF_GVAL_BTN_KIND_HOLD,
@@ -404,79 +409,70 @@ var DEF_GVAL_BTN_KIND			= new Array(					// チェック用
 	top.DEF_GVAL_BTN_KIND_NORMAL
 	) ;
 
-//  ボタンID
-//    id=XXXXX-KKKKK-YYYYY
-//    XXXXX=ボタンID
-//	  KKKKK=ボタン種別
-//    YYYYY=フレームID
-//        var DEF_GVAL_PARENT_FRAME_ID	= "iPFrame" ;
+function gSTR_ButtonGroup_Str()
+{
+	this.FrameID				= top.DEF_GVAL_NULL ;			//  フレームID
+	this.GroupID				= top.DEF_GVAL_NULL ;			//  ボタングループID
+	this.PopupID				= top.DEF_GVAL_NULL ;			//  所属ポップアップWindow ID
+	
+	this.GroupObj				= top.DEF_GVAL_NULL ;			//  グループオブジェクト
+	
+	this.FLG_Open				= false ;						//  グループ表示  true=表示  false=非表示
+	
+	this.ARR_ButtonID			= new Array() ;					//  所属ボタンID  Array型
+}
+var gSTR_ButtonGroup = {} ;
 
 function gSTR_ButtonCtrl_Str()
 {
+	this.FrameID				= top.DEF_GVAL_NULL ;			//  フレームID
 	this.GroupID				= top.DEF_GVAL_NULL ;			//  ボタングループID
+	this.PopupID				= top.DEF_GVAL_NULL ;			//  所属ポップアップWindow ID
 	
 	this.ID						= top.DEF_GVAL_NULL ;			//  ボタンID（タイマID）
 	this.Kind					= top.DEF_GVAL_NULL ;			//  ボタン種別
 	this.ButtonObj				= top.DEF_GVAL_NULL ;			//  ボタンオブジェクト
 	
 	this.Init					= false ;						//  true=ボタン設定完了
+	this.FLG_Open				= true ;						//  ボタン表示  true=表示  false=非表示
+	this.FLG_On					= false ;						//  ボタン点灯(On) / 消灯(Off)
+	this.FLG_Sw					= false ;						//  ボタン入力中(ホールド/ブリンク)
 	
-	this.FLG_On					= false ;						//  ボタン点灯
-	this.FLG_Blink				= false ;						//  ボタン点滅
-	
-	this.CSS_On					= top.DEF_GVAL_NULL ;			//  ボタン点灯のCSS
-	this.CSS_Off				= top.DEF_GVAL_NULL ;			//  ボタン消灯のCSS
-	
-																//  スタイル設定
-	this.FontSize				= "9pt" ;						//    フォントサイズ
-	this.Width					= "120px" ;						//    横幅
+	this.Style					= {} ;							//  スタイルシート
+																//   ['Def']	デフォルトスタイル
+																//   ['On']		ボタン点滅スタイル
+																//   ['Off']	ボタン消灯スタイル
 	
 }
 var gSTR_ButtonCtrl = {} ;
+///
+///var gARR_RegButtonCtrl = {} ;	//仮登録情報
+
 
 
 //###########################
 //# ポップアップ制御クラス用
 
-//### ポップアップ マウスムーブ情報
-function gSTR_PopupMouseMove_Str()
-{
-	this.FLG_Move				= false ;						// マウスムーブ  true=ON  false=OFF
-	
-	this.FLG_Help				= false ;						// true=ポップアップヘルプ ON
-	this.PopupHelpID			= top.DEF_GVAL_NULL ;			// ポップアップヘルプID
-	
-	this.FLG_Win				= false ;						// true=ポップアップWindow ON
-	this.PopupWinID				= top.DEF_GVAL_NULL ;			// ポップアップWindowID（移動中Window）
-}
+//### ポップアップヘルプ情報群
 
-
-/// idの付け方
+//### idの付け方
+//    ポップアップヘルプID    ※1フレームあたり1つだけ
+//      iPopupHelp-YYYYY
+//        YYYYY=フレームID
+//          var DEF_GVAL_PARENT_FRAME_ID	= "iPFrame" ;
 //
-//  ポップアップヘルプID    ※1フレームあたり1つだけ
-//    iPopupHelp-PHPOP-YYYYY
-//      YYYYY=フレームID
-//        var DEF_GVAL_PARENT_FRAME_ID	= "iPFrame" ;
-//
-//  ポップアップヘルプ実装ID
-//    id=XXXXX-PH-YYYYY
-//    XXXXX=実装オブジェクトID
-//    YYYYY=フレームID
-//        var DEF_GVAL_PARENT_FRAME_ID	= "iPFrame" ;
-// ヘルプID / 実装ID とも全て異なる
+//    ポップアップヘルプ実装ID
+//      id=XXXXX-POPUPHELP
+//         XXXXX=実装オブジェクトID
 
-////var DEF_GVAL_POPUPHELP_WIN_ID_HEADER = "iPopupHelp-" ;
-////var DEF_GVAL_POPUPHELP_WIN_ID_FOOTER = "_PopupHelp" ;
-///var DEF_GVAL_POPUPHELP_POPUP		= "iPopupHelp-PHPOP-" ;
-///var DEF_GVAL_POPUPHELP_DIST		= "-PH-" ;
-var DEF_GVAL_POPUPHELP_ID		= "iPopupHelp" ;
-var DEF_GVAL_POPUPHELP_DIST		= "POPUPHELP" ;
+var DEF_GVAL_POPUPHELP_ID			= "iPopupHelp" ;
+///var DEF_GVAL_POPUPHELP_DIST			= "POPUPHELP" ;
 
-var DEF_GVAL_POPUPHELP_TID_TIMER	= "tid_PopupHelpTimer" ;	//ポップアップヘルプ 閉じるタイマ
+var DEF_GVAL_POPUPHELP_TID_HEADER	= "tid_PopupHelpTimer" ;	//ポップアップヘルプ 閉じるタイマ ヘッダ  tid_PopupHelpTimer-[フレームID]
 var DEF_GVAL_POPUPHELP_TIMEOUT		= 2000 ;					//  タイムアウト秒数
 var DEF_GVAL_POPUPHELP_RETRY		= 0 ;						//  リトライ回数
 
-//### ポップアップヘルプ情報
+
 function gSTR_PopupHelpDistobj_Str()
 {																//ポップアップヘルプ実装
 	this.DistID					= top.DEF_GVAL_NULL ;			//  ポップアップ実装先ID(id)
@@ -484,7 +480,6 @@ function gSTR_PopupHelpDistobj_Str()
 	this.ARR_Text				= {} ;							//  テキスト
 																//   { "JP" : "日本語", "EN" : "English" }
 }
-///var gSTR_PopupHelpDistobj = {} ;
 
 function gSTR_PopupHelp_Str()
 {																//ポップアップヘルプ
@@ -495,52 +490,28 @@ function gSTR_PopupHelp_Str()
 	this.CodTop					= 0 ;							//    Top 座標
 	this.CodLeft				= 0 ;							//    Left座標
 	
-																//  スタイル設定
-	this.FontSize				= "9pt" ;						//    フォントサイズ
-	this.Width					= "200px" ;						//    横幅
-	
 	this.ARR_DistObj			= {} ;							//  データ  辞書型{}  型：gSTR_PopupHelpDistobj_Str()
 }
 var gSTR_PopupHelp = {} ;
 
 
-//  ポップアップWindowID
-//    id=XXXXX-PUWIN-YYYYY
-//    XXXXX=実装オブジェクトID
-//    YYYYY=フレームID
-//        var DEF_GVAL_PARENT_FRAME_ID	= "iPFrame" ;
-
+//### ポップアップWindow群
 var DEF_GVAL_POPUPWIN_TID_MESSAGE = "tid_PopupWin_Message" ;	// メッセージタイマ
 var DEF_GVAL_POPUPWIN_DEFAULT_TIMEOUT	= 400 ;					// タイムアウト秒数(デフォルト)
 var DEF_GVAL_POPUPWIN_LOG_COUNT			= 30 ;					// テストログ出力カウント
 
 																// id種別
-var DEF_GVAL_POPUPWIN_WINDOW = "PUWIN" ;						//   Window本体
-var DEF_GVAL_POPUPWIN_BAR	 = "PUWINBAR" ;						//   バー部分
-var DEF_GVAL_POPUPWIN_CLOASE = "PUWINCLS" ;						//   クローズボタン
-var DEF_GVAL_POPUPWIN_BODY   = "PUWINBD" ;						//   ボディ部分
-var DEF_GVAL_POPUPWIN_FOOTER = "PUWINFT" ;						//   フッター部分
-var DEF_GVAL_POPUPWIN_TEXT	 = "PUWINTA" ;						//   テキストエリア
-var DEF_GVAL_POPUPWIN_AUTO	 = "PUWINAUTO" ;					//   自動送り
-var DEF_GVAL_POPUPWIN_HUMAN	 = "PUWINHM" ;						//   人物
-var DEF_GVAL_POPUPWIN_GROUP	 = "PUWINGRP" ;						//   ボタングループ
-
-var DEF_GVAL_POPUPWIN_FTOP		= 100 ;
+var DEF_GVAL_POPUPWIN_WINDOW 	= "PUWIN" ;						//   Window本体
+var DEF_GVAL_POPUPWIN_BAR	 	= "PUWINBAR" ;					//   バー部分
+var DEF_GVAL_POPUPWIN_CLOSE  	= "PUWINCLS" ;					//   クローズボタン
+var DEF_GVAL_POPUPWIN_BODY   	= "PUWINBD" ;					//   ボディ部分
+var DEF_GVAL_POPUPWIN_FOOTER 	= "PUWINFT" ;					//   フッター部分
+var DEF_GVAL_POPUPWIN_TEXT	 	= "PUWINTA" ;					//   テキストエリア
+var DEF_GVAL_POPUPWIN_AUTO	 	= "PUWINAUTO" ;					//   自動送り
+var DEF_GVAL_POPUPWIN_HUMAN	 	= "PUWINHM" ;					//   人物
+var DEF_GVAL_POPUPWIN_FTOP		= 100 ;							// 初期位置
 var DEF_GVAL_POPUPWIN_FLEFT		= 100 ;
-var DEF_GVAL_POPUPWIN_WIDTH		= 536 ;
-var DEF_GVAL_POPUPWIN_BTN_WIDTH	= 116 ;
-///var DEF_GVAL_POPUPWIN_MBSN_WIDTH = 508 ;	// 116x4=44
-var DEF_GVAL_POPUPWIN_TEXT_WIDTH = 496 ;
 
-//### ボタングループ
-function gSTR_PopupWindow_BtnGroupStr()
-{
-	this.ID						= top.DEF_GVAL_NULL ;			// ボタングループID (id)
-	this.GroupObj				= top.DEF_GVAL_NULL ;			// ボタングループ オブジェクト
-	this.ARR_ButtonID			= new Array() ;					// ボタンID
-}
-
-//### ポップアップWindow群
 function gSTR_PopupWindow_Str()
 {
 	this.ID						= top.DEF_GVAL_NULL ;			//  ポップアップWindow ID (id)
@@ -553,20 +524,18 @@ function gSTR_PopupWindow_Str()
 	
 	this.FLG_Open				= false ;						//  オープン      true=オープン      false=クローズ
 	this.FLG_Close				= false ;						//  クローズ不可  true=クローズ不可  false=クローズ可
-///	this.FLG_Move				= false ;						//  Window移動中  true=移動中
 	this.FLG_Auto				= false ;						//  自動送り中    true=自動送り中
-	
-																//  スタイル設定
-	this.FontSize				= "12pt" ;						//    フォントサイズ
-	this.Width					= "200px" ;						//    横幅
+	this.FLG_Inv				= false ;						//  操作排他中    true=排他中
 	
 																//  ポップアップWindow 座標
+	this.FirstCodTop			= top.DEF_GVAL_POPUPWIN_FTOP ;	//    Top 座標 (初期orリセット位置)
+	this.FirstCodLeft			= top.DEF_GVAL_POPUPWIN_FLEFT ;	//    Left座標 (初期orリセット位置)
+	
 	this.CodTop					= top.DEF_GVAL_POPUPWIN_FTOP ;	//    Top 座標
 	this.CodLeft				= top.DEF_GVAL_POPUPWIN_FLEFT ;	//    Left座標
-	
-	this.STR_Button				= {} ;							//  ボタングループ  gSTR_PopupWindow_BtnGroupStr
 }
 var gSTR_PopupWindow = {} ;
+
 
 
 //###########################
@@ -586,6 +555,21 @@ var DEF_GVAL_WINCTRL_CSS_MODE	= new Array(					//CSSモード
 
 var DEF_GVAL_WINCTRL_CSS_FOOTER_PC = "_wide.css" ;				//CSSファイル名後尾（PC用）
 var DEF_GVAL_WINCTRL_CSS_FOOTER_MB = "_mini.css" ;				//CSSファイル名後尾（スマホ用）
+
+
+//### マウスムーブ情報
+function gSTR_WinCtrl_MouseMove_Str()
+{
+	this.FLG_MoveIv				= false ;						// true=マウスムーブイベント設定
+	
+	this.FLG_Help				= false ;						// true=ポップアップヘルプ ムーブON
+	this.PopupHelpID			= top.DEF_GVAL_NULL ;			// ポップアップヘルプID
+	this.PopupHelpDistID		= top.DEF_GVAL_NULL ;			// ポップアップヘルプ実装ID
+	
+	this.FLG_Win				= false ;						// true=ポップアップWindow ムーブON
+	this.PopupWinID				= top.DEF_GVAL_NULL ;			// ポップアップWindowID（移動中Window）
+}
+
 
 //### セレクタ制御
 function gSTR_SelInfo_Str()
@@ -631,15 +615,15 @@ function gSTR_FrameCtrlInfo_Str()
 	this.WindowBarInfo	= new gSTR_FrameCtrl_BarInfo_Str() ;	//  windowバー情報
 	this.NextProcess	= new gSTR_CallbackInfo_Str() ;			//  ロード後処理
 	this.SelInfo		= {} ;									//  セレクタ情報
-	this.MouseMove		= new gSTR_PopupMouseMove_Str() ;		//  ポップアップ マウスムーブ
+	this.MouseMove		= new gSTR_WinCtrl_MouseMove_Str() ;	//  マウスムーブ情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
 }
 var gARR_FrameCtrlInfo = {} ;
 
 
-//### フレームMAP
-var gSTR_FrameMAP = {} ;
-
+/////### フレームMAP
+///var gSTR_FrameMAP = {} ;
+///
 
 //### Window情報群
 function gSTR_WinCtrl_Update_Str()
@@ -669,10 +653,10 @@ function gSTR_WinCtrl_TransInfo_Str()
 	this.FLG_Trans				= false ;						//  翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 }
 
+
 //### メイン情報
 function gSTR_WinCtrlInfo_Str()
 {																//Window情報（メイン）
-///	this.Window					= top.DEF_GVAL_NULL ;			//  Windowオブジェクト
 	this.WindowObj				= top.DEF_GVAL_NULL ;			//  Windowオブジェクト
 	this.PageObj				= top.DEF_GVAL_NULL ;			//  ページオブジェクト
 	this.OtherDomain			= top.DEF_GVAL_NULL ;			//  外部ドメインのCSSの場合のドメイン名
@@ -688,26 +672,14 @@ function gSTR_WinCtrlInfo_Str()
 	this.UpIcon			= new gSTR_WinCtrl_File_Str() ;			//  更新アイコン
 	this.UpdateInfo 	= new gSTR_WinCtrl_Update_Str() ;		//  更新情報
 	this.SelInfo		= {} ;									//  セレクタ情報
-	this.MouseMove		= new gSTR_PopupMouseMove_Str() ;		//  ポップアップ マウスムーブ
+	this.MouseMove		= new gSTR_WinCtrl_MouseMove_Str() ;	//  マウスムーブ情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
+	
+	this.IFrameLoad		= {} ;									//  インラインフレーム ロードフラグ  true=Load完了
 }
 var gSTR_WinCtrlInfo = new gSTR_WinCtrlInfo_Str() ;
 
 
-
-/////###########################
-/////# メッセージボックスクラス
-///function gSTR_MessageBox_Str()
-///{																//メッセージボックス
-///	this.FrameID				= top.DEF_GVAL_NULL ;			//  フレームID  nullなら親フレーム
-///	this.BoxWinObj				= top.DEF_GVAL_NULL ;			//  メッセージボックス CSS Window
-///	this.BoxObj					= top.DEF_GVAL_NULL ;			//  メッセージボックスオブジェクト(or textarea)
-///	
-///	this.FLG_Open				= false ;						//  true=オープン  false=クローズ
-///	this.Data					= new Array() ;					//  メッセージデータ
-///}
-///var gSTR_MsgBox = new gSTR_MessageBox_Str() ;
-///
 
 //###########################
 //# ログクラス
@@ -747,8 +719,10 @@ var DEF_GVAL_LOG_LOG_LEVEL = {
 var	DEF_GVAL_LOG_KOUMOKU_LEN   = 12		//コンソール項目の文字長
 var DEF_GVAL_LOG_OUTPUT_FILE_HEADER = "error_" ;
 
+
 //### 蓄積ログ
-var gARR_Log			= new Array() ;
+var gARR_Log					= new Array() ;
+
 
 //### ログボックスデータ
 function gSTR_STR_LogBox_Str()
@@ -760,20 +734,17 @@ function gSTR_STR_LogBox_Str()
 	this.FLG_Open				= false ;						//  true=オープン  false=クローズ
 	this.Data					= new Array() ;					//  メッセージデータ
 }
-var gSTR_LogBox 		= new gSTR_STR_LogBox_Str() ;
+var gSTR_LogBox = new gSTR_STR_LogBox_Str() ;
 
 
 
-///var gSTR_Log			= {} ;
-///var gVAL_Log_pt			= -1 ;			//最後にセットしたログIndex
-///
-/////### ログボックス
-///var gARR_LogBox			= new Array() ;
-///
-/////### ボックスデータ
-///var VAL_Log_BoxData_Len = top.DEF_USER_BOXDATA_LEN ;
-///var ARR_Log_BoxData     = new Array() ;
-///var OBJ_Log_BoxObject   = null ;
+//#####################################################
+//# ワークエリア（仮登録情報など）
+//#####################################################
+///var gARR_RegButtonCtrl = {} ;	//仮登録情報
+var gSTR_PreReg_PopupHelp = {} ;	//ポップアップヘルプ情報 仮登録
+var gSTR_PreReg_PopupWin  = {} ;	//ポップアップWindow情報 仮登録
+var gSTR_PreReg_ButtonCtrl = {} ;	//ボタン情報 仮登録
 
 
 

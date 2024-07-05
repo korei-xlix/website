@@ -124,7 +124,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -136,46 +136,6 @@ class CLS_PageObj {
 	}
 
 
-
-/////#####################################################
-/////# エレメントタグ取得
-/////#####################################################
-///	static sGetElementTag({
-///		inPageObj,
-///		inKey
-///	})
-///	{
-///		//###########################
-///		//# 応答形式の取得
-///		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-///		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetElementTag" }) ;
-///		
-///		let wObj ;
-///		
-///		/////////////////////////////
-///		// オブジェクト取得
-///		try
-///		{
-///			wObj = inPageObj.getElementsByTagName( inKey ) ;
-///		}
-///		catch(e)
-///		{
-///			//###########################
-///			//# 例外処理
-///			let wError = "inKey=" + String(inKey) ;
-///			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-///			return wRes ;
-///		}
-///		
-///		/////////////////////////////
-///		// 正常
-///		wRes['Responce'] = wObj ;
-///		wRes['Result']   = true ;
-///		return wRes ;
-///	}
-///
-///
 
 //#####################################################
 //# フレームドキュメント取得
@@ -190,17 +150,13 @@ class CLS_PageObj {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetFrameDocument" }) ;
 		
-///		let wObj, wDoc ;
 		let wObj ;
 		
 		/////////////////////////////
 		// オブジェクト取得
 		try
 		{
-///			wObj = inPageObj.getElementsByTagName( inKey ).contentWindow ;
 			wObj = inPageObj.getElementById( inKey ).contentWindow.document ;
-///			wObj = self.document.getElementById( inKey ).contentWindow.document ;
-///			wDoc = wObj[0].contentDocument ;
 		}
 		catch(e)
 		{
@@ -208,13 +164,12 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		/////////////////////////////
 		// 正常
-///		wRes['Responce'] = wDoc ;
 		wRes['Responce'] = wObj ;
 		wRes['Result']   = true ;
 		return wRes ;
@@ -292,6 +247,7 @@ class CLS_PageObj {
 			if( wIndex>=0 )
 			{///ヒット
 				
+				wIndex++ ; //1個ずらす
 				//### "?"以下の取得＆分解
 				wSearch = CLS_OSIF.sSubString({
 					inString	: wSearch,
@@ -301,16 +257,22 @@ class CLS_PageObj {
 					inString	: wSearch,
 					inPattern	: "&"
 				}) ;
+				if( wSearch['Result']!=true )
+				{///失敗
+					wRes['Reason'] = "CLS_OSIF.sSplit is failed" ;
+					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+					return wRes ;
+				}
 				
 				//### 各コマンドの取得
 				wARR_Data = {} ;
 				wCHR_Com  = "Comm" ;
 				wPt       = 1 ;
-				for( wKey in wSearch )
+				for( wKey in wSearch['Data'] )
 				{
 					//### "="で分解
 					wIndex = CLS_OSIF.sIndexOf({
-						inString	: wSearch[wKey],
+						inString	: wSearch['Data'][wKey],
 						inPattern	: "="
 					}) ;
 					if( wIndex>=0 )
@@ -320,12 +282,14 @@ class CLS_PageObj {
 						//      * .. index=4
 						//### キー部分の取得
 						wDataKey = CLS_OSIF.sSubString({
-							inString	: wSearch[wKey],
+							inString	: wSearch['Data'][wKey],
 							inStart		: 0,
 							inLength	: wIndex
 						}) ;
+						
+						wIndex++ ; //1個ずらす
 						wData = CLS_OSIF.sSubString({
-							inString	: wSearch[wKey],
+							inString	: wSearch['Data'][wKey],
 							inStart		: wIndex
 						}) ;
 					}
@@ -334,7 +298,7 @@ class CLS_PageObj {
 						//### "="がない場合、キーを Comm* で、データ全突っ込む
 						
 						wDataKey = wCHR_Com + String(wPt) ;
-						wData    = wSearch[wKey] ;
+						wData    = wSearch['Data'][wKey] ;
 						wPt++
 					}
 					
@@ -384,7 +348,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "herf=" + String(wHref) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -415,7 +379,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -431,7 +395,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -478,7 +442,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -507,7 +471,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -542,7 +506,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -561,7 +525,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -585,7 +549,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -632,7 +596,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -661,7 +625,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -696,7 +660,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -712,7 +676,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -736,7 +700,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -771,7 +735,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -787,7 +751,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -811,7 +775,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -858,7 +822,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -887,7 +851,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -922,7 +886,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -938,7 +902,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -962,7 +926,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -997,7 +961,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1013,7 +977,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1037,7 +1001,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1084,7 +1048,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1113,7 +1077,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -1156,7 +1120,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) + " [1]" ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -1175,7 +1139,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) + " [2]" ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -1210,7 +1174,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1226,7 +1190,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1250,7 +1214,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1297,7 +1261,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1326,7 +1290,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -1361,7 +1325,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1377,7 +1341,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1401,7 +1365,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1448,7 +1412,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1477,7 +1441,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -1512,7 +1476,7 @@ class CLS_PageObj {
 		{
 			//失敗
 			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1528,7 +1492,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1559,7 +1523,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1611,7 +1575,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1641,7 +1605,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -1702,7 +1666,7 @@ class CLS_PageObj {
 			{
 				//失敗
 				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1726,7 +1690,7 @@ class CLS_PageObj {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) + " inHeight=" + String(inHeight) + " inWidth=" + String(inWidth) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1769,7 +1733,7 @@ class CLS_PageObj {
 			{
 				let wError = "inKey=" + String(inKey) ;
 				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
@@ -1785,6 +1749,4 @@ class CLS_PageObj {
 
 //#####################################################
 }
-
-
 

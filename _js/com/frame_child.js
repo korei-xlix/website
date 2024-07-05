@@ -25,12 +25,104 @@ function STR_ChildFrameInfo_Str()
 }
 var gSTR_CldInfo = new STR_ChildFrameInfo_Str() ;
 
-var gSTR_CldPSelInfo = new Array() ;							//  セレクタ仮登録番号
+//###########################
+//# 仮登録情報
+///var gSTR_CldPSelInfo = new Array() ;							//  セレクタ仮登録番号
+var gSTR_CldPreReg_PopupHelp	= {} ;							//  ポップアップヘルプ情報 仮登録
+var gSTR_CldPreReg_PopupWin		= {} ;							//  ポップアップWindow情報 仮登録
+var gSTR_CldPreReg_ButtonCtrl	= {} ;							//  ボタン情報 仮登録
+var gARR_CldPreReg_SelInfo		= new Array() ;					//  セレクタ 仮登録番号
 
+//###########################
+//# オブジェクト情報
 var gCLS_PageObj = this.DEF_CLD_NULL ;
 var gCLS_OSIF	 = this.DEF_CLD_NULL ;
 var gCLS_Sys	 = this.DEF_CLD_NULL ;
 var gCLS_L		 = this.DEF_CLD_NULL ;
+
+
+
+//#####################################################
+//# ハンドラ
+//#####################################################
+///////////////////////////////////////////////////////
+//  フレームページ ロード
+///////////////////////////////////////////////////////
+function __handle_FrameLoad()
+{
+	CLS_FrameCld.sLoad({
+		inPageObj : self.document
+	}) ;
+	return ;
+}
+
+
+
+///////////////////////////////////////////////////////
+//  フレームページ アンロード
+///////////////////////////////////////////////////////
+function __handle_FrameUnLoad()
+{
+	CLS_FrameCld.sUnLoad() ;
+	return ;
+}
+
+
+
+///////////////////////////////////////////////////////
+//  ポップアップヘルプ情報 仮登録
+///////////////////////////////////////////////////////
+function __handle_FramePopupHelp_RegVal({ inID = top.DEF_CLD_NULL, inLang = {} })
+{
+	CLS_FrameCld.sPopupHelp_PreRegVal({
+		inID	  : inID,
+		inLang	  : inLang
+	}) ;
+	return ;
+}
+
+
+
+///////////////////////////////////////////////////////
+//  ポップアップWindow情報 仮登録
+///////////////////////////////////////////////////////
+function __handle_FramePopupWin_RegVal({ inID = top.DEF_CLD_NULL, inCoord = {} })
+{
+	CLS_FrameCld.sPopupWin_PreRegVal({
+		inID	  : inID,
+		inCoord	  : inCoord
+	}) ;
+	return ;
+}
+
+
+
+///////////////////////////////////////////////////////
+//  ボタン情報 仮登録
+///////////////////////////////////////////////////////
+function __handle_FrameButton_RegVall({ inID = top.DEF_CLD_NULL, inStyle = {} })
+{
+	CLS_FrameCld.sButton_PreRegVal({
+		inID	  : inID,
+		inStyle	  : inStyle
+	}) ;
+	return ;
+}
+
+
+
+///////////////////////////////////////////////////////
+//  セレクタ値 仮登録
+///////////////////////////////////////////////////////
+function __handle_FrameSel_RegVal( inNumber )
+{
+///	CLS_FrameCld.sPreRegVal({
+	CLS_FrameCld.sSel_PreRegVal({
+		inNum : inNumber
+	}) ;
+	return ;
+}
+
 
 
 //#####################################################
@@ -87,13 +179,14 @@ class CLS_FrameCld {
 		}
 		catch(e)
 		{///失敗
-			wResLoad['Reason'] = "CLS_FrameCld.sLoad: Window: " + String(e) ;
-			console.info( wResLoad['Reason'] ) ;
+///			wResLoad['Reason'] = "CLS_FrameCld.sLoad: Window: " + String(e) ;
+///			console.info( wResLoad['Reason'] ) ;
 		}
 		
 		/////////////////////////////
 		// フレームオープンの取得
-		if( wText==null )
+///		if( wText==null )
+		if( wResLoad['Result']!=true )
 		{
 			try
 			{
@@ -114,8 +207,8 @@ class CLS_FrameCld {
 			}
 			catch(e)
 			{///失敗
-				wResLoad['Reason'] = "CLS_FrameCld.sLoad: Inline: " + String(e) ;
-				console.info( wResLoad['Reason'] ) ;
+///				wResLoad['Reason'] = "CLS_FrameCld.sLoad: Inline: " + String(e) ;
+///				console.info( wResLoad['Reason'] ) ;
 			}
 		}
 		
@@ -139,10 +232,16 @@ class CLS_FrameCld {
 	/////////////////////////////
 	// window.parent.opener 正常
 		
+		/////////////////////////////
+		// wOBJ_Op   親フレームwindowオブジェクト
+		// wOBJ_Win	 子フレームwindowオブジェクト
+		//
+		// 親フレームから子フレームへ、クラスオブジェクトの受け渡し
 		wOBJ_Win.gCLS_PageObj = wOBJ_Op.gCLS_PageObj.constructor ;
 		wOBJ_Win.gCLS_OSIF	  = wOBJ_Op.gCLS_OSIF.constructor ;
 		wOBJ_Win.gCLS_Sys	  = wOBJ_Op.gCLS_Sys.constructor ;
 		wOBJ_Win.gCLS_L		  = wOBJ_Op.gCLS_L.constructor ;
+		/////////////////////////////
 		
 		//###########################
 		//# 応答形式の取得
@@ -159,7 +258,7 @@ class CLS_FrameCld {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed" ;
-			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B", inLine:wOBJ_Op.__LINE__ }) ;
 			
 			if( wFLG_Inline==false )
 			{///windowの場合、子フレームコンソール表示
@@ -180,8 +279,8 @@ class CLS_FrameCld {
 		}
 		if( wFrameID==wOBJ_Win.DEF_CLD_NULL )
 		{///失敗
-			wRes['Reason'] = "Frame id is not found" ;
-			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			wRes['Reason'] = "Frame id is not found: FrameID=" + String(wFrameID) ;
+			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B", inLine:wOBJ_Op.__LINE__ }) ;
 			
 			if( wFLG_Inline==false )
 			{///windowの場合、子フレームコンソール表示
@@ -192,21 +291,25 @@ class CLS_FrameCld {
 		}
 		wOBJ_Win.gSTR_CldInfo.ID = wFrameID ;
 		
+///		/////////////////////////////
+///		// フレームセレクタ値登録
+///		wSubRes = this.sRegFrameVal() ;
+///		if( wSubRes['Result']!=true )
+///		{///失敗
+///			wRes['Reason'] = "sRegFrameVal is failed" ;
+///			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B", inLine:wOBJ_Op.__LINE__ }) ;
+///			
+///			if( wFLG_Inline==false )
+///			{///windowの場合、子フレームコンソール表示
+///				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
+///				console.error( wResLoad['Reason'] ) ;
+///			}
+///			return wRes ;
+///		}
+///		
 		/////////////////////////////
-		// フレームセレクタ値登録
-		wSubRes = this.sRegFrameVal() ;
-		if( wSubRes['Result']!=true )
-		{///失敗
-			wRes['Reason'] = "sRegFrameVal is failed" ;
-			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
-			
-			if( wFLG_Inline==false )
-			{///windowの場合、子フレームコンソール表示
-				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
-				console.error( wResLoad['Reason'] ) ;
-			}
-			return wRes ;
-		}
+		// 拡張プロパティの追加：フレームID
+		wOBJ_Win.gSTR_CldInfo.cWindowObj[wOBJ_Op.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = wFrameID ;
 		
 		/////////////////////////////
 		// 自分のページオブジェクトを渡す
@@ -273,54 +376,117 @@ class CLS_FrameCld {
 
 
 
+/////#####################################################
+/////# フレームセレクタ値登録
+/////#####################################################
+///	static sRegFrameVal()
+///	{
+///		let wOBJ_Win = window ;
+///		//###########################
+///		//# 応答形式の取得
+///		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+///		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sRegFrameVal" }) ;
+///		
+///		let wOBJ_Op, wSubRes, wSTR_Cell, wError ;
+///		let wKey, wNum ;
+///		
+///		wOBJ_Op = wOBJ_Win.gSTR_CldInfo.PageObj ;
+///		for( wKey in wOBJ_Win.gSTR_CldPSelInfo )
+///		{
+///			wNum = wOBJ_Win.gSTR_CldPSelInfo[wKey] ;
+///			
+///			/////////////////////////////
+///			// 存在チェック
+///			wSubRes = wOBJ_Win.gCLS_OSIF.sGetInObject({
+///				inObject	: wOBJ_Win.gARR_FrameCtrlInfo[wOBJ_Win.gSTR_CldInfo.ID].SelInfo,
+///				inKey		: wNum
+///			}) ;
+///			if( wSubRes==true )
+///			{///失敗
+///				wRes['Reason'] = "this number is exist: FrameID=" + String(wOBJ_Win.gSTR_CldInfo.ID) + " Num=" + String(wNum) ;
+///				wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"A", inLine:wOBJ_Op.__LINE__ }) ;
+///				return wRes ;
+///			}
+///			
+///			/////////////////////////////
+///			// 枠の作成
+///			wSTR_Cell = new wOBJ_Op.gSTR_SelInfo_Str() ;
+///			wSTR_Cell.Name = inNum ;
+///			
+///			/////////////////////////////
+///			// 追加
+///			wOBJ_Win.gARR_FrameCtrlInfo[wOBJ_Win.gSTR_CldInfo.ID].SelInfo[inNum] = wSTR_Cell ;
+///			
+///		}
+///		wOBJ_Win.gSTR_CldPSelInfo = new Array() ;//フレーム情報に登録したので不要。消去。
+///		
+///		/////////////////////////////
+///		// 正常
+///		wRes['Result'] = true ;
+///		return wRes ;
+///	}
+///
+///
+
 //#####################################################
-//# フレームセレクタ値登録
+//# ポップアップヘルプ情報 仮登録
 //#####################################################
-	static sRegFrameVal()
+	static sPopupHelp_PreRegVal({
+		inID = top.DEF_CLD_NULL,
+		inLang = {}
+	})
 	{
-		let wOBJ_Win = window ;
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sRegFrameVal" }) ;
-		
-		let wOBJ_Op, wSubRes, wSTR_Cell, wError ;
-		let wKey, wNum ;
-		
-		wOBJ_Op = wOBJ_Win.gSTR_CldInfo.PageObj ;
-		for( wKey in wOBJ_Win.gSTR_CldPSelInfo )
+		if( inID==top.DEF_CLD_NULL )
 		{
-			wNum = wOBJ_Win.gSTR_CldPSelInfo[wKey] ;
-			
-			/////////////////////////////
-			// 存在チェック
-			wSubRes = wOBJ_Win.gCLS_OSIF.sGetInObject({
-				inObject	: wOBJ_Win.gARR_FrameCtrlInfo[wOBJ_Win.gSTR_CldInfo.ID].SelInfo,
-				inKey		: wNum
-			}) ;
-			if( wSubRes==true )
-			{///失敗
-				wRes['Reason'] = "this number is exist: FrameID=" + String(wOBJ_Win.gSTR_CldInfo.ID) + " Num=" + String(wNum) ;
-				wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-				return wRes ;
-			}
-			
-			/////////////////////////////
-			// 枠の作成
-			wSTR_Cell = new wOBJ_Op.gSTR_SelInfo_Str() ;
-			wSTR_Cell.Name = inNum ;
-			
-			/////////////////////////////
-			// 追加
-			wOBJ_Win.gARR_FrameCtrlInfo[wOBJ_Win.gSTR_CldInfo.ID].SelInfo[inNum] = wSTR_Cell ;
-			
+			return ;
 		}
-		wOBJ_Win.gSTR_CldPSelInfo = new Array() ;//フレーム情報に登録したので不要。消去。
 		
 		/////////////////////////////
-		// 正常
-		wRes['Result'] = true ;
-		return wRes ;
+		// 仮情報を追加
+		window.gSTR_CldPreReg_PopupHelp[inID] = inLang ;
+		return ;
+	}
+
+
+
+//#####################################################
+//# ポップアップWindow情報 仮登録
+//#####################################################
+	static sPopupWin_PreRegVal({
+		inID = top.DEF_CLD_NULL,
+		inCoord = {}
+	})
+	{
+		if( inID==top.DEF_CLD_NULL )
+		{
+			return ;
+		}
+		
+		/////////////////////////////
+		// 仮情報を追加
+		window.gSTR_CldPreReg_PopupWin[inID] = inCoord ;
+		return ;
+	}
+
+
+
+//#####################################################
+//# ボタン情報 仮登録
+//#####################################################
+	static sButton_PreRegVal({
+		inID = top.DEF_CLD_NULL,
+		inStyle = {}
+	})
+	{
+		if( inID==top.DEF_CLD_NULL )
+		{
+			return ;
+		}
+		
+		/////////////////////////////
+		// 仮情報を追加
+		window.gSTR_CldPreReg_ButtonCtrl[inID] = inStyle ;
+		return ;
 	}
 
 
@@ -328,18 +494,23 @@ class CLS_FrameCld {
 //#####################################################
 //# セレクタ値 仮登録
 //#####################################################
-	static sPRegVal({
-		inNum = null
+///	static sPreRegVal({
+	static sSel_PreRegVal({
+		inNum : inNum
 	})
 	{
-		if( inNum==null )
+///		if( inNum==null )
+		if( inNum==top.DEF_CLD_NULL )
 		{
 			return ;
 		}
 		
 		/////////////////////////////
 		// 仮番号を追加
-		window.gSTR_CldPSelInfo.append(inNum) ;
+///		window.gSTR_CldPSelInfo.append(inNum) ;
+///		top.gSTR_CldPSelInfo.push( inNum ) ;
+///		window.gSTR_CldPSelInfo.push( inNum ) ;
+		window.gARR_CldPreReg_SelInfo.push( inNum ) ;
 		return ;
 	}
 
@@ -347,6 +518,4 @@ class CLS_FrameCld {
 
 //#####################################################
 }
-
-
 

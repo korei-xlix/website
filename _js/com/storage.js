@@ -156,7 +156,7 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -166,7 +166,7 @@ class CLS_Storage {
 			let wMessage = "Get Local Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
 			wMessage = wMessage + '\n' + "  value=" + String(wSubRes) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -211,7 +211,7 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -225,7 +225,7 @@ class CLS_Storage {
 		{
 			//失敗
 			wRes['Reason'] = "sLget is failed" ;
-			CLS_L({ inRes:wRes, inLevel: "B" }) ;
+			CLS_L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -235,7 +235,7 @@ class CLS_Storage {
 			let wMessage = "Set Local Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
 			wMessage = wMessage + '\n' + "  inValue=" + String(inValue) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -278,7 +278,7 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -287,7 +287,7 @@ class CLS_Storage {
 		{
 			let wMessage = "Remove Local Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -328,7 +328,7 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -336,7 +336,7 @@ class CLS_Storage {
 		if( top.DEF_INDEX_TEST==true )
 		{
 			let wMessage = "Clear Local Storage" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -400,7 +400,7 @@ class CLS_Storage {
 							wMessage = "Get Local Storage Lists" ;
 							wMessage = wMessage + '\n' + "  key=" + String(wKey) ;
 							wMessage = wMessage + '\n' + "  value=" + String(wGetVal) ;
-							CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+							CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 						}
 					}
 				}
@@ -412,19 +412,10 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// 取得チェック
-///		if( CLS_OSIF.sDicNum( wList )==0 )
-///		{
-///			wRes['Reason'] = "Get Local Strage Lists is Zero: List num=0" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"C" }) ;
-///			return wRes ;
-///		}
-///		
 		/////////////////////////////
 		// 正常
 		wRes['Responce'] = wList ;
@@ -479,7 +470,7 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -489,7 +480,7 @@ class CLS_Storage {
 			let wMessage = "Get Session Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
 			wMessage = wMessage + '\n' + "  value=" + String(wSubRes) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -534,7 +525,7 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -548,7 +539,7 @@ class CLS_Storage {
 		{
 			//失敗
 			wRes['Reason'] = "sSget is failed" ;
-			CLS_L({ inRes:wRes, inLevel: "B" }) ;
+			CLS_L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -558,7 +549,7 @@ class CLS_Storage {
 			let wMessage = "Set Session Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
 			wMessage = wMessage + '\n' + "  inValue=" + String(inValue) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -601,7 +592,7 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -610,7 +601,7 @@ class CLS_Storage {
 		{
 			let wMessage = "Delete Session Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -651,7 +642,7 @@ class CLS_Storage {
 			//# 例外処理
 			let wError = "inKey=" + String(inKey) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -659,7 +650,7 @@ class CLS_Storage {
 		if( top.DEF_INDEX_TEST==true )
 		{
 			let wMessage = "Clear Session Storage" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -672,6 +663,4 @@ class CLS_Storage {
 
 //#####################################################
 }
-
-
 

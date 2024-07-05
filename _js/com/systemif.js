@@ -26,6 +26,10 @@
 //#						var DEF_GVAL_SYS_STAT_RUN		//   通常運用中
 //#						var DEF_GVAL_SYS_STAT_IDLE		//   アイドル中（空運転中）
 //#
+//# システム運用状態取得
+//#		CLS_Sys.sGet
+//#			out:	Status
+//#
 //# システム運用確認
 //#		CLS_Sys.sRunCheck
 //#			in:		inView			// alertボックス表示  true=表示
@@ -76,35 +80,28 @@ class CLS_Sys {
 		if(( inPageObj=="" ) || ( inPageObj==top.DEF_GVAL_NULL ) )
 		{///失敗
 			wRes['Reason'] = "PageObj is incorrect(1-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if(( inUserID=="" ) || ( inUserID==top.DEF_GVAL_TEXT_NONE ) || ( inUserID==top.DEF_GVAL_NULL ) )
 		{///失敗
 			wRes['Reason'] = "UserID is incorrect(1-2): " + String( inUserID ) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if(( inSystemName=="" ) || ( inSystemName==top.DEF_GVAL_TEXT_NONE ) || ( inSystemName==top.DEF_GVAL_NULL ) )
 		{///失敗
 			wRes['Reason'] = "SystemName is incorrect(1-3): " + String( inSystemName ) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
-///		if(( CLS_OSIF.sCheckObject({ inObject:inExitProc, inKey:"Callback" })!=true ) ||
-///		   ( CLS_OSIF.sCheckObject({ inObject:inExitProc, inKey:"Arg" })!=true ))
-///		{///失敗
-///			wRes['Reason'] = "inExitProc is incorrect" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
-///			return wRes ;
-///		}
 		
 		wExitProc = {} ;
 		//### コールバック情報
 		if( CLS_OSIF.sCheckObject({ inObject:inExitProc })!=true )
 		{///不正
 			wRes['Reason'] = "inExitProc is not dictionary(1-4)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -115,7 +112,7 @@ class CLS_Sys {
 		if( wSubRes!=true )
 		{///不正
 			wRes['Reason'] = "Unset inExitProc['Callback'] in dictionary: keys=" + String( Object.keys(inExitProc) ) + " (1-5)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wExitProc['Callback'] = inExitProc['Callback'] ;
@@ -162,7 +159,7 @@ class CLS_Sys {
 		if( wSubRes['Result']!=true )
 		{
 			wRes['Reason'] = "Get Time Date Error(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"C" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"C", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		top.gSTR_Time.SysInit = wSubRes['TimeDate'] ;	//初期化開始
@@ -176,7 +173,7 @@ class CLS_Sys {
 		{
 			//失敗
 			wRes['Reason'] = "sGetSTRpage is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		top.gSTR_PageInfo.WindowObj	= wSubRes['Responce'].WindowObj ;
@@ -194,7 +191,6 @@ class CLS_Sys {
 		top.gSTR_PageInfo.Port		= wSubRes['Responce'].Port ;
 		top.gSTR_PageInfo.Search	= wSubRes['Responce'].Search ;
 		
-///		top.gSTR_WinCtrlInfo.Window	= wSubRes['Responce'].WindowObj ;	//Window情報
 		top.gSTR_WinCtrlInfo.WindowObj = wSubRes['Responce'].WindowObj ;	//Window情報
 		
 		/////////////////////////////
@@ -204,8 +200,6 @@ class CLS_Sys {
 		
 		/////////////////////////////
 		// コールバックの設定
-///		top.gSTR_SystemExit.Callback = inExitProc['Callback'] ;
-///		top.gSTR_SystemExit.Arg      = inExitProc['Arg'] ;
 		top.gSTR_SystemExit.Callback = wExitProc['Callback'] ;
 		top.gSTR_SystemExit.Arg      = wExitProc['Arg'] ;
 		
@@ -218,7 +212,7 @@ class CLS_Sys {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_Timer.sSet is failed(3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 			//取れなくても処理を継続する
 		}
 		else
@@ -242,7 +236,7 @@ class CLS_Sys {
 				if( top.DEF_INDEX_TEST==true )
 				{///テストモード時
 					wRes['Reason'] = "System time date insert is failer: id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
-					CLS_L.sL({ inRes:wRes, inLevel:"D" }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 				}
 			}
 		}
@@ -263,7 +257,7 @@ class CLS_Sys {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_Timer.sSet is failed(4-1)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			
@@ -274,7 +268,7 @@ class CLS_Sys {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_Timer.sStart is failed(4-3)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			
@@ -292,7 +286,7 @@ class CLS_Sys {
 				if( wSubRes['Result']!=true )
 				{///失敗
 					wRes['Reason'] = "CLS_Timer.sSet is failed(4-2)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 				
@@ -303,7 +297,7 @@ class CLS_Sys {
 				if( wSubRes['Result']!=true )
 				{///失敗
 					wRes['Reason'] = "CLS_Timer.sStart is failed(4-4)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 			}
@@ -354,7 +348,7 @@ class CLS_Sys {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_Timer.sStart is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -367,7 +361,7 @@ class CLS_Sys {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_Timer.sStart is failed(2)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 		}
@@ -379,7 +373,7 @@ class CLS_Sys {
 		}) ;
 		{///失敗
 			wRes['Reason'] = "CLS_Sys.sChg is failed(3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -414,7 +408,7 @@ class CLS_Sys {
 		if( wSubRes['Result']!=true )
 		{
 			wRes['Reason'] = "Get Time Date Error" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"C" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"C", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -439,7 +433,7 @@ class CLS_Sys {
 			
 			/////////////////////////////
 			// システム状態設定（運用）
-			wSubRes = this.sChg({
+			wSubRes = CLS_Sys.sChg({
 				inStatus : top.DEF_GVAL_SYS_STAT_STOP
 			}) ;
 			
@@ -454,7 +448,7 @@ class CLS_Sys {
 				//### 運用停止
 				wMessage = "Stopped Circle process: Stop system" ;
 			}
-			CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"S", inMessage:wMessage }) ;
 			
 			/////////////////////////////
 			// 正常終了
@@ -475,7 +469,7 @@ class CLS_Sys {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "System time date insert is failer: id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
-				CLS_L.sL({ inRes:wRes, inLevel:"D" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 				
 				top.gSTR_SystemCircle.TimeObj = top.DEF_GVAL_NULL ;
 			}
@@ -522,7 +516,7 @@ class CLS_Sys {
 				if( top.DEF_INDEX_TEST==true )
 				{
 					wMessage = "15 minute process ON" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 			}
 		}
@@ -539,7 +533,7 @@ class CLS_Sys {
 				if( top.DEF_INDEX_TEST==true )
 				{
 					wMessage = "30 minute process ON" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 			}
 		}
@@ -556,7 +550,7 @@ class CLS_Sys {
 				if( top.DEF_INDEX_TEST==true )
 				{
 					wMessage = "60 minute process ON" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				/////////////////////////////
@@ -600,13 +594,13 @@ class CLS_Sys {
 		if( wSubRes!=true )
 		{
 			wRes['Reason'] = "No Status num: inStatus=" + String(inStatus) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if( top.gSTR_SystemInfo.Status==inStatus )
 		{///設定重複
 			wRes['Reason'] = "System Status is dual setting: now Status=" + String(inStatus) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 			
 			wRes['Result'] = true ;
 			return wRes ;
@@ -663,6 +657,16 @@ class CLS_Sys {
 
 
 //#####################################################
+//# システム運用状態取得
+//#####################################################
+	static sGet()
+	{
+		return top.gSTR_SystemInfo.Status ;
+	}
+
+
+
+//#####################################################
 //# システム運用確認
 //#####################################################
 	static sRunCheck()
@@ -671,7 +675,8 @@ class CLS_Sys {
 		
 		/////////////////////////////
 		// システム状態が運用中か
-		if( top.gSTR_SystemInfo.Status==top.DEF_GVAL_SYS_STAT_RUN )
+///		if( top.gSTR_SystemInfo.Status==top.DEF_GVAL_SYS_STAT_RUN )
+		if( this.sGet()==top.DEF_GVAL_SYS_STAT_RUN )
 		{
 		//### 運用中
 			return true ;
@@ -730,7 +735,7 @@ class CLS_Sys {
 			if( wSubRes!=true )
 			{///失敗
 				wRes['Reason'] = "Callback error" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			}
 		}
 		
@@ -759,16 +764,51 @@ class CLS_Sys {
 //#####################################################
 	static sView()
 	{
-		let wText = "view All SystemInfo" ;
-		CLS_OSIF.sConsInfo({ inText:wText }) ;
+///		let wText = "view All SystemInfo" ;
+///		CLS_OSIF.sConsInfo({ inText:wText }) ;
+		let wMessage ;
 		
+		wMessage = top.DEF_GVAL_LOG_HEADER + '\n' + "*** view All SystemInfo" + '\n' + top.DEF_GVAL_LOG_HEADER ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
+		
+		wMessage = "*** gSTR_SystemInfo" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
 		CLS_OSIF.sViewObj({ inObj: top.gSTR_SystemInfo });
+		
+		wMessage = "*** gSTR_PageInfo" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
 		CLS_OSIF.sViewObj({ inObj: top.gSTR_PageInfo });
+		
+		wMessage = "*** gSTR_Time" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
 		CLS_OSIF.sViewObj({ inObj: top.gSTR_Time });
+		
+		wMessage = "*** gARR_TimerCtrlInfo" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
 		CLS_OSIF.sViewObj({ inObj: top.gARR_TimerCtrlInfo });
+		
+		wMessage = "*** gSTR_WinCtrlInfo" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
 		CLS_OSIF.sViewObj({ inObj: top.gSTR_WinCtrlInfo });
+		
+		wMessage = "*** gARR_FrameCtrlInfo" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
 		CLS_OSIF.sViewObj({ inObj: top.gARR_FrameCtrlInfo });
 		
+		wMessage = "*** gSTR_PopupHelp" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
+		CLS_OSIF.sViewObj({ inObj: top.gSTR_PopupHelp });
+		
+		wMessage = "*** gSTR_PopupWindow" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
+		CLS_OSIF.sViewObj({ inObj: top.gSTR_PopupWindow });
+		
+		wMessage = "*** gSTR_ButtonCtrl" ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
+		CLS_OSIF.sViewObj({ inObj: top.gSTR_ButtonCtrl });
+		
+		wMessage = top.DEF_GVAL_LOG_HEADER ;
+		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
 		return ;
 	}
 
@@ -793,7 +833,7 @@ class CLS_Sys {
 		if(( inPageObj=="" ) || ( inPageObj==top.DEF_GVAL_NULL ) )
 		{///失敗
 			wRes['Reason'] = "PageObj is incorrect" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -806,7 +846,7 @@ class CLS_Sys {
 		{
 			//失敗
 			wRes['Reason'] = "sGetPageInfo is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -840,6 +880,4 @@ class CLS_Sys {
 
 //#####################################################
 }
-
-
 

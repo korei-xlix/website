@@ -98,7 +98,10 @@
 //#		CLS_OSIF.sSplit
 //#			in:		inString		//対象文字列
 //#					inPattern		//分割パターン
-//#			out:	wString			//分割文字(Array型)  nullは例外
+//#			out:
+//#					"Result"		//結果  true=正常  false=失敗
+//#					"Data"			//分割データ  Array型
+//#					"Length"		//長さ
 //# 検索
 //#		CLS_OSIF.sIndexOf
 //#			in:		inString		//検索文字列
@@ -121,7 +124,7 @@
 //# Array型・辞書型の要素数を返す
 //#		CLS_OSIF.sGetObjectNum
 //#			in:		inObject   判定Object(Array or 辞書型)
-//#			out:	Value      要素数    nullは例外
+//#			out:	Value      要素数    -1は例外
 //# 辞書型かチェック
 //#		CLS_OSIF.sCheckObject
 //#			in:		inObject
@@ -225,7 +228,6 @@ class CLS_OSIF {
 		
 		if( top.DEF_INDEX_TEST==true )
 		{
-///			if(( wName!="__sCircleProcess" ) && ( wName!="__handle_Circle" ))
 			wSubRes = this.sGetInObject({
 				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 				inKey	 : wName
@@ -368,7 +370,7 @@ class CLS_OSIF {
 		inDstDate
 	})
 	{
-		let wSrcDate, wDstDate ;
+		let wSubRes, wSrcDate, wDstDate ;
 		let wValue ;
 		
 		let wRes = {
@@ -381,9 +383,31 @@ class CLS_OSIF {
 		try
 		{
 			/////////////////////////////
-			// 分解
-			wSrcDate = inSrcDate.split("-") ;
-			wDstDate = inDstDate.split("-") ;
+			// 時間の分解
+			
+			//### inSrcDate の分解
+			wSubRes = this.sSplit({
+				inString  : inSrcDate,
+				inPattern : "-"
+			}) ;
+			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=3 ))
+			{
+				wRes['Reason'] = "日付が壊れてます: inSrcDate=" + String(inSrcDate) ;
+				return wRes ;
+			}
+			wSrcDate = wSubRes['Data'] ;
+			
+			//### inDstDate の分解
+			wSubRes = this.sSplit({
+				inString  : inDstDate,
+				inPattern : "-"
+			}) ;
+			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=3 ))
+			{
+				wRes['Reason'] = "日付が壊れてます: inDstDate=" + String(inDstDate) ;
+				return wRes ;
+			}
+			wDstDate = wSubRes['Data'] ;
 			
 			/////////////////////////////
 			// Date型に変換
@@ -594,18 +618,26 @@ class CLS_OSIF {
 		inPattern
 	})
 	{
-		let wString ;
+		let wRes, wString ;
+		
+		wRes = {
+			"Result"	: false,
+			"Data"		: new Array(),
+			"Length"	: 0
+		} ;
 		
 		try
 		{
-			wString = inString.split( inPattern ) ;
+			wString = String( inString ) ;
+			wString = wString.split( inPattern ) ;
+			wRes['Data']	= wString ;
+			wRes['Length']	= wString.length ;
 		}
 		catch(e)
-		{
-			//例外
-			wString = top.DEF_GVAL_NULL ;
+		{///例外
 		}
-		return wString ;
+		wRes['Result'] = true ;
+		return wRes ;
 	}
 
 
@@ -703,7 +735,7 @@ class CLS_OSIF {
 	{
 		let wValue ;
 		
-		wValue = top.DEF_GVAL_NULL ;
+		wValue = -1 ;
 		try
 		{
 			/////////////////////////////
@@ -732,7 +764,6 @@ class CLS_OSIF {
 //#####################################################
 	static sCheckObject({
 		inObject
-///		inKey
 	})
 	{
 		let wValue ;
@@ -764,7 +795,6 @@ class CLS_OSIF {
 		inDD = false	// true=辞書型のデータ重複チェック false=キー重複チェック
 	})
 	{
-///		let wValue, wKeyList ;
 		let wValue, wKey ;
 		
 		wValue = false ;
@@ -851,11 +881,6 @@ class CLS_OSIF {
 		try
 		{
 			wValue = Math.floor( inValue ) ;
-//			if( isNaN(wValue)==true )
-//			{	// floorはNaNではなく 0 を返すのでいらないかも
-//				//失敗
-//				wValue = top.DEF_GVAL_NULL ;
-//			}
 		}
 		catch(e)
 		{
@@ -943,6 +968,4 @@ class CLS_OSIF {
 
 //#####################################################
 }
-
-
 
