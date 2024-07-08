@@ -1633,7 +1633,7 @@ class CLS_PageObj {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetFrameSize" }) ;
 		
-		let wSubRes, wObj, wARR_Value ;
+		let wSubRes, wObj, wARR_Value, wMessage ;
 		
 		wARR_Value = {
 			"Height"	: "100%",
@@ -1672,6 +1672,14 @@ class CLS_PageObj {
 			wObj = wSubRes['Responce'] ;
 			
 		}
+		/////////////////////////////
+		// ダイレクトモードなので、
+		//   オブジェクトを設定する
+		else
+		{
+			///オブジェクト直接指定
+			wObj = inPageObj ;
+		}
 		
 		/////////////////////////////
 		// データ設定
@@ -1681,7 +1689,10 @@ class CLS_PageObj {
 			wObj.style.width  = wARR_Value['Width'] ;
 			
 			//### コンソール表示
-			let wMessage = "Change Frame Size: inKey=" + String(inKey) + " inHeight=" + String(inHeight) + " inWidth=" + String(inWidth) ;
+///			let wMessage = "Change Frame Size: inKey=" + String(inKey) + " inHeight=" + String(inHeight) + " inWidth=" + String(inWidth) ;
+			wMessage = "Change Frame Size: inKey=" + String(inKey) ;
+			wMessage = wMessage + '\n' + "  inHeight = " + String(inHeight) ;
+			wMessage = wMessage + '\n' + "  inWidth  = " + String(inWidth) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		}
 		catch(e)

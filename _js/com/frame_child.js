@@ -27,7 +27,6 @@ var gSTR_CldInfo = new STR_ChildFrameInfo_Str() ;
 
 //###########################
 //# 仮登録情報
-///var gSTR_CldPSelInfo = new Array() ;							//  セレクタ仮登録番号
 var gSTR_CldPreReg_PopupHelp	= {} ;							//  ポップアップヘルプ情報 仮登録
 var gSTR_CldPreReg_PopupWin		= {} ;							//  ポップアップWindow情報 仮登録
 var gSTR_CldPreReg_ButtonCtrl	= {} ;							//  ボタン情報 仮登録
@@ -179,13 +178,10 @@ class CLS_FrameCld {
 		}
 		catch(e)
 		{///失敗
-///			wResLoad['Reason'] = "CLS_FrameCld.sLoad: Window: " + String(e) ;
-///			console.info( wResLoad['Reason'] ) ;
 		}
 		
 		/////////////////////////////
 		// フレームオープンの取得
-///		if( wText==null )
 		if( wResLoad['Result']!=true )
 		{
 			try
@@ -207,8 +203,6 @@ class CLS_FrameCld {
 			}
 			catch(e)
 			{///失敗
-///				wResLoad['Reason'] = "CLS_FrameCld.sLoad: Inline: " + String(e) ;
-///				console.info( wResLoad['Reason'] ) ;
 			}
 		}
 		
@@ -291,22 +285,6 @@ class CLS_FrameCld {
 		}
 		wOBJ_Win.gSTR_CldInfo.ID = wFrameID ;
 		
-///		/////////////////////////////
-///		// フレームセレクタ値登録
-///		wSubRes = this.sRegFrameVal() ;
-///		if( wSubRes['Result']!=true )
-///		{///失敗
-///			wRes['Reason'] = "sRegFrameVal is failed" ;
-///			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"B", inLine:wOBJ_Op.__LINE__ }) ;
-///			
-///			if( wFLG_Inline==false )
-///			{///windowの場合、子フレームコンソール表示
-///				wResLoad['Reason'] = "CLS_FrameCld::sLoad: " + wRes['Reason'] ;
-///				console.error( wResLoad['Reason'] ) ;
-///			}
-///			return wRes ;
-///		}
-///		
 		/////////////////////////////
 		// 拡張プロパティの追加：フレームID
 		wOBJ_Win.gSTR_CldInfo.cWindowObj[wOBJ_Op.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = wFrameID ;
@@ -376,58 +354,6 @@ class CLS_FrameCld {
 
 
 
-/////#####################################################
-/////# フレームセレクタ値登録
-/////#####################################################
-///	static sRegFrameVal()
-///	{
-///		let wOBJ_Win = window ;
-///		//###########################
-///		//# 応答形式の取得
-///		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-///		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sRegFrameVal" }) ;
-///		
-///		let wOBJ_Op, wSubRes, wSTR_Cell, wError ;
-///		let wKey, wNum ;
-///		
-///		wOBJ_Op = wOBJ_Win.gSTR_CldInfo.PageObj ;
-///		for( wKey in wOBJ_Win.gSTR_CldPSelInfo )
-///		{
-///			wNum = wOBJ_Win.gSTR_CldPSelInfo[wKey] ;
-///			
-///			/////////////////////////////
-///			// 存在チェック
-///			wSubRes = wOBJ_Win.gCLS_OSIF.sGetInObject({
-///				inObject	: wOBJ_Win.gARR_FrameCtrlInfo[wOBJ_Win.gSTR_CldInfo.ID].SelInfo,
-///				inKey		: wNum
-///			}) ;
-///			if( wSubRes==true )
-///			{///失敗
-///				wRes['Reason'] = "this number is exist: FrameID=" + String(wOBJ_Win.gSTR_CldInfo.ID) + " Num=" + String(wNum) ;
-///				wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"A", inLine:wOBJ_Op.__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
-///			/////////////////////////////
-///			// 枠の作成
-///			wSTR_Cell = new wOBJ_Op.gSTR_SelInfo_Str() ;
-///			wSTR_Cell.Name = inNum ;
-///			
-///			/////////////////////////////
-///			// 追加
-///			wOBJ_Win.gARR_FrameCtrlInfo[wOBJ_Win.gSTR_CldInfo.ID].SelInfo[inNum] = wSTR_Cell ;
-///			
-///		}
-///		wOBJ_Win.gSTR_CldPSelInfo = new Array() ;//フレーム情報に登録したので不要。消去。
-///		
-///		/////////////////////////////
-///		// 正常
-///		wRes['Result'] = true ;
-///		return wRes ;
-///	}
-///
-///
-
 //#####################################################
 //# ポップアップヘルプ情報 仮登録
 //#####################################################
@@ -494,12 +420,10 @@ class CLS_FrameCld {
 //#####################################################
 //# セレクタ値 仮登録
 //#####################################################
-///	static sPreRegVal({
 	static sSel_PreRegVal({
 		inNum : inNum
 	})
 	{
-///		if( inNum==null )
 		if( inNum==top.DEF_CLD_NULL )
 		{
 			return ;
@@ -507,9 +431,6 @@ class CLS_FrameCld {
 		
 		/////////////////////////////
 		// 仮番号を追加
-///		window.gSTR_CldPSelInfo.append(inNum) ;
-///		top.gSTR_CldPSelInfo.push( inNum ) ;
-///		window.gSTR_CldPSelInfo.push( inNum ) ;
 		window.gARR_CldPreReg_SelInfo.push( inNum ) ;
 		return ;
 	}

@@ -121,10 +121,8 @@ class CLS_Sel {
 		//###########################
 		//# 子フレーム側から、仮セレクタ設定値を取り出す
 		wOBJ_CldWin = top.gARR_FrameCtrlInfo[inFrameID].WindowObj ;
-///		for( wKey in wOBJ_CldWin.gSTR_CldPSelInfo )
 		for( wKey in wOBJ_CldWin.gARR_CldPreReg_SelInfo )
 		{
-///			wSelNum = wOBJ_CldWin.gSTR_CldPSelInfo[wKey] ;
 			wSelNum = wOBJ_CldWin.gARR_CldPreReg_SelInfo[wKey] ;
 			
 			/////////////////////////////
@@ -174,7 +172,6 @@ class CLS_Sel {
 			// セレクター取り込み
 			wSetKey = top.DEF_GVAL_IDX_SELECTOR_TITLE + top.gARR_FrameCtrlInfo[inFrameID].SelInfo[wKey].Name ;
 			wSubRes = CLS_PageObj.sGetInner({
-///				inPageObj	: inPageObj,
 				inPageObj	: top.gARR_FrameCtrlInfo[inFrameID].PageObj,
 				inKey		: wSetKey
 			}) ;
@@ -190,7 +187,6 @@ class CLS_Sel {
 			// セレクター設定
 			wSetKey = top.DEF_GVAL_IDX_SELECTOR_SET + top.gARR_FrameCtrlInfo[inFrameID].SelInfo[wKey].Name ;
 			wSubRes = CLS_PageObj.sSetInner({
-///				inPageObj	: inPageObj,
 				inPageObj	: top.gARR_FrameCtrlInfo[inFrameID].PageObj,
 				inKey		: wSetKey,
 				inCode		: wText

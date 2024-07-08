@@ -17,14 +17,30 @@
 //#						"Retry" : top.DEF_GVAL_TIMERCTRL_DEFAULT_RETRY,		//タイタリトライ回数
 //#						"tLog"  : top.DEF_GVAL_TIMERCTRL_LOG_COUNT			//テストログ出力カウント
 //#					inNextProc
-//#						"Callback"	: top.DEF_GVAL_NULL,
-//#						"Arg"		: new Array()
+//#						"Callback"							//  フレームロード後処理
+//#						"Arg"								//  引数
+//#					inIFrame
+//#						"Height"							//  iframe 高さ
+//#						"Width"								//  iframe 横幅
+//#						"FLG_View"							//  フレーム表示/非表示  true=表示
 //#					inTrans		= false						//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 //#
 //# フレームオープン
 //#		CLS_FrameCtrl.sOpen
 //#			in:		inFrameID	= top.DEF_GVAL_NULL,	//Frame ID
 //#					inPath		= top.DEF_GVAL_NULL		//HTMLファイルパス
+//#
+//# フレームIDチェック
+//#		CLS_FrameCtrl.sCheckFrameID
+//#			in:		inFrameID							// Frame ID
+//#			out:	wRes['Responce']					// true=重複あり
+//#
+//# iframe設定変更
+//#		CLS_FrameCtrl.sSetIFrame
+//#			in:		inFrameID							// Frame ID
+//#					inHeight							// iframe 高さ
+//#					inWidth								// iframe 横幅
+//#					inView								// 表示/非表示
 //#
 //#####################################################
 
@@ -238,19 +254,6 @@
 			return ;
 		}
 		
-///		/////////////////////////////
-///		// フレームセレクタ設定
-///		wSubRes = CLS_Sel.sSetFrameSel({
-///			inFrameID : inFrameID
-///		}) ;
-///		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "CLS_Sel.sSetFrameSel is failed: inFrameID=" + String(inFrameID) ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///			return ;
-///		}
-///		
 		/////////////////////////////
 		// ページ情報の設定
 		top.gARR_FrameCtrlInfo[inFrameID].PageInfo = wSTR_Param ;
@@ -320,6 +323,42 @@
 			wRes['Reason'] = "CLS_ButtonCtrl.sSetFrameButton is failed: inFrameID=" + String(inFrameID) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return ;
+		}
+		
+		/////////////////////////////
+		// インラインフレームの場合、調整する
+		if( top.gARR_FrameCtrlInfo[inFrameID].FLG_Popup==false )
+		{
+			/////////////////////////////
+			// フレームサイズ変更
+			wSubRes = CLS_PageObj.sSetFrameSize({
+				inPageObj	: top.gARR_FrameCtrlInfo[inFrameID].FrameObj,
+				inKey		: inFrameID,
+				inHeight	: top.gARR_FrameCtrlInfo[inFrameID].IF_Height,
+				inWidth		: top.gARR_FrameCtrlInfo[inFrameID].IF_Width,
+				inDirect	: true		//ダイレクトモード
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "CLS_PageObj.sSetFrameSize is failed: inFrameID=" + String(inFrameID) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+			
+			/////////////////////////////
+			// フレーム表示/非表示 設定
+			wSubRes = CLS_PageObj.sSetDisplay({
+				inPageObj	: top.gARR_FrameCtrlInfo[inFrameID].FrameObj,
+				inKey		: inFrameID,
+				inCode		: top.gARR_FrameCtrlInfo[inFrameID].FLG_View,
+				inDirect	: true		//ダイレクトモード
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed: inFrameID=" + String(inFrameID) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
 		}
 		
 		/////////////////////////////
@@ -406,6 +445,11 @@ class CLS_FrameCtrl {
 			"Callback"	: top.DEF_GVAL_NULL,
 			"Arg"		: new Array()
 			},
+		inIFrame			= {					//iframe設定
+			"Height"	: top.DEF_GVAL_FRAMECTRL_PAGE_HEIGHT,	//  iframe 高さ
+			"Width"		: top.DEF_GVAL_FRAMECTRL_PAGE_WIDTH,	//  iframe 横幅
+			"FLG_View"	: false									//  フレーム表示/非表示  true=表示
+			},
 		inTrans		= false						//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	})
 	{
@@ -414,7 +458,7 @@ class CLS_FrameCtrl {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCtrl", inFunc:"sSet" }) ;
 		
-		let wSubRes, wSTR_Param, wSTR_Param2, wMessage  ;
+		let wSubRes, wSTR_Param, wSTR_Param2, wMessage, wSTR_IFrame ;
 		let wUpFrameID, wTimer, wNextProc ;
 		
 		/////////////////////////////
@@ -439,7 +483,6 @@ class CLS_FrameCtrl {
 		// UPフレームID チェック
 		if( inUpFrameID==top.DEF_GVAL_NULL )
 		{
-///			wUpFrameID = top.top.DEF_GVAL_PARENT_FRAME_ID ;
 			wUpFrameID = top.DEF_GVAL_PARENT_FRAME_ID ;
 		}
 		else
@@ -536,7 +579,6 @@ class CLS_FrameCtrl {
 		}) ;
 		if( wSubRes!=true )
 		{///未設定の場合、空を設定
-///			wNextProc['Callback'] = new Array() ;
 			wNextProc['Callback'] = top.DEF_GVAL_NULL ;
 		}
 		else
@@ -569,6 +611,58 @@ class CLS_FrameCtrl {
 			return wRes ;
 		}
 		
+		wSTR_IFrame = {} ;
+		/////////////////////////////
+		// 入力チェック  iframe設定
+		if( CLS_OSIF.sCheckObject({ inObject:inIFrame })!=true )
+		{///不正
+			wRes['Reason'] = "inNextProc is not dictionary(5)" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		//### iframe高さ
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject : inIFrame,
+			inKey    : "Height"
+		}) ;
+		if( wSubRes!=true )
+		{///未設定の場合、空を設定
+			wSTR_IFrame['Height'] = top.DEF_GVAL_FRAMECTRL_PAGE_HEIGHT ;
+		}
+		else
+		{///設定
+			wSTR_IFrame['Height'] = inIFrame['Height'] ;
+		}
+		
+		//### iframe横幅
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject : inIFrame,
+			inKey    : "Width"
+		}) ;
+		if( wSubRes!=true )
+		{///未設定の場合、空を設定
+			wSTR_IFrame['Width'] = top.DEF_GVAL_FRAMECTRL_PAGE_WIDTH ;
+		}
+		else
+		{///設定
+			wSTR_IFrame['Width'] = inIFrame['Width'] ;
+		}
+		
+		//### フレーム表示/非表示
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject : inIFrame,
+			inKey    : "FLG_View"
+		}) ;
+		if( wSubRes!=true )
+		{///未設定の場合、空を設定
+			wSTR_IFrame['FLG_View'] = false ;
+		}
+		else
+		{///設定
+			wSTR_IFrame['FLG_View'] = inIFrame['FLG_View'] ;
+		}
+		
 		//###########################
 		//# フレーム情報 パラメータの作成
 		wSTR_Param = new top.gSTR_FrameCtrlInfo_Str() ;
@@ -580,6 +674,9 @@ class CLS_FrameCtrl {
 		wSTR_Param.FLG_Ttile	= inTitle ;
 		wSTR_Param.NextProcess.Callback	= wNextProc['Callback'] ;
 		wSTR_Param.NextProcess.Arg		= wNextProc['Arg'] ;
+		wSTR_Param.FLG_View		= wSTR_IFrame['FLG_View'] ;
+		wSTR_Param.IF_Height	= wSTR_IFrame['Height'] ;
+		wSTR_Param.IF_Width		= wSTR_IFrame['Width'] ;
 		wSTR_Param.TransInfo.Lang		= top.gSTR_WinCtrlInfo.TransInfo.Lang ;
 		wSTR_Param.TransInfo.FLG_Trans	= inTrans ;
 		
@@ -594,11 +691,24 @@ class CLS_FrameCtrl {
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///失敗
-				wRes['Reason'] = "CLS_PageObj.sGetElement is failed(2)" ;
+				wRes['Reason'] = "CLS_PageObj.sGetElement is failed(2-1)" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wSTR_Param.FrameObj = wSubRes['Responce'] ;
+			
+			//### フレーム非表示
+			wSubRes = CLS_PageObj.sSetDisplay({
+				inPageObj	: top.gSTR_WinCtrlInfo.PageObj,
+				inKey		: inFrameID,
+				inCode		: false
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(2-2)" ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
 		}
 		
 		/////////////////////////////
@@ -625,10 +735,6 @@ class CLS_FrameCtrl {
 		// フレーム情報設定
 		top.gARR_FrameCtrlInfo[inFrameID] = wSTR_Param ;
 		
-///		/////////////////////////////
-///		// フレームMAP設定
-///		top.gSTR_FrameMAP[wUpFrameID][inFrameID] = inFrameID ;
-///		
 		/////////////////////////////
 		// 上位フレームが親フレームで、
 		// このフレームがインラインフレームの場合、
@@ -1317,102 +1423,121 @@ class CLS_FrameCtrl {
 
 
 
-/////#####################################################
-/////# マウスムーブイベント
-/////#####################################################
-//////////////////////////////////////////////////////////
-/////  mousemove設定
-//////////////////////////////////////////////////////////
-///	static sAddMouseMoveIvent({
-///		inFrameID = top.DEF_GVAL_NULL
-///	})
-///	{
-///		//###########################
-///		//# 応答形式の取得
-///		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-///		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCtrl", inFunc:"sAddMouseMoveIvent" }) ;
-///		
-///		let wMessage ;
-///		
-///		/////////////////////////////
-///		// 拡張プロパティの追加：フレームID
-///		top.gARR_FrameCtrlInfo[inFrameID].WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = top.DEF_GVAL_PARENT_FRAME_ID ;
-///		
-///		/////////////////////////////
-///		// イベント設定：マウスムーブ
-///		top.gARR_FrameCtrlInfo[inFrameID].WindowObj.addEventListener( "mousemove", function (){
-///			CLS_WinCtrl.__sMoveMouseMove() ;
-///			}, false ) ;
-///		
-///		//### コンソール表示
-///		wMessage = "Frame mouse move ivent set: inFrameID=" + String(inFrameID) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
-///		/////////////////////////////
-///		// 正常
-///		wRes['Result'] = true ;
-///		return wRes ;
-///	}
-///
-///
-///
-//////////////////////////////////////////////////////////
-/////  mousemove移動
-//////////////////////////////////////////////////////////
-///	static __sMoveMouseMove()
-///	{
-///		//### 高速化のためチェックはしない
-///		
-///		/////////////////////////////
-///		// ポップアップヘルプ移動中
-///		if( top.gARR_FrameCtrlInfo[inFrameID].MouseMove.FLG_Help==true )
-///		{
-///			CLS_PopupCtrl.__sPopupHelp_Move({
-///				inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
-///			}) ;
-///		}
-///		
-///		return true ;
-///	}
-///
-///
-///
-//////////////////////////////////////////////////////////
-/////  mousemove解除
-//////////////////////////////////////////////////////////
-///	static sDelMouseMoveIvent({
-///		inFrameID = top.DEF_GVAL_NULL
-///	})
-///	{
-///		//###########################
-///		//# 応答形式の取得
-///		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-///		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCtrl", inFunc:"sDelMouseMoveIvent" }) ;
-///		
-///		let wMessage ;
-///		
-///		/////////////////////////////
-///		// フラグOFF
-///		top.gARR_FrameCtrlInfo[inFrameID].MouseMove.FLG_Help = false ;
-///		top.gARR_FrameCtrlInfo[inFrameID].MouseMove.FLG_Win  = false ;
-///		
-///		/////////////////////////////
-///		// イベント解除：マウスムーブ
-///		top.gARR_FrameCtrlInfo[inFrameID].WindowObj.removeEventListener( "mousemove", function (){
-///			CLS_WinCtrl.__sMoveMouseMove() ;
-///			}, false ) ;
-///		
-///		//### コンソール表示
-///		wMessage = "Frame mouse move ivent remove: inFrameID=" + String(inFrameID) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
-///		/////////////////////////////
-///		// 正常
-///		wRes['Result'] = true ;
-///		return wRes ;
-///	}
-///
-///
+//#####################################################
+//# iframe設定変更
+//#####################################################
+	static sSetIFrame({
+		inFrameID	= top.DEF_GVAL_NULL,	// Frame ID
+		inHeight	= top.DEF_GVAL_NULL,	// iframe 高さ
+		inWidth		= top.DEF_GVAL_NULL,	// iframe 横幅
+		inView		= top.DEF_GVAL_NULL		// 表示/非表示
+	})
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCtrl", inFunc:"sSetIFrame" }) ;
+		
+		let wSubRes, wFrameObj, wSTR_Set, wMessage ;
+		let wFLG_Update ;
+		
+		/////////////////////////////
+		// フレームID チェック
+		wSubRes = this.sCheckFrameID({
+			inFrameID : inFrameID
+		}) ;
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
+		{///失敗かIDが存在しない
+			wRes['Reason'] = "inFrameID is not exist: inFrameID=" + String(inFrameID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// ポップアップフレームの場合、終わる
+		if( top.gARR_FrameCtrlInfo[inFrameID].FLG_Popup==true )
+		{
+			/////////////////////////////
+			// 正常
+			wRes['Result'] = true ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// 現在の設定値の読み込み
+		wFrameObj = top.gARR_FrameCtrlInfo[inFrameID].FrameObj ;
+		
+		wSTR_Set = {
+			"Height"	: top.gARR_FrameCtrlInfo[inFrameID].IF_Height,
+			"Width"		: top.gARR_FrameCtrlInfo[inFrameID].IF_Width,
+			"FLG_View"	: top.gARR_FrameCtrlInfo[inFrameID].FLG_View
+		} ;
+		
+		wFLG_Update = false ;
+		/////////////////////////////
+		// フレームサイズ変更がある場合、
+		//   フレームサイズ変更
+		if((( inHeight!=top.DEF_GVAL_NULL ) || ( inWidth!=top.DEF_GVAL_NULL )) &&
+		   (( inHeight!=wSTR_Set['Height'] ) || ( inWidth!=wSTR_Set['Width'] )) )
+		{
+			wSubRes = CLS_PageObj.sSetFrameSize({
+				inPageObj	: wFrameObj,
+				inKey		: inFrameID,
+				inHeight	: wSTR_Set['Height'],
+				inWidth		: wSTR_Set['Width'],
+				inDirect	: true		//ダイレクトモード
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "CLS_PageObj.sSetFrameSize is failed: inFrameID=" + String(inFrameID) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+			wFLG_Update = true ;	//更新ON
+		}
+		
+		/////////////////////////////
+		// フレーム表示の変更がある場合、
+		//   フレーム表示/非表示 設定
+		if(( inView!=top.DEF_GVAL_NULL ) &&
+		   ( inView!=wSTR_Set['FLG_View'] ) )
+		{
+			wSubRes = CLS_PageObj.sSetDisplay({
+				inPageObj	: wFrameObj,
+				inKey		: inFrameID,
+				inCode		: wSTR_Set['FLG_View'],
+				inDirect	: true		//ダイレクトモード
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed: inFrameID=" + String(inFrameID) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+			wFLG_Update = true ;	//更新ON
+		}
+		
+		/////////////////////////////
+		// 更新があれば、Frame情報を更新する
+		if( wFLG_Update==true )
+		{
+			//### Frame情報へ反映
+			top.gARR_FrameCtrlInfo[inFrameID].FLG_View  = wSTR_Set['FLG_View'] ;
+			top.gARR_FrameCtrlInfo[inFrameID].IF_Height = wSTR_Set['Height'] ;
+			top.gARR_FrameCtrlInfo[inFrameID].IF_Width = wSTR_Set['Width'] ;
+			
+			//### コンソール表示
+			wMessage = "Frame Info is updated: FrameID=" + String(inFrameID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		}
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
 
 //#####################################################
 }

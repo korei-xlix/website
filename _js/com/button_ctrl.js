@@ -12,10 +12,8 @@ class CLS_ButtonCtrl {
 //#####################################################
 //# ボタン設定
 //#####################################################
-///	static sSetButton({
 	static sSet({
 		inFrameID	= top.DEF_GVAL_PARENT_FRAME_ID,	//フレームID  デフォルトは親フレーム
-///		inSTR_Data	= new Array()
 		inSTR_Data	= {}
 	})
 	{
@@ -106,35 +104,11 @@ class CLS_ButtonCtrl {
 				continue ;
 			}
 			
-///			wSTR_Style = {} ;
 			wSTR_Style = {
 				"Def" : top.DEF_GVAL_NULL,
 				"On"  : top.DEF_GVAL_NULL,
 				"Off" : top.DEF_GVAL_NULL
 			} ;
-///			/////////////////////////////
-///			// スタイルチェック
-///			
-///			//### 要素 Style のチェック
-///			wSubRes = CLS_OSIF.sGetInObject({
-///				inObject : inSTR_Data[wKey],
-///				inKey    : "Style"
-///			}) ;
-///			if( wSubRes!=true )
-///			{///失敗か重複
-///				wRes['Reason'] = "Style is not exist: ButtonID=" + String(wButtonID) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///				continue ;
-///			}
-///			if( CLS_OSIF.sCheckObject({ inObject:inSTR_Data[wKey]['Style'] })!=true )
-///			{///不正
-///				wRes['Reason'] = "inCoord is not dictionary: ButtonID=" + String(wButtonID) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///				continue ;
-///			}
-///			
-///			//### スタイルの取得
-///			for( wKey2 in inSTR_Data[wKey]['Style'] )
 			/////////////////////////////
 			// スタイルの取得
 			for( wKey2 in inSTR_Data[wKey] )
@@ -323,7 +297,6 @@ class CLS_ButtonCtrl {
 				//### イベント設定：マウスダウン
 				wButtonObj.addEventListener( "mousedown", function (){
 					CLS_ButtonCtrl.__sButtonCtrl_HoldButtonPush({
-///						inFrameID  : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inFrameID  : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inButtonID : this['id'],
 						inPush	   : true
@@ -338,7 +311,6 @@ class CLS_ButtonCtrl {
 				//### イベント設定：マウスアップ
 				wButtonObj.addEventListener( "mouseup", function (){
 					CLS_ButtonCtrl.__sButtonCtrl_HoldButtonPush({
-///						inFrameID  : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inFrameID  : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inButtonID : this['id'],
 						inPush	   : false
@@ -355,7 +327,6 @@ class CLS_ButtonCtrl {
 			// ボタンへのイベント設定：onclickイベント
 			wButtonObj.addEventListener( "click", function (){
 				__handle_BtnClick({
-///					inFrameID  : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 					inFrameID  : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 					inButtonID : this['id']
 				}) ;
@@ -408,7 +379,6 @@ class CLS_ButtonCtrl {
 			top.gSTR_ButtonCtrl[inFrameID][wButtonID].ID		= wButtonID ;
 			top.gSTR_ButtonCtrl[inFrameID][wButtonID].Kind		= wARR_Data['Data'][3] ;
 			top.gSTR_ButtonCtrl[inFrameID][wButtonID].ButtonObj	= wButtonObj ;
-///			top.gSTR_ButtonCtrl[inFrameID][wButtonID].Style		= wSTR_Style ;
 			for( wKey2 in wSTR_Style )
 			{
 				top.gSTR_ButtonCtrl[inFrameID][wButtonID].Style[wKey2] = wSTR_Style[wKey2] ;
@@ -757,15 +727,6 @@ class CLS_ButtonCtrl {
 			wCnt++ ;
 		}
 		
-///		/////////////////////////////
-///		// セットなしは無処理
-///		if( wCnt==0 )
-///		{
-///			/////////////////////////////
-///			// 正常終了
-///			wRes['Result'] = true ;
-///			return wRes ;
-///		}
 		//### コンソール表示
 		wMessage = "Set Button Data: inFrameID=" + String(inFrameID) + " Num=" + String(wCnt) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -784,11 +745,6 @@ class CLS_ButtonCtrl {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソール表示
-///		wMessage = "Set Frame Button: inFrameID=" + String(inFrameID) + " Num=" + String(wCnt) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -815,7 +771,6 @@ class CLS_ButtonCtrl {
 		/////////////////////////////
 		// ボタン存在チェック
 		wSubRes = CLS_OSIF.sGetInObject({
-///			inObject	: top.gARR_RegButtonCtrl,
 			inObject	: top.gSTR_PreReg_ButtonCtrl,
 			inKey		: inID
 		}) ;
@@ -850,16 +805,6 @@ class CLS_ButtonCtrl {
 				continue ;
 			}
 			
-///			//### スタイル書式チェック
-///			if(( wKey2!="Def" ) &&
-///			   ( wKey2!="On"  ) &&
-///			   ( wKey2!="Off" ) )
-///			{///失敗
-///				wRes['Reason'] = "Style format is not exist: inID=" + String(inID) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
 			//### デフォルトスタイルを見つける
 			if( wKey2=="Def" )
 			{
@@ -879,11 +824,6 @@ class CLS_ButtonCtrl {
 		
 		/////////////////////////////
 		// 仮登録へ追加
-///		top.gARR_RegButtonCtrl[inID] = {
-///		top.gSTR_PreReg_ButtonCtrl[inID] = {
-///			"ID" : inID,
-///			"Style" : wSTR_Style
-///		} ;
 		top.gSTR_PreReg_ButtonCtrl[inID] = wSTR_Style ;
 		
 		/////////////////////////////

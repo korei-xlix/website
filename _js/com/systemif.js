@@ -675,7 +675,6 @@ class CLS_Sys {
 		
 		/////////////////////////////
 		// システム状態が運用中か
-///		if( top.gSTR_SystemInfo.Status==top.DEF_GVAL_SYS_STAT_RUN )
 		if( this.sGet()==top.DEF_GVAL_SYS_STAT_RUN )
 		{
 		//### 運用中
@@ -764,8 +763,6 @@ class CLS_Sys {
 //#####################################################
 	static sView()
 	{
-///		let wText = "view All SystemInfo" ;
-///		CLS_OSIF.sConsInfo({ inText:wText }) ;
 		let wMessage ;
 		
 		wMessage = top.DEF_GVAL_LOG_HEADER + '\n' + "*** view All SystemInfo" + '\n' + top.DEF_GVAL_LOG_HEADER ;

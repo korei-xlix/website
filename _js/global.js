@@ -13,6 +13,12 @@
 //# 1.1.1.5		2024-06-26	ポップアップWindowの改修（移動、開閉）
 //# 1.1.2.0		2024-06-28	ボタン制御の追加
 //# 1.2.0.0		2024-07-05	ポップアップヘルプ/制御/ボタン の設定I/F変更
+//# 1.2.1.0		2024-07-09	Window制御でタイトル、CSS切替スイッチがない場合正常で終わるようにした
+
+
+
+
+//# 1.xxxxx		2024-07-xx	Window制御 設定完了待ち後処理の外部設定
 //#
 //#####################################################
 
@@ -20,7 +26,7 @@
 //# ※ユーザ自由変更※
 
 //### システム情報
-var DEF_USER_VERSION	= "1.2.0.0" ;
+var DEF_USER_VERSION	= "1.2.1.0" ;
 var DEF_USER_AUTHOR		= 'korei (X:@korei_xlix)' ;	//HTMLのauthor表示
 var DEF_USER_GITHUB		= "https://github.com/korei-xlix/website/" ;
 var DEF_USER_SITEURL	= "https://website.koreis-labo.com/" ;
@@ -445,8 +451,6 @@ function gSTR_ButtonCtrl_Str()
 	
 }
 var gSTR_ButtonCtrl = {} ;
-///
-///var gARR_RegButtonCtrl = {} ;	//仮登録情報
 
 
 
@@ -544,6 +548,9 @@ var gSTR_PopupWindow = {} ;
 var DEF_GVAL_WINCTRL_DUMMY_FRAME		= "/frame/_blank/_blank.htm" ;
 var DEF_GVAL_WINCTRL_URL_PARAM_FRAMEID	= "inFrameID" ;
 
+var DEF_GVAL_FRAMECTRL_PAGE_HEIGHT		= "100%" ;
+var DEF_GVAL_FRAMECTRL_PAGE_WIDTH		= "100%" ;
+
 var DEF_GVAL_WINCTRL_CSS_MODE	= new Array(					//CSSモード
 	"normal",													//  CSS変更可・サイズ自動切替
 	"pconly",													//  CSS変更可・PCサイズのみ
@@ -610,6 +617,10 @@ function gSTR_FrameCtrlInfo_Str()
 	this.FLG_Init				= false ;						//  true = ページ設定完了（ロード後処理）
 	this.FLG_Run				= false ;						//  コールバック処理中  true=処理中
 	this.FLG_Comp				= false ;						//  true = フレーム全設定完了
+	this.FLG_View				= false ;						//  true = iframe表示  false=iframe非表示
+	
+	this.IF_Height		= top.DEF_GVAL_FRAMECTRL_PAGE_HEIGHT ;	//  iframe 高さ
+	this.IF_Width		= top.DEF_GVAL_FRAMECTRL_PAGE_WIDTH ;	//  iframe 横幅
 	
 	this.PageInfo 		= new gSTR_PageInfo_Str() ;				//  ページ情報
 	this.WindowBarInfo	= new gSTR_FrameCtrl_BarInfo_Str() ;	//  windowバー情報
@@ -620,10 +631,6 @@ function gSTR_FrameCtrlInfo_Str()
 }
 var gARR_FrameCtrlInfo = {} ;
 
-
-/////### フレームMAP
-///var gSTR_FrameMAP = {} ;
-///
 
 //### Window情報群
 function gSTR_WinCtrl_Update_Str()
@@ -673,6 +680,7 @@ function gSTR_WinCtrlInfo_Str()
 	this.UpdateInfo 	= new gSTR_WinCtrl_Update_Str() ;		//  更新情報
 	this.SelInfo		= {} ;									//  セレクタ情報
 	this.MouseMove		= new gSTR_WinCtrl_MouseMove_Str() ;	//  マウスムーブ情報
+	this.CompProcess	= new gSTR_CallbackInfo_Str() ;			//  コールバック情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
 	
 	this.IFrameLoad		= {} ;									//  インラインフレーム ロードフラグ  true=Load完了
@@ -741,7 +749,6 @@ var gSTR_LogBox = new gSTR_STR_LogBox_Str() ;
 //#####################################################
 //# ワークエリア（仮登録情報など）
 //#####################################################
-///var gARR_RegButtonCtrl = {} ;	//仮登録情報
 var gSTR_PreReg_PopupHelp = {} ;	//ポップアップヘルプ情報 仮登録
 var gSTR_PreReg_PopupWin  = {} ;	//ポップアップWindow情報 仮登録
 var gSTR_PreReg_ButtonCtrl = {} ;	//ボタン情報 仮登録

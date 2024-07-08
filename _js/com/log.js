@@ -297,11 +297,8 @@ class CLS_L {
 		inData
 	})
 	{
-///		let wCons, wHead, wDHead ;
 		let wCons ;
 		
-///		wHead  = "***********************" ;
-///		wDHead = "****** DUMP DATA ******" ;
 		wCons  = "" ;
 		/////////////////////////////
 		// データ作成
@@ -309,7 +306,6 @@ class CLS_L {
 		//###非表示情報のヘッダ
 		if( inData['Level']=="N" )
 		{
-///			wCons = wCons + wHead + '\n' ;
 			wCons = wCons + top.DEF_GVAL_LOG_HEADER + '\n' ;
 		}
 		
@@ -323,7 +319,6 @@ class CLS_L {
 		   ( inData['Level']=="E" ) ||
 		   ( inData['Level']=="I" ) )
 		{
-///			wCons = wCons + "[" + inData['Result'] + "] " ;
 			wCons = top.DEF_GVAL_LOG_ERROR_HEADER + '\n' + wCons + "[" + inData['Result'] + "] " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
@@ -390,7 +385,6 @@ class CLS_L {
 		//###非表示情報のフッタ
 		if( inData['Level']=="N" )
 		{
-///			wCons = wCons + '\n' + wHead ;
 			wCons = wCons + '\n' + top.DEF_GVAL_LOG_HEADER ;
 		}
 		
@@ -447,7 +441,6 @@ class CLS_L {
 		// ダンプの表示
 		if( inData['Dump']!=top.DEF_GVAL_NULL )
 		{
-///			CLS_OSIF.sConsInfo({ inText:wDHead }) ;
 			CLS_OSIF.sConsInfo({ inText:top.DEF_GVAL_LOG_DUMP_HEADER }) ;
 			CLS_OSIF.sViewObj({ inObj:inData['Dump'] }) ;
 		}

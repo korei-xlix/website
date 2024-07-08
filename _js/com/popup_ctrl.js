@@ -14,7 +14,6 @@ class CLS_PopupCtrl {
 //#####################################################
 	static sHelpSet({
 		inFrameID	= top.DEF_GVAL_PARENT_FRAME_ID,	//フレームID  デフォルトは親フレーム
-///		inARR_Data	= {}
 		inSTR_Data	= {}
 	})
 	{
@@ -23,8 +22,6 @@ class CLS_PopupCtrl {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sHelpSet" }) ;
 		
-///		let wSubRes, wPageObj, wHelpObj, wMessage, wError, wSetText ;
-///		let wPopupHelpID, wFrameID, wWinFrameID, wDistID, wLang ;
 		let wSubRes, wPageObj, wDist_PageObj, wHelpObj, wDistObj, wMessage, wError, wSetText ;
 		let wPopupHelpID, wFrameID, wDistID, wLang ;
 		let wData, wStyle, wKey ;
@@ -32,10 +29,8 @@ class CLS_PopupCtrl {
 		/////////////////////////////
 		// 入力チェック
 		
-///		//### inARR_Data
 		//### 辞書型か
 		wSubRes = CLS_OSIF.sCheckObject({
-///			inObject : inARR_Data
 			inObject : inSTR_Data
 		}) ;
 		if( wSubRes!=true )
@@ -71,29 +66,6 @@ class CLS_PopupCtrl {
 			wPopupHelpID = top.DEF_GVAL_POPUPHELP_ID + "-" + top.DEF_GVAL_PARENT_FRAME_ID ;
 			wFrameID = top.DEF_GVAL_PARENT_FRAME_ID ;
 			
-///			//### Window情報のフレームID取得
-///			try
-///			{
-///				wWinFrameID = top.gSTR_WinCtrlInfo.WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] ;
-///			}
-///			catch(e)
-///			{
-///				//###########################
-///				//# 例外処理
-///				wError = "FrameID=" + String(wFrameID) ;
-///				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
-///			//### Window情報のフレームIDと同じか
-///			if( wWinFrameID!=wFrameID )
-///			{///失敗
-///				wRes['Reason'] = "Window Frame ID is not compear: FrameID=" + String(wFrameID) + " Window Frame ID=" + String(wWinFrameID) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
 			//### ポップアップヘルプオブジェクトの取得
 			wSubRes = CLS_PageObj.sGetElement({
 				inPageObj	: wPageObj,
@@ -122,7 +94,6 @@ class CLS_PopupCtrl {
 				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 				return wRes ;
 			}
-///			wPageObj = top.gARR_FrameCtrlInfo[inFrameID].PageObj ;
 			//### ポップアップヘルプ オブジェクト参照用の選択
 			if( top.gARR_FrameCtrlInfo[inFrameID].FLG_Popup==true )
 			{///ポップアップフレームの場合、Windowフレームの選択
@@ -138,29 +109,6 @@ class CLS_PopupCtrl {
 			wPopupHelpID = top.DEF_GVAL_POPUPHELP_ID + "-" + inFrameID ;
 			wFrameID = inFrameID ;
 			
-///			//### Window情報のフレームID取得
-///			try
-///			{
-///				wWinFrameID = top.gARR_FrameCtrlInfo[wFrameID].WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] ;
-///			}
-///			catch(e)
-///			{
-///				//###########################
-///				//# 例外処理
-///				wError = "FrameID=" + String(wFrameID) ;
-///				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}	
-///			
-///			//### Window情報のフレームIDと同じか
-///			if( wWinFrameID!=wFrameID )
-///			{///失敗
-///				wRes['Reason'] = "Window Frame ID is not compear: FrameID=" + String(wFrameID) + " Window Frame ID=" + String(wWinFrameID) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
 			//### ポップアップヘルプオブジェクトの取得
 			wSubRes = CLS_PageObj.sGetElement({
 				inPageObj	: wPageObj,
@@ -231,10 +179,8 @@ class CLS_PopupCtrl {
 		// データを分解しながら設定
 		try
 		{
-///			for( wDistID in inARR_Data )
 			for( wKey in inSTR_Data )
 			{
-///				wKey = wDistID + "-" + top.DEF_GVAL_POPUPHELP_DIST ;
 				wDistID = String(wKey) ;
 				/////////////////////////////
 				// ポップアップヘルプ 実装IDチェック
@@ -252,8 +198,6 @@ class CLS_PopupCtrl {
 				/////////////////////////////
 				// ポップアップヘルプ実装オブジェクトへの関数実装
 				wSubRes = CLS_PageObj.sGetElement({
-///					inPageObj	: wPageObj,
-///					inKey		: wKey
 					inPageObj	: wDist_PageObj,
 					inKey		: wDistID
 				}) ;
@@ -263,7 +207,6 @@ class CLS_PopupCtrl {
 					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
-///				wHelpObj = wSubRes['Responce'] ;
 				wDistObj = wSubRes['Responce'] ;
 				
 				//### 拡張プロパティの追加：フレームID
@@ -277,10 +220,8 @@ class CLS_PopupCtrl {
 				}
 				
 				//### イベント設定：マウスオーバー
-///				wHelpObj.addEventListener( "mouseover", function (){
 				wDistObj.addEventListener( "mouseover", function (){
 					CLS_PopupCtrl.__sPopupHelp_View({
-///							inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 							inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 							inPopupID : this['id']
 						}) ;
@@ -292,17 +233,12 @@ class CLS_PopupCtrl {
 				}
 				
 				//### データ設定
-///				top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wKey] = new gSTR_PopupHelpDistobj_Str() ;
-///				top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wKey].DistID  = wKey ;
-///				top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wKey].DistObj = wHelpObj ;
 				top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wDistID] = new gSTR_PopupHelpDistobj_Str() ;
 				top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wDistID].DistID  = wDistID ;
-///				top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wDistID].DistObj = wHelpObj ;
 				top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wDistID].DistObj = wDistObj ;
 				
 				//### データ設定・テキスト
 				wSetText = "" ;
-///				for( wLang in inARR_Data[wDistID] )
 				for( wLang in inSTR_Data[wDistID] )
 				{
 					//### 登録のある言語か
@@ -314,12 +250,10 @@ class CLS_PopupCtrl {
 					{
 						continue ;
 					}
-///					top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wKey].ARR_Text[wLang] = inARR_Data[wDistID][wLang] ;
 					top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wDistID].ARR_Text[wLang] = inSTR_Data[wDistID][wLang] ;
 					
 					if( top.DEF_INDEX_TEST==true )
 					{
-///						wSetText = wSetText + '\n' + "  " + wLang + " : " + inARR_Data[wDistID][wLang] ;
 						wSetText = wSetText + '\n' + "  " + wLang + " : " + inSTR_Data[wDistID][wLang] ;
 					}
 				}
@@ -517,7 +451,6 @@ class CLS_PopupCtrl {
 			wRect = wHelpObj.getBoundingClientRect() ;
 			wTop  = CLS_OSIF.sFloorParse({ inValue:wRect.top }) ;
 			wLeft = CLS_OSIF.sFloorParse({ inValue:wRect.left }) ;
-///			wScroll = top.gSTR_WinCtrlInfo.WindowObj.scrollY ;		//スクロール幅
 			if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 			{
 				//### スクロール幅
@@ -544,24 +477,9 @@ class CLS_PopupCtrl {
 															// マウス高さ位置 + スクロール幅
 					wTop  = event.clientY + event.screenY + wScroll ;
 					wLeft = event.clientX ;					// マウス横位置
-					
-///					if( top.DEF_INDEX_TEST==true )
-///					{
-///						console.log( "**************" ) ;
-///						console.log( "clientY : " + event.clientY ) ;
-///						console.log( "screenY : " + event.screenY ) ;
-///						console.log( "scroll  : " + wScroll ) ;
-///						console.log( "Coord   : " + wTop ) ;
-///						console.dir( event );
-///						console.dir( wRect );
-///					}
 				}
 			}
 			
-///			//### 位置調整
-///			wTop  = event.clientY + wScroll ;		// マウス高さ位置 + スクロール幅
-///			wLeft = event.clientX ;					// マウス横位置
-///			
 			//### オブジェクトへ座標設定
 			wHelpObj.style.top  = wTop  + "px" ;
 			wHelpObj.style.left = wLeft + "px" ;
@@ -682,7 +600,6 @@ class CLS_PopupCtrl {
 			wRect = wHelpObj.getBoundingClientRect() ;
 			wTop  = CLS_OSIF.sFloorParse({ inValue:wRect.top }) ;
 			wLeft = CLS_OSIF.sFloorParse({ inValue:wRect.left }) ;
-///			wScroll = top.gSTR_WinCtrlInfo.WindowObj.scrollY ;		//スクロール幅
 			//### Windowスクロール幅
 			if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 			{
@@ -713,10 +630,6 @@ class CLS_PopupCtrl {
 				}
 			}
 			
-///			//### 位置調整
-///			wTop  = event.clientY + wScroll ;		// マウス高さ位置 + スクロール幅
-///			wLeft = event.clientX ;					// マウス横位置
-///			
 			//### オブジェクトへ座標設定
 			wHelpObj.style.top  = wTop  + "px" ;
 			wHelpObj.style.left = wLeft + "px" ;
@@ -866,24 +779,12 @@ class CLS_PopupCtrl {
 			
 			//### 追加
 			wSTR_Data[wDistID] = {} ;
-///			for( wKey2 in wSTR_Style )
 			for( wKey2 in wSTR_Lang )
 			{
-///				wSTR_Data[wDistID][wKey2] = wSTR_Style[wKey2] ;
 				wSTR_Data[wDistID][wKey2] = wSTR_Lang[wKey2] ;
 			}
 			wCnt++ ;
 		}
-///		
-///		/////////////////////////////
-///		// セットなしは無処理
-///		if( wCnt==0 )
-///		{
-///			/////////////////////////////
-///			// 正常終了
-///			wRes['Result'] = true ;
-///			return wRes ;
-///		}
 		//### コンソール表示
 		wMessage = "Set PopupHelp Data: inFrameID=" + String(inFrameID) + " Num=" + String(wCnt) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -902,11 +803,6 @@ class CLS_PopupCtrl {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソール表示
-///		wMessage = "Set Frame PopupHelp: inFrameID=" + String(inFrameID) + " Num=" + String(wCnt) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -945,7 +841,6 @@ class CLS_PopupCtrl {
 		
 		/////////////////////////////
 		// inLang が 0 なら、終わる
-///		wSubRes = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_PreReg_PopupHelp }) ;
 		wSubRes = CLS_OSIF.sGetObjectNum({ inObject:inLang }) ;
 		if( wSubRes<=0 )
 		{///失敗
@@ -991,10 +886,6 @@ class CLS_PopupCtrl {
 		
 		/////////////////////////////
 		// 仮登録へ追加
-///		top.gSTR_PreReg_PopupHelp[inID] = {
-///			"ID" : inID,
-///			"Lang" : wSTR_Lang
-///		} ;
 		top.gSTR_PreReg_PopupHelp[inID] = wSTR_Lang ;
 		
 		/////////////////////////////
@@ -1010,11 +901,6 @@ class CLS_PopupCtrl {
 //#####################################################
 	static sWinSet({
 		inFrameID	= top.DEF_GVAL_PARENT_FRAME_ID,	//フレームID  デフォルトは親フレーム
-///		inIndexID	= top.DEF_GVAL_NULL,			//ポップアップWindow IndexID
-///		inCoord = {
-///			"FTop"  : top.DEF_GVAL_POPUPWIN_FTOP,
-///			"FLeft" : top.DEF_GVAL_POPUPWIN_FLEFT
-///			}
 		inSTR_Data	= {}
 	})
 	{
@@ -1100,13 +986,9 @@ class CLS_PopupCtrl {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"__sWinSetIndex" }) ;
 		
-///		let wSubRes, wCoord, wFrameID, wPopupWinID, wWinFrameID, wMessage, wError ;
 		let wSubRes, wCoord, wFrameID, wPopupWinID, wMessage, wError ;
 		let wPageObj, wPopupObj, wBarObj, wCloseObj, wTextObj, wAutoObj, wHumanObj ;
 		let wKeyID ;
-///		let wSubRes, wFrameID, wPopupWinID, wWinFrameID, wPageObj, wMessage, wError ;
-///		let wPopupObj, wBarObj, wCloseObj, wTextObj, wAutoObj, wHumanObj ;
-///		let wCoord, wStyle, wKeyID ;
 		
 		// 各オブジェクト
 		//   wPageObj	ページオブジェクト
@@ -1165,29 +1047,6 @@ class CLS_PopupCtrl {
 			wPopupWinID = inIndexID + "-" + top.DEF_GVAL_PARENT_FRAME_ID ;
 			wFrameID = top.DEF_GVAL_PARENT_FRAME_ID ;
 			
-///			//### Window情報のフレームID取得
-///			try
-///			{
-///				wWinFrameID = top.gSTR_WinCtrlInfo.WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] ;
-///			}
-///			catch(e)
-///			{
-///				//###########################
-///				//# 例外処理
-///				wError = "FrameID=" + String(wFrameID) ;
-///				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
-///			//### Window情報のフレームIDと同じか
-///			if( wWinFrameID!=wFrameID )
-///			{///失敗
-///				wRes['Reason'] = "Window Frame ID is not compear(2-1): FrameID=" + String(wFrameID) + " Window Frame ID=" + String(wWinFrameID) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
 			//### ポップアップWindowオブジェクトの取得
 			wSubRes = CLS_PageObj.sGetElement({
 				inPageObj	: wPageObj,
@@ -1221,29 +1080,6 @@ class CLS_PopupCtrl {
 			wPopupWinID = inIndexID + "-" + inFrameID ;
 			wFrameID = inFrameID ;
 			
-///			//### Window情報のフレームID取得
-///			try
-///			{
-///				wWinFrameID = top.gARR_FrameCtrlInfo[wFrameID].WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] ;
-///			}
-///			catch(e)
-///			{
-///				//###########################
-///				//# 例外処理
-///				wError = "FrameID=" + String(wFrameID) ;
-///				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
-///			//### Window情報のフレームIDと同じか
-///			if( wWinFrameID!=wFrameID )
-///			{///失敗
-///				wRes['Reason'] = "Window Frame ID is not compear(2-4): FrameID=" + String(wFrameID) + " Window Frame ID=" + String(wWinFrameID) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
 			//### ポップアップヘルプオブジェクトの取得
 			wSubRes = CLS_PageObj.sGetElement({
 				inPageObj	: wPageObj,
@@ -1357,18 +1193,6 @@ class CLS_PopupCtrl {
 		wHumanObj = wSubRes['Responce'] ;
 		wHumanObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = wFrameID ;
 		
-///		/////////////////////////////
-///		// ポップアップWindowID チェック
-///		wSubRes = this.__sCheckPopupWinID({
-///			inPopupID : wPopupWinID
-///		}) ;
-///		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==true ))
-///		{///失敗 か 重複
-///			wRes['Reason'] = "__sCheckPopupWinID is failed: PopupWinID=" + String(wPopupWinID) ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///			return wRes ;
-///		}
-///		
 	/////////////////////////////
 	// イベント設定開始
 		try
@@ -1386,7 +1210,6 @@ class CLS_PopupCtrl {
 			//### マウスダウン（バー掴む）
 			wBarObj.addEventListener( "mousedown", function (){
 				CLS_PopupCtrl.__sPopupWindow_BarHang({
-///						inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inPopupID : this['id'],
 						inHang    : true
@@ -1401,7 +1224,6 @@ class CLS_PopupCtrl {
 			//### マウスアップ（バー離す）
 			wBarObj.addEventListener( "mouseup", function (){
 				CLS_PopupCtrl.__sPopupWindow_BarHang({
-///						inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inPopupID : this['id'],
 						inHang    : false
@@ -1419,7 +1241,6 @@ class CLS_PopupCtrl {
 			//### クローズクリック
 			wCloseObj.addEventListener( "click", function (){
 				CLS_PopupCtrl.__sPopupWindow_Open({
-///						inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inPopupID : this['id'],
 						inOpen    : false
@@ -1437,7 +1258,6 @@ class CLS_PopupCtrl {
 			//### テキストクリック
 			wTextObj.addEventListener( "click", function (){
 				CLS_PopupCtrl.__sPopupWindow_TextClick({
-///						inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inPopupID : this['id']
 					}) ;
@@ -1454,7 +1274,6 @@ class CLS_PopupCtrl {
 			//### 自動送りボタンクリック
 			wAutoObj.addEventListener( "click", function (){
 				CLS_PopupCtrl.__sPopupWindow_AutoButtonClick({
-///						inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID],
 						inPopupID : this['id']
 					}) ;
@@ -1626,16 +1445,6 @@ class CLS_PopupCtrl {
 		{
 			wIndex = String(wKey) ;			//ポップアップWindow Index
 			
-///			wSTR_Data[wIndex] = {} ;
-///			/////////////////////////////
-///			// 辞書型か
-///			if( CLS_OSIF.sCheckObject({ inObject:wOBJ_CldWin.gSTR_CldPreReg_PopupWin[wKey] })!=true )
-///			{///不正
-///				wRes['Reason'] = "this key is not dictionary: inFrameID=" + String(inFrameID) ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
 			wSTR_Coord['FTop']  = top.DEF_GVAL_NULL ;
 			wSTR_Coord['FLeft'] = top.DEF_GVAL_NULL ;
 			/////////////////////////////
@@ -1667,15 +1476,6 @@ class CLS_PopupCtrl {
 			wCnt++ ;
 		}
 		
-///		/////////////////////////////
-///		// セットなしは無処理
-///		if( wCnt==0 )
-///		{
-///			/////////////////////////////
-///			// 正常終了
-///			wRes['Result'] = true ;
-///			return wRes ;
-///		}
 		//### コンソール表示
 		wMessage = "Set PopupWin Data: inFrameID=" + String(inFrameID) + " Num=" + String(wCnt) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1694,11 +1494,6 @@ class CLS_PopupCtrl {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// コンソール表示
-///		wMessage = "Set Frame PopupWin: inFrameID=" + String(inFrameID) + " Num=" + String(wCnt) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-///		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -1778,10 +1573,6 @@ class CLS_PopupCtrl {
 		
 		/////////////////////////////
 		// 仮登録へ追加
-///		top.gSTR_PreReg_PopupWin[inID] = {
-///			"ID" : inID,
-///			"Coord" : wCoord
-///		} ;
 		top.gSTR_PreReg_PopupWin[inID] = wCoord ;
 		
 		/////////////////////////////
@@ -1892,7 +1683,6 @@ class CLS_PopupCtrl {
 //			wRect = wPopupWinObj.getClientRect() ;
 //			wTop  = CLS_OSIF.sFloorParse({ inValue:wRect.top }) ;
 //			wLeft = CLS_OSIF.sFloorParse({ inValue:wRect.left }) ;
-///			wScroll = top.gSTR_WinCtrlInfo.WindowObj.scrollY ;		//スクロール幅
 			//### Windowスクロール幅
 			if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 			{
@@ -1979,7 +1769,6 @@ class CLS_PopupCtrl {
 		wSubRes = this.__sCheckPopupWinID({
 			inPopupID : wPopupWinID
 		}) ;
-///		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "__sCheckPopupID is failed: PopupWinID=" + String(wPopupWinID) ;
@@ -2429,14 +2218,10 @@ class CLS_PopupCtrl {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// 拡張プロパティの追加：フレームID
 		/////////////////////////////
 		// Windowオブジェクトの取得
 		if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 		{
-///			top.gSTR_WinCtrlInfo.WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = inFrameID ;
-///			
 			wWinObj = top.gSTR_WinCtrlInfo.WindowObj ;
 		}
 		else
@@ -2451,16 +2236,6 @@ class CLS_PopupCtrl {
 				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 				return wRes ;
 			}
-///			top.gARR_FrameCtrlInfo[inFrameID].WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = inFrameID ;
-///			
-///			//### 子フレーム かつ インラインフレームの場合、終わる
-///			if( top.gARR_FrameCtrlInfo[inFrameID].FLG_Popup==false )
-///			{
-///				/////////////////////////////
-///				// 正常
-///				wRes['Result'] = true ;
-///				return wRes ;
-///			}
 			wWinObj = top.gARR_FrameCtrlInfo[inFrameID].WindowObj ;
 		}
 		
@@ -2468,7 +2243,6 @@ class CLS_PopupCtrl {
 		// イベント設定：マウスムーブ
 		wWinObj.addEventListener( "mousemove", function (){
 				CLS_PopupCtrl.__sMouseMoveIvent({
-///					inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
 					inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
 				}) ;
 			}, false ) ;
@@ -2503,23 +2277,6 @@ class CLS_PopupCtrl {
 		inFrameID
 	})
 	{
-//		/////////////////////////////
-//		// イベント設定OFFの場合、終わる
-//		if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
-//		{
-//			if( top.gSTR_WinCtrlInfo.MouseMove.FLG_MoveIv==false )
-//			{
-//				return false ;
-//			}
-//		}
-//		else
-//		{
-//			if( top.gARR_FrameCtrlInfo[inFrameID].MouseMove.FLG_MoveIv==false )
-//			{
-//				return false ;
-//			}
-//	}
-		
 		//### 高速化のためチェックはしない
 		
 		let wFLG_Help, wFLG_Win ;
@@ -2542,7 +2299,6 @@ class CLS_PopupCtrl {
 		if( wFLG_Win==true )
 		{
 			CLS_PopupCtrl.__sPopupWindow_BarMove({
-///				inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
 				inFrameID : inFrameID
 			}) ;
 		}
@@ -2551,7 +2307,6 @@ class CLS_PopupCtrl {
 		else if( wFLG_Help==true )
 		{
 			CLS_PopupCtrl.__sPopupHelp_Move({
-///				inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
 				inFrameID : inFrameID
 			}) ;
 		}
@@ -2606,7 +2361,6 @@ class CLS_PopupCtrl {
 		// イベント解除：マウスムーブ
 		wWinObj.removeEventListener( "mousemove", function (){
 				CLS_PopupCtrl.__sMouseMoveIvent({
-///					inFrameID : window[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
 					inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
 				}) ;
 			}, false ) ;

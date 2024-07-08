@@ -436,7 +436,6 @@ class CLS_Timer {
 			   ( top.gARR_TimerCtrlInfo[inTimerID].Kind=="system" ))
 			{
 				//### 定期実行タイマ・システムタイマ
-///				top.gSTR_WinCtrlInfo.WindowObj.setTimeout(
 				top.gARR_TimerCtrlInfo[inTimerID].TimerObj = top.gSTR_WinCtrlInfo.WindowObj.setTimeout(
 					"CLS_Timer.__sTimeoutCircle('" + String(inTimerID) + "')",
 					top.gARR_TimerCtrlInfo[inTimerID].Value
@@ -446,7 +445,6 @@ class CLS_Timer {
 			        ( top.gARR_TimerCtrlInfo[inTimerID].Kind=="frame" ))
 			{
 				//### 状態待ちタイマ・フレーム受信待ち
-///				top.gSTR_WinCtrlInfo.WindowObj.setTimeout(
 				top.gARR_TimerCtrlInfo[inTimerID].TimerObj = top.gSTR_WinCtrlInfo.WindowObj.setTimeout(
 					"CLS_Timer.__sTimeoutWait('" + String(inTimerID) + "')",
 					top.gARR_TimerCtrlInfo[inTimerID].Value
@@ -455,7 +453,6 @@ class CLS_Timer {
 			else
 			{
 				//### ノーマルタイマ
-///				top.gSTR_WinCtrlInfo.WindowObj.setTimeout(
 				top.gARR_TimerCtrlInfo[inTimerID].TimerObj = top.gSTR_WinCtrlInfo.WindowObj.setTimeout(
 					"CLS_Timer.__sTimeout('" + String(inTimerID) + "')",
 					top.gARR_TimerCtrlInfo[inTimerID].Value
@@ -737,7 +734,6 @@ class CLS_Timer {
 		/////////////////////////////
 		// タイマ停止＆タイムアウト
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;
-///		top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop  = true ; //いちお停止通知も発行
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Tout  = true ;
 		
 		/////////////////////////////
@@ -800,19 +796,9 @@ class CLS_Timer {
 		   ( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true ))
 		{
 			top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;	//起動OFF
-///			top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop  = true ; 	//停止通知ON
 			top.gARR_TimerCtrlInfo[inTimerID].Status	= top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
 			
 			//### コンソール表示
-///			wMessage = "Stopped Timer: inTimerID=" + String(inTimerID) ;
-///			wSubRes = CLS_OSIF.sGetInObject({
-///				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
-///				inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
-///			}) ;
-///			if( wSubRes==false )
-///			{///コールバックログ非表示ではない場合
-///				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
-///			}
 			if( top.DEF_INDEX_TEST==true )
 			{
 				wMessage = "This timer is stopped: inTimerID=" + String(inTimerID) ;
@@ -918,16 +904,6 @@ class CLS_Timer {
 		if(( top.gARR_TimerCtrlInfo[inTimerID].FLG_Start==false ) ||
 		   ( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true ))
 		{
-///			//### コンソール表示
-///			wMessage = "Stopped Timer: inTimerID=" + String(inTimerID) ;
-///			wSubRes = CLS_OSIF.sGetInObject({
-///				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
-///				inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
-///			}) ;
-///			if( wSubRes==false )
-///			{///コールバックログ非表示ではない場合
-///				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
-///			}
 			//### コンソール表示
 			if( top.DEF_INDEX_TEST==true )
 			{
@@ -980,7 +956,6 @@ class CLS_Timer {
 		if( top.gARR_TimerCtrlInfo[inTimerID].Retry<=top.gARR_TimerCtrlInfo[inTimerID].RetryCnt )
 		{
 			top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ;	//起動OFF
-///			top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop  = true ; 	//停止通知ON
 			top.gARR_TimerCtrlInfo[inTimerID].FLG_Rout  = true ; 	//リトライアウト
 			top.gARR_TimerCtrlInfo[inTimerID].Status	= top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
 			
