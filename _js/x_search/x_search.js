@@ -39,7 +39,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj_setValue is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -51,7 +51,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj_setValue is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -62,7 +62,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "__CreateTags is failed(3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -74,7 +74,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "sLgetList is failed(4)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wARR_List = wSubRes['Responce'] ;
@@ -119,7 +119,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "__SetData is failed(5)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 		}
@@ -134,7 +134,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(6)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -149,7 +149,7 @@ class CLS_X_Search {
 		{
 			//失敗
 			wRes['Reason'] = "ViewList is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -251,7 +251,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetInner is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -265,7 +265,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetInner is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -358,7 +358,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetValue is failed(1)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
@@ -452,7 +452,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetChecked is failed(2-1)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wFLG_Check = wSubRes['Responce'] ;
@@ -467,7 +467,7 @@ class CLS_X_Search {
 				if( wSubRes['Result']!=true )
 				{///失敗
 					wRes['Reason'] = "CLS_PageObj.sGetValue is failed(2-2)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 				wValue = wSubRes['Responce'] ;
@@ -502,7 +502,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetChecked is failed(3-1)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wFLG_Check = wSubRes['Responce'] ;
@@ -517,7 +517,7 @@ class CLS_X_Search {
 				if( wSubRes['Result']!=true )
 				{///失敗
 					wRes['Reason'] = "CLS_PageObj.sGetValue is failed(3-2)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 				wValue = wSubRes['Responce'] ;
@@ -552,7 +552,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetChecked is failed(4-1)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wFLG_Check = wSubRes['Responce'] ;
@@ -567,7 +567,7 @@ class CLS_X_Search {
 				if( wSubRes['Result']!=true )
 				{///失敗
 					wRes['Reason'] = "CLS_PageObj.sGetValue is failed(4-2)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 				wValue = wSubRes['Responce'] ;
@@ -603,7 +603,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetValue is failed(5)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
@@ -634,7 +634,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetValue is failed(6)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
@@ -665,7 +665,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetValue is failed(7)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
@@ -696,7 +696,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetValue is failed(8)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
@@ -727,7 +727,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetValue is failed(8)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
@@ -758,7 +758,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetValue is failed(8)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wValue = wSubRes['Responce'] ;
@@ -1030,7 +1030,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sSetClassName is failed(0)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 		}
@@ -1056,7 +1056,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1066,7 +1066,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "__ChgSetTagsButton is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1092,7 +1092,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetClassName is failed(3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1107,7 +1107,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetClassName is failed(4)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1141,7 +1141,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(5-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1154,7 +1154,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed(5-2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1167,7 +1167,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(5-3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1202,7 +1202,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(6-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1215,7 +1215,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed(6-2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1228,7 +1228,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(6-3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1256,7 +1256,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(7-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1269,7 +1269,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed(7-2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1282,7 +1282,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(7-3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1296,7 +1296,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(8)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1310,7 +1310,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(9)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1324,7 +1324,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(10)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1338,7 +1338,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(11)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1352,7 +1352,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(12)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1366,7 +1366,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(13)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1380,7 +1380,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(14)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1429,7 +1429,7 @@ class CLS_X_Search {
 			if( top.VAL_XSearch_SelIndex==-1 )
 			{///失敗
 				wRes['Reason'] = "VAL_XSearch_SelIndex value error: Button=Update Value=" + String(top.VAL_XSearch_SelIndex) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 		}
@@ -1440,7 +1440,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "__GetPullData is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wSTR_Input = wSubRes['Responce'] ;
@@ -1460,7 +1460,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "Input Error" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"I" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"I", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 		}
@@ -1489,7 +1489,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "__SetData is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		//### Storageテキスト
@@ -1504,7 +1504,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_Storage.sLset is failed(3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1531,7 +1531,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sSetClassName is failed(4)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			/////////////////////////////
@@ -1545,7 +1545,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "__InputClear is failed(5)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1555,7 +1555,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "ViewList is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1661,7 +1661,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sSetClassName is failed" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			/////////////////////////////
@@ -1675,7 +1675,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "__InputClear is failed(5)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1685,7 +1685,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "ViewList is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1735,7 +1735,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sGetValue is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wText = wSubRes['Responce'] ;
@@ -1754,7 +1754,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sGetChecked is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wFLG_Check = wSubRes['Responce'] ;
@@ -1768,7 +1768,7 @@ class CLS_X_Search {
 			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "CLS_PageObj.sGetValue is failed(3)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wListID = wSubRes['Responce'] ;
@@ -1814,7 +1814,7 @@ class CLS_X_Search {
 			//### どちらも空欄の場合= NG
 			wMessage = "'検索文字' が入力されていません" ;
 			wRes['Reason'] = "Input Error(Word)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"I", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"I", inMessage:wMessage, inLine:__LINE__ }) ;
 			
 			//### メッセージボックスを表示
 			CLS_OSIF.sAlert({ inText:wMessage }) ;
@@ -1874,7 +1874,7 @@ class CLS_X_Search {
 			//### 重複あり= NG
 			wMessage = "'検索文字' か 'リストID' が重複しています" ;
 			wRes['Reason'] = "Input Error : inWord=" + String(inWord) + " inListID=" + String(inListID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"I", inMessage:wMessage }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"I", inMessage:wMessage, inLine:__LINE__ }) ;
 			
 			//### メッセージボックスを表示
 			CLS_OSIF.sAlert({ inText:wMessage }) ;
@@ -1912,7 +1912,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetClassName is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1926,7 +1926,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1940,7 +1940,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(3-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1952,7 +1952,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed(3-2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1964,7 +1964,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(3-3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1978,7 +1978,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "__ChgSetTagsButton is failed(4)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1997,7 +1997,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(5-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2009,7 +2009,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed(5-2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2021,7 +2021,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(5-3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2035,7 +2035,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(6-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2047,7 +2047,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed(6-2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2059,7 +2059,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(6-3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2073,7 +2073,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(7)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2087,7 +2087,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(8)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2101,7 +2101,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(9)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2115,7 +2115,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(10)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2129,7 +2129,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(11)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2143,7 +2143,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(12)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2157,7 +2157,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(13)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2216,7 +2216,7 @@ class CLS_X_Search {
 			{
 				//失敗
 				wRes['Reason'] = "CLS_PageObj.sSetClassName is failed" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			
@@ -2229,7 +2229,7 @@ class CLS_X_Search {
 			{
 				//失敗
 				wRes['Reason'] = "CLS_PageObj.sSetValue is failed" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 		}
@@ -2277,7 +2277,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetClassName is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2310,7 +2310,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sGetDisabled is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wDisable = wSubRes['Responce'] ;
@@ -2336,7 +2336,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2371,7 +2371,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sGetDisabled is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wDisable1 = wSubRes['Responce'] ;
@@ -2383,7 +2383,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sGetDisabled is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wDisable2 = wSubRes['Responce'] ;
@@ -2412,7 +2412,7 @@ class CLS_X_Search {
 				if( wSubRes['Result']!=true )
 				{///失敗
 					wRes['Reason'] = "CLS_PageObj.sSetChecked is failed(3)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 			}
@@ -2448,7 +2448,7 @@ class CLS_X_Search {
 				if( wSubRes['Result']!=true )
 				{///失敗
 					wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(4)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 			}
@@ -2473,7 +2473,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(5)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2485,7 +2485,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed(6)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2538,7 +2538,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetClassName is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2550,7 +2550,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetValue is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2598,7 +2598,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetClassName is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2614,7 +2614,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetClassName is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2628,7 +2628,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "Xsearch_ViewList is failed(3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -2690,7 +2690,7 @@ class CLS_X_Search {
 		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_PageObj.sSetInner is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
