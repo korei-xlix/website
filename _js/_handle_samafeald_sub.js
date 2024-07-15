@@ -113,14 +113,23 @@ function __handle_Samafeald_Sub_PageLoad_Complete()
 	
 	let wSubRes ;
 	
+///	/////////////////////////////
+///	// システム状態変更（→運用へ）
+///	wSubRes = CLS_Sys.sChg({
+///		inStatus	: top.DEF_GVAL_SYS_STAT_RUN
+///	}) ;
+///	if( wSubRes['Result']!=true )
+///	{///失敗
+///		wRes['Reason'] = "CLS_Sys.sChg is failed" ;
+///		CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///		return wRes ;
+///	}
 	/////////////////////////////
-	// システム状態変更（→運用へ）
-	wSubRes = CLS_Sys.sChg({
-		inStatus	: top.DEF_GVAL_SYS_STAT_RUN
-	}) ;
+	// システム開始
+	wSubRes = CLS_Sys.sStart() ;
 	if( wSubRes['Result']!=true )
 	{///失敗
-		wRes['Reason'] = "CLS_Sys.sChg is failed" ;
+		wRes['Reason'] = "CLS_Sys.sStart is failed" ;
 		CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 		return wRes ;
 	}
