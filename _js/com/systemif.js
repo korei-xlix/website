@@ -70,7 +70,7 @@ class CLS_Sys {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sSet" }) ;
 		
 		let wSubRes, wSubRes2, wObj, wMessage, wExitProc, wSelInfo ;
@@ -260,18 +260,18 @@ class CLS_Sys {
 				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
-			
-			//### タイマ起動
-			wSubRes = CLS_Timer.sStart({
-				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER
-			}) ;
-			if( wSubRes['Result']!=true )
-			{///失敗
-				wRes['Reason'] = "CLS_Timer.sStart is failed(4-3)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-				return wRes ;
-			}
-			
+///			
+///			//### タイマ起動
+///			wSubRes = CLS_Timer.sStart({
+///				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER
+///			}) ;
+///			if( wSubRes['Result']!=true )
+///			{///失敗
+///				wRes['Reason'] = "CLS_Timer.sStart is failed(4-3)" ;
+///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///				return wRes ;
+///			}
+///			
 			if( top.gSTR_SystemCircle.FLG_UseCircle==true )
 			{
 				//### 周期処理タイマ設定
@@ -289,17 +289,17 @@ class CLS_Sys {
 					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
-				
-				//### タイマ起動
-				wSubRes = CLS_Timer.sStart({
-					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE
-				}) ;
-				if( wSubRes['Result']!=true )
-				{///失敗
-					wRes['Reason'] = "CLS_Timer.sStart is failed(4-4)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-					return wRes ;
-				}
+///				
+///				//### タイマ起動
+///				wSubRes = CLS_Timer.sStart({
+///					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE
+///				}) ;
+///				if( wSubRes['Result']!=true )
+///				{///失敗
+///					wRes['Reason'] = "CLS_Timer.sStart is failed(4-4)" ;
+///					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///					return wRes ;
+///				}
 			}
 		}
 		
@@ -317,14 +317,15 @@ class CLS_Sys {
 
 
 //#####################################################
-//# システム再開
+//# システム開始
 //#####################################################
-	static sSysRestart()
+///	static sSysRestart()
+	static sStart()
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sSysRestart" }) ;
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sStart" }) ;
 		
 		let wSubRes, wMessage ;
 		
@@ -371,6 +372,7 @@ class CLS_Sys {
 		wSubRes = this.sChg({
 			inStatus : top.DEF_GVAL_SYS_STAT_RUN
 		}) ;
+		if( wSubRes['Result']!=true )
 		{///失敗
 			wRes['Reason'] = "CLS_Sys.sChg is failed(3)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
@@ -379,7 +381,7 @@ class CLS_Sys {
 		
 		/////////////////////////////
 		// コンソール表示
-		wMessage = "Restart System" ;
+		wMessage = "Start System" ;
 		CLS_L.sL({ inRes:wRes, inLevel:"S", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -397,7 +399,7 @@ class CLS_Sys {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"__sCircleProcess" }) ;
 		
 		let wSubRes, wMessage, wValue ;
@@ -580,8 +582,8 @@ class CLS_Sys {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sSet" }) ;
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sChg" }) ;
 		
 		let wSubRes, wPrevStatus, wMessage ;
 		
@@ -820,7 +822,7 @@ class CLS_Sys {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sGetSTRpage" }) ;
 		
 		let wSubRes, wSTR_Param ;

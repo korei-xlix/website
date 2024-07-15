@@ -107,7 +107,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetElement" }) ;
 		
 		let wObj ;
@@ -147,7 +147,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetFrameDocument" }) ;
 		
 		let wObj ;
@@ -186,7 +186,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetPageInfo" }) ;
 		
 		let wURL, wHref, wMessage ;
@@ -370,7 +370,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetPageTitle" }) ;
 		
 		/////////////////////////////
@@ -422,7 +422,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetInner" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -495,7 +495,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetInner" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -576,7 +576,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetValue" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -649,7 +649,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetValue" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -724,7 +724,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetHref" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -802,7 +802,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetClassName" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -875,7 +875,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetClassName" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -950,7 +950,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetSrc" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -1028,7 +1028,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetChecked" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -1100,7 +1100,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetGroupChoose" }) ;
 		
 		let wSelector, wObj, wValue ;
@@ -1163,7 +1163,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetChecked" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -1241,7 +1241,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetDisabled" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -1314,7 +1314,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetDisabled" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -1392,7 +1392,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetDisplay" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -1465,7 +1465,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetDisplay" }) ;
 		
 		let wSubRes, wObj, wValue ;
@@ -1550,7 +1550,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetFrameSize" }) ;
 		
 		let wSubRes, wObj, wARR_Value ;
@@ -1630,7 +1630,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetFrameSize" }) ;
 		
 		let wSubRes, wObj, wARR_Value, wMessage ;
@@ -1644,11 +1644,27 @@ class CLS_PageObj {
 		// 入力チェック
 		if( inHeight!=top.DEF_GVAL_NULL )
 		{
-			wARR_Value['Height'] = inHeight ;
+///			wARR_Value['Height'] = inHeight ;
+			if( CLS_OSIF.sCheckVal({ inValue:inHeight })==true )
+			{
+				wARR_Value['Height'] = inHeight + "pt" ;
+			}
+			else
+			{
+				wARR_Value['Height'] = inHeight ;
+			}
 		}
 		if( inWidth!=top.DEF_GVAL_NULL )
 		{
-			wARR_Value['Width'] = inWidth ;
+///			wARR_Value['Width'] = inWidth ;
+			if( CLS_OSIF.sCheckVal({ inValue:inWidth })==true )
+			{
+				wARR_Value['Width'] = inWidth + "pt" ;
+			}
+			else
+			{
+				wARR_Value['Width'] = inWidth ;
+			}
 		}
 		
 		/////////////////////////////
@@ -1725,7 +1741,7 @@ class CLS_PageObj {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetQuerySelector" }) ;
 		
 		let wSubRes, wQuery ;

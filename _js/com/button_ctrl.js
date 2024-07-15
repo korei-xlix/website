@@ -19,7 +19,7 @@ class CLS_ButtonCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"sSet" }) ;
 		
 		let wSubRes, wSTR_ButtonGroup, wSTR_Button, wSTR_Style, wMessage ;
@@ -107,7 +107,9 @@ class CLS_ButtonCtrl {
 			wSTR_Style = {
 				"Def" : top.DEF_GVAL_NULL,
 				"On"  : top.DEF_GVAL_NULL,
-				"Off" : top.DEF_GVAL_NULL
+				"Off" : top.DEF_GVAL_NULL,
+				"Display"  : true,
+				"Disabled" : false
 			} ;
 			/////////////////////////////
 			// スタイルの取得
@@ -282,6 +284,64 @@ class CLS_ButtonCtrl {
 				}
 			}
 			
+			/////////////////////////////
+			// ボタン表示/非表示の設定
+			
+			//### 表示/非表示 設定の取得
+			wSubRes = CLS_OSIF.sGetInObject({
+				inObject : wSTR_Style,
+				inKey    : "Display"
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "Style in 'Display' is not exist: ButtonID=" + String(wButtonID) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				continue ;
+			}
+			
+			//### ボタン表示/非表示 設定
+			wSubRes = CLS_PageObj.sSetDisplay({
+				inPageObj	: wButtonObj,
+				inKey		: wButtonID,
+				inCode		: wSTR_Style['Display'],
+				inDirect	: true
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed: ButtonID=" + String(wButtonID) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				continue ;
+			}
+			
+			/////////////////////////////
+			// ボタン有効/無効化の設定
+			
+			//### 有効/無効化設定の取得
+			wSubRes = CLS_OSIF.sGetInObject({
+				inObject : wSTR_Style,
+				inKey    : "Disabled"
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "Style in 'Disabled' is not exist: ButtonID=" + String(wButtonID) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				continue ;
+			}
+			
+			//### ボタン有効/無効化 設定
+			wSubRes = CLS_PageObj.sSetDisabled({
+				inPageObj	: wButtonObj,
+				inKey		: wButtonID,
+				inCode		: wSTR_Style['Disabled'],
+				inDirect	: true
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed: ButtonID=" + String(wButtonID) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				continue ;
+			}
+			
 		/////////////////////////////
 		// ボタンへのイベント設定開始
 			if( top.DEF_INDEX_TEST==true )
@@ -379,6 +439,8 @@ class CLS_ButtonCtrl {
 			top.gSTR_ButtonCtrl[inFrameID][wButtonID].ID		= wButtonID ;
 			top.gSTR_ButtonCtrl[inFrameID][wButtonID].Kind		= wARR_Data['Data'][3] ;
 			top.gSTR_ButtonCtrl[inFrameID][wButtonID].ButtonObj	= wButtonObj ;
+			top.gSTR_ButtonCtrl[inFrameID][wButtonID].FLG_Open     = wSTR_Style['Display'] ;
+			top.gSTR_ButtonCtrl[inFrameID][wButtonID].FLG_Disabled = wSTR_Style['Disabled'] ;
 			for( wKey2 in wSTR_Style )
 			{
 				top.gSTR_ButtonCtrl[inFrameID][wButtonID].Style[wKey2] = wSTR_Style[wKey2] ;
@@ -417,7 +479,7 @@ class CLS_ButtonCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"__sCheckButtonGroupID" }) ;
 		
 		let wSubRes, wARR_ID ;
@@ -504,7 +566,7 @@ class CLS_ButtonCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"__sCheckButtonGroupID" }) ;
 		
 		let wSubRes, wARR_ID ;
@@ -635,6 +697,11 @@ class CLS_ButtonCtrl {
 			top.gARR_FrameCtrlInfo[wFrameID].MouseMove.PopupWinID = wPopupWinID ;
 		}
 		
+		/////////////////////////////
+		// ボタン点灯情報設定
+		top.gSTR_ButtonCtrl[inFrameID][wButtonID].FLG_On = inPush ;
+		top.gSTR_ButtonCtrl[inFrameID][wButtonID].FLG_Sw = inPush ;
+		
 		return true ;
 	}
 
@@ -649,7 +716,7 @@ class CLS_ButtonCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"sSetFrame_RegSel" }) ;
 		
 		let wSubRes, wMessage, wOBJ_CldWin, wSTR_Data ;
@@ -763,7 +830,7 @@ class CLS_ButtonCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"sRegBtn" }) ;
 		
 		let wSubRes, wSTR_Style, wKey, wKey2, wFLG_Def ;
@@ -835,6 +902,227 @@ class CLS_ButtonCtrl {
 
 
 //#####################################################
+//# ボタン表示/非表示 設定
+//#####################################################
+	static sSetDisplay({
+		inFrameID  = top.DEF_GVAL_NULL,
+		inButtonID = top.DEF_GVAL_NULL,
+		inDisplay = true
+	})
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"sSetDisplay" }) ;
+		
+		let wSubRes, wButtonObj, wMessage ;
+		let wKey ;
+		
+		/////////////////////////////
+		// フレームIDチェック  子フレームの場合
+		if( inFrameID!=top.DEF_GVAL_PARENT_FRAME_ID )
+		{
+			wSubRes = CLS_FrameCtrl.sCheckFrameID({
+				inFrameID : inFrameID
+			}) ;
+			if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
+			{///フレームが存在しないか、不正の場合
+				wRes['Reason'] = "Frame is not exist: inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
+		
+		/////////////////////////////
+		// ボタンIDチェック
+		wSubRes = this.__sCheckButtonID({
+			inFrameID : inFrameID,
+			inID	  : inButtonID
+		}) ;
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==true ))
+		{///失敗か重複
+			wRes['Reason'] = "__sCheckButtonGroupID is failer: inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// ボタンオブジェクトの取得
+		wButtonObj = top.gSTR_ButtonCtrl[inFrameID][inButtonID].ButtonObj ;
+		
+		/////////////////////////////
+		// ボタン表示/非表示 設定
+		wSubRes = CLS_PageObj.sSetDisplay({
+			inPageObj	: wButtonObj,
+			inKey		: inButtonID,
+			inCode		: inDisplay,
+			inDirect	: true
+		}) ;
+		if( wSubRes['Result']!=true )
+		{///失敗
+			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed: inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// ボタン表示/非表示 情報設定
+		top.gSTR_ButtonCtrl[inFrameID][inButtonID].FLG_Open = inDisplay ;
+		
+		//### メッセージ表示
+		wMessage = "Set Button disabled: Display=" + String(inDisplay) + " inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
+		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
+//# ボタン有効/無効化 設定
+//#####################################################
+	static sSetDisabled({
+		inFrameID  = top.DEF_GVAL_NULL,
+		inButtonID = top.DEF_GVAL_NULL,
+		inDisabled = false
+	})
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"sSetDisabled" }) ;
+		
+		let wSubRes, wButtonObj, wMessage ;
+		let wKey ;
+		
+		/////////////////////////////
+		// フレームIDチェック  子フレームの場合
+		if( inFrameID!=top.DEF_GVAL_PARENT_FRAME_ID )
+		{
+			wSubRes = CLS_FrameCtrl.sCheckFrameID({
+				inFrameID : inFrameID
+			}) ;
+			if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
+			{///フレームが存在しないか、不正の場合
+				wRes['Reason'] = "Frame is not exist: inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
+				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
+		
+		/////////////////////////////
+		// ボタンIDチェック
+		wSubRes = this.__sCheckButtonID({
+			inFrameID : inFrameID,
+			inID	  : inButtonID
+		}) ;
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==true ))
+		{///失敗か重複
+			wRes['Reason'] = "__sCheckButtonGroupID is failer: inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// ボタンオブジェクトの取得
+		wButtonObj = top.gSTR_ButtonCtrl[inFrameID][inButtonID].ButtonObj ;
+		
+		/////////////////////////////
+		// ボタン有効/無効化 設定
+		wSubRes = CLS_PageObj.sSetDisabled({
+			inPageObj	: wButtonObj,
+			inKey		: inButtonID,
+			inCode		: inDisabled,
+			inDirect	: true
+		}) ;
+		if( wSubRes['Result']!=true )
+		{///失敗
+			wRes['Reason'] = "CLS_PageObj.sSetDisabled is failed: inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// ボタン有効/無効化 情報設定
+		top.gSTR_ButtonCtrl[inFrameID][inButtonID].FLG_Disabled = inDisabled ;
+		
+		//### メッセージ表示
+		wMessage = "Set Button disabled: Disabled=" + String(inDisabled) + " inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
+		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
+//# ボタンID解析
+//#####################################################
+	static sAnalysis({
+		inFrameID  = top.DEF_GVAL_NULL,
+		inButtonID = top.DEF_GVAL_NULL
+	})
+	{
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"sAnalysis" }) ;
+		
+		let wSubRes, wSTR_Status ;
+		
+		wSTR_Status = {
+			"Index"	 : "",
+			"Group"	 : "",
+			"Button" : "",
+			"Kind"	 : ""
+		} ;
+		
+		/////////////////////////////
+		// ボタンIDチェック
+		wSubRes = this.__sCheckButtonID({
+			inFrameID : inFrameID,
+			inID	  : inButtonID
+		}) ;
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']!=true ))
+		{///失敗か存在しない
+			wRes['Reason'] = "__sCheckButtonGroupID is failer: inButtonID=" + String(inButtonID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// IDの分解
+		wSubRes = CLS_OSIF.sSplit({
+			inString  : inButtonID,
+			inPattern : "-"
+		}) ;
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=4 ))
+		{///失敗
+			wRes['Reason'] = "CLS_OSIF.sSplit is failed: inButtonID=" + String(inButtonID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		wSTR_Status['Index']  = wSubRes['Data'][0] ;
+		wSTR_Status['Group']  = wSubRes['Data'][1] ;
+		wSTR_Status['Button'] = wSubRes['Data'][2] ;
+		wSTR_Status['Kind']   = wSubRes['Data'][3] ;
+		
+		/////////////////////////////
+		// 正常
+		wRes['Responce'] = wSTR_Status ;
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
 //# ポップアップWindow テキスト送り
 //#####################################################
 	static sTextCroll({
@@ -843,7 +1131,7 @@ class CLS_ButtonCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_ButtonCtrl", inFunc:"sTextCroll" }) ;
 		
 		let wSubRes, wMessage ;

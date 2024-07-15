@@ -19,7 +19,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sHelpSet" }) ;
 		
 		let wSubRes, wPageObj, wDist_PageObj, wHelpObj, wDistObj, wMessage, wError, wSetText ;
@@ -299,7 +299,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"__sCheckPopupHelpID" }) ;
 		
 		let wSubRes, wARR_ID ;
@@ -381,7 +381,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"__sCheckPopupHelpDistID" }) ;
 		
 		let wSubRes, wFrame, wKey, wARR_ID ;
@@ -725,7 +725,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sSetFrameHelp" }) ;
 		
 		let wSubRes, wMessage, wOBJ_CldWin, wSTR_Data ;
@@ -821,7 +821,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sRegHelp" }) ;
 		
 		let wSubRes, wSTR_Lang, wLang, wNum, wKey, wKey2 ;
@@ -906,7 +906,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sWinSet" }) ;
 		
 		let wSubRes, wMessage, wIndex ;
@@ -983,7 +983,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"__sWinSetIndex" }) ;
 		
 		let wSubRes, wCoord, wFrameID, wPopupWinID, wMessage, wError ;
@@ -1337,7 +1337,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"__sCheckPopupWinID" }) ;
 		
 		let wSubRes, wARR_ID ;
@@ -1412,7 +1412,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sSetFrameWin" }) ;
 		
 		let wSubRes, wMessage, wOBJ_CldWin, wSTR_Data ;
@@ -1515,7 +1515,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sRegWin" }) ;
 		
 		let wSubRes, wCoord, wLang, wNum, wKey, wKey2 ;
@@ -1729,7 +1729,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sPopupWindow_Open" }) ;
 		
 		let wSubRes, wPopupWinID ;
@@ -1996,7 +1996,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sPopupWindow_Rock" }) ;
 		
 		let wSubRes, wPopupWinID ;
@@ -2084,7 +2084,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"__sCheckPopupID" }) ;
 		
 		let wSubRes, wARR_ID ;
@@ -2155,7 +2155,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sAddMMI" }) ;
 		
 		let wSubRes, wWinObj, wMessage ;
@@ -2325,7 +2325,7 @@ class CLS_PopupCtrl {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sDelMMI" }) ;
 		
 		let wSubRes, wWinObj, wMessage ;

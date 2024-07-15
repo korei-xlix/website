@@ -263,6 +263,10 @@ function __handle_PageLoad()
 		inStyleCommPath	: top.DEF_GVAL_NULL,	//Comm Styleのカレントパス（別フォルダの場合）
 		inPgIconPath	: "/_pic/icon/galaxyfleet_icon.ico",	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
 		inUpIconPath	: "/_pic/icon/icon_up.gif",				//更新アイコン   カレントパス  /_pic/icon/new_icon.gif
+		inCompProc		: {							//設定完了待ち後実行プロセス
+			"Callback"	: __handle_XSearch_PageLoad_Complete
+//			"Arg"		: new Array()
+			},
 		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
 	}) ;
 	if( wSubRes['Result']!=true )
@@ -297,12 +301,12 @@ function __handle_PageLoad()
 ///////////////////////////////////////////////////////
 //  ページロード完了
 ///////////////////////////////////////////////////////
-function __handle_PageLoad_Complete()
+function __handle_XSearch_PageLoad_Complete()
 {
 	//###########################
 	//# 応答形式の取得
 	//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-	let wRes = CLS_OSIF.sGet_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad_Complete" }) ;
+	let wRes = CLS_OSIF.sGet_Resp({ inClass:"__handle", inFunc:"__handle_XSearch_PageLoad_Complete" }) ;
 	
 	let wSubRes ;
 	

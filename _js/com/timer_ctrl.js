@@ -56,7 +56,7 @@
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"async_CLS_Timer_Callback" }) ;
 		
 		let wSubRes, wName ;
@@ -173,7 +173,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"sSet" }) ;
 		
 		let wSubRes, wSTR_Param, wMessage, wNextProc ;
@@ -331,7 +331,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"__sExist" }) ;
 		
 		let wSubRes ;
@@ -375,7 +375,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"sStart" }) ;
 		
 		let wSubRes, wMessage ;
@@ -509,7 +509,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"sReset" }) ;
 		
 		let wSubRes, wMessage ;
@@ -601,7 +601,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"sStop" }) ;
 		
 		let wSubRes, wMessage ;
@@ -648,14 +648,15 @@ class CLS_Timer {
 			return wRes ;
 		}
 		if( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true )
-		{
+		{///通らないルート？ 不正だけログつけて、以降処理継続する
 			wRes['Reason'] = "Dual issued stop command: inTimerID=" + String(inTimerID) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"E", inLine:__LINE__ }) ;
-			return wRes ;
+///			return wRes ;
 		}
 		
 		/////////////////////////////
 		// タイマ停止通知 発行
+		top.gARR_TimerCtrlInfo[inTimerID].FLG_Start = false ; //起動OFF
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop = true ;
 		top.gARR_TimerCtrlInfo[inTimerID].Status = top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
 		
@@ -688,7 +689,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"__sTimeout" }) ;
 		
 		let wSubRes, wMessage, wError ;
@@ -772,7 +773,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"__sTimeoutCircle" }) ;
 		
 		let wSubRes, wMessage, wError ;
@@ -881,7 +882,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"__sTimeoutWait" }) ;
 		
 		let wSubRes, wMessage, wError ;
@@ -1018,7 +1019,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"sGetStatus" }) ;
 		
 		let wSubRes ;
@@ -1073,7 +1074,7 @@ class CLS_Timer {
 	{
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"sSetStatus" }) ;
 		
 		let wSubRes, wStatus, wMessage ;
@@ -1126,7 +1127,7 @@ class CLS_Timer {
 		{
 			//###########################
 			//# 応答形式の取得
-			//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+			//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 			let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"__sDefaultCallback" }) ;
 			
 			//### コンソール表示

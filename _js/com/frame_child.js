@@ -239,7 +239,7 @@ class CLS_FrameCld {
 		
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sLoad" }) ;
 		
 		/////////////////////////////
@@ -329,18 +329,25 @@ class CLS_FrameCld {
 		let wOBJ_Win = window ;
 		//###########################
 		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sUnLoad" }) ;
 		
-		let wOBJ_Op, wFrameID, wMessage ;
+		let wSubRes, wOBJ_Op, wFrameID, wMessage ;
 		
 		wOBJ_Op  = wOBJ_Win.gSTR_CldInfo.PageObj ;
 		wFrameID = wOBJ_Win.gSTR_CldInfo.ID ;
 		/////////////////////////////
 		// 非同期 アンロード
-		wOBJ_Op.async_CLS_FrameCtrl_UnLoad({
+		wSubRes = wOBJ_Op.async_CLS_FrameCtrl_UnLoad({
 			inFrameID : wFrameID
 		}) ;
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']!=true ))
+		{
+			/////////////////////////////
+			// 正常
+			wRes['Result'] = true ;
+			return wRes ;
+		}
 		
 		//### コンソール表示（親フレーム・自分）
 		wMessage = "Frame unloaded(for Sub Frame): FrameID=" + String(wFrameID) ;
