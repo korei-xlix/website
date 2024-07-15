@@ -1687,7 +1687,7 @@ class CLS_WinCtrl {
 //#####################################################
 ///	static sStby()
 	static sStby({
-		inSTR_Info
+		inSTR_Info = {}
 	})
 	{
 		//###########################
