@@ -92,7 +92,7 @@ function __handle_PageLoad()
 	
 	/////////////////////////////
 	// 設定完了待ち
-	wSubRes = CLS_WinCtrl.sStby() ;
+	wSubRes = CLS_WinCtrl.sStby({}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
 		wRes['Reason'] = "CLS_WinCtrl.sStby is failer" ;
