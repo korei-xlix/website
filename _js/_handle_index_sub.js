@@ -175,3 +175,16 @@ function __handle_SelectCSS_Mode( inMode )
 
 
 
+///////////////////////////////////////////////////////
+//  セレクタ番号の設定
+///////////////////////////////////////////////////////
+function __handle_Sel( inNumber )
+{
+	CLS_Sel.sRegVal({
+		inNum : inNumber
+	}) ;
+	return ;
+}
+
+
+
