@@ -14,10 +14,8 @@
 //# 1.1.2.0		2024-06-28	ボタン制御の追加
 //# 1.2.0.0		2024-07-05	ポップアップヘルプ/制御/ボタン の設定I/F変更
 //# 1.2.1.0		2024-07-09	Window制御でタイトル、CSS切替スイッチがない場合正常で終わるようにした
-
-
-
-
+//# 1.2.2.0		2024-07-15	Hotfix
+	
 //# 1.xxxxx		2024-07-xx	Window制御 設定完了待ち後処理の外部設定
 //#
 //#####################################################
@@ -26,7 +24,7 @@
 //# ※ユーザ自由変更※
 
 //### システム情報
-var DEF_USER_VERSION	= "1.2.1.0" ;
+var DEF_USER_VERSION	= "1.2.2.0" ;
 var DEF_USER_AUTHOR		= 'korei (X:@korei_xlix)' ;	//HTMLのauthor表示
 var DEF_USER_GITHUB		= "https://github.com/korei-xlix/website/" ;
 var DEF_USER_SITEURL	= "https://website.koreis-labo.com/" ;
@@ -85,7 +83,8 @@ var DEF_GVAL_IDX_ICON			= "iIcon" ;
 // ページタイトル
 var DEF_GVAL_IDX_TITLE_UP		= "iTitleUp" ;
 var DEF_GVAL_IDX_TITLE_DW		= "iTitleDw" ;
-var DEF_GVAL_IDX_TITLE_SUB		= "iTitleSub" ;
+var DEF_GVAL_IDX_TITLE_MAIN		= "iTitleMain" ;
+///var DEF_GVAL_IDX_TITLE_SUB		= "iTitleSub" ;
 ///var DEF_GVAL_IDX_TITLE_SUB_TRANS_JP = "iTitleSubJP" ;
 ///var DEF_GVAL_IDX_TITLE_SUB_TRANS_EN = "iTitleSubEN" ;
 
@@ -441,6 +440,7 @@ function gSTR_ButtonCtrl_Str()
 	
 	this.Init					= false ;						//  true=ボタン設定完了
 	this.FLG_Open				= true ;						//  ボタン表示  true=表示  false=非表示
+	this.FLG_Disabled			= false ;						//  ボタン有効/無効  true=無効  false=有効
 	this.FLG_On					= false ;						//  ボタン点灯(On) / 消灯(Off)
 	this.FLG_Sw					= false ;						//  ボタン入力中(ホールド/ブリンク)
 	
