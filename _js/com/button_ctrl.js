@@ -97,17 +97,20 @@ class CLS_ButtonCtrl {
 				inFrameID : inFrameID,
 				inID	  : wButtonID
 			}) ;
-/////////////////////////
-//			if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==true ))
-			if( wSubRes['Result']!=true )
-/////////////////////////
+			if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==true ))
 			{///失敗か重複
 				wRes['Reason'] = "__sCheckButtonGroupID is failer: ButtonID=" + String(wButtonID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				continue ;
 			}
 			
-			wSTR_Style = this.__sGetButtonStyleStr() ;
+			wSTR_Style = {
+				"Def" : top.DEF_GVAL_NULL,
+				"On"  : top.DEF_GVAL_NULL,
+				"Off" : top.DEF_GVAL_NULL,
+				"Display"  : true,
+				"Disabled" : false
+			} ;
 			/////////////////////////////
 			// スタイルの取得
 			for( wKey2 in inSTR_Data[wKey] )
@@ -289,7 +292,7 @@ class CLS_ButtonCtrl {
 				inObject : wSTR_Style,
 				inKey    : "Display"
 			}) ;
-			if( wSubRes!=true )
+			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "Style in 'Display' is not exist: ButtonID=" + String(wButtonID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
@@ -318,7 +321,7 @@ class CLS_ButtonCtrl {
 				inObject : wSTR_Style,
 				inKey    : "Disabled"
 			}) ;
-			if( wSubRes!=true )
+			if( wSubRes['Result']!=true )
 			{///失敗
 				wRes['Reason'] = "Style in 'Disabled' is not exist: ButtonID=" + String(wButtonID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
@@ -467,23 +470,6 @@ class CLS_ButtonCtrl {
 
 
 ///////////////////////////////////////////////////////
-//  ボタンスタイル取得
-///////////////////////////////////////////////////////
-	static __sGetButtonStyleStr()
-	{
-		let wSTR_Style = {
-			"Def" : top.DEF_GVAL_NULL,
-			"On"  : top.DEF_GVAL_NULL,
-			"Off" : top.DEF_GVAL_NULL,
-			"Display"  : true,
-			"Disabled" : false
-		} ;
-		return wSTR_Style ;
-	}
-
-
-
-///////////////////////////////////////////////////////
 //  ボタングループIDチェック
 ///////////////////////////////////////////////////////
 	static __sCheckButtonGroupID({
@@ -626,7 +612,7 @@ class CLS_ButtonCtrl {
 		}
 		
 		//### ボタン種別のチェック
-		wSubRes = CLS_OSIF.sGetInArray({
+		wSubRes = CLS_OSIF.sGetInObject({
 			inObject : top.DEF_GVAL_BTN_KIND,
 			inKey	 : wARR_ID[3]
 		}) ;
@@ -757,7 +743,11 @@ class CLS_ButtonCtrl {
 		wOBJ_CldWin = top.gARR_FrameCtrlInfo[inFrameID].WindowObj ;
 		for( wKey in wOBJ_CldWin.gSTR_CldPreReg_ButtonCtrl )
 		{
-			wSTR_Style = this.__sGetButtonStyleStr() ;
+			wSTR_Style = {
+				"Def" : top.DEF_GVAL_NULL,
+				"On"  : top.DEF_GVAL_NULL,
+				"Off" : top.DEF_GVAL_NULL
+			} ;
 			wFLG_Def  = false ;
 			wButtonID = String(wKey) ;		// ボタンID
 			/////////////////////////////
@@ -858,7 +848,11 @@ class CLS_ButtonCtrl {
 			return wRes ;
 		}
 		
-		wSTR_Style = this.__sGetButtonStyleStr() ;
+		wSTR_Style = {
+			"Def" : top.DEF_GVAL_NULL,
+			"On"  : top.DEF_GVAL_NULL,
+			"Off" : top.DEF_GVAL_NULL
+		} ;
 		wFLG_Def   = false ;
 		/////////////////////////////
 		// ボタンスタイルの設定
@@ -945,8 +939,8 @@ class CLS_ButtonCtrl {
 			inFrameID : inFrameID,
 			inID	  : inButtonID
 		}) ;
-		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']!=true ))
-		{///失敗か存在しない場合
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==true ))
+		{///失敗か重複
 			wRes['Reason'] = "__sCheckButtonGroupID is failer: inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
 			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
@@ -1025,8 +1019,8 @@ class CLS_ButtonCtrl {
 			inFrameID : inFrameID,
 			inID	  : inButtonID
 		}) ;
-		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']!=true ))
-		{///失敗か存在しない場合
+		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==true ))
+		{///失敗か重複
 			wRes['Reason'] = "__sCheckButtonGroupID is failer: inFrameID=" + String(inFrameID) + " inButtonID=" + String(inButtonID);
 			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
@@ -1118,18 +1112,6 @@ class CLS_ButtonCtrl {
 		wSTR_Status['Group']  = wSubRes['Data'][1] ;
 		wSTR_Status['Button'] = wSubRes['Data'][2] ;
 		wSTR_Status['Kind']   = wSubRes['Data'][3] ;
-		
-		//### メッセージ表示
-		wMessage = "Button click: inButtonID=" + String(inButtonID) ;
-		wMessage = wMessage + '\n' + "  inFrameID = " + String(inFrameID) ;
-		if( top.DEF_INDEX_TEST==true )
-		{
-			wMessage = wMessage + '\n' + "  Index  = " + String(wSTR_Status['Index']) ;
-			wMessage = wMessage + '\n' + "  Group  = " + String(wSTR_Status['Group']) ;
-			wMessage = wMessage + '\n' + "  Button = " + String(wSTR_Status['Button']) ;
-		}
-		wMessage = wMessage + '\n' + "  Kind   = " + String(wSTR_Status['Kind']) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"S", inMessage:wMessage }) ;
 		
 		/////////////////////////////
 		// 正常

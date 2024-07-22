@@ -192,7 +192,7 @@ class CLS_L {
 			{/// テストの場合、除外あり関数は除外
 				if( wRes['Reason']!=top.DEF_GVAL_TEXT_NONE )
 				{
-					wSubRes = CLS_OSIF.sGetInArray({
+					wSubRes = CLS_OSIF.sGetInObject({
 						inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 						inKey	 : wRes['Reason']
 					}) ;
@@ -267,8 +267,7 @@ class CLS_L {
 		// ログデータを詰める
 		
 		//### 古いログデータを消して、上詰めする
-///		wNum = CLS_OSIF.sGetObjectNum({ inObject:top.gARR_Log }) ;
-		wNum = CLS_OSIF.sGetArrayNum({ inObject:top.gARR_Log }) ;
+		wNum = CLS_OSIF.sGetObjectNum({ inObject:top.gARR_Log }) ;
 		if( top.DEF_USER_LOGDATA_LEN<=wNum )
 		{///一番上を削除して、詰める
 			top.gARR_Log.shift() ;
@@ -483,8 +482,7 @@ class CLS_L {
 		// ログボックスへデータを詰める
 		
 		//### 古いログデータを消して、上詰めする
-///		wNum = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_LogBox.Data }) ;
-		wNum = CLS_OSIF.sGetArrayNum({ inObject:top.gSTR_LogBox.Data }) ;
+		wNum = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_LogBox.Data }) ;
 		if( top.DEF_USER_LOGBOXDATA_LEN<=wNum )
 		{///一番上を削除して、詰める
 			top.gSTR_LogBox.Data.shift() ;
@@ -557,8 +555,7 @@ class CLS_L {
 		/////////////////////////////
 		// 出力データの作成
 		wSTR_Data = this.__createData() ;
-///		if( CLS_OSIF.sGetObjectNum({ inObject:wSTR_Data['Cons'] })<=0 )
-		if( CLS_OSIF.sGetArrayNum({ inObject:wSTR_Data['Cons'] })<=0 )
+		if( CLS_OSIF.sGetObjectNum({ inObject:wSTR_Data['Cons'] })<=0 )
 		{
 			wMessage = "No Log data" ;
 			this.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;

@@ -180,7 +180,7 @@ class CLS_Timer {
 		
 		/////////////////////////////
 		// タイマ種類チェック
-		wSubRes = CLS_OSIF.sGetInArray({
+		wSubRes = CLS_OSIF.sGetInObject({
 			inObject	: top.DEF_GVAL_TIMERCTRL_KIND,
 			inKey		: inTimerKind
 		}) ;
@@ -263,27 +263,25 @@ class CLS_Timer {
 		}
 		
 		if( inNextProc['Callback']==top.DEF_GVAL_NULL )
-		{///未設定の場合、デフォルトコールバックを設定する
-			wNextProc['Callback'] = this.__sDefaultCallback ;
-			wNextProc['Arg']	  = inTimerID ;
+		{///不正
+			wRes['Reason'] = "Unset inNextProc['Callback']: keys=" + String( Object.keys(inNextProc) ) + " (4-3)" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		wNextProc['Callback'] = inNextProc['Callback'] ;
+		
+		//### コールバック引数
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject : inNextProc,
+			inKey    : "Arg"
+		}) ;
+		if( wSubRes!=true )
+		{///未設定の場合、空を設定
+			wNextProc['Arg'] = new Array() ;
 		}
 		else
-		{///コールバック設定
-			wNextProc['Callback'] = inNextProc['Callback'] ;
-			
-			//### コールバック引数
-			wSubRes = CLS_OSIF.sGetInObject({
-				inObject : inNextProc,
-				inKey    : "Arg"
-			}) ;
-			if( wSubRes!=true )
-			{///未設定の場合、空を設定
-				wNextProc['Arg'] = new Array() ;
-			}
-			else
-			{///設定
-				wNextProc['Arg'] = inNextProc['Arg'] ;
-			}
+		{///設定
+			wNextProc['Arg'] = inNextProc['Arg'] ;
 		}
 		
 		//###########################
@@ -484,7 +482,7 @@ class CLS_Timer {
 			wMessage = wMessage + '\n' + "  Retry=" + String(top.gARR_TimerCtrlInfo[inTimerID].Retry) ;
 			wMessage = wMessage + '\n' + "  Callback=" + String(top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name) ;
 		}
-		wSubRes = CLS_OSIF.sGetInArray({
+		wSubRes = CLS_OSIF.sGetInObject({
 			inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 			inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
 		}) ;
@@ -577,7 +575,7 @@ class CLS_Timer {
 			wMessage = wMessage + '\n' + "  Retry=" + String(top.gARR_TimerCtrlInfo[inTimerID].Retry) ;
 			wMessage = wMessage + '\n' + "  Callback=" + String(top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name) ;
 		}
-		wSubRes = CLS_OSIF.sGetInArray({
+		wSubRes = CLS_OSIF.sGetInObject({
 			inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 			inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
 		}) ;
@@ -653,6 +651,7 @@ class CLS_Timer {
 		{///通らないルート？ 不正だけログつけて、以降処理継続する
 			wRes['Reason'] = "Dual issued stop command: inTimerID=" + String(inTimerID) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"E", inLine:__LINE__ }) ;
+///			return wRes ;
 		}
 		
 		/////////////////////////////
@@ -663,7 +662,7 @@ class CLS_Timer {
 		
 		//### コンソール表示
 		wMessage = "Timer stop: Issue stop command: inTimerID=" + String(inTimerID) ;
-		wSubRes = CLS_OSIF.sGetInArray({
+		wSubRes = CLS_OSIF.sGetInObject({
 			inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 			inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
 		}) ;
@@ -717,7 +716,7 @@ class CLS_Timer {
 			if( top.DEF_INDEX_TEST==true )
 			{
 				wMessage = "This timer is stopped: inTimerID=" + String(inTimerID) ;
-				wSubRes = CLS_OSIF.sGetInArray({
+				wSubRes = CLS_OSIF.sGetInObject({
 					inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 					inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
 				}) ;
@@ -750,7 +749,7 @@ class CLS_Timer {
 		
 		//### コンソール表示
 		wMessage = "Stopped Timer: Normal timer stopped: inTimerID=" + String(inTimerID) ;
-		wSubRes = CLS_OSIF.sGetInArray({
+		wSubRes = CLS_OSIF.sGetInObject({
 			inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 			inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
 		}) ;
@@ -804,7 +803,7 @@ class CLS_Timer {
 			if( top.DEF_INDEX_TEST==true )
 			{
 				wMessage = "This timer is stopped: inTimerID=" + String(inTimerID) ;
-				wSubRes = CLS_OSIF.sGetInArray({
+				wSubRes = CLS_OSIF.sGetInObject({
 					inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 					inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
 				}) ;
@@ -910,7 +909,7 @@ class CLS_Timer {
 			if( top.DEF_INDEX_TEST==true )
 			{
 				wMessage = "This timer is stopped(async timer ctrl ?): inTimerID=" + String(inTimerID) ;
-				wSubRes = CLS_OSIF.sGetInArray({
+				wSubRes = CLS_OSIF.sGetInObject({
 					inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 					inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
 				}) ;
@@ -963,7 +962,7 @@ class CLS_Timer {
 			
 			//### コンソール表示
 			wMessage = "Stopped Timer: Wait retry out: inTimerID=" + String(inTimerID) ;
-			wSubRes = CLS_OSIF.sGetInArray({
+			wSubRes = CLS_OSIF.sGetInObject({
 				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 				inKey	 : top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name
 			}) ;
