@@ -1679,10 +1679,6 @@ class CLS_PopupCtrl {
 		// オブジェクトの座標設定
 		try
 		{
-//			wRect = wPopupWinObj.getBoundingClientRect() ;
-//			wRect = wPopupWinObj.getClientRect() ;
-//			wTop  = CLS_OSIF.sFloorParse({ inValue:wRect.top }) ;
-//			wLeft = CLS_OSIF.sFloorParse({ inValue:wRect.left }) ;
 			//### Windowスクロール幅
 			if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 			{

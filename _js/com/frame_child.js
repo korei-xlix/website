@@ -17,7 +17,8 @@ var DEF_CLD_NULL	= null ;
 //# 子フレーム情報
 function STR_ChildFrameInfo_Str()
 {
-	this.PageObj				= top.DEF_CLD_NULL ;			//  親フレーム ページオブジェクト
+///	this.PageObj				= top.DEF_CLD_NULL ;			//  親フレーム ページオブジェクト
+	this.WindowObj				= top.DEF_CLD_NULL ;			//  親フレーム windowオブジェクト
 	this.cWindowObj				= top.DEF_CLD_NULL ;			//  子フレーム windowオブジェクト
 	this.cPageObj				= top.DEF_CLD_NULL ;			//  子フレーム ページオブジェクト
 	
@@ -34,6 +35,8 @@ var gARR_CldPreReg_SelInfo		= new Array() ;					//  セレクタ 仮登録番号
 
 //###########################
 //# オブジェクト情報
+var gCLS_FileCtrl = this.DEF_CLD_NULL ;
+var gCLS_ButtonCtrl = this.DEF_CLD_NULL ;
 var gCLS_PageObj = this.DEF_CLD_NULL ;
 var gCLS_OSIF	 = this.DEF_CLD_NULL ;
 var gCLS_Sys	 = this.DEF_CLD_NULL ;
@@ -115,7 +118,6 @@ function __handle_FrameButton_RegVall({ inID = top.DEF_CLD_NULL, inStyle = {} })
 ///////////////////////////////////////////////////////
 function __handle_FrameSel_RegVal( inNumber )
 {
-///	CLS_FrameCld.sPreRegVal({
 	CLS_FrameCld.sSel_PreRegVal({
 		inNum : inNumber
 	}) ;
@@ -167,7 +169,7 @@ class CLS_FrameCld {
 			
 			//### 子フレーム情報のセット
 			wOBJ_Win = window ;
-			wOBJ_Win.gSTR_CldInfo.PageObj		= wOBJ_Op ;
+			wOBJ_Win.gSTR_CldInfo.WindowObj		= wOBJ_Op ;
 			wOBJ_Win.gSTR_CldInfo.cWindowObj	= wOBJ_Win ;	//windowオブジェクト
 			wOBJ_Win.gSTR_CldInfo.cPageObj		= inPageObj ;	//ページオブジェクト
 			
@@ -191,7 +193,7 @@ class CLS_FrameCld {
 				
 				//### 子フレーム情報のセット
 				wOBJ_Win = window ;
-				wOBJ_Win.gSTR_CldInfo.PageObj		= wOBJ_Op ;
+				wOBJ_Win.gSTR_CldInfo.WindowObj		= wOBJ_Op ;
 				wOBJ_Win.gSTR_CldInfo.cWindowObj	= wOBJ_Win ;	//windowオブジェクト
 				wOBJ_Win.gSTR_CldInfo.cPageObj		= inPageObj ;	//ページオブジェクト
 				
@@ -231,6 +233,8 @@ class CLS_FrameCld {
 		// wOBJ_Win	 子フレームwindowオブジェクト
 		//
 		// 親フレームから子フレームへ、クラスオブジェクトの受け渡し
+		wOBJ_Win.gCLS_FileCtrl = wOBJ_Op.gCLS_FileCtrl.constructor ;
+		wOBJ_Win.gCLS_ButtonCtrl = wOBJ_Op.gCLS_ButtonCtrl.constructor ;
 		wOBJ_Win.gCLS_PageObj = wOBJ_Op.gCLS_PageObj.constructor ;
 		wOBJ_Win.gCLS_OSIF	  = wOBJ_Op.gCLS_OSIF.constructor ;
 		wOBJ_Win.gCLS_Sys	  = wOBJ_Op.gCLS_Sys.constructor ;
@@ -334,7 +338,7 @@ class CLS_FrameCld {
 		
 		let wSubRes, wOBJ_Op, wFrameID, wMessage ;
 		
-		wOBJ_Op  = wOBJ_Win.gSTR_CldInfo.PageObj ;
+		wOBJ_Op  = wOBJ_Win.gSTR_CldInfo.WindowObj ;
 		wFrameID = wOBJ_Win.gSTR_CldInfo.ID ;
 		/////////////////////////////
 		// 非同期 アンロード
@@ -440,6 +444,62 @@ class CLS_FrameCld {
 		// 仮番号を追加
 		window.gARR_CldPreReg_SelInfo.push( inNum ) ;
 		return ;
+	}
+
+
+
+//#####################################################
+//# オブジェクト取得
+//#####################################################
+	static sGetObjyect()
+	{
+		/////////////////////////////
+		// オブジェクト参照
+		let wOBJ_Op  = window.gSTR_CldInfo.WindowObj ;	//親フレームwindowオブジェクト
+		let wOBJ_Win = window.gSTR_CldInfo.cWindowObj ;	//子フレームwindowオブジェクト
+		let wPageObj = window.gSTR_CldInfo.cPageObj ;	//子フレームページオブジェクト
+		
+		let wRes = { "Result":false } ;
+		//###########################
+		//# 応答形式の取得
+		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
+		try
+		{///親フレームwindowとの接続確認も含める
+			wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sGetObjyect" }) ;
+		}
+		catch(e)
+		{///親windowが見えない
+			console.log("*** CLS_FrameCld.sGetObjyect parent window is undefine ***") ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// 子フレームwindowオブジェクトの確認
+		try
+		{///親フレームwindowとの接続確認も含める
+			wRes = wOBJ_Win.gCLS_OSIF.sGet_Resp({ inClass:"CLS_FrameCld", inFunc:"sGetObjyect" }) ;
+		}
+		catch(e)
+		{///子windowが見えない
+			//###########################
+			//# 例外処理
+			wRes['Reason'] = wOBJ_Win.gCLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
+			wOBJ_Win.gCLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// 取得物を返送
+		wRes['Responce'] = {
+			"OBJ_Op"	: wOBJ_Op,
+			"OBJ_Win"	: wOBJ_Win,
+			"PageObj"	: wPageObj
+		} ;
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
 	}
 
 

@@ -121,17 +121,26 @@
 //#		CLS_OSIF.sGetObjectList
 //#			in:		inObject   判定Object(辞書型)
 //#			out:	Value      要素数    nullは例外
-//# Array型・辞書型の要素数を返す
+//# Array型の要素数を返す
+//#		CLS_OSIF.sGetArrayNum
+//#			in:		inObject   判定Object(Array型)
+//#			out:	Value      要素数    -1は例外
+//# 辞書型の要素数を返す
 //#		CLS_OSIF.sGetObjectNum
-//#			in:		inObject   判定Object(Array or 辞書型)
+//#			in:		inObject   判定Object(辞書型)
 //#			out:	Value      要素数    -1は例外
 //# 辞書型かチェック
 //#		CLS_OSIF.sCheckObject
 //#			in:		inObject
 //#			out:	true=辞書型  false=辞書型ではないor例外
-//# Array型・辞書型にKeyを含むか
+//# Array型にKeyを含むか
+//#		CLS_OSIF.sGetInArray
+//#			in:		inObject   判定Object(Array型)
+//#					inKey      検査Key
+//#			out:	true=含む  false=含まないor例外
+//# 辞書型にKeyを含むか
 //#		CLS_OSIF.sGetInObject
-//#			in:		inObject   判定Object(Array or 辞書型)
+//#			in:		inObject   判定Object(辞書型)
 //#					inKey      検査Key
 //#					inDD 	   true=辞書型のデータ重複チェック false=キー重複チェック
 //#			out:	true=含む  false=含まないor例外
@@ -232,7 +241,7 @@ class CLS_OSIF {
 		
 		if( top.DEF_INDEX_TEST==true )
 		{
-			wSubRes = this.sGetInObject({
+			wSubRes = this.sGetInArray({
 				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
 				inKey	 : wName
 			}) ;
@@ -717,7 +726,8 @@ class CLS_OSIF {
 		{
 			/////////////////////////////
 			// 辞書型の場合
-			if( ( inObject instanceof Object )==true )
+			if((( inObject instanceof Object )==true ) ||
+			   ( (typeof inObject)=="object" ) )
 			{
 				wValue = Object.keys( inObject ) ;
 			}
@@ -731,7 +741,42 @@ class CLS_OSIF {
 
 
 //#####################################################
-//# Array型・辞書型の要素数を返す
+//# Array型の要素数を返す
+//#####################################################
+	static sGetArrayNum({
+		inObject
+	})
+	{
+		let wValue ;
+		
+		wValue = -1 ;
+		try
+		{
+///			/////////////////////////////
+///			// Array型の場合
+///			if( ( inObject instanceof Array )==true )
+///			{
+///				wValue = inObject.length ;
+///			}
+///			/////////////////////////////
+///			// 辞書型の場合
+///			else if(( ( inObject instanceof Object )==true ) ||
+///				    ( (typeof inObject)=="object" ) )
+///			{
+///				wValue = Object.keys(inObject).length ;
+///			}
+			wValue = inObject.length ;
+		}
+		catch(e)
+		{///例外
+		}
+		return wValue ;
+	}
+
+
+
+//#####################################################
+//# 辞書型の要素数を返す
 //#####################################################
 	static sGetObjectNum({
 		inObject
@@ -742,18 +787,20 @@ class CLS_OSIF {
 		wValue = -1 ;
 		try
 		{
-			/////////////////////////////
-			// Array型の場合
-			if( ( inObject instanceof Array )==true )
-			{
-				wValue = inObject.length ;
-			}
-			/////////////////////////////
-			// 辞書型の場合
-			else if( ( inObject instanceof Object )==true )
-			{
-				wValue = Object.keys(inObject).length ;
-			}
+///			/////////////////////////////
+///			// Array型の場合
+///			if( ( inObject instanceof Array )==true )
+///			{
+///				wValue = inObject.length ;
+///			}
+///			/////////////////////////////
+///			// 辞書型の場合
+///			else if(( ( inObject instanceof Object )==true ) ||
+///				    ( (typeof inObject)=="object" ) )
+///			{
+///				wValue = Object.keys(inObject).length ;
+///			}
+			wValue = Object.keys(inObject).length ;
 		}
 		catch(e)
 		{///例外
@@ -777,7 +824,8 @@ class CLS_OSIF {
 		{
 			/////////////////////////////
 			// 辞書型の場合
-			if( ( inObject instanceof Object )==true )
+			if(( ( inObject instanceof Object )==true ) ||
+			   ( (typeof inObject)=="object" ) )
 			{
 				wValue = true ;
 			}
@@ -791,7 +839,33 @@ class CLS_OSIF {
 
 
 //#####################################################
-//# Array型・辞書型にKeyを含むか
+//# Array型にKeyを含むか
+//#####################################################
+	static sGetInArray({
+		inObject,
+		inKey
+	})
+	{
+		let wValue, wKey ;
+		
+		wValue = false ;
+		try
+		{
+			if( inObject.includes( inKey )==true )
+			{
+				wValue = true ;
+			}
+		}
+		catch(e)
+		{///例外
+		}
+		return wValue ;
+	}
+
+
+
+//#####################################################
+//# 辞書型にKeyを含むか
 //#####################################################
 	static sGetInObject({
 		inObject,
@@ -804,36 +878,22 @@ class CLS_OSIF {
 		wValue = false ;
 		try
 		{
-			/////////////////////////////
-			// Array型の場合
-			if( ( inObject instanceof Array )==true )
-			{
-				if( inObject.includes( inKey )==true )
+			if( inDD==true )
+			{///データ重複チェック
+				for( wKey in inObject )
 				{
-					wValue = true ;
-				}
-			}
-			/////////////////////////////
-			// 辞書型の場合
-			else if( ( inObject instanceof Object )==true )
-			{
-				if( inDD==true )
-				{///データ重複チェック
-					for( wKey in inObject )
-					{
-						if( inObject[wKey]==inKey )
-						{
-							wValue = true ;
-							break ;
-						}
-					}
-				}
-				else
-				{///キー重複チェック
-					if( inKey in inObject )
+					if( inObject[wKey]==inKey )
 					{
 						wValue = true ;
+						break ;
 					}
+				}
+			}
+			else
+			{///キー重複チェック
+				if( inKey in inObject )
+				{
+					wValue = true ;
 				}
 			}
 		}

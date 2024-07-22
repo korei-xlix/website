@@ -82,7 +82,6 @@
 		//### コンソール表示
 		if( top.DEF_INDEX_TEST==true )
 		{
-///			wMessage = "Befour callback: inFrameID=" + String(inFrameID) + " Func=" + wName ;
 			wMessage = "Befour callback: Func=" + wName ;
 			wRes['Reason'] = wName ;
 			CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -97,7 +96,6 @@
 		//### コンソール表示
 		if( top.DEF_INDEX_TEST==true )
 		{
-///			wMessage = "After callback: inFrameID=" + String(inFrameID) + " Func=" + wName ;
 			wMessage = "After callback: Func=" + wName ;
 			wRes['Reason'] = wName ;
 			CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -173,7 +171,7 @@ class CLS_WinCtrl {
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
-		wSubRes = CLS_OSIF.sGetInObject({
+		wSubRes = CLS_OSIF.sGetInArray({
 			inObject	: top.DEF_GVAL_WINCTRL_CSS_MODE,
 			inKey		: inMode
 		}) ;
@@ -990,7 +988,6 @@ class CLS_WinCtrl {
 		/////////////////////////////
 		// タイトル変更（ヘッダ・フッタ・ページ）
 		wSubRes = this.__sSetTitle({
-///			inPageObj : pParam.PageObj
 			inParam	: pParam
 		}) ;
 		if( wSubRes['Result']!=true )
@@ -1132,8 +1129,6 @@ class CLS_WinCtrl {
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///ページにCSSスイッチがない場合、正常で終わる
-///			wRes['Reason'] = "sSetInner is failed(<option>tag setting failuer)" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
 			if( top.DEF_INDEX_TEST==true )
 			{
@@ -1223,7 +1218,6 @@ class CLS_WinCtrl {
 //  タイトル変更（ヘッダ・フッタ）
 ///////////////////////////////////////////////////////
 	static __sSetTitle({
-///		inPageObj = top.DEF_GVAL_NULL
 		inParam
 	})
 	{
@@ -1232,40 +1226,11 @@ class CLS_WinCtrl {
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
 		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"__sSetCSS" }) ;
 		
-///		let wSubRes, wMessage, wPageInfo, wTitle ;
 		let wSubRes, wMessage, wTitle ;
 		
-///		/////////////////////////////
-///		// ページ情報の取得
-///		wSubRes = CLS_PageObj.sGetPageInfo({
-///			inPageObj
-///			inPageObj : inParam.PageObj
-///		}) ;
-///		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///			return wRes ;
-///		}
-///		//wSubRes['Responce'] = {
-///		//	"Title"		: top.DEF_GVAL_NULL,
-///		//	"Height"	: top.DEF_GVAL_NULL,
-///		//	"Width"		: top.DEF_GVAL_NULL,
-///		//	
-///		//	"Url"		: top.DEF_GVAL_NULL,
-///		//	"Protocol"	: top.DEF_GVAL_NULL,
-///		//	"Host"		: top.DEF_GVAL_NULL,
-///		//	"Pathname"	: top.DEF_GVAL_NULL,
-///		//	"Hash"		: top.DEF_GVAL_NULL,
-///		//	"Port"		: top.DEF_GVAL_NULL,
-///		//	"Search"	: top.DEF_GVAL_NULL
-///		wPageInfo = wSubRes['Responce'] ;
-///		
 		/////////////////////////////
 		// タイトルの翻訳
 		wSubRes = this.sTransTitle({
-///			inTitle	: wPageInfo['Title'],
 			inTitle	: top.gSTR_PageInfo.Title,
 			inTrans : inParam.TransInfo.FLG_Trans,
 			inLang	: inParam.TransInfo.Lang
@@ -1284,59 +1249,52 @@ class CLS_WinCtrl {
 		/////////////////////////////
 		// タイトルの設定（上）
 		wSubRes = CLS_PageObj.sSetInner({
-///			inPageObj	: inPageObj,
 			inPageObj	: inParam.PageObj,
 			inKey		: top.DEF_GVAL_IDX_TITLE_UP,
-///			inCode		: wPageInfo['Title']
 			inCode		: wTitle
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///タイトルがない場合、正常で終わる
-///			//失敗
-///			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Up Title)" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
 			if( top.DEF_INDEX_TEST==true )
 			{
 				wMessage = "Unset Up Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			}
-///			
-///			/////////////////////////////
-///			// 正常
-///			wRes['Result']   = true ;
-///			return wRes ;
 		}
 		
 		/////////////////////////////
 		// タイトルの設定（下）
 		wSubRes = CLS_PageObj.sSetInner({
-///			inPageObj	: inPageObj,
 			inPageObj	: inParam.PageObj,
 			inKey		: top.DEF_GVAL_IDX_TITLE_DW,
-///			inCode		: wPageInfo['Title']
 			inCode		: wTitle
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///タイトルがない場合、正常で終わる
-///			//失敗
-///			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Down Title)" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
 			if( top.DEF_INDEX_TEST==true )
 			{
 				wMessage = "Unset Down Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			}
-///			
-///			/////////////////////////////
-///			// 正常
-///			wRes['Result']   = true ;
-///			return wRes ;
 		}
 		
 		/////////////////////////////
 		// タイトルの設定（メインタイトル）
+		
+		//### 翻訳の右側のみ設定する
+		wSubRes = CLS_OSIF.sSplit({
+			inString  : wTitle,
+			inPattern : " - "
+		}) ;
+		if(( wSubRes['Result']==true ) && ( wSubRes['Length']==2 ))
+		{
+			//### 無時分解できたら、右側のみをタイトルに設定する
+			wTitle = wSubRes['Data'][1] ;
+		}
+		
+		//### タイトル設定
 		wSubRes = CLS_PageObj.sSetInner({
 			inPageObj	: inParam.PageObj,
 			inKey		: top.DEF_GVAL_IDX_TITLE_MAIN,
@@ -1355,7 +1313,6 @@ class CLS_WinCtrl {
 		/////////////////////////////
 		// タイトル変更（翻訳対応）
 		wSubRes = CLS_PageObj.sSetPageTitle({
-///			inPageObj	: inPageObj,
 			inPageObj	: inParam.PageObj,
 			inCode		: wTitle
 		}) ;
@@ -1366,10 +1323,6 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// ページ情報変更
-///		top.gSTR_PageInfo.Title = wTitle ;
-///		
 		//### コンソール表示
 		wMessage = "Set Titles: title" + wTitle ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -1409,9 +1362,6 @@ class CLS_WinCtrl {
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///切替スイッチがない場合、正常で終わる
-///				//失敗
-///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(1)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
 				if( top.DEF_INDEX_TEST==true )
 				{
@@ -1443,9 +1393,6 @@ class CLS_WinCtrl {
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///切替スイッチがない場合、正常で終わる
-///				//失敗
-///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(2-1)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
 				if( top.DEF_INDEX_TEST==true )
 				{
@@ -1504,9 +1451,6 @@ class CLS_WinCtrl {
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///切替スイッチがない場合、正常で終わる
-///				//失敗
-///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(3-1)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
 				if( top.DEF_INDEX_TEST==true )
 				{
@@ -1564,9 +1508,6 @@ class CLS_WinCtrl {
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///切替スイッチがない場合、正常で終わる
-///				//失敗
-///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(4-1)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
 				if( top.DEF_INDEX_TEST==true )
 				{
@@ -1685,7 +1626,6 @@ class CLS_WinCtrl {
 //#####################################################
 //# 設定完了待ち
 //#####################################################
-///	static sStby()
 	static sStby({
 		inSTR_Info = {}
 	})
@@ -1700,7 +1640,8 @@ class CLS_WinCtrl {
 		
 		/////////////////////////////
 		// フレームロード情報の初期化
-		top.gSTR_WinCtrlInfo.IFrameLoad = {} ;
+		top.gSTR_WinCtrlInfo.IFrameInfo.Status	 = top.DEF_GVAL_WINCTRL_IFSTAT_IDLE ;
+		top.gSTR_WinCtrlInfo.IFrameInfo.ARR_Load = {} ;
 		
 		/////////////////////////////
 		// 入力チェック(1)
@@ -1751,13 +1692,13 @@ class CLS_WinCtrl {
 			   ( top.gARR_FrameCtrlInfo[wFrameID].FLG_Popup==false ) &&
 			   ( inSTR_Info[wFrameID]['Open']==true ))
 			{
-				top.gSTR_WinCtrlInfo.IFrameLoad[wFrameID] = false ;
+				top.gSTR_WinCtrlInfo.IFrameInfo.ARR_Load[wFrameID] = false ;
 			}
 		}
 		
 		/////////////////////////////
 		// 自動オープン
-		for( wFrameID in top.gSTR_WinCtrlInfo.IFrameLoad )
+		for( wFrameID in top.gSTR_WinCtrlInfo.IFrameInfo.ARR_Load )
 		{
 			//### フレームオープン
 			wSubRes = CLS_FrameCtrl.sOpen({
@@ -1774,7 +1715,7 @@ class CLS_WinCtrl {
 		
 		/////////////////////////////
 		// 自動オープン中のインラインフレームがない場合、終わる
-		if( CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_WinCtrlInfo.IFrameLoad })<=0 )
+		if( CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_WinCtrlInfo.IFrameInfo.ARR_Load })<=0 )
 		{
 			//### コンソール表示
 			if( top.DEF_INDEX_TEST==true )
@@ -1812,6 +1753,10 @@ class CLS_WinCtrl {
 			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
+		
+		/////////////////////////////
+		// フレームロード待ちの設定
+		top.gSTR_WinCtrlInfo.IFrameInfo.Status	 = top.DEF_GVAL_WINCTRL_IFSTAT_MAIN ;
 		
 		/////////////////////////////
 		// タイマ起動
@@ -1888,7 +1833,7 @@ class CLS_WinCtrl {
 		
 		/////////////////////////////
 		// インラインフレーム ロードフラグON
-		top.gSTR_WinCtrlInfo.IFrameLoad[inFrameID] = true ;
+		top.gSTR_WinCtrlInfo.IFrameInfo.ARR_Load[inFrameID] = true ;
 		
 		//### コンソール表示
 		if( top.DEF_INDEX_TEST==true )
@@ -1900,9 +1845,9 @@ class CLS_WinCtrl {
 		wFLG_Comp = true ;
 		/////////////////////////////
 		// 全インラインフレーム ロード完了か
-		for( wKey in top.gSTR_WinCtrlInfo.IFrameLoad )
+		for( wKey in top.gSTR_WinCtrlInfo.IFrameInfo.ARR_Load )
 		{
-			if( top.gSTR_WinCtrlInfo.IFrameLoad[wKey]==false )
+			if( top.gSTR_WinCtrlInfo.IFrameInfo.ARR_Load[wKey]==false )
 			{
 				wFLG_Comp = false ;
 				break ;
@@ -1930,10 +1875,6 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// 全インラインフレーム ロード完了の場青、
-///		// 完了ハンドラを呼ぶ
-///		__handle_PageLoad_Complete() ;
 		/////////////////////////////
 		// 全インラインフレーム ロード完了の場青、
 		// 設定完了待ち後 実行プロセス（コールバック）を呼ぶ
@@ -2222,74 +2163,6 @@ class CLS_WinCtrl {
 
 
 
-/////#####################################################
-/////# ページタイトル変更
-/////#####################################################
-///	static sChgTitle({
-///		inPageObj,
-///		inTitle = top.DEF_GVAL_NULL,
-///		inTrans = false,
-///		inLang  = top.DEF_GVAL_TRANSRATE_SELECT
-///	})
-///	{
-///		//###########################
-///		//# 応答形式の取得
-///		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-///		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sChgTitle" }) ;
-///		
-///		let wSubRes, wTitle ;
-///		
-///		/////////////////////////////
-///		// タイトルの翻訳
-///		wSubRes = this.sTransTitle({
-///			inTitle	: inTitle,
-///			inTrans : inTrans,
-///			inLang	: inLang
-///		})
-///		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "sTransTitle is failed" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///			wTitle = inTitle ;
-///		}
-///		else
-///		{///成功
-///			wTitle = wSubRes['Responce'] ;
-///		}
-///		
-///		/////////////////////////////
-///		// ページタイトル設定
-///		wSubRes = CLS_PageObj.sSetPageTitle({
-//////			inPageObj	: top.gSTR_WinCtrlInfo.PageObj,
-//////			inCode		: inTitle
-///			inPageObj	: inPageObj,
-///			inCode		: wTitle
-///		}) ;
-///		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "CLS_PageObj.sSetPageTitle is failed" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///			return wRes ;
-///		}
-///		
-///		/////////////////////////////
-///		// ページ情報変更
-///		top.gSTR_PageInfo.Title = wTitle ;
-///		
-///		//### コンソール表示
-///		let wMessage = "Change page title: page title=" + String(inTitle) ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
-///		
-///		/////////////////////////////
-///		// 正常
-///		wRes['Result'] = true ;
-///		return wRes ;
-///	}
-///
-///
-
 //#####################################################
 //# ページタイトル翻訳
 //#####################################################
@@ -2331,10 +2204,6 @@ class CLS_WinCtrl {
 			{///失敗
 				wRes['Reason'] = "CLS_OSIF.sSplit is failed(1): inTitle=" + inTitle ;
 				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///				
-///				/////////////////////////////
-///				// 正常
-///				wRes['Result'] = true ;
 				return wRes ;
 			}
 			wARR_Title = wSubRes['Data'] ;
@@ -2351,10 +2220,6 @@ class CLS_WinCtrl {
 			{///失敗
 				wRes['Reason'] = "CLS_OSIF.sSplit is failed(2): inTitle=" + inTitle ;
 				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///				
-///				/////////////////////////////
-///				// 正常
-///				wRes['Result'] = true ;
 				return wRes ;
 			}
 			wARR_Title = wSubRes['Data'] ;
@@ -2372,10 +2237,6 @@ class CLS_WinCtrl {
 				{///失敗
 					wRes['Reason'] = "CLS_OSIF.sSplit is failed(3): inTitle=" + inTitle ;
 					CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///					
-///					/////////////////////////////
-///					// 正常
-///					wRes['Result'] = true ;
 					return wRes ;
 				}
 				wARR_Lang = wSubRes['Data'] ;
@@ -2404,10 +2265,6 @@ class CLS_WinCtrl {
 			{///言語が見つからない
 				wRes['Reason'] = "Title is not lang: inTitle=" + inTitle 
 				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-///				
-///				/////////////////////////////
-///				// 正常
-///				wRes['Result'] = true ;
 				return wRes ;
 			}
 		}
@@ -2665,10 +2522,6 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-///		/////////////////////////////
-///		// 強制コンソール表示
-///		CLS_L.sV() ;
-///		
 		/////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
@@ -2729,7 +2582,8 @@ class CLS_WinCtrl {
 			wEng = String(wKey) ;
 			if( inLang==wEng )
 			{///表示
-				wText = "block" ;
+///				wText = "block" ;
+				wText = "inline" ;
 			}
 			else
 			{///非表示

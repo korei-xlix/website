@@ -260,18 +260,6 @@ class CLS_Sys {
 				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
-///			
-///			//### タイマ起動
-///			wSubRes = CLS_Timer.sStart({
-///				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER
-///			}) ;
-///			if( wSubRes['Result']!=true )
-///			{///失敗
-///				wRes['Reason'] = "CLS_Timer.sStart is failed(4-3)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
 			if( top.gSTR_SystemCircle.FLG_UseCircle==true )
 			{
 				//### 周期処理タイマ設定
@@ -289,17 +277,6 @@ class CLS_Sys {
 					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
-///				
-///				//### タイマ起動
-///				wSubRes = CLS_Timer.sStart({
-///					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE
-///				}) ;
-///				if( wSubRes['Result']!=true )
-///				{///失敗
-///					wRes['Reason'] = "CLS_Timer.sStart is failed(4-4)" ;
-///					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///					return wRes ;
-///				}
 			}
 		}
 		
@@ -319,7 +296,6 @@ class CLS_Sys {
 //#####################################################
 //# システム開始
 //#####################################################
-///	static sSysRestart()
 	static sStart()
 	{
 		//###########################
@@ -589,8 +565,8 @@ class CLS_Sys {
 		
 		/////////////////////////////
 		// 入力チェック
-		wSubRes = CLS_OSIF.sGetInObject({
-			inObject	: top.DEF_GVAL_SYS_STAT,
+		wSubRes = CLS_OSIF.sGetInArray({
+			inObject	: top.DEF_GVAL_ARR_SYS_STAT,
 			inKey		: inStatus
 		}) ;
 		if( wSubRes!=true )
