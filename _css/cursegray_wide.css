@@ -1,0 +1,745 @@
+/* *****************************************************
+ ::Project  : web page
+ ::Admin    : Korei (@korei-xlix)
+ ::github   : https://github.com/korei-xlix/galaxyfleet/
+ ::Style    : Curse Gray - Wide
+***************************************************** */
+
+/* margin / padding
+	1px             = ALL
+	1px 1px         = UP.Down / Left.Right
+	1px 1px 1px     = UP / Left.Right / Down
+	1px 1px 1px 1px = UP / Right / Down / Left
+	*/
+
+/* =====================================================
+   Profile
+===================================================== */
+
+#Profile{
+border				: 0px !important;
+background-color	: transparent !important;
+}
+#Profile tr{
+border				: 0px !important;
+}
+
+#Profile  td{
+border				: 0px !important;
+padding-top			: 8px;
+padding-left		: 10px;
+white-space			: normal !important;
+}
+
+#Profile a.Icon{
+color				: transparent !important;
+background-color	: transparent !important;
+display				: block ;
+text-decoration		: none;
+}
+
+#Profile  div.Caution{
+color				: #ff0000;
+border-bottom		: 1px solid #ff0000;
+font-weight			: bold;
+margin				: 8px 0px;
+padding				: 0px;
+}
+
+#Profile img.AccountIcon{
+border				: 4px solid #8f0000;
+}
+
+
+
+
+/* =====================================================
+   Profile Index
+===================================================== */
+
+#ProfileIndex{
+border				: 0px !important;
+background-color	: transparent !important;
+}
+#ProfileIndex tr{
+border				: 0px !important;
+}
+
+#ProfileIndex  td{
+border				: 0px !important;
+padding-top			: 8px;
+padding-left		: 10px;
+white-space			: normal !important;
+}
+
+#ProfileIndex a{
+color				: transparent !important;
+background-color	: transparent !important;
+display				: block ;
+text-decoration		: none;
+}
+
+
+
+/* =====================================================
+   Contents Index
+===================================================== */
+
+#ContentsIndex{
+border				: 0px !important;
+background-color	: transparent !important;
+}
+#ContentsIndex tr{
+border				: 0px !important;
+}
+
+#ContentsIndex  td{
+border				: 0px !important;
+padding-top			: 8px;
+padding-left		: 10px;
+white-space			: normal !important;
+}
+
+#ContentsIndex .Link{
+margin				: 4px 0px;
+}
+
+#ContentsIndex .Text{
+margin				: 0px 0px 4px 12px;
+
+}
+
+#ContentsIndex a{
+font-size			: 20px;
+font-weight			: bolder;
+/*
+color				: transparent !important;
+background-color	: transparent !important;
+display				: block ;
+text-decoration		: none; */
+}
+
+
+
+/* =====================================================
+   Address
+===================================================== */
+
+#Address{
+border				: solid 1px #a0a0FF;
+background-color	: #a0a0FF;
+}
+#Address tr{
+border				: solid 1px #a0a0FF;
+}
+
+#Address  td{
+border				: solid 1px #a0a0FF;
+padding-top			: 8px;
+padding-left		: 10px;
+}
+
+#Address a{
+color				: transparent !important;
+background-color	: transparent !important;
+display				: block ;
+text-decoration		: none;
+}
+
+#Address div.Address{
+color				: #ffffff;
+background-color	: #8080ff;
+margin				: 4px 32px 8px 0px;
+padding				: 2px;
+text-decoration		: underline;
+}
+
+
+
+/* =====================================================
+   Thanks
+===================================================== */
+
+#Thanks{
+border				: solid 1px #a0a0FF;
+background-color	: #a0a0FF;
+}
+#Thanks tr{
+border				: solid 1px #a0a0FF;
+}
+
+#Thanks  td{
+border				: solid 1px #a0a0FF;
+padding-top			: 8px;
+padding-left		: 10px;
+}
+
+#Thanks a{
+padding				: 2px;
+display				: block ;
+}
+
+#Thanks div.Text{
+margin				: 4px 32px 8px 0px;
+padding				: 2px;
+}
+
+
+
+/* =====================================================
+   Site Link
+===================================================== */
+
+#SiteLink span.LinkURL{
+color				: #3333FF;
+background-color	: #eeeeFF;
+font-weight			: bolder;
+text-decoration		: underline;
+}
+
+
+
+/* =====================================================
+   Page Title
+===================================================== */
+
+#com_PageTitle div.com_TitleImage{
+background-image	: url(../_pic/title/koreilabo_title.png);
+width				: 800px;
+height				: 380px;
+}
+
+#com_PageTitle div.com_TitleText{
+color				: #999999;
+background-color	: transparent;
+/*	font-size			: 32px !important;	*/
+/*	line-height			: 40px !important;	*/
+}
+
+div.com_MobileCaution{
+background-color	: red;
+}
+
+
+
+/* =====================================================
+   Inline Frame
+===================================================== */
+
+iframe.com_Frame-sample1{
+height				: 100px;
+}
+
+
+
+/* =====================================================
+   Body
+===================================================== */
+
+/*
+body{
+background-color	: #DDDDDD;
+}
+
+#com_bodyOutline{
+background-color	: #DDDDDD;
+}
+*/
+
+#com_bodyInline{
+color				: #000000;
+background-color	: #FFFFFF;
+}
+
+
+
+/* =====================================================
+   Header
+===================================================== */
+
+header{
+background-color	: #a9a9a9;
+border-top			: solid 12px #444444;
+border-bottom		: solid 12px #444444;
+}
+
+header span.com_Menu_Select{
+color				: #000000;
+background-color	: #E6E6FA;
+}
+
+header a.com_Menu_Cel{
+color				: #FFFFFF;
+background-color	: #666666;
+
+}
+
+header a.com_Menu_Cel:hover{
+color				: #330033;
+background-color	: #ffccff;
+}
+
+header div.com_CSS_Menu{
+color				: #FFFFFF;
+}
+
+header a.com_CSS_Mode{
+color				: #FFFFFF;
+background-color	: #660066;
+}
+
+header a.com_CSS_Mode:hover{
+color				: #ff6666;
+background-color	: #ffccff;
+}
+
+
+
+/* =====================================================
+   Footter
+===================================================== */
+
+footer{
+background-color	: #a9a9a9;
+border-top			: solid 12px #444444;
+border-bottom		: solid 12px #444444;
+}
+
+footer div.com_Menu_Description{
+color				: #EEFFFF;
+}
+
+footer a.com_Menu_Cel{
+color				: #FFFFFF;
+background-color	: #666666;
+}
+
+footer a.com_Menu_Cel:hover{
+color				: #330033;
+background-color	: #ffccff;
+}
+
+
+
+/* =====================================================
+   CopyrightHeader
+===================================================== */
+
+#com_CopyrightHeader{
+color				: #000000;
+background-color	: #FFFFFF;
+}
+
+
+
+/* =====================================================
+   CopyrightFooter
+===================================================== */
+
+#com_CopyrightFooter{
+color				: #000000;
+background-color	: #FFFFFF;
+}
+
+/* *** Yellow / Therms ***/
+#com_CopyrightFooter div.com_Menu_Rule, #com_CopyrightFooter a.com_Menu_Rule{
+color				: #F00000;
+background-color	: #FFFF00;
+}
+#com_CopyrightFooter div.com_Menu_Rule:hover, #com_CopyrightFooter a.com_Menu_Rule:hover{
+color				: #F00000;
+background-color	: #FFD5EC;
+}
+
+/* *** Orange / Update ***/
+#com_CopyrightFooter div.com_Menu_Update, #com_CopyrightFooter a.com_Menu_Update{
+color				: #FFFFFF;
+background-color	: #ee802f;
+}
+#com_CopyrightFooter div.com_Menu_Update:hover, #com_CopyrightFooter a.com_Menu_Update:hover{
+color				: #59270D;
+background-color	: #FFFF99;
+}
+
+/* *** Dark Blue / Mentenance ***/
+#com_CopyrightFooter div.com_Menu_Mente, #com_CopyrightFooter a.com_Menu_Mente{
+color				: #FFFFFF;
+background-color	: #999900;
+}
+#com_CopyrightFooter div.com_Menu_Mente:hover, #com_CopyrightFooter a.com_Menu_Mente:hover{
+color				: #59270D;
+background-color	: #FFFF99;
+}
+
+/* *** Green / Information ***/
+#com_CopyrightFooter div.com_Menu_Info, #com_CopyrightFooter a.com_Menu_Info{
+color				: #FFFFFF;
+background-color	: #008000;
+}
+#com_CopyrightFooter div.com_Menu_Info:hover, #com_CopyrightFooter a.com_Menu_Info:hover{
+color				: #006633;
+background-color	: #CCFF99;
+}
+
+/* *** Dark green / Documents ***/
+#com_CopyrightFooter div.com_Menu_Doc, #com_CopyrightFooter a.com_Menu_Doc{
+color				: #FFFFFF;
+background-color	: #003300;
+}
+#com_CopyrightFooter div.com_Menu_Doc:hover, #com_CopyrightFooter a.com_Menu_Doc:hover{
+color				: #003300;
+background-color	: #00DD00;
+}
+
+/* *** Blue / Index ***/
+#com_CopyrightFooter div.com_Menu_Index, #com_CopyrightFooter a.com_Menu_Index{
+color				: #FFFFFF;
+background-color	: #0000FF;
+}
+#com_CopyrightFooter div.com_Menu_Index:hover, #com_CopyrightFooter a.com_Menu_Index:hover{
+color				: #3333FF;
+background-color	: #CCFFFF;
+}
+
+/* *** Pink / Acknowrage ***/
+#com_CopyrightFooter div.com_Menu_Acknow, #com_CopyrightFooter a.com_Menu_Acknow{
+color				: #FFFFFF;
+background-color	: #FF55FF;
+}
+#com_CopyrightFooter div.com_Menu_Acknow:hover, #com_CopyrightFooter a.com_Menu_Acknow:hover{
+color				: #FFFFFF;
+background-color	: #F00000;
+}
+
+/* *** Purple / How to Use ***/
+#com_CopyrightFooter div.com_Menu_Howto, #com_CopyrightFooter a.com_Menu_Howto{
+color				: #FFFFFF;
+background-color	: #6927FF;
+}
+#com_CopyrightFooter div.com_Menu_Howto:hover, #com_CopyrightFooter a.com_Menu_Howto:hover{
+color				: #FFFFFF;
+background-color	: #CC99FF;
+/*background-color	: #660066;*/
+}
+
+/* *** Red / Youyube ***/
+#com_CopyrightFooter div.com_Menu_Youtube, #com_CopyrightFooter a.com_Menu_Youtube{
+color				: #FFFFFF;
+background-color	: #EF180F;
+}
+#com_CopyrightFooter div.com_Menu_Youtube:hover, #com_CopyrightFooter a.com_Menu_Youtube:hover{
+color				: #FFFFFF;
+background-color	: #010101;
+}
+
+/* *** Purple / Github ***/
+#com_CopyrightFooter div.com_Menu_Github, #com_CopyrightFooter a.com_Menu_Github{
+color				: #FFFFFF;
+background-color	: #B064C6;
+}
+#com_CopyrightFooter div.com_Menu_Github:hover, #com_CopyrightFooter a.com_Menu_Github:hover{
+color				: #EEEEEE;
+background-color	: #7491FF;
+}
+
+/* *** Black / Warnlist ***/
+#com_CopyrightFooter div.com_Menu_Warnlist, #com_CopyrightFooter a.com_Menu_Warnlist{
+color				: #F00000;
+background-color	: #222222;
+}
+#com_CopyrightFooter div.com_Menu_Warnlist:hover, #com_CopyrightFooter a.com_Menu_Warnlist:hover{
+color				: #F00000;
+background-color	: #FFFFCC;
+}
+
+/* *** Light gray / Contact ***/
+#com_CopyrightFooter div.com_Menu_Contact, #com_CopyrightFooter a.com_Menu_Contact{
+color				: #FFFFFF;
+background-color	: #808080;
+}
+#com_CopyrightFooter div.com_Menu_Contact:hover, #com_CopyrightFooter a.com_Menu_Contact:hover{
+color				: #111111;
+background-color	: #EEEEEE;
+}
+
+/* *** Pink / X :: Public ***/
+#com_CopyrightFooter div.com_Menu_X_Pub, #com_CopyrightFooter a.com_Menu_X_Pub{
+color				: #FFFFFF;
+background-color	: #FF367F;
+}
+#com_CopyrightFooter div.com_Menu_X_Pub:hover, #com_CopyrightFooter a.com_Menu_X_Pub:hover{
+color				: #FFFFFF;
+background-color	: #7491FF;
+}
+
+/* *** Blue / X :: Author ***/
+#com_CopyrightFooter div.com_Menu_X_Auth, #com_CopyrightFooter a.com_Menu_X_Auth{
+color				: #FFFFFF;
+background-color	: #7491FF;
+}
+#com_CopyrightFooter div.com_Menu_X_Auth:hover, #com_CopyrightFooter a.com_Menu_X_Auth:hover{
+color				: #FFFFFF;
+background-color	: #C63735;
+}
+
+/* *** Maroon / X :: Deverop ***/
+#com_CopyrightFooter div.com_Menu_X_Dev, #com_CopyrightFooter a.com_Menu_X_Dev{
+color				: #FFFFFF;
+background-color	: #C63735;
+}
+#com_CopyrightFooter div.com_Menu_X_Dev:hover, #com_CopyrightFooter a.com_Menu_X_Dev:hover{
+color				: #FFFFFF;
+background-color	: #7491FF;
+}
+
+#com_CopyrightFooter a.com_Menu_TwitterFT{
+color				: #0000FF;
+background-color	: #FFFFFF;
+}
+#com_CopyrightFooter a.com_Menu_TwitterFT:hover{
+color				: #FFFFFF;
+background-color	: #0000FF;
+}
+
+
+
+/* =====================================================
+   Description
+===================================================== */
+
+#com_Description{
+color				: #000000;
+background-color	: transparent;
+}
+
+
+
+/* =====================================================
+   Navigation
+===================================================== */
+
+#com_Navigation{
+background-color	: transparent;
+/*
+color				: blue;
+border-bottom		: solid 8px dimgray;
+border-top			: solid 8px dimgray;
+background-color	: cyan;
+*/
+}
+
+#com_Navigation div.com_NavigationTitle{
+color				: #FFFFFF;
+background-color	: #333333;
+}
+
+#com_Navigation a{
+color				: #333333;
+background-color	: transparent;
+}
+
+#com_Navigation a:hover{
+color				: #ffffff;
+background-color	: #666666;
+}
+
+a.com_Nav{
+color				: #333333;
+background-color	: #DDDDDD;
+}
+
+a.com_Nav:hover{
+color				: #330033;
+background-color	: #ffccff;
+}
+
+
+
+/* =====================================================
+   Contents Common
+===================================================== */
+
+.com_ContentsTitle{
+/*
+color				: white;
+background-color	: cornflowerblue;
+*/
+color				: #ffffff;
+background			: #aaaaaa;
+}
+.com_ContentsTitle:before{
+border-bottom		: solid 10px #666666;
+border-right		: solid 20px transparent;
+}
+.com_ContentsTitle:after{
+border-top			: solid 10px #222222;
+border-left			: solid 20px transparent;
+}
+
+.com_ContentsBody{
+color				: #000000;
+background-color	: #FFFFFF;
+}
+
+.com_ContentsTitle_Bunner{
+color				: #FFFFFF;
+}
+.com_ContentsTitle_Bunner:hover{
+color				: #0000FF;
+background			: #FFFFFF;
+}
+
+
+
+/* =====================================================
+   Selector
+===================================================== */
+
+							/* Close */
+input[type="checkbox"].com_ContentsSelector_CBX + .com_ContentsSelector_LAB{
+color				: #FFFFFF;
+background			: #0099FF;
+border				: inset 6px #0066FF;
+}
+
+input[type="checkbox"].com_ContentsSelector_CBX:hover + .com_ContentsSelector_LAB{
+color				: #003333;
+background-color	: #CCFFCC;
+}
+
+							/* Open */
+input[type="checkbox"].com_ContentsSelector_CBX:checked + .com_ContentsSelector_LAB{
+color				: #FFFFFF;
+background-color	: #009900;
+border				: inset 6px #009900;
+}
+
+input[type="checkbox"].com_ContentsSelector_CBX:checked:hover + .com_ContentsSelector_LAB{
+color				: forestgreen;
+background-color	: lawngreen;
+}
+
+							/* Body */
+.com_ContentsSelector_Body{
+color				: #000000;
+background-color	: #FFFFFF;
+border-left			: solid 4px #009900;
+border-right		: solid 4px #009900;
+border-bottom		: solid 4px #009900;
+border-top			: 0px;
+}
+
+
+
+/* =====================================================
+   Anchor
+===================================================== */
+
+a{
+color				: #0000FF;
+background-color	: transparent;
+}
+
+a:hover{
+color				: #FFFFFF;
+background-color	: #0000FF;
+cursor				: pointer;
+/*
+cursor				: default;
+cursor				: move;
+cursor				: crosshair;
+cursor				: wait;
+cursor				: help;
+cursor				: not-allowed;
+cursor				: col-resize;
+cursor				: row-resize;
+*/
+}
+
+
+
+/* =====================================================
+   List Style
+===================================================== */
+
+ul{
+}
+
+ol{
+}
+
+li{
+}
+
+
+
+/* =====================================================
+   h1～h6
+===================================================== */
+
+h1{
+color				: white;
+background-color	: darkblue;
+}
+
+h2{
+color				: white;
+background-color	: blue;
+}
+
+h3{
+color				: black;
+background-color	: cyan;
+}
+
+h4{
+color				: black;
+background-color	: orange;
+}
+
+h5{
+color				: black;
+background-color	: yellow;
+}
+
+h6{
+color				: white;
+background-color	: pink;
+}
+
+
+
+/* =====================================================
+   hr
+===================================================== */
+
+hr{
+border				: 0px;
+background-color	: lightgray;
+}
+
+
+
+/* =====================================================
+   Table
+===================================================== */
+
+table{
+background-color	: dimgray;
+border				: solid 2px dimgray;
+}
+
+th{
+color				: white;
+background-color	: darkgray;
+border				: solid 2px dimgray;
+}
+
+td{
+color				: black;
+background-color	: white;
+border				: solid 2px dimgray;
+}
+
+
+
