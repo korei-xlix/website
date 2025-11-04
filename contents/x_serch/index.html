@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+<meta name="author" content="Korei">
+<meta name="copyright" content="Copyright 2023 Korei's Labo">
+<meta name="generator" content="EmEditor">
+<meta name="robots" content="noindex,nofollow">
+
+<link rel="shortcut icon" type="image/x-icon" id="iIcon" href="#">
+<link rel="stylesheet" type="text/css" id="iCSS_Com" href="#">
+<link rel="stylesheet" type="text/css" id="iCSS_Org" href="#">
+
+<title>X 検索保存</title>
+<meta name="description" content="Xの検索ワードをブラウザストレージに保存します。">
+
+<script src="/_js/com/log.js"></script>
+<script src="/_js/com/pageobj.js"></script>
+<script src="/_js/com/storage.js"></script>
+<script src="/_js/com/systemif.js"></script>
+<script src="/_js/com/file_ctrl.js"></script>
+<script src="/_js/com/osif.js"></script>
+<script src="/_js/com/timer_ctrl.js"></script>
+<script src="/_js/com/sel_ctrl.js"></script>
+<script src="/_js/com/button_ctrl.js"></script>
+<script src="/_js/com/popup_ctrl.js"></script>
+<script src="/_js/com/frame_ctrl.js"></script>
+<script src="/_js/com/window_ctrl.js"></script>
+
+<script src="/_js/x_search/x_search.js"></script>
+<script src="/_js/_handle_x_search.js"></script>
+<script src="/_js/global.js"></script>
+
+</head><body onLoad="__handle_PageLoad()"><div id="com_bodyOutline"><div id="com_bodyInline">
+
+
+
+
+<a name="aTop" class="com_AnchorTag"></a>
+<div id="com_CopyrightHeader">
+	<div class="com_Update">
+
+		<div class="com_Update">
+			<div class="com_UpdateDate" id="iUpdateDate">
+				LAST UPDATE：	2024-06-03
+			</div>
+			<div class="com_UpdateIcon">
+				<img class="com_UpdateIcon_Img" id="iUpdateIcon" src="https://website.koreis-labo.com/_pic/icon/dummy.jpg" alt="更新されてます" />
+			</div>
+			<br class="com_UpdatteEnd" />
+		</div>
+
+		<div class="com_Title" id="iTitleUp">
+		</div>
+
+	</div>
+
+	<div class="com_Corp">
+		Copyright 2023 Korei's Labo<br />
+		<span id="iSystemTD"></span><br />
+	</div>
+
+<br class="com_End" /></div>
+
+
+
+
+
+<header>
+	<div class="com_Menu">
+
+		<a class="com_Menu_Cel" target="_blank" title="Index Page" href="https://website.koreis-labo.com/">
+		[Index]</a>
+
+		<span class="com_Menu_Select">
+		【X検索保存ツール】</span>
+
+	</div>
+
+	<div class="com_CSS_Menu" id="iCSSsw">
+	CSS切替: <select name="selectcss" id="iCSSsw_Style" onchange="__handle_SelectCSS();">
+	<option value="default" selected>Default</option>
+	</select><div class="com_CSS_Menu_Mode" id="iCSSsw_Mode" >
+	<a class="com_CSS_Mode" title="PC CSS切替" href="javascript:__handle_SelectCSS_Mode('PC');">
+	[PC]</a>
+	<a class="com_CSS_Mode" title="Mobile CSS切替" href="javascript:__handle_SelectCSS_Mode('MB');">
+	[Mobile]</a>
+	</div></div>
+
+<br class="com_End" /></header>
+
+
+
+<section id="com_Description_Center">
+このページでは Xの検索ワードをお使いのブラウザストレージに保存します。<br />
+タグの保存や、よく使う検索ワードの保存にお使いください。<br />
+
+</section>
+
+
+
+
+
+<!-- ***項目1 *** -->
+<a name="aSelecttor_1" class="com_AnchorTag"></a>
+<section class="com_ContentsSection">
+	<img class="com_ContentsSelector_Img" alt="dum" src="https://website.koreis-labo.com/_pic/icon/dummy.jpg" onload="__handle_Sel('001')" />
+	<div class="com_ContentsSelector_Title" id="iSelectorTitle-001">▼ 使い方 ▼</div>
+	<input type="checkbox" id="iP-001" class="com_ContentsSelector_CBX">
+	<label class="com_ContentsSelector_LAB" id="iSelectorSet-001" for="iP-001"></label>
+	<div class="com_ContentsSelector_Body">
+
+<ul>
+
+<li>[追加]：テキストに入力したワードがタグが追加されます。<br />
+	ブラウザストレージにも追加します。<br />
+	</li>
+
+<li>[変更]：[選択]で選択したワードをテキストで変更します。<br />
+	</li>
+
+<li>[ # ]：タグの先頭に # をつけます。緑=ON / 青=OFF<br />
+	</li>
+
+<li>カラータグを付けることで表示をグループ化できます。<br />
+	1つのワードに複数のカラータグがつけられます。<br />
+	</li>
+
+<li>[LINK]：X上でワードで検索したリンクに飛びます。<br />
+	</li>
+
+<li>[削]：指定のワードを削除します。<br />
+	ブラウザストレージからも削除します。<br />
+	</li>
+
+<li>同じブラウザであれば、アカウントを切り替えても共用できます。<br />
+	</li>
+
+<li>ブラウザのストレージキャッシュをクリアするとワードも消去されます。<br />
+	（これはブラウザの仕様です）<br />
+	</li>
+
+<li>別ブラウザや別スマホでは共用できません。<br />
+	また、当方のサーバにデータは保尊しません。（データ収集も行ってません）<br />
+	</li>
+
+</ul>
+
+
+<div class="com_Nav"><a class="com_Nav" href="#aTop">[RETURN]</a></div>
+</div>
+</section>
+
+
+
+
+
+<!-- ***項目1 *** -->
+<a name="aSelecttor_2" class="com_AnchorTag"></a>
+<section class="com_ContentsSection">
+	<img class="com_ContentsSelector_Img" alt="dum" src="https://website.koreis-labo.com/_pic/icon/dummy.jpg" onload="__handle_Sel('002')" />
+	<div class="com_ContentsSelector_Title" id="iSelectorTitle-002">▼ X 検索ワード 設定 ▼</div>
+	<input type="checkbox" id="iP-002" class="com_ContentsSelector_CBX">
+	<label class="com_ContentsSelector_LAB" id="iSelectorSet-002" for="iP-002"></label>
+	<div class="com_ContentsSelector_Body">
+
+	<div id="iSearchList_Header">
+		<input class="xsearch_BTN" type="button" id="iBTN_SON" value=" # " onclick="__handle_Button_On()" />
+		<input type="text" id="iInputWord" size="20" onchange="__handle_TextChange()" />　
+		<input class="xsearch_BTN" type="button" id="iBTN_Push" value="追加" onclick="__handle_Button_Pull()" />
+		<input class="xsearch_BTN" type="button" id="iBTN_Edit" value="変更" onclick="__handle_Button_Edit()" />
+		<!-- <input class="xsearch_BTN" type="button" value="TEST" onclick="__handle_Button_Test()" /> -->
+	</div>
+
+	<div id="iSearchTags"></div>
+
+	<form name="aXSearchOpt"><!-- X検索オプション -->
+
+	<p>
+		<label for="aTEXT_ListID">リストID</label>
+		<input type="checkbox" name="aCBX_ListID" id="iCBX_ListID" onclick="__handle_Valid_ListID()" />
+		<input type="text" name="aTEXT_ListID" id="iTEXT_ListID" onchange="__handle_TextChange()" disabled />
+	</p>
+
+	<p>
+		<label for="aDATE_Since">指定日から現在までのポスト：</label>
+		<input type="checkbox" name="aCBX_Since" id="iCBX_Since" onclick="__handle_Valid_Date('since')" />
+		<input type="date" name="aDATE_Since" id="iDATE_Since" disabled />
+	</p>
+
+	<p>
+		<label for="aDATE_Until">過去から指定日までのポスト：</label>
+		<input type="checkbox" name="aCBX_Until" id="iCBX_Until" onclick="__handle_Valid_Date('until')" />
+		<input type="date" name="aDATE_Until" id="iDATE_Until" disabled />
+	</p>
+
+	<p>
+		<label for="aRAD_Rep">リプライ：</label>
+		<input type="radio" name="aRAD_Rep" id="iRAD_Rep_NON" value="無条件"/>
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Rep" id="iRAD_Rep_EXC" value="含めない" checked  />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_Image">画像　：</label>
+		<input type="radio" name="aRAD_Image" id="iRAD_Image_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Image" id="iRAD_Image_INC" value="含める" />
+		<label>含める</label>
+		<input type="radio" name="aRAD_Image" id="iRAD_Image_EXC" value="含めない" />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_Video">動画　：</label>
+		<input type="radio" name="aRAD_Video" id="iRAD_Video_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Video" id="iRAD_Video_INC" value="含める" />
+		<label>含める</label>
+		<input type="radio" name="aRAD_Video" id="iRAD_Video_EXC" value="含めない" />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_Link">リンク：</label>
+		<input type="radio" name="aRAD_Link" id="iRAD_Link_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Link" id="iRAD_Link_INC" value="含める" />
+		<label>含める</label>
+		<input type="radio" name="aRAD_Link" id="iRAD_Link_EXC" value="含めない" />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_Safe">センシティブ：</label>
+		<input type="radio" name="aRAD_Safe" id="iRAD_Safe_NON" value="無条件" checked />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_Safe" id="iRAD_Safe_INC" value="含める" />
+		<label>含める</label>
+		<input type="radio" name="aRAD_Safe" id="iRAD_Safe_EXC" value="含めない" />
+		<label>含めない</label>
+	</p>
+
+	<p>
+		<label for="aRAD_JP">日本語のみ：</label>
+		<input type="radio" name="aRAD_JP" id="iRAD_JP_NON" value="無条件" />
+		<label>無条件</label>
+		<input type="radio" name="aRAD_JP" id="iRAD_JP_INC" value="含める" checked />
+		<label>含める</label>
+	</p>
+
+	</form>
+
+	</div>
+<!-- <div class="com_Nav"><a class="com_Nav" href="#aTop">[RETURN]</a></div> -->
+</section>
+
+
+
+
+
+<a name="aMain" class="com_AnchorTag"></a>
+<main class="com_ContentsSection">
+	<div class="com_ContentsTitle">検索ワード データ</div>
+	<div class="com_ContentsBody">
+
+	<div id="iSearchCelTag"></div>
+
+	<div id="iSearchList"></div>
+
+	</div>
+
+<div class="com_Nav"><a class="com_Nav" href="#aTop">[RETURN]</a></div>
+</main>
+
+
+
+
+
+<a name="aBottom" class="com_AnchorTag"></a>
+<footer>
+　
+</footer>
+
+
+
+
+
+<div id="com_CopyrightFooter">
+
+	<div class="com_Menu">
+
+		<div class="com_Title" id="iTitleDw">
+		</div>
+
+		<div class="com_Menu_Buttons">
+
+			<div class="com_Menu_Cel com_Menu_Index"><a class="com_Menu_Cel com_Menu_Index"  target="_blank" title="サイトTOP (Site Index)" href="https://website.koreis-labo.com/">
+			INDEX</a></div>
+
+			<div class="com_Menu_Cel com_Menu_Rule"><a class="com_Menu_Cel com_Menu_Rule" target="_blank" title="利用規約 (Therms)" href="https://website.koreis-labo.com/rules/rule_web.htm">
+			THERMS</a></div>
+
+			<div class="com_Menu_Cel com_Menu_Contact"><a class="com_Menu_Cel com_Menu_Contact"  target="_blank" title="連絡先（Contact）" href="https://website.koreis-labo.com/rules/contact.htm">
+			CONTACT</a></div>
+
+			<div class="com_Menu_Cel com_Menu_X_Auth"><a class="com_Menu_Cel com_Menu_X_Auth"  target="_blank" title="for Author X" href="https://website.koreis-labo.com/profile/korei_xlix.htm">
+			AUTHOR</a></div>
+
+			<br class="com_Menu_End" />
+
+		</div>
+
+		<div class="com_Menu_TwitterFT">
+			<address>X(auther): 
+			<a class="com_Menu_TwitterFT" target="_blank" title="for X" href="https://x.com/korei_xlix">
+			korei_xlix@twitter.com</a></address>
+		</div>
+
+	</div>
+
+	<div class="com_Corp">
+		Copyright 2023 Korei's Labo<br />
+	</div>
+
+<br class="com_End" /></div>
+
+
+
+
+
+</div></div></body></html>

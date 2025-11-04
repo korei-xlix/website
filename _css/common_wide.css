@@ -1,0 +1,1174 @@
+/* *****************************************************
+ ::Project  : web page
+ ::Admin    : Korei (@korei-xlix)
+ ::github   : https://github.com/korei-xlix/galaxyfleet/
+ ::Style    : Common Style - Wide
+***************************************************** */
+
+/* margin / padding
+	1px             = ALL
+	1px 1px         = UP.Down / Left.Right
+	1px 1px 1px     = UP / Left.Right / Down
+	1px 1px 1px 1px = UP / Right / Down / Left
+	*/
+
+/* =====================================================
+   Font
+===================================================== */
+
+/*** color ***/
+span.com_FontColorRed{
+color				: #ff0000;
+}
+span.com_FontColorBlue{
+color				: #0000ff;
+}
+span.com_FontColorGreen{
+color				: #00ff00;
+}
+span.com_FontColorBlack{
+color				: #000000;
+}
+
+/*** mark color ***/
+span.com_FontMarkRed{
+color				: #ff0000;
+font-weight			: bold;
+text-decoration		: underline;
+}
+span.com_FontMarkBlue{
+color				: #0000ff;
+font-weight			: bold;
+text-decoration		: underline;
+}
+span.com_FontMarkGreen{
+color				: #00ff00;
+font-weight			: bold;
+text-decoration		: underline;
+}
+span.com_FontMarkBlack{
+color				: #000000;
+font-weight			: bold;
+text-decoration		: underline;
+}
+
+/*** font ***/
+span.com_FontBold{
+font-weight			: bold;
+}
+span.com_FontUnderline{
+text-decoration		: underline;
+}
+span.com_FontItalic{
+font-style			: italic;
+}
+span.com_FontMark{
+font-weight			: bold;
+text-decoration		: underline;
+}
+
+
+
+/* =====================================================
+   Page Title
+===================================================== */
+
+#com_PageTitle{
+margin				: 0px auto 32px;
+padding				: 0px;
+}
+
+#com_PageTitle div.com_TitleImage{
+margin				: 0px auto;
+padding				: 0px;
+}
+
+#com_PageTitle div.com_TitleText{
+font-size			: 32px;
+font-weight			: bolder;
+margin				: 0px auto;
+padding				: 8px 0px;
+line-height			: 40px;
+text-align			: center;
+}
+
+#com_TitleSub{
+display				: none;
+}
+
+
+
+/* =====================================================
+   Inline Frame
+===================================================== */
+
+iframe{
+width				: 100%;
+height				: 100%;
+margin				: 0px;
+padding				: 0px;
+overflow			: hidden;
+}
+
+
+
+/* =====================================================
+   Body
+===================================================== */
+
+.com_MobileCaution{
+display				: none;
+}
+
+.com_NonMobileOpen{
+display				: block;
+}
+
+body{
+margin				: 0px;
+padding				: 0px;
+}
+
+#com_bodyOutline{
+width				: auto;
+margin				: 0px;
+padding				: 8px;
+}
+
+#com_bodyInline{
+margin				: 0px;
+padding				: 2px;
+}
+
+
+
+/* =====================================================
+   Header
+===================================================== */
+
+header{
+margin				: 8px 0px 32px;
+padding				: 2px;
+}
+
+header div.com_Menu{
+margin				: 0px;
+padding				: 8px;
+float				: left;
+}
+
+header div.com_CSS_Menu{
+font-size			: 12px;
+font-weight			:bold;
+margin				: 0px;
+padding				: 2px 2px 8px;
+text-align			: right;
+float				: right;
+}
+
+header div.com_CSS_Menu_Mode{
+font-size			: 9px;
+margin				: 0px;
+padding				: 0px;
+}
+
+header br.com_End{
+clear				: both;
+}
+
+header select{
+font-size			: 12px;
+font-weight			:bold;
+margin				: 0px 0px 8px;
+}
+
+header a.com_Menu_Cel, header span.com_Menu_Select{
+font-size			: 14px;
+font-weight			: bold;
+text-decoration		: none;
+padding				: 4px;
+border-radius		: 8px;
+}
+
+header a.com_CSS_Mode{
+text-decoration		: none;
+padding				: 2px;
+border-radius		: 4px;
+}
+
+
+
+/* =====================================================
+   Footter
+===================================================== */
+
+footer{
+margin				: 64px 0px 8px;
+padding				: 2px;
+}
+
+footer div.com_Menu_Description{
+font-size			: 12px;
+font-weight			: bold;
+margin				: 4px 0px 4px 24px;
+padding				: 0px;
+}
+
+footer div.com_Menu{
+margin				: 0px 0px 8px 36px;
+padding				: 0px;
+}
+
+footer a.com_Menu_Cel{
+font-size			: 10px;
+font-weight			: bold;
+text-decoration		: none;
+padding				: 4px;
+border-radius		: 6px;
+}
+
+
+
+/* =====================================================
+   CopyrightHeader
+===================================================== */
+
+#com_CopyrightHeader{
+font-size			: 9pt;
+font-weight			: bold;
+margin				: 0px;
+padding				: 0px;
+}
+
+#com_CopyrightHeader div.com_Update{
+margin				: 4px 8px 0px 8px;
+padding				: 0px;
+float				:left;
+text-align			:left;
+}
+
+#com_CopyrightHeader div.com_Corp{
+margin				: 4px 8px 0px 8px;
+padding				: 0px;
+float				:right;
+text-align			:right;
+}
+
+#com_CopyrightHeader br.com_End{
+clear				: both;
+}
+
+#com_CopyrightHeader div.com_Update{
+margin				: 0px 0px 4px;
+padding				: 0px;
+text-align			:left;
+}
+
+#com_CopyrightHeader div.com_UpdateDate{
+margin				: 0px;
+padding				: 0px;
+text-align			:left;
+float				:left;
+}
+
+#com_CopyrightHeader div.com_UpdateIcon{
+margin				: 0px;
+padding				: 0px 8px;
+text-align			:left;
+float				:left;
+}
+
+#com_CopyrightHeader br.com_UpdateEnd{
+clear				: both;
+}
+
+#com_CopyrightHeader img.com_UpdateIcon_Img{
+margin				: 0px;
+padding				: 0px;
+display				: none;
+}
+
+#com_CopyrightHeader div.com_Title{
+margin				: 0px;
+padding				: 0px;
+text-align			:left;
+}
+
+
+
+/* =====================================================
+   CopyrightFooter
+===================================================== */
+
+#com_CopyrightFooter{
+font-size			: 9pt;
+font-weight			: bold;
+margin				: 0px;
+padding				: 0px;
+}
+
+#com_CopyrightFooter div.com_Menu{
+margin				: 4px 8px 0px 8px;
+padding				: 0px;
+float				:left;
+text-align			:left;
+}
+
+#com_CopyrightFooter div.com_Corp{
+margin				: 4px 8px 0px 8px;
+padding				: 0px;
+float				:right;
+text-align			:right;
+}
+
+#com_CopyrightFooter br.com_End{
+clear				: both;
+}
+
+#com_CopyrightFooter div.com_Title{
+margin				: 0px;
+padding				: 0px;
+text-align			:left;
+}
+
+#com_CopyrightFooter div.com_Menu_Buttons{
+margin				: 12px 12px 12px;
+padding				: 0px;
+}
+
+/*
+#com_CopyrightFooter div.com_Menu_Twitter{
+margin				: 0px 24px 16px;
+padding				: 0px;
+}
+
+#com_CopyrightFooter a.com_Menu_Twitter{
+margin				: 0px;
+padding				: 4px;
+text-decoration		: underline;
+}
+*/
+
+#com_CopyrightFooter div.com_Menu_Cel{
+width				: 80px;
+margin				: 4px;
+padding				: 0px;
+border-radius		: 12px;
+text-align			:center;
+float				:left;
+}
+
+#com_CopyrightFooter div.com_Menu_Cel_Long{
+width				: 360px;
+margin				: 4px;
+padding				: 4px 12px 0px;
+text-align			:left;
+float				:left;
+}
+
+#com_CopyrightFooter a.com_Menu_Cel{
+font-size			: 12px;
+display				: block;
+margin				: 0px;
+padding				: 4px;
+text-decoration		:none;
+border-radius		: 12px;
+}
+
+#com_CopyrightFooter br.com_Menu_End{
+clear				: both;
+}
+
+
+
+/* =====================================================
+   Description
+===================================================== */
+
+#com_Description{
+margin				: 0px 4px 32px;
+padding				: 0px 16px 0px;
+}
+
+#com_Description_Center{
+margin				: 0px auto 32px;
+padding				: 0px 16px 0px;
+text-align			:center;
+}
+
+
+
+/* =====================================================
+   Navigation
+===================================================== */
+
+#com_Navigation{
+margin				: 0px 12px 32px;
+padding				: 4px 8px 16px;
+}
+
+#com_Navigation div.com_NavigationTitle{
+margin				: 0px auto 8px;
+padding				: 4px;
+border-radius		: 16px;
+}
+
+#com_Navigation ul{
+list-style-type		: square;
+margin				: 0px 0px 0px 32px;
+padding				: 0px;
+}
+
+#com_Navigation li{
+margin				: 4px 0px 4px 32px;
+padding				: 0px;
+}
+
+#com_Navigation a{
+margin				: 0px;
+padding				: 4px;
+text-decoration		: underline;
+}
+
+div.com_Nav{
+margin				: 16px 0px 0px 24px;
+width				: 72px;
+padding				: 0px;
+text-align			: center;
+}
+
+a.com_Nav{
+font-size			: 8pt;
+font-weight			: bold;
+display				: block;
+margin				: 0px;
+padding				: 2px;
+text-decoration		:none ;
+border-radius		: 4px;
+}
+
+a.com_AnchorTag{
+/*display				: none;*/
+width				: 0;
+height				: 0;
+margin				: 0px;
+padding				: 0px;
+}
+
+
+
+/* =====================================================
+   Contents Common
+===================================================== */
+
+.com_ContentsSection{
+margin				: 0px 12px 32px;
+padding				: 8px;
+}
+
+.com_ContentsSection_Center{
+margin				: 0px auto 32px;
+padding				: 8px;
+text-align			:center;
+}
+
+.com_ContentsTitle{
+/*
+font-size			: 16px;
+font-weight			: bold;
+margin				: 0px 0px 12px 0px;
+padding				: 4px 4px 4px 16px;
+*/
+
+/*
+width				: 100px;
+height				: 100px;
+*/
+
+margin				: 0px auto 20px;
+padding				: 0px 12px 0px;
+position			: relative;
+}
+.com_ContentsTitle:before,
+.com_ContentsTitle:after{
+width				: calc(100% - 20px);
+height				: 0;
+display				: block;
+position			: absolute;
+left				: 0;
+content				: "";
+}
+.com_ContentsTitle:before{
+bottom				: 100%;
+}
+.com_ContentsTitle:after{
+top					: 100%;
+}
+
+.com_ContentsBody{
+margin				: 0px 0px 0px 16px;
+padding				: 0px;
+}
+
+.com_ContentsBody_Center{
+margin				: 0px auto 16px;
+padding				: 0px;
+text-align			:center;
+}
+
+.com_ContentsTitle_Bunner{
+font-weight			: bolder;
+padding				: 4px;
+}
+
+.com_ContentsInline{
+margin				: 4px 0px 8px 24px;
+padding				: 0px;
+}
+
+
+
+/* =====================================================
+   Transrate
+===================================================== */
+
+#iRAD_Transrate{
+margin				: 12px auto;
+padding				: 8px 0px;
+}
+
+#iRAD_Transrate label.Label{
+display				: inline-block;
+-webkit-transition	: background-color 0.2s linear;
+transition			: background-color 0.2s linear;
+box-sizing			: border-box;
+position			: relative;
+margin				: 0px;
+padding				: 1px 8px 1px 26px;
+border-radius		: 8px;
+vertical-align		: middle;
+cursor				: pointer;
+}
+
+#iRAD_Transrate label.Label:after{
+display				: block;
+-webkit-transition	: border-color 0.2s linear;
+transition			: border-color 0.2s linear;
+top					: 50%;
+left				: 2px;
+width				: 16px;
+height				: 16px;
+margin				: -10px 0px 0px 2px;
+padding				: 0px;
+border-radius		: 6px;
+position			: absolute;
+content				: '';
+}
+
+#iRAD_Transrate label.Label:before {
+display				: block;
+-webkit-transition	: opacity 0.2s linear;
+transition			: opacity 0.2s linear;
+top					: 50%;
+left				: 6px;
+width				: 10px;
+height				: 10px;
+margin				: -6px 0px 0px 2px;
+padding				: 0px;
+border-radius		: 50%;
+position			: absolute;
+content				: '';
+opacity				: 0;
+}
+
+#iRAD_Transrate input[type="radio"].Button{
+display				: none;
+}
+
+#iRAD_Transrate input[type="radio"].Button:checked + label.Label:before {
+opacity				: 1;
+}
+
+div.wordTrans_JP, div.wordTrans_EN{
+margin				: 4px 0px;
+padding				: 0px;
+}
+
+
+
+/* =====================================================
+   Selector
+===================================================== */
+
+img.com_ContentsSelector_Img, input.com_ContentsSelector_CBX, div.com_ContentsSelector_Title{
+display				: none;
+}
+
+label.com_ContentsSelector_LAB{
+display				: block;
+font-size			: 16px;
+font-weight			: bold;
+padding				: 0px 0px 0px 16px;
+cursor				: pointer;
+}
+
+							/* Close */
+input[type="checkbox"].com_ContentsSelector_CBX + .com_ContentsSelector_LAB{
+margin				: 0px auto 16px 0px;
+}
+
+input[type="checkbox"].com_ContentsSelector_CBX + .com_ContentsSelector_LAB + .com_ContentsSelector_Body{
+display				: none;
+}
+
+							/* Open */
+input[type="checkbox"].com_ContentsSelector_CBX:checked + .com_ContentsSelector_LAB{
+margin				: 0px auto 0px 0px;
+}
+
+input[type="checkbox"].com_ContentsSelector_CBX:checked + .com_ContentsSelector_LAB + .com_ContentsSelector_Body{
+display				: block;
+margin				: 0px;
+padding				: 8px 0px 16px 16px;
+}
+
+
+
+/* =====================================================
+   Anchor
+===================================================== */
+
+a{
+margin				: 0px;
+padding				: 0px;
+text-decoration		: underline;
+}
+
+a:hover{
+}
+
+
+
+/* =====================================================
+   List Style
+===================================================== */
+
+ul{			/* 順序なしリスト */
+list-style-type		: square;
+margin				: 8px 0px 16px;
+padding				: 0px;
+}
+
+ol{			/* 順序ありリスト */
+list-style-type		: none;
+margin				: 8px 0px 16px;
+padding				: 0px;
+}
+
+li{
+margin				: 4px 0px 4px 32px;
+padding				: 0px;
+}
+
+ul.com_UL_None{		/* type=なし */
+list-style-type		: none;
+}
+
+ul.com_UL_Maru{		/* type=丸 */
+list-style-type		: circle;
+}
+
+ul.com_UL_En{		/* type=円 */
+list-style-type		: disc;
+}
+
+ul.com_UL_Kaku{		/* type=四角 */
+list-style-type		: square;
+}
+
+
+
+/* =====================================================
+   h1～h6
+===================================================== */
+
+h1, h2, h3, h4, h5, h6{
+margin				: 8px 0px;
+padding				: 4px;
+}
+
+
+
+/* =====================================================
+   hr
+===================================================== */
+
+hr{
+margin				: 8px 0px;
+padding				: 0px;
+}
+
+
+
+/* =====================================================
+   Table
+===================================================== */
+
+table{
+font-size			: 14px;
+margin				: 8px 0px 16px;
+padding				: 0px;
+}
+table.com_Center{
+margin				: 8px auto 16px;
+text-align			:center;
+}
+
+th{
+margin				: 0px;
+padding				: 2px 4px;
+text-align			: left;
+vertical-align		: top;
+white-space			: nowrap;
+}
+
+td{
+margin				: 0px;
+padding				: 2px 4px;
+text-align			: left;
+vertical-align		: top;
+white-space			: nowrap;
+}
+
+td.com_Center{
+text-align			: center;
+}
+
+caption{	/* テーブル名 */
+margin				: 0px;
+padding				: 0px;
+}
+
+col, colgroup{
+			/* 表内の列のグループを定義 */
+margin				: 0px;
+padding				: 0px;
+}
+
+thead, tbody, tfoot{
+			/* テーブルの構成 */
+margin				: 0px;
+padding				: 0px;
+}
+
+
+
+/* =====================================================
+   Form
+===================================================== */
+
+form{		/* 入力フォーム */
+margin				: 0px;
+padding				: 0px;
+}
+
+textarea{	/* テキスト入力領域 */
+margin				: 0px;
+padding				: 0px;
+}
+
+button{		/* クリックできるボタン */
+margin				: 0px;
+padding				: 0px;
+}
+
+datalist{	/* データリスト */
+margin				: 0px;
+padding				: 0px;
+}
+
+filelist{	/* ファイルリスト */
+margin				: 0px;
+padding				: 0px;
+}
+legend{		/* ファイルリストのキャプション値 */
+margin				: 0px;
+padding				: 0px;
+}
+
+input{		/* テキストボックス（1行）など */
+margin				: 2px;
+padding				: 2px;
+}
+
+label{		/* ユーザーインターフェイスの項目のキャプション */
+margin				: 0px;
+padding				: 0px;
+}
+
+meter{		/* スカラー値？ */
+margin				: 0px;
+padding				: 0px;
+}
+
+seect{		/* 選択式のメニュー */
+margin				: 0px;
+padding				: 0px;
+}
+optgroup{	/* select内のオプショングループ */
+margin				: 0px;
+padding				: 0px;
+}
+option{		/* 選択式のメニューの項目 */
+margin				: 0px;
+padding				: 0px;
+}
+
+output{		/* 出力要素  */
+margin				: 0px;
+padding				: 0px;
+}
+
+progress{	/* タスクの進捗状況  */
+margin				: 0px;
+padding				: 0px;
+}
+
+
+
+/* =====================================================
+   Default Style
+===================================================== */
+
+/*=== Section ===*/
+address{	/* これを含んでいる HTML が個人、団体、組織の連絡先を提供していることを示す */
+margin				: 0px;
+padding				: 0px;
+}
+article{	/* 文書、ページ、アプリケーション、サイトなどの中で自己完結しており、個別に配信や再利用を行うことを意図した構成物を示す */
+margin				: 0px;
+padding				: 0px;
+}
+aside{		/* 文書のメインコンテンツと間接的な関係しか持っていない文書の部分を示す */
+margin				: 0px;
+padding				: 0px;
+}
+main{		/* 文書の body の主要な内容を示す */
+margin				: 0px;
+padding				: 0px;
+}
+nav{		/* 現在の文書内の他の部分や他の文書へのナビゲーションリンクを提供するためのセクションを示す */
+margin				: 0px;
+padding				: 0px;
+}
+section{	/* 文書の自立した一般的なセクション（区間）を示す */
+margin				: 0px;
+padding				: 0px;
+}
+
+
+
+/*=== Contents ===*/
+div{
+					/* UP / Left.Right / Down */
+margin				: 8px 0px 16px;
+padding				: 0px;
+}
+
+p{			/* 段落 */
+margin				: 0px 0px 12px;
+padding				: 0px;
+}
+
+blockquote{	/* 引用 */
+margin				: 8px 0px 16px;
+padding				: 0px;
+}
+
+pre{		/* 整形済みテキスト */
+margin				: 8px 0px 16px;
+padding				: 0px;
+}
+
+
+
+/*=== Figure 図表などの自己完結型のコンテンツ ===*/
+img{
+border				: 0px;
+margin				: 0px;
+padding				: 0px;
+}
+figure{
+margin				: 8px 0px 16px;
+padding				: 0px;
+}
+figcaption{	/* キャプション */
+margin				: 0px;
+padding				: 8px 0px;
+}
+
+
+
+/*=== Media, Enbedded ===*/
+area, map{	/* イメージマップの定義 */
+margin				: 0px;
+padding				: 0px;
+}
+
+audio{		/* 文書内に音声コンテンツを埋め込むために使用 */
+margin				: 0px;
+padding				: 0px;
+}
+
+video{		/* 文書内にビデオコンテンツを埋め込むために使用 */
+margin				: 0px;
+padding				: 0px;
+}
+
+track{		/* メディア要素の子として使用 */
+margin				: 0px;
+padding				: 0px;
+}
+
+embed{		/* 外部のコンテンツを文書中の指定された場所に埋め込む */
+margin				: 0px;
+padding				: 0px;
+}
+
+object{		/* 画像、内部の閲覧コンテキスト、プラグインによって扱われるリソースなどのように扱われる外部リソース */
+margin				: 0px;
+padding				: 0px;
+}
+
+param{		/* objectのパラメータ */
+margin				: 0px;
+padding				: 0px;
+}
+
+canvas{		/* <canvas> 要素 と Canvas スクリプティング API や WebGL API を使用して、グラフィックやアニメーションを描画することができる */
+margin				: 0px;
+padding				: 0px;
+}
+
+script{		/* コードやデータを埋め込む */
+margin				: 0px;
+padding				: 0px;
+}
+
+noscript{	/* このページ上のスクリプトの種類に対応していない場合や、スクリプトの実行がブラウザーで無効にされている場合に表示する HTML */
+margin				: 0px;
+padding				: 0px;
+}
+
+picture{	/* 0個以上の source 要素と一つの img 要素を含み、様々な画面や端末の条件に応じた画像を提供 */
+margin				: 0px;
+padding				: 0px;
+}
+
+portal{		/* ポータル要素 */
+margin				: 0px;
+padding				: 0px;
+}
+
+source{		/* picture 要素、 audio 要素、 video 要素に対し、複数のメディアリソースを指定 */
+margin				: 0px;
+padding				: 0px;
+}
+
+svg{		/* 新しい座標系とビューポートを定義するコンテナ */
+margin				: 0px;
+padding				: 0px;
+}
+
+math{		/* MathML における最上位の要素 */
+margin				: 0px;
+padding				: 0px;
+}
+
+
+
+/*=== Discription List ===*/
+dl{
+margin				: 8px 0px 16px;
+padding				: 0px;
+}
+dd, dt{
+margin				: 0px;
+padding				: 8px 0px;
+}
+
+
+
+
+/*=== Inline Text ===*/
+
+span{		/* 記述コンテンツの汎用的な行内コンテナ */
+margin				: 0px;
+padding				: 0px;
+}
+
+b{			/* 注目 */
+margin				: 0px;
+padding				: 0px;
+}
+
+strong{		/* 緊急性が高い */
+margin				: 0px;
+padding				: 0px;
+}
+
+em{			/* 強調 */
+margin				: 0px;
+padding				: 0px;
+}
+
+i{			/* 興味深い */
+margin				: 0px;
+padding				: 0px;
+}
+
+br{			/* 改行  */
+margin				: 0px;
+padding				: 0px;
+}
+
+wbr{		/* 改行してもよい  */
+margin				: 0px;
+padding				: 0px;
+}
+
+q{			/* 行内の引用   */
+margin				: 0px;
+padding				: 0px;
+}
+
+s{			/* 取り消し線（取り消し済） */
+margin				: 0px;
+padding				: 0px;
+}
+
+small{		/* 表示上のスタイルとは関係なく、著作権表示や法的表記のような、注釈や小さく表示される文を示す */
+margin				: 0px;
+padding				: 0px;
+}
+
+time{		/* 特定の区間 */
+margin				: 0px;
+padding				: 0px;
+}
+
+abbr{		/* 略語や頭字語 */
+margin				: 0px;
+padding				: 0px;
+}
+
+bdi{		/* 書字方向分離要素  */
+margin				: 0px;
+padding				: 0px;
+}
+
+bdo{		/* 双方向文字列上書き要素  */
+margin				: 0px;
+padding				: 0px;
+}
+
+cite{		/* 引用された創作物の参照（作品のタイトルを含む）  */
+margin				: 0px;
+padding				: 0px;
+}
+
+code{		/* コンピューターコード  */
+margin				: 0px;
+padding				: 0px;
+}
+
+samp{		/* コンピューターコードのサンプル要素  */
+margin				: 0px;
+padding				: 0px;
+}
+
+var{		/* 数式やプログラムコード内の変数の名前  */
+margin				: 0px;
+padding				: 0px;
+}
+
+data{		/* 与えられたコンテンツの断片を機械可読な翻訳  */
+margin				: 0px;
+padding				: 0px;
+}
+
+dfn{		/* 定義要素   */
+margin				: 0px;
+padding				: 0px;
+}
+
+kbd{		/* キーボード入力要素   */
+margin				: 0px;
+padding				: 0px;
+}
+
+mark{		/* 文字列マーク要素   */
+margin				: 0px;
+padding				: 0px;
+}
+
+rp, rt{		/* ルビ文字列   */
+margin				: 0px;
+padding				: 0px;
+}
+
+sub, sup{	/* 下付き、上付き   */
+margin				: 0px;
+padding				: 0px;
+}
+
+u{			/* 非言語的注釈要素   */
+margin				: 0px;
+padding				: 0px;
+}
+
+del{		/* 文書から削除された文字列の範囲   */
+margin				: 0px;
+padding				: 0px;
+}
+
+ins{		/* ins要素   */
+margin				: 0px;
+padding				: 0px;
+}
+
+
+
+/*=== Interructive ===*/
+details{	/* 詳細折りたたみ要素（開いた時に表示）  */
+margin				: 0px;
+padding				: 0px;
+}
+
+dialog{		/* ダイアログボックスや、消すことができるアラート、インスペクター、サブウィンドウ等のような対話的コンポーネントを表示する  */
+margin				: 0px;
+padding				: 0px;
+}
+
+menu{		/* ユーザーが実行またはアクティブ化できるコマンドのグループを表す  */
+margin				: 0px;
+padding				: 0px;
+}
+
+summary{	/* details 要素の内容の要約、キャプション、説明、凡例を表す  */
+margin				: 0px;
+padding				: 0px;
+}
+
+slot{		/* ウェブコンポーネント内で別な DOM ツリーを構築  */
+margin				: 0px;
+padding				: 0px;
+}
+
+template{	/* コンテンツテンプレート  */
+margin				: 0px;
+padding				: 0px;
+}
+
+
+
