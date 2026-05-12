@@ -1,61 +1,48 @@
-//#####################################################
-//# ::Project  : 共通アプリ
+//#############################################################
+//# ::Project  : 共通JavaScript
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : グローバル定数/変数
-//#####################################################
-//# 更新履歴
-//# 1.1.1.0		2024-05-30	website用リリース
-//# 1.1.1.1		2024-06-23	Selクラスのバグ修正
-//# 1.1.1.2		2024-06-24	ポップアップヘルプの改修
-//# 1.1.1.3		2024-06-26	splitをOS/IFのものを使うようにした
-//# 1.1.1.4		2024-06-26	ログクラス改修（エラー行番号表示）
-//# 1.1.1.5		2024-06-26	ポップアップWindowの改修（移動、開閉）
-//# 1.1.2.0		2024-06-28	ボタン制御の追加
-//# 1.2.0.0		2024-07-05	ポップアップヘルプ/制御/ボタン の設定I/F変更
-//# 1.2.1.0		2024-07-09	Window制御でタイトル、CSS切替スイッチがない場合正常で終わるようにした
-//# 1.2.2.0		2024-07-15	Hotfix
-	
-//# 1.xxxxx		2024-07-xx	Window制御 設定完了待ち後処理の外部設定
-//#
-//#####################################################
+//#############################################################
 
-//###########################
-//# ※ユーザ自由変更※
+//#############################################################
+//# ユーザ定数  ※自由変更可能※
+//#############################################################
 
 //### システム情報
-var DEF_USER_VERSION	= "1.2.2.0" ;
-var DEF_USER_AUTHOR		= 'korei (X:@korei_xlix)' ;	//HTMLのauthor表示
-var DEF_USER_GITHUB		= "https://github.com/korei-xlix/website/" ;
-var DEF_USER_SITEURL	= "https://website.koreis-labo.com/" ;
+///var DEF_USER_VERSION	= "1.2.2.0" ;
+var DEF_USER_INFO_AUTHOR		= 'korei (X:@korei_xlix)' ;	//HTMLのauthor表示
+var DEF_USER_INFO_GITHUB		= "https://github.com/korei-xlix/website/" ;
+var DEF_USER_INFO_SITEURL		= "https://website.koreis-labo.com/" ;
 
 //### 通知を表示する日数
-var DEF_USER_UPDATE_PAST	= 3 ;
+var DEF_USER_UPDATE_PAST		= 3 ;
 
 //### PC版となる画面サイズ
-var DEF_USER_PC_WIDTH		= 415 ;
+var DEF_USER_PC_WIDTH			= 415 ;
 
 //### Storage  true=sessionStrageを使う
-var DEF_USER_SESSION_STORAGE = false ;
+var DEF_USER_SESSION_STORAGE	= false ;
 
 //### ログデータ長
-var DEF_USER_LOGDATA_LEN	= 65535 ;
+var DEF_USER_LOGDATA_LEN		= 65535 ;
 
 //### ログボックスデータ長
-var DEF_USER_LOGBOXDATA_LEN	= 20480 ;
+var DEF_USER_LOGBOXDATA_LEN		= 2048 ;
 
-//### ボックスデータ長
-///var DEF_USER_BOXDATA_LEN	= 1024 ;
-var DEF_USER_MSGBOXDATA_LEN	= 1024 ;
-
+//### メッセージボックスデータ長
+var DEF_USER_MSGBOXDATA_LEN		= 1024 ;
 
 
-//###########################
-//# ※以下はいじれない※
 
-//#####################################################
+//#############################################################
+//# ※以下からはいじれない※
+
+
+
+//#############################################################
 //# 定数（Storage用）
-//#####################################################
+//#############################################################
 
 var DEF_GVAL_STORAGE_CSSNAME	= top.DEF_INDEX_STORAGE_HEADER + "_CSSNAME" ;
 var DEF_GVAL_STORAGE_MODE		= top.DEF_INDEX_STORAGE_HEADER + "_MODE" ;

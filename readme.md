@@ -51,7 +51,7 @@
 
 ***
 ***
-[[トップへ戻る]](./readme.md)  
+[[トップへ戻る]](/readme.md)  
   
 ::Admin= Korei (@korei-xlix)  
 ::github= [https://github.com/korei-xlix/](https://github.com/korei-xlix/)  
