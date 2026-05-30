@@ -8,15 +8,6 @@
 
 
 
-//# 関数群     :
-//#
-//# 応答形式の取得
-//#	CLS_OSIF.sGet_Resp({ inClass:"Class", inFunc="Func" })
-//#		//###########################
-//#		//# 応答形式の取得
-//#		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-//#		let wRes = CLS_OSIF.sGet_Resp({ inClass:"Class", inFunc:"Func" }) ;
-//#
 //# 処理停止
 //#		CLS_OSIF.sExit()
 //#

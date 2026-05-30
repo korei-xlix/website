@@ -1,13 +1,13 @@
-//#############################################################
+//##############################################################
 //# ::Project  : 共通JavaScript
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : グローバル定数/変数
-//#############################################################
+//##############################################################
 
-//#############################################################
+//##############################################################
 //# ユーザ定数  ※自由変更可能※
-//#############################################################
+//##############################################################
 
 //### システム情報
 ///var DEF_USER_VERSION	= "1.2.2.0" ;
@@ -35,14 +35,14 @@ var DEF_USER_MSGBOXDATA_LEN		= 1024 ;
 
 
 
-//#############################################################
+//##############################################################
 //# ※以下からはいじれない※
 
 
 
-//#############################################################
+//##############################################################
 //# 定数（Storage用）
-//#############################################################
+//##############################################################
 
 var DEF_GVAL_STORAGE_CSSNAME	= top.DEF_INDEX_STORAGE_HEADER + "_CSSNAME" ;
 var DEF_GVAL_STORAGE_MODE		= top.DEF_INDEX_STORAGE_HEADER + "_MODE" ;
@@ -50,23 +50,23 @@ var DEF_GVAL_STORAGE_TRANSRATE	= top.DEF_INDEX_STORAGE_HEADER + "_TRANSRATE" ;
 var DEF_GVAL_STORAGE_BOUNDARY	= "|,|" ;
 
 
-//#####################################################
+//##############################################################
 //# 定数（オブジェクト・インデックス）
-//#####################################################
+//##############################################################
 
-/////////////////////////////
+////////////////////////////////
 // 更新日時
 var DEF_GVAL_IDX_UPDATE_DATE	= "iUpdateDate" ;
 var DEF_GVAL_IDX_UPDATE_ICON	= "iUpdateIcon" ;
 var DEF_GVAL_IDX_SYSTEM_TD		= "iSystemTD" ;
 
-/////////////////////////////
+////////////////////////////////
 // CSSタグ・ICONタグ
 var DEF_GVAL_IDX_CSS_COM		= "iCSS_Com" ;
 var DEF_GVAL_IDX_CSS_ORG		= "iCSS_Org" ;
 var DEF_GVAL_IDX_ICON			= "iIcon" ;
 
-/////////////////////////////
+////////////////////////////////
 // ページタイトル
 var DEF_GVAL_IDX_TITLE_UP		= "iTitleUp" ;
 var DEF_GVAL_IDX_TITLE_DW		= "iTitleDw" ;
@@ -75,33 +75,33 @@ var DEF_GVAL_IDX_TITLE_MAIN		= "iTitleMain" ;
 ///var DEF_GVAL_IDX_TITLE_SUB_TRANS_JP = "iTitleSubJP" ;
 ///var DEF_GVAL_IDX_TITLE_SUB_TRANS_EN = "iTitleSubEN" ;
 
-/////////////////////////////
+////////////////////////////////
 // CSS切替スイッチ
 var DEF_GVAL_IDX_CSSSW_STYLE	= "iCSSsw_Style" ;
 var DEF_GVAL_IDX_CSSSW			= "iCSSsw" ;
 var DEF_GVAL_IDX_CSSSW_MODE		= "iCSSsw_Mode" ;
 
-/////////////////////////////
+////////////////////////////////
 // セレクタ
 var DEF_GVAL_IDX_SELECTOR_TITLE	= "iSelectorTitle-" ;
 var DEF_GVAL_IDX_SELECTOR_SET	= "iSelectorSet-" ;
 
-/////////////////////////////
+////////////////////////////////
 // ポップアップヘルプ
 var DEF_GVAL_IDX_POPUP_HELP		= "iPopupHelp" ;
 
-/////////////////////////////
+////////////////////////////////
 // ログボックス
 var DEF_GVAL_IDX_LOGBOX_Window	= "iLogBox_Window" ;
 var DEF_GVAL_IDX_LOGBOX_MESSAGE	= "iLogBox_Message" ;
 
-/////////////////////////////
+////////////////////////////////
 // メッセージボックス
 var DEF_GVAL_IDX_MSGBOX_WINDOW	= "iMsgBox_Window" ;
 var DEF_GVAL_IDX_MSGBOX_MESSAGE	= "iMsgBox_Message" ;
 var DEF_GVAL_IDX_MSGBOX_BUTTON_HEADER	= "iMsgBox_Button_" ;
 
-/////////////////////////////
+////////////////////////////////
 // オブジェクト拡張プロパティ
 var DEF_GVAL_IDX_EXTOBJ_FRAME_ID = "gFrameID" ;		// 拡張プロパティ フレームID
 
@@ -676,40 +676,10 @@ var gSTR_WinCtrlInfo = new gSTR_WinCtrlInfo_Str() ;
 
 
 
-//###########################
+//##############################################################
 //# ログクラス
-var DEF_GVAL_LOG_LOG_LEVEL = {
-					//システムエラー
-		"A"			: "致命的エラー",		//プログラム停止 ロジックエラーなどソフト側の問題
-		"B"			: "内部的エラー",		//プログラム停止か実行不可 コール先からのエラー
-		"C"			: "外部のエラー",		//プログラム停止か実行不可 外部モジュールやハードの問題
-		"D"			: "潜在的エラー",		//ユーザ入力など予想外 or 後に問題を起こす可能性がある
-		"E"			: "不明なエラー",		//判断がつかないエラー ありえないルートなど
-		
-					//ユーザエラー
-		"I"			: "入力エラー",			//確定的なユーザ入力エラー
-		
-					//システム系
-		"S"			: "システム起動停止",	//botの実行、停止、再起動
-		"SC"		: "システム設定変更",	//システムの設定変更
-		"SR"		: "システム規制制御",	//システムの規制制御、自律制御
-		"SU"		: "システムログイン",	//ユーザログイン（スーパユーザ）
-		
-					//ユーザ系
-		"R"			: "ユーザ登録削除抹消",	//ユーザ登録、削除、抹消
-		"RC"		: "ユーザ設定変更",		//ユーザ設定変更
-		"RR"		: "ユーザ個別規制",		//ユーザ個別の規制制御、自律制御
-		"RU"		: "ユーザログイン",		//ユーザログイン（パーソナルユーザ）
-		
-					//トラヒック系
-		"TS"		: "システムトラヒック",	//システムトラヒック、期間トラヒック、通信トラヒック(統計)
-		"TU"		: "ユーザトラヒック",	//ユーザトラヒック、期間トラヒック、通信トラヒック(統計)、獲得情報など
-		
-		"CB"		: "コールバック",		//コールバック系ログ
-		"N"			: "非表示の情報",		//非表示の情報
-		"X"			: "テスト用ログ",		//テスト用ログ
-		"(dummy)"	: ""
-	} ;
+var DEF_GVAL_LOG_DEFAULT_LOG_LEVEL = "E" ;
+
 
 var	DEF_GVAL_LOG_KOUMOKU_LEN   = 12		//コンソール項目の文字長
 var DEF_GVAL_LOG_OUTPUT_FILE_HEADER = "error_" ;
@@ -746,10 +716,10 @@ var gSTR_PreReg_ButtonCtrl = {} ;	//ボタン情報 仮登録
 //# クラス 外部参照用オブジェクト
 //#####################################################
 
-var gCLS_PageObj	= new CLS_PageObj() ;
-var gCLS_OSIF		= new CLS_OSIF() ;
-var gCLS_Sys		= new CLS_Sys() ;
-var gCLS_L			= new CLS_L() ;
+//var gCLS_PageObj	= new CLS_PageObj() ;
+//var gCLS_OSIF		= new CLS_OSIF() ;
+//var gCLS_Sys		= new CLS_Sys() ;
+//var gCLS_L			= new CLS_L() ;
 
 
 
