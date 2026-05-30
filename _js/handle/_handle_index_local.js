@@ -5,6 +5,27 @@
 //# ::Class    : ハンドラ
 //#####################################################
 
+//##############################
+//# ※ユーザ自由変更※
+
+//### ストレージインデックス
+var DEF_INDEX_USE_STORAGE		= true ;
+var DEF_INDEX_STORAGE_HEADER	= "KOREIS_WEB" ;
+
+//### 翻訳機能の有効・無効
+//var DEF_INDEX_TRANSRATE		= true ;
+var DEF_INDEX_TRANSRATE			= false ;
+
+//### ログファイル出力・自動オープン
+var DEF_INDEX_LOG_OUTPUT		= false ;
+var DEF_INDEX_LOG_AUTOOPEN		= false ;
+
+//### テストモード  true=テスト稼働
+//var DEF_INDEX_TEST			= true ;
+var DEF_INDEX_TEST				= false ;
+
+
+
 //#####################################################
 //# ハンドラ（共通）
 //#####################################################

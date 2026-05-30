@@ -92,92 +92,114 @@ class CLS_L {
 //##############################################################
 	static sL({
 		inRes,
-		inLevel,						// ログレベル
-		inMessage = top.DEF_GVAL_NULL,	// メッセージ
-		inLine = top.DEF_GVAL_NULL,		// エラー行		__FILE__:__LINE__
-		inDump = top.DEF_GVAL_NULL		// ダンプデータ
+		inLevel,
+		inMessage = top.DEF_GVAL_NULL,
+		inLine    = top.DEF_GVAL_NULL,
+		inDump    = top.DEF_GVAL_NULL
 	})
 	{
-		let wLevel, wViewLog, wMessage, wTimeDate, wLine ;
-		let wRes, wSubRes, wMyRes ;
+///		let wLevel, wViewLog, wMessage, wTimeDate, wLine ;
+///		let wRes, wResSet, wSubRes, wMyRes ;
+		let wRes, wResSet, wResTime ;
+		let wTimeDate ;
+		let wFLG_Check ;
 		
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		wRes = CLS_OSIF.sGet_Resp({}) ;
+		//  //### 応答形式の取得（ロギングセット用）
+		wResSet = CLS_OSIF.sGet_Resp({}) ;
 		
-		//### 内部エラー用
+		//  //### 応答形式の取得（内部処理用・本関数）
 		wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"sL" }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 引数を取得
-		wRes['Result']   = inRes['Result'] ;
-		wRes['Class']    = inRes['Class'] ;
-		wRes['Func']     = inRes['Func'] ;
-		wRes['Reason']   = inRes['Reason'] ;
-		wRes['Responce'] = inRes['Responce'] ;
+		wResSet['Result']   = inRes['Result'] ;
+		wResSet['Class']    = inRes['Class'] ;
+		wResSet['Func']     = inRes['Func'] ;
+		wResSet['Reason']   = inRes['Reason'] ;
+		wResSet['Responce'] = inRes['Responce'] ;
+		wResSet['StatusCode'] = inRes['StatusCode'] ;
 		
-		/////////////////////////////
+		wFLG_Check = true ;
+		////////////////////////////////
 		// パラメータチェック
 		
-		//### Class
-		if(( wRes['Class']=="") || ( wRes['Class']==top.DEF_GVAL_NULL ))
+		//### Result
+		if(( wResSet['Result']!=true) && ( wResSet['Result']!=false ))
 		{
-			wRes['Class'] = top.DEF_GVAL_TEXT_NONE ;
+			wFLG_Check = false ;
+		}
+		
+		//### Class
+		if(( wResSet['Class']=="") || ( wResSet['Class']==top.DEF_GVAL_NULL ))
+		{
+			wFLG_Check = false ;
 		}
 		
 		//### Func
-		if(( wRes['Func']=="") || ( wRes['Func']==top.DEF_GVAL_NULL ))
+		if(( wResSet['Func']=="") || ( wResSet['Func']==top.DEF_GVAL_NULL ))
 		{
-			wRes['Func'] = top.DEF_GVAL_TEXT_NONE ;
+			wFLG_Check = false ;
 		}
-		
 		//### Reason
-		if(( wRes['Reason']=="") || ( wRes['Reason']==top.DEF_GVAL_NULL ))
+		if( wResSet['Result']==false)
 		{
-			wRes['Reason'] = top.DEF_GVAL_TEXT_NONE ;
+			if(( wResSet['Reason']=="") || ( wResSet['Reason']==top.DEF_GVAL_NULL ))
+			{
+				wFLG_Check = false ;
+			}
 		}
 		
-		//### Responce
-		if(( wRes['Responce']=="") || ( wRes['Responce']==top.DEF_GVAL_NULL ))
+		//### ログレベル
+		if( !( inLevel in top.DEF_GVAL_STR_LOG_LOG_LEVEL ) )
 		{
-			wRes['Responce'] = top.DEF_GVAL_TEXT_NONE ;
+			wFLG_Check = false ;  //エラー
+		}
+        
+		//### Message
+		if(( inMessage=="" ) && ( inMessage==top.DEF_GVAL_NULL ))
+		{
+			wFLG_Check = false ;  //エラー
 		}
 		
-		//### StatusCode
-		if(( wRes['StatusCode']=="") || ( wRes['StatusCode']==top.DEF_GVAL_NULL ))
+		//### Line
+		if(( inLine=="" ) && ( inLine==top.DEF_GVAL_NULL ))
 		{
-			wRes['StatusCode'] = top.DEF_GVAL_TEXT_NONE ;
+			wFLG_Check = false ;  //エラー
 		}
 		
-		//### Messageのチェック
-		wMessage = top.DEF_GVAL_TEXT_NONE ;
-		if(( inMessage!="" ) && ( inMessage!=top.DEF_GVAL_NULL ))
+		wTimeDate = top.DEF_GVAL_TIMEDATE ;
+		////////////////////////////////
+		// 日時の取得
+		wResTime = CLS_OSIF.sGetTime() ;
+		if( wResTime['Result']!=true )
 		{
-			wMessage = inMessage ;
-		}
-		
-		//### Line のチェック  __FILE__:__LINE__
-		wLine = top.DEF_GVAL_TEXT_NONE ;
-		if(( inLine!="" ) && ( inLine!=top.DEF_GVAL_NULL ))
-		{
-			wLine = inLine ;
-		}
-		
-		wLevel = top.DEF_GVAL_TEXT_NONE ;
-		/////////////////////////////
-		// レベルのチェック
-		if( !( inLevel in top.DEF_GVAL_LOG_LOG_LEVEL ) )
-		{
-			//この処理のエラーをセット
-			wMyRes['Reason'] = "Not Level(Next Line Error): " + String(inLevel) ;
-			this.__setLog({ inRes:wMyRes, inLevel:"A", inTimeDate:top.DEF_GVAL_TIMEDATE, inLine:__LINE__ }) ;
-			
-			wLevel = "E" ;	//不明なエラー扱い
+			// 失敗: この処理のエラーをセット
+			wRes['Reason'] = "時間情報の取得に失敗"
+			this.__setLog({
+				inRes       : wRes,
+				inLevel     : "C",
+				inTimeDate  : top.DEF_GVAL_TIMEDATE,
+				inLine      : __LINE__
+			}) ;
 		}
 		else
 		{
-			wLevel = inLevel ;
+			wTimeDate = wResTime['TimeDate'] ;
+		}
+		
+		////////////////////////////////
+		// パラメータエラーの場合
+		// エラーをログセット
+		if( wFLG_Check==false )
+		{
+			// この処理のエラーをセット
+			wRes['Reason'] = "ロギングパラメータ不正"
+			this.__setLog({
+				inRes       : wRes,
+				inLevel     : "D",
+				inTimeDate  : wTimeDate,
+				inLine      : __LINE__
+			}) ;
 		}
 		
 		/////////////////////////////
@@ -206,21 +228,8 @@ class CLS_L {
 			}
 		}
 		
-		wTimeDate = top.DEF_GVAL_TIMEDATE ;
-		/////////////////////////////
-		// 日時の取得
-		wSubRes = CLS_OSIF.sGetTime() ;
-		if( wSubRes['Result']!=true )
-		{
-			// 失敗: この処理のエラーをセット
-			wMyRes['Reason'] = "Get Time Date Error"
-			this.__setLog({ inRes:wMyRes, inLevel:"C", inTimeDate:top.DEF_GVAL_TIMEDATE, inLine:__LINE__ }) ;
-		}
-		else
-		{
-			wTimeDate = wSubRes['TimeDate'] ;
-		}
-		
+
+
 		/////////////////////////////
 		// ログセット・出力
 		this.__setLog({ inRes:wRes, inLevel:wLevel, inTimeDate:wTimeDate, inMessage:wMessage, inLine:wLine, inDump:inDump }) ;

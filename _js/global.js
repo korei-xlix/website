@@ -679,6 +679,14 @@ var gSTR_WinCtrlInfo = new gSTR_WinCtrlInfo_Str() ;
 //##############################################################
 //# ログクラス
 var DEF_GVAL_LOG_DEFAULT_LOG_LEVEL = "E" ;
+var DEF_GVAL_STR_LOG_LOG_LEVEL = new Array(
+	"A" , "B" , "C" , "D" , "E" ,
+	"I" ,
+	"SS", "SW", "SR", "SL",
+	"US", "UW", "UR", "UL",
+	"TS", "TU",
+	"XC", "XN", "XX",
+) ;
 
 
 var	DEF_GVAL_LOG_KOUMOKU_LEN   = 12		//コンソール項目の文字長

@@ -33,17 +33,18 @@
 
 ```text
 呼出：
-  sGet_Resp({ inClass:"【クラス名】", inFunc:"【関数名】" }) ;
+  sGet_Resp({
+    inClass :   text    クラス名,
+    inFunc  :   text    関数名
+  }) ;
 
 出力：
-  wRes = {
-    "Result" : false,
-    "Class" : "(none)",
-    "Func" : "(none)",
-    "Reason" : "(none)",
-    "Responce" : "(none)",
-    "StatusCode" : "(none)"
-  } ;
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Class"     : "(none)",   text    クラス名
+    "Func"      : "(none)",   text    関数名
+    "Reason"    : "(none)",   text    Result=false の理由
+    "Responce"  : object,     object  応答情報（形式は自由）
+    "StatusCode"  : "(none)"  text    ステータスコード（APIなど）
 
 関数の先頭へ記載すると便利：
 //  //### 応答形式の取得
@@ -60,12 +61,84 @@
 
 
 
+### 時間情報取得 / sGetTime
+
+```text
+呼出：
+  sGet_Resp() ;
+    ※引数なし
+
+出力；
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+    "Object"    : object,     datatimeオブジェクト
+    "TimeDate"  : timedate,   TimeDate  yyyy/mm/dd hh:mm:ss
+    "Hour"      : int,        時間だけ.h
+    "Week"      : int         曜日 0=月,1=火,2=水,3=木,4=金,5=土,6=日
+
+```
+  
+
+
+
+### 整数変換 / sValParse
+
+```text
+呼出：
+  sValParse({
+    inValue   int   整数変換する文字列（あるいはオブジェクト？）
+  }) ;
+
+出力；
+  int   整数変換した数値  null=処理失敗
+
+```
+  
+
+
+
+### １桁なら先頭０埋め / sZeroPadding
+
+```text
+呼出：
+  sZeroPadding({
+    inValue   int   ０埋めする数値
+  }) ;
+
+出力；
+  int   ０埋めした数値  null=処理失敗
+
+```
+  
+
+
 
 
 
 ## ログクラス / CLS_L [log.js]
 
-ログクラス
+### ロギング / sL
+
+```text
+呼出：
+  static sL({
+    inRes     : object    応答情報（CLS_OSIF.sGet_Resp）
+    inLevel   : text      ログレベル *1,
+    inMessage : text      出力するエラーメッセージ,
+    inLine    : text      エラー行（__LINE__ と書くとスタックが、ファイル名：行数をセットする）
+    inDump    : object    ダンプデータ（形式は自由）
+  }) ;
+
+出力：
+  ※戻り値なし
+
+```
+  
+[*1:[ログレベル](#ログレベル--level)]
+  
+
+
+
 
 
 

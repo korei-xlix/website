@@ -1,9 +1,9 @@
-//#############################################################
+//##############################################################
 //# ::Project  : 共通JavaScript
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : OS I/F (OS向け共通処理)
-//#############################################################
+//##############################################################
 
 
 
@@ -158,20 +158,20 @@
 //#					inA		//付加情報
 //#			out:	Text	//メッセージ
 //#
-//#####################################################
+//##############################################################
 
-//#####################################################
+//##############################################################
 class CLS_OSIF {
-//#####################################################
+//##############################################################
 
-//#####################################################
+//##############################################################
 //# 応答形式の取得
-//#####################################################
+//##############################################################
 
-//		//###########################
-//		//# 応答形式の取得
-//		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-//		let wRes = CLS_OSIF.sGet_Resp({ inClass:"Class", inFunc:"Func" }) ;
+//	//##############################
+//	//# 応答形式の取得
+//	//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+//	let wRes = CLS_OSIF.sGet_Resp({ inClass:"Class Name", inFunc:"Function Name" }) ;
 
 	static sGet_Resp({
 		inClass=top.DEF_GVAL_TEXT_NONE,
@@ -188,6 +188,145 @@ class CLS_OSIF {
 		} ;
 		return wRes ;
 	}
+
+
+
+//##############################################################
+//# 時間情報取得
+//##############################################################
+	static sGetTime()
+	{
+		let wOBJ_TimeDate, wSTR_TimeDate, wARR_TimeDate, wCHR_TimeDate ;
+		let wValue ;
+		
+		////////////////////////////////
+		// 応答情報の生成
+		let wRes = {
+			"Result"    : false,
+			"Reason"    : top.DEF_GVAL_TEXT_NONE,
+			"Object"    : "",
+			"TimeDate"  : "",
+			"Hour"      : 0,
+			"Week"      : 0
+		} ;
+		
+		try
+		{
+			////////////////////////////////
+			// 日時の取得
+			wOBJ_TimeDate = new Date() ;
+			
+			wSTR_TimeDate = {} ;
+			////////////////////////////////
+			// 配列に格納
+			wSTR_TimeDate[0] = wOBJ_TimeDate.getFullYear() ;    // [0] 年
+			wSTR_TimeDate[1] = wOBJ_TimeDate.getMonth() + 1 ;   // [1] 月
+			wSTR_TimeDate[2] = wOBJ_TimeDate.getDate() ;        // [2] 日
+			wSTR_TimeDate[3] = wOBJ_TimeDate.getHours() ;       // [3] 時
+			wSTR_TimeDate[4] = wOBJ_TimeDate.getMinutes() ;     // [4] 分
+			wSTR_TimeDate[5] = wOBJ_TimeDate.getSeconds() ;     // [5] 秒
+			wSTR_TimeDate[6] = wOBJ_TimeDate.getDay() ;         // [6] 曜日 0=月,1=火,2=水,3=木,4=金,5=土,6=日
+			
+			wARR_TimeDate = new Array() ;
+			////////////////////////////////
+			// ゼロ補完
+			for( let wKey in wSTR_TimeDate )
+			{
+				wValue = this.sZeroPadding({ inValue: wSTR_TimeDate[wKey] }) ;
+				wARR_TimeDate.push( wValue ) ;
+			}
+			
+			wCHR_TimeDate = "" ;
+			////////////////////////////////
+			// 文字列化  yyyy-mm-dd hh:mm:DD
+			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[0] + "-" ;
+			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[1] + "-" ;
+			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[2] + " " ;
+			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[3] + ":" ;
+			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[4] + ":" ;
+			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[5] ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外：処理失敗
+			wRes['Reason'] = "パソコンの時計取得に失敗" ;
+			wRes['TimeDate'] = top.DEF_GVAL_TIMEDATE ;
+			return wRes ;
+		}
+		
+		////////////////////////////////
+		// 結果設定
+		wRes['Object']   = wOBJ_TimeDate ;
+		wRes['TimeDate'] = wCHR_TimeDate ;
+		wRes['Hour']     = wSTR_TimeDate[3] ;	//時間だけ
+		wRes['Week']     = wSTR_TimeDate[6] ;	//曜日
+		wRes['Result']   = true ;
+
+		return wRes ;
+	}
+
+
+
+
+
+//##############################################################
+//# 整数変換
+//##############################################################
+	static sValParse({
+		inValue
+	})
+	{
+		let wValue ;
+		
+		try
+		{
+			wValue = parseInt( inValue ) ;
+			if( isNaN(wValue)==true )
+			{
+				//失敗
+				wValue = top.DEF_GVAL_NULL ;
+			}
+		}
+		catch(e)
+		{
+			//例外
+			wValue = top.DEF_GVAL_NULL ;
+		}
+		return wValue ;
+	}
+
+
+
+//##############################################################
+//# １桁なら先頭０埋め
+//##############################################################
+	static sZeroPadding({
+		inValue
+	})
+	{
+		let wValue ;
+		
+		////////////////////////////////
+		// 数値変換
+		wValue = this.sValParse({ inValue:inValue }) ;
+		if( wValue==top.DEF_GVAL_NULL )
+		{
+			//失敗
+			wValue = top.DEF_GVAL_NULL ;
+		}
+		
+		////////////////////////////////
+		// 先頭０付加
+		if( wValue<10 )
+		{
+			wValue = "0" + wValue ;
+		}
+		return wValue ;
+	}
+
+
+
 
 
 
@@ -289,75 +428,6 @@ class CLS_OSIF {
 
 
 
-//#####################################################
-//# 時間を取得する
-//#####################################################
-	static sGetTime()
-	{
-		let wOBJ_TimeDate, wSTR_TimeDate, wARR_TimeDate, wCHR_TimeDate ;
-		let wValue ;
-		
-		let wRes = {
-			"Result"	: false,				//True=正常 / False=異常
-			"Reason"	: top.DEF_GVAL_NULL,	//エラー理由
-			"Object"	: "",					//datatimeオブジェクト
-			"TimeDate"	: "",					//TimeDate
-			"Hour"		: 0,					//時間.h
-			"Week"		: 0						//曜日 0=月,1=火,2=水,3=木,4=金,5=土,6=日
-		} ;
-		
-		try
-		{
-			/////////////////////////////
-			// 日時の取得
-			wOBJ_TimeDate = new Date() ;
-			
-			wSTR_TimeDate = {} ;
-			/////////////////////////////
-			// 配列に格納
-			wSTR_TimeDate[0] = wOBJ_TimeDate.getFullYear() ;	// [0] 年
-			wSTR_TimeDate[1] = wOBJ_TimeDate.getMonth() + 1 ;	// [1] 月
-			wSTR_TimeDate[2] = wOBJ_TimeDate.getDate() ;		// [2] 日
-			wSTR_TimeDate[3] = wOBJ_TimeDate.getHours() ;		// [3] 時
-			wSTR_TimeDate[4] = wOBJ_TimeDate.getMinutes() ;		// [4] 分
-			wSTR_TimeDate[5] = wOBJ_TimeDate.getSeconds() ;		// [5] 秒
-			wSTR_TimeDate[6] = wOBJ_TimeDate.getDay() ;			// [6] 曜日 0=月,1=火,2=水,3=木,4=金,5=土,6=日
-			
-			wARR_TimeDate = new Array() ;
-			/////////////////////////////
-			// ゼロ補完
-			for( let wKey in wSTR_TimeDate )
-			{
-				wValue = this.sZeroPadding({ inValue: wSTR_TimeDate[wKey] }) ;
-				wARR_TimeDate.push( wValue ) ;
-			}
-			
-			wCHR_TimeDate = "" ;
-			/////////////////////////////
-			// 文字列化  yyyy-mm-dd hh:mm:DD
-			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[0] + "-" ;
-			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[1] + "-" ;
-			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[2] + " " ;
-			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[3] + ":" ;
-			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[4] + ":" ;
-			wCHR_TimeDate  = wCHR_TimeDate + wARR_TimeDate[5] ;
-		}
-		catch(e)
-		{
-			wRes['Reason'] = "時計が壊れてます" ;
-			wRes['TimeDate'] = top.DEF_GVAL_TIMEDATE ;
-			return wRes ;
-		}
-		
-		/////////////////////////////
-		// 結果設定
-		wRes['Object']   = wOBJ_TimeDate ;
-		wRes['TimeDate'] = wCHR_TimeDate ;
-		wRes['Hour']     = wSTR_TimeDate[3] ;	//時間だけ
-		wRes['Week']     = wSTR_TimeDate[6] ;	//曜日
-		wRes['Result']   = true ;
-		return wRes ;
-	}
 
 
 
@@ -865,31 +935,6 @@ class CLS_OSIF {
 
 
 
-//#####################################################
-//# 整数変換
-//#####################################################
-	static sValParse({
-		inValue
-	})
-	{
-		let wValue ;
-		
-		try
-		{
-			wValue = parseInt( inValue ) ;
-			if( isNaN(wValue)==true )
-			{
-				//失敗
-				wValue = top.DEF_GVAL_NULL ;
-			}
-		}
-		catch(e)
-		{
-			//例外
-			wValue = top.DEF_GVAL_NULL ;
-		}
-		return wValue ;
-	}
 
 
 
@@ -916,32 +961,6 @@ class CLS_OSIF {
 
 
 
-//#####################################################
-//# １桁なら先頭０埋め
-//#####################################################
-	static sZeroPadding({
-		inValue
-	})
-	{
-		let wValue ;
-		
-		/////////////////////////////
-		// 数値変換
-		wValue = this.sValParse({ inValue:inValue }) ;
-		if( wValue==top.DEF_GVAL_NULL )
-		{
-			//失敗 = null
-			return wValue ;
-		}
-		
-		/////////////////////////////
-		// 先頭０付加
-		if( wValue<10 )
-		{
-			wValue = "0" + wValue ;
-		}
-		return wValue ;
-	}
 
 
 
