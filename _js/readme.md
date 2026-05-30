@@ -113,6 +113,21 @@
 
 
 
+### Array型・辞書型の要素数 / sGetObjectNum
+
+```text
+呼出：
+  sGetObjectNum({
+    inObject   array or dict  チェックするオブジェクト
+  }) ;
+
+出力；
+  int   オブジェクト数  -1=処理失敗
+
+```
+  
+
+
 
 
 ## ログクラス / CLS_L [log.js]

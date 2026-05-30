@@ -327,6 +327,41 @@ class CLS_OSIF {
 
 
 
+//##############################################################
+//# Array型・辞書型の要素数
+//##############################################################
+	static sGetObjectNum({
+		inObject
+	})
+	{
+		let wValue ;
+		
+		wValue = -1 ;
+		try
+		{
+			////////////////////////////////
+			// Array型の場合
+			if( ( inObject instanceof Array )==true )
+			{
+				wValue = inObject.length ;
+			}
+			////////////////////////////////
+			// 辞書型の場合
+			else if( ( inObject instanceof Object )==true )
+			{
+				wValue = Object.keys(inObject).length ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外
+		}
+		return wValue ;
+	}
+
+
+
 
 
 
@@ -795,36 +830,6 @@ class CLS_OSIF {
 
 
 
-//#####################################################
-//# Array型・辞書型の要素数を返す
-//#####################################################
-	static sGetObjectNum({
-		inObject
-	})
-	{
-		let wValue ;
-		
-		wValue = -1 ;
-		try
-		{
-			/////////////////////////////
-			// Array型の場合
-			if( ( inObject instanceof Array )==true )
-			{
-				wValue = inObject.length ;
-			}
-			/////////////////////////////
-			// 辞書型の場合
-			else if( ( inObject instanceof Object )==true )
-			{
-				wValue = Object.keys(inObject).length ;
-			}
-		}
-		catch(e)
-		{///例外
-		}
-		return wValue ;
-	}
 
 
 

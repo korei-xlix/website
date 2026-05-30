@@ -172,13 +172,13 @@ var DEF_GVAL_SYSTEM_EXIT		= "● System Exit (User call) ●" ;
 
 /////////////////////////////
 // ログヘッダなど仕切り
-var DEF_GVAL_LOG_HEADER			= "***********************" ;
-var DEF_GVAL_LOG_ERROR_HEADER	= "**** ERROR ************" ;
-var DEF_GVAL_LOG_DUMP_HEADER	= "**** DUMP DATA ********" ;
-var DEF_GVAL_LOG_SYSRUN_HEADER	= "==== SYSTEM RUN ====" ;
-var DEF_GVAL_LOG_SYSCTRL_HEADER	= "++++ SYSTEM CTRL ++++" ;
-var DEF_GVAL_LOG_USECTRL_HEADER = "---- USER CTRL ----" ;
-var DEF_GVAL_LOG_LOGIN_HEADER	= "<<<< LOGIN >>>>" ;
+var DEF_GVAL_LOG_HEADER			= "------------------------" ;
+var DEF_GVAL_LOG_ERROR_HEADER	= "**** ERROR *************" ;
+var DEF_GVAL_LOG_DUMP_HEADER	= "---- DUMP DATA ---------" ;
+var DEF_GVAL_LOG_SYSRUN_HEADER	= "<<<< SYSTEM RUN >>>>>>>>" ;
+var DEF_GVAL_LOG_SYSCTRL_HEADER	= "<<<< SYSTEM CTRL >>>>>>>" ;
+var DEF_GVAL_LOG_USECTRL_HEADER = "==== USER CTRL =========" ;
+var DEF_GVAL_LOG_LOGIN_HEADER	= "==== USER LOGIN ========" ;
 
 
 //#####################################################

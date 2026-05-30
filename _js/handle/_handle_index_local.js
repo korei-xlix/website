@@ -1,52 +1,63 @@
-//#####################################################
+//##############################################################
 //# ::Project  : Web Site
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : ハンドラ
-//#####################################################
+//##############################################################
 
 //##############################
 //# ※ユーザ自由変更※
 
-//### ストレージインデックス
-var DEF_INDEX_USE_STORAGE		= true ;
-var DEF_INDEX_STORAGE_HEADER	= "KOREIS_WEB" ;
+//### true=ストレージ有効
+var DEF_INDEX_USE_STORAGE       = true ;
 
-//### 翻訳機能の有効・無効
-//var DEF_INDEX_TRANSRATE		= true ;
-var DEF_INDEX_TRANSRATE			= false ;
+//### true=ストレージインデックス名
+var DEF_INDEX_STORAGE_HEADER    = "KOREIS_WEB" ;
 
-//### ログファイル出力・自動オープン
-var DEF_INDEX_LOG_OUTPUT		= false ;
-var DEF_INDEX_LOG_AUTOOPEN		= false ;
+//### true=翻訳機能有効
+var DEF_INDEX_USE_TRANSRATE     = false ;
 
-//### テストモード  true=テスト稼働
-//var DEF_INDEX_TEST			= true ;
+//### true=ログファイル出力
+var DEF_INDEX_LOG_OUTPUT        = false ;
+
+//### ログファイル自動オープン
+var DEF_INDEX_LOG_AUTOOPEN      = false ;
+
+//### true=テストモード
 var DEF_INDEX_TEST				= false ;
 
 
 
-//#####################################################
+//##############################################################
 //# ハンドラ（共通）
-//#####################################################
-///////////////////////////////////////////////////////
+//##############################################################
+
+//##############################################################
 //  ページロード
-///////////////////////////////////////////////////////
+//##############################################################
 function __handle_PageLoad()
 {
 	//  //### 応答形式の取得
 	let wRes = CLS_OSIF.sGet_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
+	
+	let wMessage ;
+	
+
+	wMessage = "" ;
+	CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage, inLine:__LINE__ }) ;
 
 
-	let wRes2 = CLS_OSIF.sGet_Resp({ inClass:"__handle222", inFunc:"__handle_PageLoad222" }) ;
+
+//	let wRes2 = CLS_OSIF.sGet_Resp({ inClass:"__handle222", inFunc:"__handle_PageLoad222" }) ;
+//	console.dir( wRes ) ;
+//	console.dir( wRes2 ) ;
 
 
-	console.dir( wRes ) ;
 
-	console.dir( wRes2 ) ;
+return wRes ;
 
 
-	return wRes ;
+
 
 
 
