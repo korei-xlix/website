@@ -29,11 +29,11 @@
 
 ## OS I/Fクラス / CLS_OSIF [osif.js]
 
-### 応答形式の取得 / sGet_Resp
+### 応答形式の取得 / Get_Resp
 
 ```text
 呼出：
-  sGet_Resp({
+  CLS_OSIF.Get_Resp({
     inClass :   text    クラス名,
     inFunc  :   text    関数名
   }) ;
@@ -61,11 +61,162 @@
 
 
 
-### 時間情報取得 / sGetTime
+### コンソール表示（console.log） / ConsLog
 
 ```text
 呼出：
-  sGet_Resp() ;
+  CLS_OSIF.ConsLog({
+    inText   String   コンソールに表示するテキスト
+  }) ;
+
+出力；
+    ※戻り値なし
+    コンソールにログを表示する。（console.log）
+
+```
+  
+
+
+
+### コンソール表示（console.error） / ConsError
+
+```text
+呼出：
+  CLS_OSIF.ConsError({
+    inText   String   コンソールに表示するテキスト
+  }) ;
+
+出力；
+    ※戻り値なし
+    コンソールにログを表示する。（console.error）
+
+```
+  
+
+
+
+### コンソール表示（console.warn） / ConsWarn
+
+```text
+呼出：
+  CLS_OSIF.ConsWarn({
+    inText   String   コンソールに表示するテキスト
+  }) ;
+
+出力；
+    ※戻り値なし
+    コンソールにログを表示する。（console.warn）
+
+```
+  
+
+
+
+### コンソール表示（console.info） / ConsInfo
+
+```text
+呼出：
+  CLS_OSIF.ConsInfo({
+    inText   String   コンソールに表示するテキスト
+  }) ;
+
+出力；
+    ※戻り値なし
+    コンソールにログを表示する。（console.info）
+
+```
+  
+
+
+
+### alertボックス表示 / Alert
+
+```text
+呼出：
+  CLS_OSIF.Alert({
+    inText   String   alertに表示するテキスト
+  }) ;
+
+出力；
+    ※戻り値なし
+    alertボックスを表示する。（alert）
+
+```
+  
+
+
+
+### confirmボックス表示 / Confirm
+
+```text
+呼出：
+  CLS_OSIF.Confirm({
+    inText   String   confirmに表示するテキスト
+  }) ;
+
+出力；
+    ※戻り値なし
+    confirmボックスを表示する。（confirm）
+
+```
+  
+
+
+
+### Windowプロンプト表示 / Prompt
+
+```text
+呼出：
+  CLS_OSIF.Prompt({
+    inText      String   window.promptに表示するテキスト
+    inDefault   String   入力ボックスのデフォルト値
+  }) ;
+
+出力；
+    ※戻り値なし
+    window.promptボックスを表示する。（window.prompt）
+
+```
+  
+
+
+
+### オブジェクトの中身 / ViewObj
+
+```text
+呼出：
+  CLS_OSIF.ViewObj({
+    inObj   Object   コンソールに表示するオブジェクト
+  }) ;
+
+出力；
+    ※戻り値なし
+
+```
+  
+
+
+
+### コンソールクリア / ConsClear
+
+```text
+呼出：
+  CLS_OSIF.ConsClear() ;
+
+出力；
+    ※戻り値なし
+    コンソールをクリアする。
+
+```
+  
+
+
+
+### 時間情報取得 / GetTime
+
+```text
+呼出：
+  CLS_OSIF.GetTime() ;
     ※引数なし
 
 出力；
@@ -81,11 +232,56 @@
 
 
 
-### 整数変換 / sValParse
+### 時間を取得し、STR_Timeにセットする / UpdateGTD
 
 ```text
 呼出：
-  sValParse({
+  CLS_OSIF.UpdateGTD() ;
+    ※引数なし
+
+出力；
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+    "Object"    : object,     datatimeオブジェクト
+    "TimeDate"  : timedate,   TimeDate  yyyy/mm/dd hh:mm:ss
+    "Hour"      : int,        時間だけ.h
+    "Week"      : int         曜日 0=月,1=火,2=水,3=木,4=金,5=土,6=日
+
+```
+  
+
+
+
+### 日数差を取得する / GetDateLag
+
+```text
+呼出：
+  CLS_OSIF.GetDateLag({
+    inSrcDate   timedate   比較元の日付時刻情報
+    inDstDate   timedate   比較先の日付時刻情報
+  }) ;
+
+出力；
+    "Result"  : false    bool      True=正常 / False=異常
+    "Reason"  : null     String    エラー理由
+    "LagDay"  : 0        int       日数差
+    "Future"  : false    bool      inDstDataがinSrcDateより未来時間
+
+```
+  
+
+
+
+
+
+
+
+
+### 整数変換 / ValParse
+
+```text
+呼出：
+  CLS_OSIF.ValParse({
     inValue   int   整数変換する文字列（あるいはオブジェクト？）
   }) ;
 
@@ -97,11 +293,11 @@
 
 
 
-### １桁なら先頭０埋め / sZeroPadding
+### １桁なら先頭０埋め / ZeroPadding
 
 ```text
 呼出：
-  sZeroPadding({
+  CLS_OSIF.ZeroPadding({
     inValue   int   ０埋めする数値
   }) ;
 
@@ -113,11 +309,11 @@
 
 
 
-### Array型・辞書型の要素数 / sGetObjectNum
+### Array型・辞書型の要素数 / GetObjectNum
 
 ```text
 呼出：
-  sGetObjectNum({
+  CLS_OSIF.GetObjectNum({
     inObject   array or dict  チェックするオブジェクト
   }) ;
 
@@ -132,12 +328,12 @@
 
 ## ログクラス / CLS_L [log.js]
 
-### ロギング / sL
+### ロギング / L
 
 ```text
 呼出：
-  static sL({
-    inRes     : object    応答情報（CLS_OSIF.sGet_Resp）
+  CLS_L.L({
+    inRes     : object    応答情報（CLS_OSIF.Get_Resp）
     inLevel   : text      ログレベル *1,
     inMessage : text      出力するエラーメッセージ,
     inLine    : text      エラー行（__LINE__ と書くとスタックが、ファイル名：行数をセットする）

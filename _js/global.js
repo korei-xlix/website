@@ -723,11 +723,10 @@ var gSTR_PreReg_ButtonCtrl = {} ;	//ボタン情報 仮登録
 //#####################################################
 //# クラス 外部参照用オブジェクト
 //#####################################################
-
-//var gCLS_PageObj	= new CLS_PageObj() ;
-//var gCLS_OSIF		= new CLS_OSIF() ;
-//var gCLS_Sys		= new CLS_Sys() ;
-//var gCLS_L			= new CLS_L() ;
+var gCLS_OSIF           = new CLS_OSIF() ;
+var gCLS_L              = new CLS_L() ;
+var gCLS_Obj            = new CLS_Obj() ;
+var gCLS_Sys            = new CLS_Sys() ;
 
 
 

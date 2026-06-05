@@ -18,7 +18,7 @@ class CLS_OSIF {
 //	//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
 //	let wRes = CLS_OSIF.sGet_Resp({ inClass:"Class Name", inFunc:"Function Name" }) ;
 
-	Get_Resp({
+	static sGet_Resp({
 		inClass=top.DEF_GVAL_TEXT_NONE,
 		inFunc =top.DEF_GVAL_TEXT_NONE
 	})
@@ -36,14 +36,10 @@ class CLS_OSIF {
 
 
 
-//##############################################################
-//# コンソール系
-//##############################################################
-
-//##############################################################
+//#####################################################
 //# コンソール表示（console.log）
-//##############################################################
-	ConsLog({
+//#####################################################
+	static sConsLog({
 		inText
 	})
 	{
@@ -54,10 +50,10 @@ class CLS_OSIF {
 
 
 
-//##############################################################
+//#####################################################
 //# コンソール表示（console.error）
-//##############################################################
-	ConsError({
+//#####################################################
+	static sConsError({
 		inText
 	})
 	{
@@ -68,10 +64,10 @@ class CLS_OSIF {
 
 
 
-//##############################################################
+//#####################################################
 //# コンソール表示（console.warn）
-//##############################################################
-	ConsWarn({
+//#####################################################
+	static sConsWarn({
 		inText
 	})
 	{
@@ -82,10 +78,10 @@ class CLS_OSIF {
 
 
 
-//##############################################################
+//#####################################################
 //# コンソール表示（console.info）
-//##############################################################
-	ConsInfo({
+//#####################################################
+	static sConsInfo({
 		inText
 	})
 	{
@@ -96,10 +92,10 @@ class CLS_OSIF {
 
 
 
-//##############################################################
+//#####################################################
 //# alertボックス表示
-//##############################################################
-	Alert({
+//#####################################################
+	static sAlert({
 		inText
 	})
 	{
@@ -111,16 +107,16 @@ class CLS_OSIF {
 		{
 			wText = "Open Alert Box" ;
 			wText = wText + '\n' + "  inText=" + String(inText) ;
-			this.ConsInfo({ inText:wText });
+			this.sConsInfo({ inText:wText });
 		}
 	}
 
 
 
-//##############################################################
+//#####################################################
 //# confirmボックス表示
-//##############################################################
-	Confirm({
+//#####################################################
+	static sConfirm({
 		inText
 	})
 	{
@@ -132,17 +128,17 @@ class CLS_OSIF {
 			wText = "Open Confirm Box" ;
 			wText = wText + '\n' + "  inText=" + String(inText) ;
 			wText = wText + '\n' + "  Input=" + String(wInput) ;
-			this.ConsInfo({ inText:wText });
+			this.sConsInfo({ inText:wText });
 		}
 		return wInput ;
 	}
 
 
 
-//##############################################################
+//#####################################################
 //# Windowプロンプト表示
-//##############################################################
-	Prompt({
+//#####################################################
+	static sPrompt({
 		inText,
 		inDefault=""
 	})
@@ -155,7 +151,7 @@ class CLS_OSIF {
 			wText = "Open Window Prompt" ;
 			wText = wText + '\n' + "  inText=" + String(inText) ;
 			wText = wText + '\n' + "  Input=" + String(wInput) ;
-			this.ConsInfo({ inText:wText });
+			this.sConsInfo({ inText:wText });
 		}
 		return wInput ;
 	}
@@ -163,37 +159,9 @@ class CLS_OSIF {
 
 
 //##############################################################
-//# オブジェクトの中身
-//##############################################################
-	ViewObj({
-		inObj
-	})
-	{
-		console.dir( inObj ) ;
-		return ;
-	}
-
-
-
-//##############################################################
-//# コンソールクリア
-//##############################################################
-	ConsClear()
-	{
-		console.clear() ;
-		return ;
-	}
-
-
-
-//##############################################################
-//# 時間情報系
-//##############################################################
-
-//##############################################################
 //# 時間情報取得
 //##############################################################
-	GetTime()
+	static sGetTime()
 	{
 		let wOBJ_TimeDate, wSTR_TimeDate, wARR_TimeDate, wCHR_TimeDate ;
 		let wValue ;
@@ -231,7 +199,7 @@ class CLS_OSIF {
 			// ゼロ補完
 			for( let wKey in wSTR_TimeDate )
 			{
-				wValue = this.ZeroPadding({ inValue: wSTR_TimeDate[wKey] }) ;
+				wValue = this.sZeroPadding({ inValue: wSTR_TimeDate[wKey] }) ;
 				wARR_TimeDate.push( wValue ) ;
 			}
 			
@@ -261,121 +229,18 @@ class CLS_OSIF {
 		wRes['Hour']     = wSTR_TimeDate[3] ;	//時間だけ
 		wRes['Week']     = wSTR_TimeDate[6] ;	//曜日
 		wRes['Result']   = true ;
-        
+
 		return wRes ;
 	}
 
 
 
-//##############################################################
-//# 時間を取得し、STR_Timeにセットする
-//##############################################################
-	UpdateGTD()
-	{
-		////////////////////////////////
-		// 時間取得
-		let wRes = this.GetTime() ;
-		if( wRes['Result']!=true )
-		{
-			return wRes ;
-		}
-		
-		////////////////////////////////
-		// STR_Timeにセットする
-		top.gSTR_Time.TimeDate = wRes['TimeDate'] ;
-		wRes['Result'] = true ;
-		return wRes ;
-	}
 
-
-
-//##############################################################
-//# 日数差を取得する
-//##############################################################
-	GetDateLag({
-		inSrcDate,
-		inDstDate
-	})
-	{
-		let wSubRes, wSrcDate, wDstDate ;
-		let wValue ;
-		
-		let wRes = {
-			"Result"	: false,				//True=正常 / False=異常
-			"Reason"	: top.DEF_GVAL_NULL,	//エラー理由
-			"LagDay"	: 0,					//日数差
-			"Future"	: false					//DstDataがSrcDateより未来時間
-		} ;
-		
-		try
-		{
-			////////////////////////////////
-			// 時間の分解
-			
-			//### inSrcDate の分解
-			wSubRes = this.Split({
-				inString  : inSrcDate,
-				inPattern : "-"
-			}) ;
-			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=3 ))
-			{
-				wRes['Reason'] = "日付が壊れてます: inSrcDate=" + String(inSrcDate) ;
-				return wRes ;
-			}
-			wSrcDate = wSubRes['Data'] ;
-			
-			//### inDstDate の分解
-			wSubRes = this.Split({
-				inString  : inDstDate,
-				inPattern : "-"
-			}) ;
-			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=3 ))
-			{
-				wRes['Reason'] = "日付が壊れてます: inDstDate=" + String(inDstDate) ;
-				return wRes ;
-			}
-			wDstDate = wSubRes['Data'] ;
-			
-			////////////////////////////////
-			// Date型に変換
-			wSrcDate = new Date( wSrcDate[0], wSrcDate[1], wSrcDate[2] ) ;
-			wDstDate = new Date( wDstDate[0], wDstDate[1], wDstDate[2] ) ;
-			
-			////////////////////////////////
-			// 日数差を求める
-			if( wDstDate>=wSrcDate )
-			{///DstDataがSrcDateより未来時間
-				wValue = ( wDstDate - wSrcDate ) / 86400000 ;
-				wRes['Future'] = true ;
-			}
-			else
-			{///DstDataがSrcDateより過去時間
-				wValue = ( wSrcDate - wDstDate ) / 86400000 ;
-				wRes['Future'] = false ;
-			}
-		}
-		catch(e)
-		{
-			//##############################
-			//# 例外処理
-			wRes['Reason'] = this.ExpStr({ inE:e }) ;
-			return wRes ;
-		}
-		wRes['LagDay'] = wValue ;
-		wRes['Result'] = true ;
-		return wRes ;
-	}
-
-
-
-//##############################################################
-//# 整数・文字列操作系
-//##############################################################
 
 //##############################################################
 //# 整数変換
 //##############################################################
-	ValParse({
+	static sValParse({
 		inValue
 	})
 	{
@@ -403,7 +268,7 @@ class CLS_OSIF {
 //##############################################################
 //# １桁なら先頭０埋め
 //##############################################################
-	ZeroPadding({
+	static sZeroPadding({
 		inValue
 	})
 	{
@@ -411,7 +276,7 @@ class CLS_OSIF {
 		
 		////////////////////////////////
 		// 数値変換
-		wValue = this.ValParse({ inValue:inValue }) ;
+		wValue = this.sValParse({ inValue:inValue }) ;
 		if( wValue==top.DEF_GVAL_NULL )
 		{
 			//失敗
@@ -432,7 +297,7 @@ class CLS_OSIF {
 //##############################################################
 //# Array型・辞書型の要素数
 //##############################################################
-	GetObjectNum({
+	static sGetObjectNum({
 		inObject
 	})
 	{
@@ -543,9 +408,131 @@ class CLS_OSIF {
 
 
 
+//#####################################################
+//# 時間を取得し、STR_Timeにセットする
+//#####################################################
+	static sUpdateGTD()
+	{
+		/////////////////////////////
+		// 時間取得
+		let wRes = this.sGetTime() ;
+		if( wRes['Result']!=true )
+		{
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// STR_Timeにセットする
+		top.gSTR_Time.TimeDate = wRes['TimeDate'] ;
+		wRes['Result'] = true ;
+		return wRes ;
+	}
 
 
 
+
+
+
+//#####################################################
+//# 日数差を取得する
+//#####################################################
+	static sGetDateLag({
+		inSrcDate,
+		inDstDate
+	})
+	{
+		let wSubRes, wSrcDate, wDstDate ;
+		let wValue ;
+		
+		let wRes = {
+			"Result"	: false,				//True=正常 / False=異常
+			"Reason"	: top.DEF_GVAL_NULL,	//エラー理由
+			"LagDay"	: 0,					//日数差
+			"Future"	: false					//DstDataがSrcDateより未来時間
+		} ;
+		
+		try
+		{
+			/////////////////////////////
+			// 時間の分解
+			
+			//### inSrcDate の分解
+			wSubRes = this.sSplit({
+				inString  : inSrcDate,
+				inPattern : "-"
+			}) ;
+			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=3 ))
+			{
+				wRes['Reason'] = "日付が壊れてます: inSrcDate=" + String(inSrcDate) ;
+				return wRes ;
+			}
+			wSrcDate = wSubRes['Data'] ;
+			
+			//### inDstDate の分解
+			wSubRes = this.sSplit({
+				inString  : inDstDate,
+				inPattern : "-"
+			}) ;
+			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=3 ))
+			{
+				wRes['Reason'] = "日付が壊れてます: inDstDate=" + String(inDstDate) ;
+				return wRes ;
+			}
+			wDstDate = wSubRes['Data'] ;
+			
+			/////////////////////////////
+			// Date型に変換
+			wSrcDate = new Date( wSrcDate[0], wSrcDate[1], wSrcDate[2] ) ;
+			wDstDate = new Date( wDstDate[0], wDstDate[1], wDstDate[2] ) ;
+			
+			/////////////////////////////
+			// 日数差を求める
+			if( wDstDate>=wSrcDate )
+			{///DstDataがSrcDateより未来時間
+				wValue = ( wDstDate - wSrcDate ) / 86400000 ;
+				wRes['Future'] = true ;
+			}
+			else
+			{///DstDataがSrcDateより過去時間
+				wValue = ( wSrcDate - wDstDate ) / 86400000 ;
+				wRes['Future'] = false ;
+			}
+		}
+		catch(e)
+		{
+			//###########################
+			//# 例外処理
+			wRes['Reason'] = this.sExpStr({ inE:e }) ;
+			return wRes ;
+		}
+		wRes['LagDay'] = wValue ;
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+//#####################################################
+//# オブジェクトの中身
+//#####################################################
+	static sViewObj({
+		inObj
+	})
+	{
+		console.dir( inObj ) ;
+		return ;
+	}
+
+
+
+//#####################################################
+//# コンソールクリア
+//#####################################################
+	static sConsClear()
+	{
+		console.clear() ;
+		return ;
+	}
 
 
 

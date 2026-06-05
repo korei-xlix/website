@@ -37,14 +37,19 @@ var DEF_INDEX_TEST				= false ;
 //##############################################################
 function __handle_PageLoad()
 {
+
+		console.dir( gCLS_OSIF ) ;
+
+
+
 	//  //### 応答形式の取得
-	let wRes = CLS_OSIF.sGet_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
+	let wRes = gCLS_OSIF.Get_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
 	
 	let wMessage ;
 	
 
 	wMessage = "" ;
-	CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage, inLine:__LINE__ }) ;
+	gCLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage, inLine:__LINE__ }) ;
 
 
 
