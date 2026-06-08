@@ -369,8 +369,35 @@ class CLS_OSIF {
 
 
 //##############################################################
-//# 整数・文字列操作系
+//# 整数系
 //##############################################################
+
+//##############################################################
+//# 整数かチェック
+//##############################################################
+	CheckVal({
+		inValue
+	})
+	{
+		let wValue ;
+		
+		wValue = false ;
+		try
+		{
+			if( isNaN( inValue )==false )
+			{///数値
+				wValue = true ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+		}
+		return wValue ;
+	}
+
+
 
 //##############################################################
 //# 整数変換
@@ -392,10 +419,132 @@ class CLS_OSIF {
 		}
 		catch(e)
 		{
-			//例外
+			//##############################
+			//# 例外処理
 			wValue = top.DEF_GVAL_NULL ;
 		}
 		return wValue ;
+	}
+
+
+
+//##############################################################
+//# 少数変換
+//##############################################################
+	FloorParse({
+		inValue
+	})
+	{
+		let wValue ;
+		
+		try
+		{
+			wValue = Math.floor( inValue ) ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			wValue = top.DEF_GVAL_NULL ;
+		}
+		return wValue ;
+	}
+
+
+
+//##############################################################
+//# ランダム値取得
+//##############################################################
+	Rand({
+		inValue
+	})
+	{
+		let wValue, wText ;
+		
+		try
+		{
+			wValue = Math.floor( Math.random() * inValue ) ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			wValue = top.DEF_GVAL_NULL ;
+			wText = "CLS_OSIF::sRand: exception: " + String(e)  ;
+			this.ConsError({ inText:wText });
+		}
+		return wValue ;
+	}
+
+
+
+//##############################################################
+//# 文字列系
+//##############################################################
+
+//##############################################################
+//# 文字分割
+//##############################################################
+	Split({
+		inString,
+		inPattern
+	})
+	{
+		let wRes, wString ;
+		
+		wRes = {
+			"Result"	: false,
+			"Data"		: new Array(),
+			"Length"	: 0
+		} ;
+		
+		try
+		{
+			wString = String( inString ) ;
+			wString = wString.split( inPattern ) ;
+			wRes['Data']	= wString ;
+			wRes['Length']	= wString.length ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+		}
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+//##############################################################
+//# 文字切り抜き
+//##############################################################
+	SubString({
+		inString,
+		inStart = 0,
+		inLength = -1
+	})
+	{
+		let wString ;
+		
+		try
+		{
+			if( inLength==-1 )
+			{///開始位置から、最後まで切り抜く
+				wString = inString.substring( inStart ) ;
+			}
+			else
+			{///検索位置から、指定範囲まで切り抜く
+				wString = inString.substring( inStart, inLength ) ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			wString = top.DEF_GVAL_NULL ;
+		}
+		return wString ;
 	}
 
 
@@ -423,6 +572,109 @@ class CLS_OSIF {
 		if( wValue<10 )
 		{
 			wValue = "0" + wValue ;
+		}
+		return wValue ;
+	}
+
+
+
+//##############################################################
+//# 小文字変換
+//##############################################################
+	StrLow({
+		inString
+	})
+	{
+		let wString ;
+		
+		try
+		{
+			wString = inString.toLowerCase() ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			wString = top.DEF_GVAL_NULL ;
+		}
+		return wString ;
+	}
+
+
+
+//##############################################################
+//# 検索
+//##############################################################
+	IndexOf({
+		inString,
+		inPattern,
+		inIndex = 0
+	})
+	{
+		let wValue ;
+		
+		try
+		{
+			wValue = inString.indexOf( inPattern, inIndex ) ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			wValue = -1 ;
+		}
+		return wValue ;
+	}
+
+
+
+//##############################################################
+//# 例外メッセージの組み立て
+//##############################################################
+	ExpStr({
+		inE,
+		inA=top.DEF_GVAL_TEXT_NONE
+	})
+	{
+		let wText ;
+		
+		wText = "Exception: " + String(inE.name) + ": " + String(inE.message) ;
+		if( inA!=top.DEF_GVAL_TEXT_NONE )
+		{
+			wText = wText + ": " + inA ;
+		}
+		return wText ;
+	}
+
+
+
+//##############################################################
+//# Array型・辞書型の操作系
+//##############################################################
+
+//##############################################################
+//# 辞書型かチェック
+//##############################################################
+	CheckObject({
+		inObject
+	})
+	{
+		let wValue ;
+		
+		wValue = false ;
+		try
+		{
+			////////////////////////////////
+			// 辞書型の場合
+			if( ( inObject instanceof Object )==true )
+			{
+				wValue = true ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外
 		}
 		return wValue ;
 	}
@@ -464,207 +716,10 @@ class CLS_OSIF {
 
 
 
-
-
-
-//#####################################################
-//# 処理停止
-//#####################################################
-	static sExit()
-	{
-		//例外を投げて強制停止する
-		throw new Error( top.DEF_GVAL_SYSTEM_EXIT ) ;
-	}
-
-
-
-//#####################################################
-//# コールバック
-//#####################################################
-	static sCallBack({
-		callback,
-		inArg = []
-	})
-	{
-		let wSubRes, wName ;
-		
-		try
-		{
-			wName = callback.name ;
-			callback( inArg ) ;
-		}
-		catch(e)
-		{
-			let wText = "CLS_OSIF.sCallBack: Func=" + String(callback.name) + '\n' ;
-			wText = wText + this.sExpStr({ inE:e }) ;
-			this.sConsError({ inText:wText }) ;
-			return false ;
-		}
-		
-		if( top.DEF_INDEX_TEST==true )
-		{
-			wSubRes = this.sGetInObject({
-				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
-				inKey	 : wName
-			}) ;
-			if( wSubRes==false )
-			{////除外がなければログ出力する
-				//### コールバックログの出力
-				//      定期処理のコールバックは除外
-				let wText = "CLS_OSIF.sCallBack: Called Callback: Func=" + String(callback.name) + '\n' ;
-				this.sConsInfo({ inText:wText });
-			}
-		}
-		return true ;
-	}
-
-
-
-//#####################################################
-//# 遅延処理
-//#####################################################
-	static sSleep({
-		inMsec = 1000
-	})
-	{
-		return new Promise( function( resolve ) {
-			setTimeout( resolve, inMsec ) ;
-		}) ;
-	}
-	// Promise: 非同期処理の完了（もしくは失敗）の結果およびその結果の値を表します。
-	//   待機 (pending): 初期状態。成功も失敗もしていません。
-	//   履行 (fulfilled): 処理が成功して完了したことを意味します。
-	//   拒否 (rejected): 処理が失敗したことを意味します。
-	// 
-	// resolve  非同期で実行する関数
-	// reject   実行時エラーになった時に実行する関数
-	// 
-	// 参考: https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise
-
-
-
-
-
-
-
-
-
-//#####################################################
-//# 小文字変換
-//#####################################################
-	static sStrLow({
-		inString
-	})
-	{
-		let wString ;
-		
-		try
-		{
-			wString = inString.toLowerCase() ;
-		}
-		catch(e)
-		{
-			//例外
-			wString = top.DEF_GVAL_NULL ;
-		}
-		return wString ;
-	}
-
-
-
-//#####################################################
-//# 文字分割
-//#####################################################
-	static sSplit({
-		inString,
-		inPattern
-	})
-	{
-		let wRes, wString ;
-		
-		wRes = {
-			"Result"	: false,
-			"Data"		: new Array(),
-			"Length"	: 0
-		} ;
-		
-		try
-		{
-			wString = String( inString ) ;
-			wString = wString.split( inPattern ) ;
-			wRes['Data']	= wString ;
-			wRes['Length']	= wString.length ;
-		}
-		catch(e)
-		{///例外
-		}
-		wRes['Result'] = true ;
-		return wRes ;
-	}
-
-
-
-//#####################################################
-//# 検索
-//#####################################################
-	static sIndexOf({
-		inString,
-		inPattern,
-		inIndex = 0
-	})
-	{
-		let wValue ;
-		
-		try
-		{
-			wValue = inString.indexOf( inPattern, inIndex ) ;
-		}
-		catch(e)
-		{
-			//例外
-			wValue = -1 ;
-		}
-		return wValue ;
-	}
-
-
-
-//#####################################################
-//# 文字切り抜き
-//#####################################################
-	static sSubString({
-		inString,
-		inStart = 0,
-		inLength = -1
-	})
-	{
-		let wString ;
-		
-		try
-		{
-			if( inLength==-1 )
-			{///開始位置から、最後まで切り抜く
-				wString = inString.substring( inStart ) ;
-			}
-			else
-			{///検索位置から、指定範囲まで切り抜く
-				wString = inString.substring( inStart, inLength ) ;
-			}
-		}
-		catch(e)
-		{
-			//例外
-			wString = top.DEF_GVAL_NULL ;
-		}
-		return wString ;
-	}
-
-
-
-//#####################################################
+//##############################################################
 //# 辞書型のキー一覧を返す
-//#####################################################
-	static sGetObjectList({
+//##############################################################
+	GetObjectList({
 		inObject
 	})
 	{
@@ -673,7 +728,7 @@ class CLS_OSIF {
 		wValue = top.DEF_GVAL_NULL ;
 		try
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// 辞書型の場合
 			if( ( inObject instanceof Object )==true )
 			{
@@ -681,47 +736,19 @@ class CLS_OSIF {
 			}
 		}
 		catch(e)
-		{///例外
-		}
-		return wValue ;
-	}
-
-
-
-
-
-
-//#####################################################
-//# 辞書型かチェック
-//#####################################################
-	static sCheckObject({
-		inObject
-	})
-	{
-		let wValue ;
-		
-		wValue = false ;
-		try
 		{
-			/////////////////////////////
-			// 辞書型の場合
-			if( ( inObject instanceof Object )==true )
-			{
-				wValue = true ;
-			}
-		}
-		catch(e)
-		{///例外
+			//##############################
+			//# 例外
 		}
 		return wValue ;
 	}
 
 
 
-//#####################################################
+//##############################################################
 //# Array型・辞書型にKeyを含むか
-//#####################################################
-	static sGetInObject({
+//##############################################################
+	GetInObject({
 		inObject,
 		inKey,
 		inDD = false	// true=辞書型のデータ重複チェック false=キー重複チェック
@@ -732,7 +759,7 @@ class CLS_OSIF {
 		wValue = false ;
 		try
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// Array型の場合
 			if( ( inObject instanceof Array )==true )
 			{
@@ -741,7 +768,7 @@ class CLS_OSIF {
 					wValue = true ;
 				}
 			}
-			/////////////////////////////
+			////////////////////////////////
 			// 辞書型の場合
 			else if( ( inObject instanceof Object )==true )
 			{
@@ -766,112 +793,88 @@ class CLS_OSIF {
 			}
 		}
 		catch(e)
-		{///例外
+		{
+			//##############################
+			//# 例外
 		}
 		return wValue ;
 	}
 
 
 
-//#####################################################
-//# 整数かチェック
-//#####################################################
-	static sCheckVal({
-		inValue
+//##############################################################
+//# その他の処理
+//##############################################################
+
+//##############################################################
+//# 処理停止
+//##############################################################
+	Exit()
+	{
+		//例外を投げて強制停止する
+		throw new Error( top.DEF_GVAL_SYSTEM_EXIT ) ;
+	}
+
+
+
+//##############################################################
+//# コールバック
+//##############################################################
+	CallBack({
+		callback,
+		inArg = []
 	})
 	{
-		let wValue ;
+		let wSubRes, wName ;
 		
-		wValue = false ;
 		try
 		{
-			if( isNaN( inValue )==false )
-			{///数値
-				wValue = true ;
+			wName = callback.name ;
+			callback( inArg ) ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外
+			let wText = "CLS_OSIF.sCallBack: Func=" + String(callback.name) + '\n' ;
+			wText = wText + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wText }) ;
+			return false ;
+		}
+		
+		if( top.DEF_INDEX_TEST==true )
+		{
+			wSubRes = this.GetInObject({
+				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
+				inKey	 : wName
+			}) ;
+			if( wSubRes==false )
+			{////除外がなければログ出力する
+				//### コールバックログの出力
+				//      定期処理のコールバックは除外
+				let wText = "CLS_OSIF.sCallBack: Called Callback: Func=" + String(callback.name) + '\n' ;
+				this.ConsInfo({ inText:wText });
 			}
 		}
-		catch(e)
-		{///例外
-		}
-		return wValue ;
+		return true ;
 	}
 
 
 
-
-
-
-//#####################################################
-//# 少数変換
-//#####################################################
-	static sFloorParse({
-		inValue
+//##############################################################
+//# 遅延処理
+//##############################################################
+	Sleep({
+		inMsec = 1000
 	})
 	{
-		let wValue ;
-		
-		try
-		{
-			wValue = Math.floor( inValue ) ;
-		}
-		catch(e)
-		{
-			//例外
-			wValue = top.DEF_GVAL_NULL ;
-		}
-		return wValue ;
+		return new Promise( function( resolve ) {
+			setTimeout( resolve, inMsec ) ;
+		}) ;
 	}
 
 
 
-
-
-
-//#####################################################
-//# ランダム値取得
-//#####################################################
-	static sRand({
-		inValue
-	})
-	{
-		let wValue, wText ;
-		
-		try
-		{
-			wValue = Math.floor( Math.random() * inValue ) ;
-		}
-		catch(e)
-		{
-			//例外
-			wValue = top.DEF_GVAL_NULL ;
-			wText = "CLS_OSIF::sRand: exception: " + String(e)  ;
-			this.sConsError({ inText:wText });
-		}
-		return wValue ;
-	}
-
-
-
-//#####################################################
-//# 例外メッセージの組み立て
-//#####################################################
-	static sExpStr({
-		inE,
-		inA=top.DEF_GVAL_TEXT_NONE
-	})
-	{
-		let wText ;
-		
-		wText = "Exception: " + String(inE.name) + ": " + String(inE.message) ;
-		if( inA!=top.DEF_GVAL_TEXT_NONE )
-		{
-			wText = wText + ": " + inA ;
-		}
-		return wText ;
-	}
-
-
-
-//#####################################################
+//##############################################################
 }
 

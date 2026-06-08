@@ -17,7 +17,51 @@
   * [謝辞 (Acknowledgment)](#謝辞--acknowledgment)  ***  
   * [参考 (Material)](#参考--material)  ***  
 
+
 * [OS I/Fクラス / CLS_OSIF](#os-ifクラス--cls_osif-osifjs)
+
+  * [応答形式の取得 / Get_Resp](#応答形式の取得--get_resp)
+
+  * [コンソール系](#コンソール表示consolelog--conslog)
+    * [コンソール表示（console.log） / ConsLog](#コンソール表示consolelog--conslog)
+    * [コンソール表示（console.error） / ConsError](#コンソール表示consoleerror--conserror)
+    * [コンソール表示（console.warn） / ConsWarn](#コンソール表示consolewarn--conswarn)
+    * [コンソール表示（console.info）](#コンソール表示consoleinfo--consinfo)
+    * [alertボックス表示 / Alert](#alertボックス表示--alert)
+    * [confirmボックス表示 / Confirm](#confirmボックス表示--confirm)
+    * [Windowプロンプト表示 / Prompt](#windowプロンプト表示--prompt)
+    * [オブジェクトの中身 / ViewObj](#オブジェクトの中身--viewobj)
+    * [コンソールクリア / ConsClear](#コンソールクリア--consclear)
+
+  * [時間情報系](#時間情報取得--gettime)
+    * [時間情報取得 / GetTime](#時間情報取得--gettime)
+    * [時間を取得し、STR_Timeにセットする / UpdateGTD](#時間を取得しstr_timeにセットする--updategtd)
+    * [日数差を取得する / GetDateLag](#日数差を取得する--getdatelag)
+
+  * [整数系](#整数かチェック--checkval)
+    * [整数かチェック / CheckVal](#整数かチェック--checkval)
+    * [整数変換 / ValParse](#整数変換--valparse)
+    * [少数変換 / FloorParse](#少数変換--floorparse)
+    * [ランダム値取得 / Rand](#ランダム値取得--rand)
+
+  * [文字列系](#文字分割--split)
+    * [文字分割 / Split](#文字分割--split)
+    * [文字切り抜き / SubString](#文字切り抜き--substring)
+    * [１桁なら先頭０埋め / ZeroPadding](#１桁なら先頭０埋め--zeropadding)
+    * [小文字変換 / StrLow](#小文字変換--strlow)
+    * [検索 / IndexOf](#検索--indexof)
+    * [例外メッセージの組み立て / ExpStr](#例外メッセージの組み立て--expstr)
+
+  * [Array型・辞書型の操作系](#辞書型かチェック--checkobject)
+    * [辞書型かチェック / CheckObject](#辞書型かチェック--checkobject)
+    * [Array型・辞書型の要素数 / GetObjectNum](#array型辞書型の要素数--getobjectnum)
+    * [辞書型のキー一覧を返す / GetObjectList](#辞書型のキー一覧を返す--getobjectlist)
+    * [Array型・辞書型にKeyを含むか / GetInObject](#array型辞書型にkeyを含むか--getinobject)
+
+  * [その他の処理](#処理停止--exit)
+    * [処理停止 / Exit](#処理停止--exit)
+    * [コールバック / CallBack](#コールバック--callback)
+    * [遅延処理 / Sleep](#遅延処理--sleep)
 
 
 * [ログクラス / CLS_L](#ログクラス--cls_l-logjs)
@@ -272,8 +316,19 @@
 
 
 
+### 整数かチェック / CheckVal
 
+```text
+呼出：
+  CLS_OSIF.CheckVal({
+    inValue   int   チェックする整数と思われるオブジェクト
+  }) ;
 
+出力；
+  bool   true=整数 / false=整数ではない
+
+```
+  
 
 
 
@@ -287,6 +342,75 @@
 
 出力；
   int   整数変換した数値  null=処理失敗
+
+```
+  
+
+
+
+### 少数変換 / FloorParse
+
+```text
+呼出：
+  CLS_OSIF.FloorParse({
+    inValue   int   少数変換する数値
+  }) ;
+
+出力；
+  float   少数変換した数値  null=処理失敗
+
+```
+  
+
+
+
+### ランダム値取得 / Rand
+
+```text
+呼出：
+  CLS_OSIF.Rand({
+    inValue   int   取得する乱数の最大範囲
+  }) ;
+
+出力；
+  int   乱数   null=処理失敗
+
+```
+  
+
+
+
+### 文字分割 / Split
+
+```text
+呼出：
+  CLS_OSIF.Split({
+    inString    String   分割する文字列
+    inPattern   String   分割する文字列
+  }) ;
+
+出力；
+  "Result"  : false         処理結果  true=正常 / false=失敗
+  "Data"    : new Array()   分割した文字列（配列型）
+  "Length"  : 0             文字列の数
+
+```
+  
+
+
+
+### 文字切り抜き / SubString
+
+```text
+呼出：
+  CLS_OSIF.SubString({
+    inString    String   切り抜く文字列
+    inStart     int      切り抜く最初の位置
+    inLength    int      切り抜く範囲（なければ最後まで切り抜く）
+  }) ;
+
+出力；
+  string   切り抜いた文字列   null=処理失敗
 
 ```
   
@@ -309,6 +433,73 @@
 
 
 
+### 小文字変換 / StrLow
+
+```text
+呼出：
+  CLS_OSIF.StrLow({
+    inString    String   小文字変換する文字列
+  }) ;
+
+出力；
+  string   小文字変換した文字列   null=処理失敗
+
+```
+  
+
+
+
+### 検索 / IndexOf
+
+```text
+呼出：
+  CLS_OSIF.IndexOf({
+    inString    String   検索をかける文字列
+    inPattern   String   検索する文字列
+    inIndex     int      検索の最初の位置（なければ先頭から検索）
+  }) ;
+
+出力；
+  int   ヒットした検索位置   -1=ヒットなし
+
+```
+  
+
+
+
+### 例外メッセージの組み立て / ExpStr
+
+```text
+呼出：
+  CLS_OSIF.IndexOf({
+    inE   String   catchしたメッセージ
+    inA   String   メッセージに追加するメッセージ
+  }) ;
+
+出力；
+  string   組み立てた例外メッセージ
+
+```
+  
+
+
+
+### 辞書型かチェック / CheckObject
+
+```text
+呼出：
+  CLS_OSIF.GetObjectNum({
+    inObject   array or dict  チェックするオブジェクト
+  }) ;
+
+出力；
+  bool   true=辞書型 / false=辞書型ではない
+
+```
+  
+
+
+
 ### Array型・辞書型の要素数 / GetObjectNum
 
 ```text
@@ -322,6 +513,102 @@
 
 ```
   
+
+
+
+### 辞書型のキー一覧を返す / GetObjectList
+
+```text
+呼出：
+  CLS_OSIF.GetObjectList({
+    inObject   dict  対象の辞書
+  }) ;
+
+出力；
+  array   オブジェクトのキー一覧  null=処理失敗
+
+```
+  
+
+
+
+### Array型・辞書型にKeyを含むか / GetInObject
+
+```text
+呼出：
+  CLS_OSIF.GetInObject({
+    inObject   dict    対象の辞書
+    inKey      String  検索するキー文字
+    inDD       bool    true=重複チェックする / false=重複チェックしない
+  }) ;
+
+出力；
+  bool   true=キーあり / false=キーなし
+
+```
+  
+
+
+
+### 処理停止 / Exit
+
+```text
+呼出：
+  CLS_OSIF.Exit() ;
+    ※引数なし
+
+出力；
+    ※戻り値なし
+
+```
+  
+
+
+
+### コールバック / CallBack
+
+```text
+呼出：
+  CLS_OSIF.CallBack({
+    callback   callback   コールバック先関数
+    inArg      array      コールバック先関数に渡す引数
+  }) ;
+
+出力；
+    bool   true=処理正常 / false=処理失敗
+
+```
+  
+
+
+
+### 遅延処理 / Sleep
+
+```text
+呼出：
+  CLS_OSIF.Sleep({
+    inMsec   int   遅延する時間（msec）
+  }) ;
+
+出力；
+    ※戻り値なし
+
+  // Promise: 非同期処理の完了（もしくは失敗）の結果およびその結果の値を表します。
+  //   待機 (pending): 初期状態。成功も失敗もしていません。
+  //   履行 (fulfilled): 処理が成功して完了したことを意味します。
+  //   拒否 (rejected): 処理が失敗したことを意味します。
+  // 
+  // resolve  非同期で実行する関数
+  // reject   実行時エラーになった時に実行する関数
+  // 
+  // 参考: https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+
+
+```
+  
+
+
 
 
 

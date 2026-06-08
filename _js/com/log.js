@@ -58,7 +58,7 @@ class CLS_L {
 //##############################################################
 //# ロギング
 //##############################################################
-	static sL({
+	L({
 		inRes,
 		inLevel,
 		inMessage = top.DEF_GVAL_NULL,
@@ -68,13 +68,13 @@ class CLS_L {
 	{
 		let wRes, wResSet, wSubRes, wResTime ;
 		let wSTR_Data, wTimeDate ;
-		let wFLG_Check, wIndex ;
+		let wReason, wIndex ;
 		
 		//### 応答形式の取得（ロギングセット用）
-		wResSet = gCLS_OSIF.sGet_Resp({}) ;
+		wResSet = top.gCLS_OSIF.Get_Resp({}) ;
 		
 		//### 応答形式の取得（内部処理用・本関数）
-		wRes = gCLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"sL" }) ;
+		wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"sL" }) ;
 		
 		////////////////////////////////
 		// 引数を取得
@@ -85,62 +85,65 @@ class CLS_L {
 		wResSet['Responce'] = inRes['Responce'] ;
 		wResSet['StatusCode'] = inRes['StatusCode'] ;
 		
-		wFLG_Check = true ;
+		wReason = top.DEF_GVAL_TEXT_NONE ;
 		////////////////////////////////
 		// パラメータチェック
 		
 		//### Result
 		if(( wResSet['Result']!=true) && ( wResSet['Result']!=false ))
 		{
-			wFLG_Check = false ;
+			wReason = "Result不正" ;
 		}
 		
 		//### Class
 		if(( wResSet['Class']=="") || ( wResSet['Class']==top.DEF_GVAL_NULL ))
 		{
-			wFLG_Check = false ;
+			wReason = "Class不正" ;
 		}
 		
 		//### Func
 		if(( wResSet['Func']=="") || ( wResSet['Func']==top.DEF_GVAL_NULL ))
 		{
-			wFLG_Check = false ;
+			wReason = "Func不正" ;
 		}
 		//### Reason
 		if( wResSet['Result']==false)
 		{
 			if(( wResSet['Reason']=="") || ( wResSet['Reason']==top.DEF_GVAL_NULL ))
 			{
-				wFLG_Check = false ;
+				wReason = "Reason不正" ;
 			}
 		}
 		
 		//### ログレベル
-		if( !( inLevel in top.DEF_GVAL_STR_LOG_LOG_LEVEL ) )
+		if( !top.gCLS_OSIF.GetInObject({
+		    inObject:top.DEF_GVAL_STR_LOG_LOG_LEVEL,
+		    inKey:inLevel 
+		}) )
 		{
-			wFLG_Check = false ;  //エラー
+			wReason = "ログレベル不正" ;
 		}
         
 		//### Message
 		if(( inMessage=="" ) && ( inMessage==top.DEF_GVAL_NULL ))
 		{
-			wFLG_Check = false ;  //エラー
+			wReason = "メッセージ不正" ;
 		}
 		
 		//### Line
 		if(( inLine=="" ) && ( inLine==top.DEF_GVAL_NULL ))
 		{
-			wFLG_Check = false ;  //エラー
+			wReason = "inLine不正" ;
 		}
 		
 		wTimeDate = top.DEF_GVAL_TIMEDATE ;
 		////////////////////////////////
 		// 日時の取得
-		wResTime = gCLS_OSIF.sGetTime() ;
+		wResTime = top.gCLS_OSIF.GetTime() ;
 		if( wResTime['Result']!=true )
 		{
 			// 失敗: この処理のエラーをセット
-			wRes['Reason'] = "時間情報の取得に失敗"
+			wRes['Reason'] = "時間情報の取得に失敗" ;
 			this.__setLog({
 				inRes       : wRes,
 				inLevel     : "C",
@@ -156,16 +159,33 @@ class CLS_L {
 		////////////////////////////////
 		// パラメータエラーの場合
 		// エラーをログセット
-		if( wFLG_Check==false )
+		if( wReason!=top.DEF_GVAL_TEXT_NONE )
 		{
-			// この処理のエラーをセット
-			wRes['Reason'] = "ロギングパラメータ不正"
-			this.__setLog({
+			//##############################
+			//# この処理のエラーを出力する
+			
+			//ログセット
+			wRes['Reason'] = "ロギングパラメータ不正" ;
+			wSTR_Data = this.__setLog({
 				inRes       : wRes,
 				inLevel     : "D",
 				inTimeDate  : wTimeDate,
+				inMessage   : wReason,
 				inLine      : __LINE__
 			}) ;
+			
+			// コンソール出力
+			wSubRes = this.__viewConsole({ inData:wSTR_Data }) ;
+			if( wSubRes['Result']!=true )
+			{
+				//表示済みフラグを true にする
+				wIndex = wSubRes['Responce'] ;  //出力ログのインデックスを取得
+				top.gARR_Log[wIndex]['Viewed'] = true ;
+			}
+			
+			// ログボックスにデータを詰める
+			wSubRes = this.__setLogBox({ inData : wSTR_Data }) ;
+			//##############################
 		}
 		
 		////////////////////////////////
@@ -197,17 +217,17 @@ class CLS_L {
 		////////////////////////////////
 		// ログセット・出力
 		wSTR_Data = this.__setLog({
-			inRes       : wRes,
-			inLevel     : wLevel,
+			inRes       : wResSet,
+			inLevel     : inLevel,
 			inTimeDate  : wTimeDate,
-			inMessage   : wMessage,
-			inLine      : wLine,
+			inMessage   : inMessage,
+			inLine      : inLine,
 			inDump      : inDump
 		}) ;
 		
 		////////////////////////////////
 		// コンソール出力
-		wSubRes = this.__viewConsole({ inPopup:inPopup, inData:wSTR_Data }) ;
+		wSubRes = this.__viewConsole({ inData:wSTR_Data }) ;
 		if( wSubRes['Result']!=true )
 		{
 			//表示済みフラグを true にする
@@ -227,12 +247,12 @@ class CLS_L {
 ////////////////////////////////////////////////////////////////
 // ログセット
 ////////////////////////////////////////////////////////////////
-	static __setLog({
+	__setLog({
 		inRes,
 		inLevel,
 		inTimeDate,
-		inMessage   = gVal.DEF_NOTEXT,
-		inLine      = gVal.DEF_NOTEXT,
+		inMessage   = top.DEF_NOTEXT,
+		inLine      = top.DEF_NOTEXT,
 		inDump      = top.DEF_GVAL_NULL
 	})
 	{
@@ -240,7 +260,7 @@ class CLS_L {
 		let wNum ;
 		
 		//### 応答形式の取得
-		wRes = gCLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"__setLog" }) ;
+		wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"__setLog" }) ;
 		
 		////////////////////////////////
 		// ログセット
@@ -264,7 +284,7 @@ class CLS_L {
 		// ログデータを詰める
 		
 		// 一番古いログデータ１個を消す
-		wNum = gCLS_OSIF.sGetObjectNum({ inObject:top.gARR_Log }) ;
+		wNum = top.gCLS_OSIF.GetObjectNum({ inObject:top.gARR_Log }) ;
 		if( top.DEF_USER_LOGDATA_LEN<=wNum )
 		{
 			top.gARR_Log.shift() ;
@@ -274,7 +294,7 @@ class CLS_L {
 		top.gARR_Log.push( wSTR_Data ) ;
 		
 		// インデックスをセット
-		wNum = gCLS_OSIF.sGetObjectNum({ inObject:top.gARR_Log }) ;
+		wNum = top.gCLS_OSIF.GetObjectNum({ inObject:top.gARR_Log }) ;
 		wSTR_Data['Index'] = wNum - 1 ;  //配列最後尾の要素番号なので-1
 		
 		return wSTR_Data ;
@@ -285,12 +305,12 @@ class CLS_L {
 ////////////////////////////////////////////////////////////////
 // コンソール出力
 ////////////////////////////////////////////////////////////////
-	static __viewConsole({
+	__viewConsole({
 		inData
 	})
 	{
 		//### 応答形式の取得
-		let wRes = gCLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"__viewConsole" }) ;
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"__viewConsole" }) ;
 		
 		let wCons ;
 		
@@ -399,7 +419,7 @@ class CLS_L {
 		//### 致命的エラー
 		if( inData['Level']=="A" )
 		{
-			gCLS_OSIF.sConsError({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsError({ inText:wCons }) ;
 		}
 		//### エラー
 		else if(( inData['Level']=="B" ) ||
@@ -408,52 +428,52 @@ class CLS_L {
 		        ( inData['Level']=="E" ) ||
 		        ( inData['Level']=="I" ) )
 		{
-			gCLS_OSIF.sConsWarn({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsWarn({ inText:wCons }) ;
 		}
 		//### トラヒック
 		else if(( inData['Level']=="TS" ) ||
 		        ( inData['Level']=="TU" ) )
 		{
-			gCLS_OSIF.sConsInfo({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsInfo({ inText:wCons }) ;
 		}
 		//### テストログ
 		else if( inData['Level']=="XX" )
 		{
 			if( top.DEF_INDEX_TEST==true )
 			{
-				gCLS_OSIF.sConsWarn({ inText:wCons }) ;
+				top.gCLS_OSIF.ConsWarn({ inText:wCons }) ;
 			}
 		}
 		//### 非表示
 		else if( inData['Level']=="XN" )
 		{
-			gCLS_OSIF.sConsInfo({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsInfo({ inText:wCons }) ;
 		}
 		//### コールバック
 		else if( inData['Level']=="XC" )
 		{
-			gCLS_OSIF.sConsInfo({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsInfo({ inText:wCons }) ;
 		}
 		//### 操作記録（システム起動・システム設定）
 		else if(( inData['Level']=="SS" ) ||
 		        ( inData['Level']=="SW" ) )
 		{
-			gCLS_OSIF.sConsLog({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsLog({ inText:wCons }) ;
 		}
 		//### 操作記録（システム規制・ユーザ操作）
 		else
 		{
-			gCLS_OSIF.sConsInfo({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsInfo({ inText:wCons }) ;
 		}
 		
 		////////////////////////////////
 		// ダンプの表示
 		if( inData['Dump']!=top.DEF_GVAL_NULL )
 		{
-			gCLS_OSIF.sConsInfo({ inText : top.DEF_GVAL_LOG_DUMP_HEADER }) ;
+			top.gCLS_OSIF.ConsInfo({ inText : top.DEF_GVAL_LOG_DUMP_HEADER }) ;
 ///			CLS_OSIF.sViewObj({ inObj:inData['Dump'] }) ;
-			gCLS_OSIF.sConsInfo({ inText : inData['Dump'] }) ;
-			gCLS_OSIF.sConsInfo({ inText : top.DEF_GVAL_LOG_HEADER }) ;
+			top.gCLS_OSIF.ConsInfo({ inText : inData['Dump'] }) ;
+			top.gCLS_OSIF.ConsInfo({ inText : top.DEF_GVAL_LOG_HEADER }) ;
 		}
 		
 		// 処理正常
@@ -467,12 +487,12 @@ class CLS_L {
 ////////////////////////////////////////////////////////////////
 // ログボックスへデータセット
 ////////////////////////////////////////////////////////////////
-	static __setLogBox({
+	__setLogBox({
 		inData
 	})
 	{
 		//### 応答形式の取得
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"__setLogBox" }) ;
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"__setLogBox" }) ;
 		
 		let wSubRes, wData, wNum ;
 		
@@ -494,7 +514,7 @@ class CLS_L {
 		// ログボックスへデータを詰める
 		
 		//### 古いログデータを消して、上詰めする
-		wNum = CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_LogBox.Data }) ;
+		wNum = top.gCLS_OSIF.GetObjectNum({ inObject:top.gSTR_LogBox.Data }) ;
 		if( top.DEF_USER_LOGBOXDATA_LEN<=wNum )
 		{///一番上を削除して、詰める
 			top.gSTR_LogBox.Data.shift() ;
@@ -521,7 +541,7 @@ class CLS_L {
 		{
 			//###########################
 			//# 例外処理
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return false ;
 		}

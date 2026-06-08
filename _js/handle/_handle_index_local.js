@@ -38,7 +38,7 @@ var DEF_INDEX_TEST				= false ;
 function __handle_PageLoad()
 {
 
-		console.dir( gCLS_OSIF ) ;
+///		console.dir( gCLS_OSIF ) ;
 
 
 
@@ -48,8 +48,8 @@ function __handle_PageLoad()
 	let wMessage ;
 	
 
-	wMessage = "" ;
-	gCLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage, inLine:__LINE__ }) ;
+	wMessage = "へろう！！！" ;
+	gCLS_L.L({ inRes:wRes, inLevel:"P", inMessage:wMessage, inLine:__LINE__ }) ;
 
 
 
