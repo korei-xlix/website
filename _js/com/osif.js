@@ -13,10 +13,10 @@ class CLS_OSIF {
 //# 応答形式の取得
 //##############################################################
 
-//	//##############################
-//	//# 応答形式の取得
-//	//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-//	let wRes = CLS_OSIF.sGet_Resp({ inClass:"Class Name", inFunc:"Function Name" }) ;
+//  //##############################
+//  //# 応答形式の取得
+//  //#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
+//  let wRes = CLS_OSIF.sGet_Resp({ inClass:"Class Name", inFunc:"Function Name" }) ;
 
 	Get_Resp({
 		inClass=top.DEF_GVAL_TEXT_NONE,
@@ -24,12 +24,12 @@ class CLS_OSIF {
 	})
 	{
 		let wRes = {
-			"Result"		: false,
-			"Class"			: inClass,
-			"Func"			: inFunc,
-			"Reason"		: top.DEF_GVAL_TEXT_NONE,
-			"Responce"		: top.DEF_GVAL_TEXT_NONE,
-			"StatusCode"	: top.DEF_GVAL_TEXT_NONE
+			"Result"     : false,
+			"Class"      : inClass,
+			"Func"       : inFunc,
+			"Reason"     : top.DEF_GVAL_TEXT_NONE,
+			"Responce"   : top.DEF_GVAL_TEXT_NONE,
+			"StatusCode" : top.DEF_GVAL_TEXT_NONE
 		} ;
 		return wRes ;
 	}
@@ -47,7 +47,7 @@ class CLS_OSIF {
 		inText
 	})
 	{
-		let wText = String(inText) ;
+		let wText = this.String(inText) ;
 		console.log( wText ) ;
 		return ;
 	}
@@ -61,7 +61,7 @@ class CLS_OSIF {
 		inText
 	})
 	{
-		let wText = String(inText) ;
+		let wText = this.String(inText) ;
 		console.error( wText ) ;
 		return ;
 	}
@@ -75,7 +75,7 @@ class CLS_OSIF {
 		inText
 	})
 	{
-		let wText = String(inText) ;
+		let wText = this.String(inText) ;
 		console.warn( wText ) ;
 		return ;
 	}
@@ -89,7 +89,7 @@ class CLS_OSIF {
 		inText
 	})
 	{
-		let wText = String(inText) ;
+		let wText = this.String(inText) ;
 		console.info( wText ) ;
 		return ;
 	}
@@ -103,14 +103,15 @@ class CLS_OSIF {
 		inText
 	})
 	{
-		let wText = String(inText) ;
+		let wText = this.String(inText) ;
 		alert( wText ) ;
 		return ;
 		
 		if( top.DEF_INDEX_TEST==true )
 		{
-			wText = "Open Alert Box" ;
-			wText = wText + '\n' + "  inText=" + String(inText) ;
+///			wText = "Open Alert Box" ;
+			wText = "alertボックス表示" ;
+			wText = wText + '\n' + "  inText=" + this.String(inText) ;
 			this.ConsInfo({ inText:wText });
 		}
 	}
@@ -124,14 +125,15 @@ class CLS_OSIF {
 		inText
 	})
 	{
-		let wText  = String(inText) ;
+		let wText  = this.String(inText) ;
 		let wInput = confirm( wText ) ;
 		
 		if( top.DEF_INDEX_TEST==true )
 		{
-			wText = "Open Confirm Box" ;
-			wText = wText + '\n' + "  inText=" + String(inText) ;
-			wText = wText + '\n' + "  Input=" + String(wInput) ;
+///			wText = "Open Confirm Box" ;
+			wText = "confirmボックス表示" ;
+			wText = wText + '\n' + "  inText=" + this.String(inText) ;
+			wText = wText + '\n' + "  Input=" + this.String(wInput) ;
 			this.ConsInfo({ inText:wText });
 		}
 		return wInput ;
@@ -147,14 +149,15 @@ class CLS_OSIF {
 		inDefault=""
 	})
 	{
-		let wText  = String(inText) ;
-		let wInput = window.prompt( wText, String(inDefault) ) ;
+		let wText  = this.String(inText) ;
+		let wInput = window.prompt( wText, this.String(inDefault) ) ;
 		
 		if( top.DEF_INDEX_TEST==true )
 		{
-			wText = "Open Window Prompt" ;
-			wText = wText + '\n' + "  inText=" + String(inText) ;
-			wText = wText + '\n' + "  Input=" + String(wInput) ;
+///			wText = "Open Window Prompt" ;
+			wText = "window prompt表示" ;
+			wText = wText + '\n' + "  inText=" + this.String(inText) ;
+			wText = wText + '\n' + "  Input=" + this.String(wInput) ;
 			this.ConsInfo({ inText:wText });
 		}
 		return wInput ;
@@ -178,9 +181,20 @@ class CLS_OSIF {
 //##############################################################
 //# コンソールクリア
 //##############################################################
-	ConsClear()
+///	ConsClear()
+	ConsClear({
+		inClearLog = true
+	})
 	{
+		let wText ;
+        
 		console.clear() ;
+        
+		if( inClearLog==true )
+		{
+			wText = "コンソールクリア済" ;
+			this.ConsInfo({ inText:wText });
+		}
 		return ;
 	}
 
@@ -201,12 +215,12 @@ class CLS_OSIF {
 		////////////////////////////////
 		// 応答情報の生成
 		let wRes = {
-			"Result"    : false,
-			"Reason"    : top.DEF_GVAL_TEXT_NONE,
-			"Object"    : "",
-			"TimeDate"  : "",
-			"Hour"      : 0,
-			"Week"      : 0
+			"Result"   : false,
+			"Reason"   : top.DEF_GVAL_TEXT_NONE,
+			"Object"   : "",
+			"TimeDate" : "",
+			"Hour"     : 0,
+			"Week"     : 0
 		} ;
 		
 		try
@@ -247,9 +261,15 @@ class CLS_OSIF {
 		}
 		catch(e)
 		{
+///			//##############################
+///			//# 例外：処理失敗
+///			wRes['Reason'] = "パソコンの時計取得に失敗" ;
 			//##############################
-			//# 例外：処理失敗
-			wRes['Reason'] = "パソコンの時計取得に失敗" ;
+			//# 例外処理
+			let wError = "CLS_OSIF例外: 時計取得失敗  " ;
+			wRes['Reason'] = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wRes['Reason'] });
+			
 			wRes['TimeDate'] = top.DEF_GVAL_TIMEDATE ;
 			return wRes ;
 		}
@@ -258,8 +278,8 @@ class CLS_OSIF {
 		// 結果設定
 		wRes['Object']   = wOBJ_TimeDate ;
 		wRes['TimeDate'] = wCHR_TimeDate ;
-		wRes['Hour']     = wSTR_TimeDate[3] ;	//時間だけ
-		wRes['Week']     = wSTR_TimeDate[6] ;	//曜日
+		wRes['Hour']     = wSTR_TimeDate[3] ;
+		wRes['Week']     = wSTR_TimeDate[6] ;
 		wRes['Result']   = true ;
         
 		return wRes ;
@@ -301,10 +321,10 @@ class CLS_OSIF {
 		let wValue ;
 		
 		let wRes = {
-			"Result"	: false,				//True=正常 / False=異常
-			"Reason"	: top.DEF_GVAL_NULL,	//エラー理由
-			"LagDay"	: 0,					//日数差
-			"Future"	: false					//DstDataがSrcDateより未来時間
+			"Result" : false,
+			"Reason" : top.DEF_GVAL_NULL,
+			"LagDay" : 0,
+			"Future" : false
 		} ;
 		
 		try
@@ -319,7 +339,7 @@ class CLS_OSIF {
 			}) ;
 			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=3 ))
 			{
-				wRes['Reason'] = "日付が壊れてます: inSrcDate=" + String(inSrcDate) ;
+				wRes['Reason'] = "日付不正  inSrcDate=" + this.String(inSrcDate) ;
 				return wRes ;
 			}
 			wSrcDate = wSubRes['Data'] ;
@@ -331,7 +351,7 @@ class CLS_OSIF {
 			}) ;
 			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=3 ))
 			{
-				wRes['Reason'] = "日付が壊れてます: inDstDate=" + String(inDstDate) ;
+				wRes['Reason'] = "日付不正  inDstDate=" + this.String(inDstDate) ;
 				return wRes ;
 			}
 			wDstDate = wSubRes['Data'] ;
@@ -358,7 +378,11 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外処理
-			wRes['Reason'] = this.ExpStr({ inE:e }) ;
+			///			wRes['Reason'] = this.ExpStr({ inE:e }) ;
+			let wError = "CLS_OSIF例外: 日付差処理失敗  " ;
+			wRes['Reason'] = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wRes['Reason'] });
+			
 			return wRes ;
 		}
 		wRes['LagDay'] = wValue ;
@@ -393,6 +417,9 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外処理
+			let wError = "CLS_OSIF例外: 整数チェック失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
 		}
 		return wValue ;
 	}
@@ -421,6 +448,10 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外処理
+			let wError = "CLS_OSIF例外: 整数変換失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+            
 			wValue = top.DEF_GVAL_NULL ;
 		}
 		return wValue ;
@@ -445,6 +476,10 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外処理
+			let wError = "CLS_OSIF例外: 少数変換失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+            
 			wValue = top.DEF_GVAL_NULL ;
 		}
 		return wValue ;
@@ -459,7 +494,8 @@ class CLS_OSIF {
 		inValue
 	})
 	{
-		let wValue, wText ;
+///		let wValue, wText ;
+		let wValue = -1 ;
 		
 		try
 		{
@@ -469,9 +505,12 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外処理
-			wValue = top.DEF_GVAL_NULL ;
-			wText = "CLS_OSIF::sRand: exception: " + String(e)  ;
-			this.ConsError({ inText:wText });
+///			wValue = top.DEF_GVAL_NULL ;
+///			wText = "CLS_OSIF::Rand: exception: " + this.String(e)  ;
+///			this.ConsError({ inText:wText });
+			let wError = "CLS_OSIF例外: ランダム値取得失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
 		}
 		return wValue ;
 	}
@@ -481,6 +520,89 @@ class CLS_OSIF {
 //##############################################################
 //# 文字列系
 //##############################################################
+
+//##############################################################
+//# 文字列かチェック
+//##############################################################
+	CheckStr({
+		inString
+	})
+	{
+		try
+		{
+			if(( typeof inString === 'string' ) || 
+			     inString instanceof String )
+			{///文字列
+				return true ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			let wError = "CLS_OSIF例外: 文字列チェック失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+		}
+		return false ;
+	}
+
+
+
+//##############################################################
+//# 文字列長取得
+//##############################################################
+	GetStrLength({
+		inString
+	})
+	{
+		let wLength = -1 ;
+        
+		try
+		{
+			wLength = inString.length ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			let wError = "CLS_OSIF例外: 文字列長取得失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+		}
+		return wLength ;
+	}
+
+
+
+//##############################################################
+//# 文字列変換
+//##############################################################
+	String({
+		inString
+	})
+	{
+		let wString, wText ;
+		
+		wString = top.DEF_GVAL_TEXT_NONE ;
+		try
+		{
+			wString = String( inString ) ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+///			wText = "CLS_OSIF::String: exception: " + this.String(e) ;
+///			this.ConsError({ inText:wText });
+			let wError = "CLS_OSIF例外: 文字列変換失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+		}
+		return wString ;
+	}
+
+
 
 //##############################################################
 //# 文字分割
@@ -493,22 +615,25 @@ class CLS_OSIF {
 		let wRes, wString ;
 		
 		wRes = {
-			"Result"	: false,
-			"Data"		: new Array(),
-			"Length"	: 0
+			"Result" : false,
+			"Data"   : new Array(),
+			"Length" : 0
 		} ;
 		
 		try
 		{
-			wString = String( inString ) ;
+			wString = this.String( inString ) ;
 			wString = wString.split( inPattern ) ;
-			wRes['Data']	= wString ;
-			wRes['Length']	= wString.length ;
+			wRes['Data']   = wString ;
+			wRes['Length'] = wString.length ;
 		}
 		catch(e)
 		{
 			//##############################
 			//# 例外処理
+			let wError = "CLS_OSIF例外: 文字分割失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
 		}
 		wRes['Result'] = true ;
 		return wRes ;
@@ -542,7 +667,46 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外処理
+			let wError = "CLS_OSIF例外: 文字切り抜き失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+            
 			wString = top.DEF_GVAL_NULL ;
+		}
+		return wString ;
+	}
+
+
+
+//##############################################################
+//# 文字の繰り返し
+//##############################################################
+	StrRepeat({
+		inString = " ",
+		inLength = 1
+	})
+	{
+///		let wString ;
+		let wString = top.DEF_GVAL_TEXT_NONE ;
+		
+		if( this.GetStrLength({ inString: inString })<=0 )
+		{
+			return wString ;
+		}
+        
+		try
+		{
+			wString = inString.repeat( inLength ) ;
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			let wError = "CLS_OSIF例外: 文字の繰り返し失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+///         
+///			wString = top.DEF_GVAL_NULL ;
 		}
 		return wString ;
 	}
@@ -595,6 +759,10 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外処理
+			let wError = "CLS_OSIF例外: 小文字変換失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+            
 			wString = top.DEF_GVAL_NULL ;
 		}
 		return wString ;
@@ -621,6 +789,10 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外処理
+			let wError = "CLS_OSIF例外: 検索処理失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+            
 			wValue = -1 ;
 		}
 		return wValue ;
@@ -638,7 +810,7 @@ class CLS_OSIF {
 	{
 		let wText ;
 		
-		wText = "Exception: " + String(inE.name) + ": " + String(inE.message) ;
+		wText = "Exception: " + this.String(inE.name) + ": " + this.String(inE.message) ;
 		if( inA!=top.DEF_GVAL_TEXT_NONE )
 		{
 			wText = wText + ": " + inA ;
@@ -675,6 +847,9 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外
+			let wError = "CLS_OSIF例外: 辞書型チェック失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
 		}
 		return wValue ;
 	}
@@ -710,6 +885,87 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外
+			let wError = "CLS_OSIF例外: 要素数取得失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+		}
+		return wValue ;
+	}
+
+
+
+//##############################################################
+//# 配列にデータを詰める
+//##############################################################
+	PushArray({
+		inObject,
+		inData
+	})
+	{
+		let wValue ;
+		
+		wValue = false ;
+		try
+		{
+			////////////////////////////////
+			// Array型の場合
+			if( ( inObject instanceof Array )==true )
+			{
+				//### ログデータを詰める
+				inObject.push( inData ) ;
+				wValue = true ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外
+			let wError = "CLS_OSIF例外: 配列データ詰め失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
+		}
+		return wValue ;
+	}
+
+
+
+//##############################################################
+//# 配列の一番上のデータを消して、上詰めする
+//##############################################################
+	ShiftArray({
+		inObject,
+		inLength = 2
+	})
+	{
+		let wValue, wNum ;
+		
+		wValue = false ;
+		try
+		{
+			////////////////////////////////
+			// Array型の場合
+			if( ( inObject instanceof Array )==true )
+			{
+				//### データの数が0か
+				wNum = top.gCLS_OSIF.GetObjectNum({ inObject:inObject }) ;
+///				if( wNum<=0 )
+				if( inLength>wNum )
+				{///0の場合、処理しない
+					wValue = true ;  //未処理でも正常扱い
+					return wValue ;
+				}
+				//### 配列データを詰める
+				inObject.shift() ;
+				wValue = true ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外
+			let wError = "CLS_OSIF例外: 配列上詰め処理失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
 		}
 		return wValue ;
 	}
@@ -739,6 +995,9 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外
+			let wError = "CLS_OSIF例外: 辞書型キー一覧取得失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
 		}
 		return wValue ;
 	}
@@ -751,7 +1010,7 @@ class CLS_OSIF {
 	GetInObject({
 		inObject,
 		inKey,
-		inDD = false	// true=辞書型のデータ重複チェック false=キー重複チェック
+		inDD = false
 	})
 	{
 		let wValue, wKey ;
@@ -796,6 +1055,9 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外
+			let wError = "CLS_OSIF例外: Key含むか処理失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
 		}
 		return wValue ;
 	}
@@ -836,9 +1098,12 @@ class CLS_OSIF {
 		{
 			//##############################
 			//# 例外
-			let wText = "CLS_OSIF.sCallBack: Func=" + String(callback.name) + '\n' ;
-			wText = wText + this.ExpStr({ inE:e }) ;
-			this.ConsError({ inText:wText }) ;
+///			let wText = "CLS_OSIF.sCallBack: Func=" + this.String(callback.name) + '\n' ;
+///			wText = wText + this.ExpStr({ inE:e }) ;
+///			this.ConsError({ inText:wText }) ;
+			let wError = "CLS_OSIF例外: callback処理失敗  " ;
+			wError = wError + this.ExpStr({ inE:e }) ;
+			this.ConsError({ inText:wError });
 			return false ;
 		}
 		
@@ -852,7 +1117,8 @@ class CLS_OSIF {
 			{////除外がなければログ出力する
 				//### コールバックログの出力
 				//      定期処理のコールバックは除外
-				let wText = "CLS_OSIF.sCallBack: Called Callback: Func=" + String(callback.name) + '\n' ;
+///				let wText = "CLS_OSIF.sCallBack: Called Callback: Func=" + this.String(callback.name) + '\n' ;
+				let wText = "callback実行  Func=" + this.String(callback.name) + '\n' ;
 				this.ConsInfo({ inText:wText });
 			}
 		}
@@ -868,6 +1134,12 @@ class CLS_OSIF {
 		inMsec = 1000
 	})
 	{
+		if( top.DEF_INDEX_TEST==true )
+		{
+			let wText = "遅延処理開始  " + this.String(inMsec) + ".ms" + '\n' ;
+			this.ConsInfo({ inText:wText });
+		}
+        
 		return new Promise( function( resolve ) {
 			setTimeout( resolve, inMsec ) ;
 		}) ;

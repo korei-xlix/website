@@ -143,12 +143,12 @@ class CLS_L {
 		if( wResTime['Result']!=true )
 		{
 			// 失敗: この処理のエラーをセット
-			wRes['Reason'] = "時間情報の取得に失敗" ;
+			wRes['Reason'] = "時間情報取得失敗" ;
 			this.__setLog({
-				inRes       : wRes,
-				inLevel     : "C",
-				inTimeDate  : top.DEF_GVAL_TIMEDATE,
-				inLine      : __LINE__
+				inRes      : wRes,
+				inLevel    : "C",
+				inTimeDate : top.DEF_GVAL_TIMEDATE,
+				inLine     : __LINE__
 			}) ;
 		}
 		else
@@ -167,11 +167,11 @@ class CLS_L {
 			//ログセット
 			wRes['Reason'] = "ロギングパラメータ不正" ;
 			wSTR_Data = this.__setLog({
-				inRes       : wRes,
-				inLevel     : "D",
-				inTimeDate  : wTimeDate,
-				inMessage   : wReason,
-				inLine      : __LINE__
+				inRes      : wRes,
+				inLevel    : "D",
+				inTimeDate : wTimeDate,
+				inMessage  : wReason,
+				inLine     : __LINE__
 			}) ;
 			
 			// コンソール出力
@@ -202,9 +202,9 @@ class CLS_L {
 			{/// テストの場合、除外あり関数は除外
 				if( wRes['Reason']!=top.DEF_GVAL_TEXT_NONE )
 				{
-					wSubRes = gCLS_OSIF.sGetInObject({
+					wSubRes = top.gCLS_OSIF.GetInObject({
 						inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
-						inKey	 : wRes['Reason']
+						inKey    : wRes['Reason']
 					}) ;
 					if( wSubRes==true )
 					{///除外あり関数は、除外
@@ -217,12 +217,12 @@ class CLS_L {
 		////////////////////////////////
 		// ログセット・出力
 		wSTR_Data = this.__setLog({
-			inRes       : wResSet,
-			inLevel     : inLevel,
-			inTimeDate  : wTimeDate,
-			inMessage   : inMessage,
-			inLine      : inLine,
-			inDump      : inDump
+			inRes      : wResSet,
+			inLevel    : inLevel,
+			inTimeDate : wTimeDate,
+			inMessage  : inMessage,
+			inLine     : inLine,
+			inDump     : inDump
 		}) ;
 		
 		////////////////////////////////
@@ -251,47 +251,60 @@ class CLS_L {
 		inRes,
 		inLevel,
 		inTimeDate,
-		inMessage   = top.DEF_NOTEXT,
-		inLine      = top.DEF_NOTEXT,
-		inDump      = top.DEF_GVAL_NULL
+		inMessage = top.DEF_NOTEXT,
+		inLine    = top.DEF_NOTEXT,
+		inDump    = top.DEF_GVAL_NULL
 	})
 	{
-		let wRes, wSTR_Data ;
+///		let wRes, wSTR_Data ;
+		let wSTR_Data ;
 		let wNum ;
 		
-		//### 応答形式の取得
-		wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"__setLog" }) ;
-		
+///		//### 応答形式の取得
+///		wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"__setLog" }) ;
+///		
 		////////////////////////////////
 		// ログセット
 		wSTR_Data = {
-			"Index"     : -1,
-			"Viewed"    : false,
-			"UserID"    : top.gSTR_SystemInfo.UserID,
-			"TimeDate"  : inTimeDate,
-			"Level"     : inLevel,
-			"Result"    : String(inRes['Result']),
-			"Class"     : String(inRes['Class']),
-			"Func"      : String(inRes['Func']),
-			"Reason"    : String(inRes['Reason']),
-			"Responce"  : String(inRes['Responce']),
-			"Message"   : inMessage,
-			"Line"      : inLine,
-			"Dump"      : top.DEF_GVAL_NULL
+			"Index"    : -1,
+			"Viewed"   : false,
+			"UserID"   : top.gSTR_SystemInfo.UserID,
+			"TimeDate" : inTimeDate,
+			"Level"    : inLevel,
+			"Result"   : top.gCLS_OSIF.String(inRes['Result']),
+			"Class"    : top.gCLS_OSIF.String(inRes['Class']),
+			"Func"     : top.gCLS_OSIF.String(inRes['Func']),
+			"Reason"   : top.gCLS_OSIF.String(inRes['Reason']),
+			"Responce" : top.gCLS_OSIF.String(inRes['Responce']),
+			"Message"  : inMessage,
+			"Line"     : inLine,
+			"Dump"     : top.DEF_GVAL_NULL
 		} ;
 		
 		////////////////////////////////
 		// ログデータを詰める
-		
-		// 一番古いログデータ１個を消す
-		wNum = top.gCLS_OSIF.GetObjectNum({ inObject:top.gARR_Log }) ;
-		if( top.DEF_USER_LOGDATA_LEN<=wNum )
+///		
+///		// 一番古いログデータ１個を消す
+///		wNum = top.gCLS_OSIF.GetObjectNum({ inObject:top.gARR_Log }) ;
+///		if( top.DEF_USER_LOGDATA_LEN<=wNum )
+///		{
+///			top.gARR_Log.shift() ;
+///		}
+///		
+///		// ログデータを詰める
+///		top.gARR_Log.push( wSTR_Data ) ;
+		//### ログを上詰め
+		if( top.gCLS_OSIF.ShiftArray({
+			inObject : top.gARR_Log,
+			inLength : top.DEF_USER_LOGDATA_LEN
+		})==true )
 		{
-			top.gARR_Log.shift() ;
+			//### 正常の場合のみ詰める（通常はこのルートしかありえない）
+			top.gCLS_OSIF.PushArray({
+				inObject : top.gARR_Log,
+				inData   : wSTR_Data
+			}) ;
 		}
-		
-		// ログデータを詰める
-		top.gARR_Log.push( wSTR_Data ) ;
 		
 		// インデックスをセット
 		wNum = top.gCLS_OSIF.GetObjectNum({ inObject:top.gARR_Log }) ;
@@ -329,6 +342,7 @@ class CLS_L {
 		wCons = wCons + inData['Level'] + "]" ;
 		
 		//### システムエラー・ユーザ入力エラー
+		//    Lineを表示する
 		if(( inData['Level']=="A" ) ||
 		   ( inData['Level']=="B" ) ||
 		   ( inData['Level']=="C" ) ||
@@ -396,15 +410,18 @@ class CLS_L {
 		}
 		
 		//### Reason: Reason
+		//    拒否理由を表示する
 		if( inData['Reason']!=top.DEF_GVAL_TEXT_NONE )
 		{
 			wCons = wCons + '\n' + "  Reason: " + inData['Reason'] ;
 		}
 		
 		//### Info: Message
+		//    詳細な情報などを表示する
 		if( inData['Message']!=top.DEF_GVAL_TEXT_NONE )
 		{
-			wCons = wCons + '\n' + "  Info: " + inData['Message'] ;
+///			wCons = wCons + '\n' + "  Info: " + inData['Message'] ;
+			wCons = wCons + '\n' + "  Info  : " + inData['Message'] ;
 		}
 		
 		//###非表示情報のフッタ
@@ -491,9 +508,9 @@ class CLS_L {
 		inData
 	})
 	{
-		//### 応答形式の取得
-		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"__setLogBox" }) ;
-		
+///		//### 応答形式の取得
+///		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"__setLogBox" }) ;
+///		
 		let wSubRes, wData, wNum ;
 		
 		////////////////////////////////
@@ -508,20 +525,32 @@ class CLS_L {
 		
 		////////////////////////////////
 		// データ作成
-		wData = String( inData['TimeDate'] ) + " " + String( inData['Message'] ) ;
+		wData = top.gCLS_OSIF.String( inData['TimeDate'] ) + " " + top.gCLS_OSIF.String( inData['Message'] ) ;
 		
 		////////////////////////////////
 		// ログボックスへデータを詰める
 		
-		//### 古いログデータを消して、上詰めする
-		wNum = top.gCLS_OSIF.GetObjectNum({ inObject:top.gSTR_LogBox.Data }) ;
-		if( top.DEF_USER_LOGBOXDATA_LEN<=wNum )
-		{///一番上を削除して、詰める
-			top.gSTR_LogBox.Data.shift() ;
+///		//### 古いログデータを消して、上詰めする
+///		wNum = top.gCLS_OSIF.GetObjectNum({ inObject:top.gSTR_LogBox.Data }) ;
+///		if( top.DEF_USER_LOGBOXDATA_LEN<=wNum )
+///		{///一番上を削除して、詰める
+///			top.gSTR_LogBox.Data.shift() ;
+///		}
+///		
+///		//### ログデータを詰める
+///		top.gSTR_LogBox.Data.push( wData ) ;
+		//### ログを上詰め
+		if( top.gCLS_OSIF.ShiftArray({
+			inObject : top.gSTR_LogBox.Data,
+			inLength : top.DEF_USER_LOGBOXDATA_LEN
+		})==true )
+		{
+			//### 正常の場合のみ詰める（通常はこのルートしかありえない）
+			top.gCLS_OSIF.PushArray({
+				inObject : top.gSTR_LogBox.Data,
+				inData   : wData
+			}) ;
 		}
-		
-		//### ログデータを詰める
-		top.gSTR_LogBox.Data.push( wData ) ;
 		
 		/////////////////////////////
 		// ログボックスがオープンしてなければ、終わる
@@ -533,16 +562,23 @@ class CLS_L {
 		
 		/////////////////////////////
 		// ボックスへ表示
-		try
+///		try
+///		{
+///			top.gSTR_LogBox.BoxObj.push( wData ) ;
+///		}
+///		catch(e)
+///		{
+///			//###########################
+///			//# 例外処理
+///			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e }) ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+///			return false ;
+///		}
+		if( top.gCLS_OSIF.PushArray({
+				inObject : top.gSTR_LogBox.BoxObj,
+				inData   : wData
+			})!=true )
 		{
-			top.gSTR_LogBox.BoxObj.push( wData ) ;
-		}
-		catch(e)
-		{
-			//###########################
-			//# 例外処理
-			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return false ;
 		}
 		
@@ -551,50 +587,49 @@ class CLS_L {
 
 
 
-//#####################################################
+//##############################################################
 //# ログファイル出力
-//#####################################################
-	static sO()
+//##############################################################
+///	static sO()
+	PutFile()
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"sO" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"PutFile" }) ;
 		
 		let wSubRes, wTimeDate, wSTR_Data, wMessage ;
 		
-		/////////////////////////////
-		// ファイル出力OFFなら、終わる
-		if( top.DEF_INDEX_LOG_OUTPUT==false )
-		{
-			wMessage = "Output Log File OFF" ;
-			this.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
-			return true ;
-		}
-		
+///		/////////////////////////////
+///		// ファイル出力OFFなら、終わる
+///		if( top.DEF_INDEX_LOG_OUTPUT==false )
+///		{
+///			wMessage = "Output Log File OFF" ;
+///			this.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+///			return true ;
+///		}
+///		
 		wTimeDate = top.DEF_GVAL_TIMEDATE ;
-		/////////////////////////////
+		////////////////////////////////
 		// 日時の取得
-		wSubRes = CLS_OSIF.sGetTime() ;
+		wSubRes = top.gCLS_OSIF.GetTime() ;
 		if( wSubRes['Result']!=true )
 		{
-			wRes['Reason'] = "Time Date is error" ;
-			this.sL({ inRes:wRes, inLevel:"C" }) ;
+			wRes['Reason'] = "日時の取得失敗" ;
+			this.L({ inRes:wRes, inLevel:"C" }) ;
 			return false ;
 		}
 		wTimeDate = wSubRes['TimeDate'] ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 出力データの作成
 		wSTR_Data = this.__createData() ;
-		if( CLS_OSIF.sGetObjectNum({ inObject:wSTR_Data['Cons'] })<=0 )
+		if( top.gCLS_OSIF.GetObjectNum({ inObject:wSTR_Data['Cons'] })<=0 )
 		{
-			wMessage = "No Log data" ;
-			this.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			wMessage = "出力ログなし" ;
+			this.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			return true ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ログファイル出力
 		this.__outputFile({ inTimeDate:wTimeDate, inData:wSTR_Data['Cons'] }) ;
 		
@@ -603,21 +638,21 @@ class CLS_L {
 
 
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 // 出力データ作成
-///////////////////////////////////////////////////////
-	static __createData()
+////////////////////////////////////////////////////////////////
+	__createData()
 	{
 		let wSTR_Data, wContCons, wOutput ;
 		let wIndex, wKey, wKey2, wSpace, wSpaceLen ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 出力データの応答
 		wSTR_Data = {
 			"Cons"	: new Array()
 		} ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 出力データの作成
 		wContCons = new Array() ;
 		for( wIndex in top.gSTR_Log )
@@ -637,24 +672,37 @@ class CLS_L {
 						continue ;
 					}
 					//### Dump出力
-					//////////////////////////////
-					//////////////////////////////
+					////////////////////////////////
+					//  ※あとで処理つくる
+					////////////////////////////////
 					continue ;
 				}
 				else
 				{
 					//### それ以外は、コンソール用出力
-					wOutput   = String( wKey ) ;
+					wOutput   = top.gCLS_OSIF.String( wKey ) ;
 					wSpaceLen = top.DEF_GVAL_LOG_KOUMOKU_LEN - wOutput.length ;
-					wSpace = " ".repeat( wSpaceLen ) ;
-					wOutput = wOutput + wSpace + ": " + String( top.gSTR_Log[wIndex][wKey] ) + '\n' ;
-					wContCons.push( wOutput ) ;
+///					wSpace = " ".repeat( wSpaceLen ) ;
+					wSpace = top.gCLS_OSIF.StrRepeat({
+						inString : "",
+						inLength : wSpaceLen
+					}) ;
+					wOutput = wOutput + wSpace + ": " + top.gCLS_OSIF.String( top.gSTR_Log[wIndex][wKey] ) + '\n' ;
+///					wContCons.push( wOutput ) ;
+					top.gCLS_OSIF.PushArray({
+						inObject : wContCons,
+						inData   : wOutput
+					}) ;
 				}
 			}
-			wContCons.push( '\n' ) ;
+///			wContCons.push( '\n' ) ;
+			top.gCLS_OSIF.PushArray({
+				inObject : wContCons,
+				inData   : '\n'
+			}) ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 出力データの応答
 		wSTR_Data['Cons'] = wContCons ;
 		return wSTR_Data ;
@@ -670,23 +718,21 @@ class CLS_L {
 		inData
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_L", inFunc:"__outputFile" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_L", inFunc:"__outputFile" }) ;
 		
 		let wSubRes, wTimeDate, wTime, wDate ;
 		let wPath, wText ;
 		
 		wText = "" ;
-		/////////////////////////////
+		////////////////////////////////
 		// データ生成
 		for( let wKey in inData )
 		{
 			wText = wText + inData[wKey] ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ファイル名生成
 		wSubRes = CLS_OSIF.sSplit({
 			inString  : inTimeDate,
@@ -703,13 +749,13 @@ class CLS_L {
 		wTime     = wTimeDate[1].replace( /:/g, "" ) ;
 		wPath = top.DEF_GVAL_LOG_OUTPUT_FILE_HEADER + wDate + wTime + ".log" ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ファイル出力
 		CLS_File.sOutput({ inPath:wPath, inText:wText, inAuto:top.DEF_INDEX_LOG_AUTOOPEN }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// コンソール表示
-		wText = "Output Log file: Path=" + String(wPath) ;
+		wText = "Output Log file: Path=" + top.gCLS_OSIF.String(wPath) ;
 		this.sL({ inRes:wRes, inLevel:"SC", inMessage:wText }) ;
 		
 		return ;

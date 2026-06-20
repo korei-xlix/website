@@ -1,11 +1,12 @@
-//#####################################################
+//##############################################################
 //# ::Project  : 共通アプリ
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : システム情報
-//#####################################################
-//# 関数群     :
-//#
+//##############################################################
+
+
+
 //# システム設定
 //#		CLS_Sys.sSet
 //#			in:		inUserID		//ユーザID（いるんかな？）
@@ -47,78 +48,77 @@
 //# システム表示
 //#		CLS_Sys.sView
 //#
-//#####################################################
 
-//#####################################################
+
+//##############################################################
 class CLS_Sys {
-//#####################################################
+//##############################################################
 
-//#####################################################
+//##############################################################
 //# システム設定
-//#####################################################
-	static sSet({
-		inUserID		= top.DEF_GVAL_SYS_SYSID,
-		inSystemName	= top.DEF_GVAL_TEXT_NONE,
-		inPageObj		= top.DEF_GVAL_NULL,
-		inUseTimer		= false,
-		inUseCircle		= false,
-		inExitProc		= {
-			"Callback"	: top.DEF_GVAL_NULL,
-			"Arg"		: new Array()
+//##############################################################
+	Set({
+		inUserID     = top.DEF_GVAL_SYS_SYSID,
+		inSystemName = top.DEF_GVAL_TEXT_NONE,
+		inPageObj    = top.DEF_GVAL_NULL,
+		inUseTimer   = false,
+		inUseCircle  = false,
+		inExitProc   = {
+			"Callback" : top.DEF_GVAL_NULL,
+			"Arg"      : new Array()
 			}
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sSet" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Sys", inFunc:"Set" }) ;
 		
 		let wSubRes, wSubRes2, wObj, wMessage, wExitProc, wSelInfo ;
+		let wKey ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		if(( inPageObj=="" ) || ( inPageObj==top.DEF_GVAL_NULL ) )
 		{///失敗
-			wRes['Reason'] = "PageObj is incorrect(1-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力値不正 inPageObj" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if(( inUserID=="" ) || ( inUserID==top.DEF_GVAL_TEXT_NONE ) || ( inUserID==top.DEF_GVAL_NULL ) )
 		{///失敗
-			wRes['Reason'] = "UserID is incorrect(1-2): " + String( inUserID ) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力値不正 inUserID=" + String( inUserID ) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if(( inSystemName=="" ) || ( inSystemName==top.DEF_GVAL_TEXT_NONE ) || ( inSystemName==top.DEF_GVAL_NULL ) )
 		{///失敗
-			wRes['Reason'] = "SystemName is incorrect(1-3): " + String( inSystemName ) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力値不正 inSystemName=" + String( inSystemName ) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		wExitProc = {} ;
 		//### コールバック情報
-		if( CLS_OSIF.sCheckObject({ inObject:inExitProc })!=true )
+		if( top.gCLS_OSIF.CheckObject({ inObject:inExitProc })!=true )
 		{///不正
-			wRes['Reason'] = "inExitProc is not dictionary(1-4)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力値不正 inExitProc は辞書型ではない" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		wSubRes = CLS_OSIF.sGetInObject({
+		wSubRes = top.gCLS_OSIF.GetInObject({
 			inObject : inExitProc,
 			inKey    : "Callback"
 		}) ;
 		if( wSubRes!=true )
 		{///不正
-			wRes['Reason'] = "Unset inExitProc['Callback'] in dictionary: keys=" + String( Object.keys(inExitProc) ) + " (1-5)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "辞書に ['Callback'] がない keys=" + top.gCLS_OSIF.String( Object.keys(inExitProc) ) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wExitProc['Callback'] = inExitProc['Callback'] ;
 		
 		//### コールバック引数
-		wSubRes = CLS_OSIF.sGetInObject({
+		wSubRes = top.gCLS_OSIF.GetInObject({
 			inObject : inExitProc,
 			inKey    : "Arg"
 		}) ;
@@ -131,88 +131,97 @@ class CLS_Sys {
 			wExitProc['Arg'] = inExitProc['Arg'] ;
 		}
 		
-		//### セレクタのセーブ
-		wSelInfo = top.gSTR_WinCtrlInfo.SelInfo ;
-		
-		/////////////////////////////
+///		//### セレクタのセーブ
+///		wSelInfo = top.gSTR_WinCtrlInfo.SelInfo ;
+///		
+		////////////////////////////////
 		// データ初期化
-		top.gSTR_SystemInfo	= new top.gSTR_SystemInfo_Str() ;
+		top.gSTR_SystemInfo = new top.gSTR_SystemInfo_Str() ;
 		top.gSTR_SystemExit = new gSTR_CallbackInfo_Str() ;
 		top.gSTR_SystemCircle = new gSTR_SystemCircle_Str() ;
-		top.gSTR_PageInfo	= new top.gSTR_PageInfo_Str() ;
-		top.gSTR_Time		= new top.gSTR_Time_Str() ;
+		top.gSTR_PageInfo = new top.gSTR_PageInfo_Str() ;
+		top.gSTR_Time     = new top.gSTR_Time_Str() ;
 		top.gARR_TimerCtrlInfo = {} ;
-		top.gSTR_WinCtrlInfo = new top.gSTR_WinCtrlInfo_Str() ;
+		top.gSTR_WinCtrlInfo   = new top.gSTR_WinCtrlInfo_Str() ;
 		
-		//### セレクタのロード
-		top.gSTR_WinCtrlInfo.SelInfo = wSelInfo ;
-		
-		/////////////////////////////
+///		//### セレクタのロード
+///		top.gSTR_WinCtrlInfo.SelInfo = wSelInfo ;
+///		
+		////////////////////////////////
 		// システム情報設定
-		top.gSTR_SystemInfo.Status		= top.DEF_GVAL_SYS_STAT_INIT ;	//初期化
-		top.gSTR_SystemInfo.UserID		= String( inUserID ) ;
-		top.gSTR_SystemInfo.SystemName	= String( inSystemName ) ;
+		top.gSTR_SystemInfo.Status     = top.DEF_GVAL_SYS_STAT_INIT ;  //初期化
+		top.gSTR_SystemInfo.UserID     = top.gCLS_OSIF.String( inUserID ) ;
+		top.gSTR_SystemInfo.SystemName = top.gCLS_OSIF.String( inSystemName ) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 時間の取得
-		wSubRes = CLS_OSIF.sUpdateGTD() ;
+		wSubRes = top.gCLS_OSIF.UpdateGTD() ;
 		if( wSubRes['Result']!=true )
 		{
-			wRes['Reason'] = "Get Time Date Error(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"C", inLine:__LINE__ }) ;
+			wRes['Reason'] = "時間情報取得失敗(1)" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"C", inLine:__LINE__ }) ;
 			return wRes ;
 		}
-		top.gSTR_Time.SysInit = wSubRes['TimeDate'] ;	//初期化開始
+		top.gSTR_Time.SysInit = wSubRes['TimeDate'] ;  //初期化開始
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ページ情報の設定
-		wSubRes = this.sGetSTRpage({
-			inPageObj		: inPageObj
+///		wSubRes = this.sGetSTRpage({
+		wSubRes = top.gCLS_Obj.GetPageInfo({
+			inPageObj : inPageObj
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
 			//失敗
-			wRes['Reason'] = "sGetSTRpage is failed(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "ページ情報取得失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
-		top.gSTR_PageInfo.WindowObj	= wSubRes['Responce'].WindowObj ;
-		top.gSTR_PageInfo.PageObj	= wSubRes['Responce'].PageObj ;
+///		top.gSTR_PageInfo.WindowObj = wSubRes['Responce'].WindowObj ;
+///		top.gSTR_PageInfo.PageObj   = wSubRes['Responce'].PageObj ;
+		top.gSTR_PageInfo.WindowObj = window ;
+		top.gSTR_PageInfo.PageObj   = inPageObj ;
 		
-		top.gSTR_PageInfo.Title		= wSubRes['Responce'].Title ;
-		top.gSTR_PageInfo.Height	= wSubRes['Responce'].Height ;
-		top.gSTR_PageInfo.Width		= wSubRes['Responce'].Width ;
+		top.gSTR_PageInfo.Title     = wSubRes['Responce'].Title ;
+		top.gSTR_PageInfo.Height    = wSubRes['Responce'].Height ;
+		top.gSTR_PageInfo.Width     = wSubRes['Responce'].Width ;
 		
-		top.gSTR_PageInfo.Url		= wSubRes['Responce'].Url ;
-		top.gSTR_PageInfo.Protocol	= wSubRes['Responce'].Protocol ;
-		top.gSTR_PageInfo.Host		= wSubRes['Responce'].Host ;
-		top.gSTR_PageInfo.Pathname	= wSubRes['Responce'].Pathname ;
-		top.gSTR_PageInfo.Hash		= wSubRes['Responce'].Hash ;
-		top.gSTR_PageInfo.Port		= wSubRes['Responce'].Port ;
-		top.gSTR_PageInfo.Search	= wSubRes['Responce'].Search ;
+		top.gSTR_PageInfo.Url       = wSubRes['Responce'].Url ;
+		top.gSTR_PageInfo.Protocol  = wSubRes['Responce'].Protocol ;
+		top.gSTR_PageInfo.Host      = wSubRes['Responce'].Host ;
+		top.gSTR_PageInfo.Pathname  = wSubRes['Responce'].Pathname ;
+		top.gSTR_PageInfo.Hash      = wSubRes['Responce'].Hash ;
+		top.gSTR_PageInfo.Port      = wSubRes['Responce'].Port ;
+		top.gSTR_PageInfo.Search    = wSubRes['Responce'].Search ;
 		
-		top.gSTR_WinCtrlInfo.WindowObj = wSubRes['Responce'].WindowObj ;	//Window情報
+		for( wKey in wSubRes['Responce'].Commands )
+		{
+			top.gSTR_PageInfo.Commands[wKey] = wSubRes['Responce'].Commands[wKey] ;
+		}
 		
-		/////////////////////////////
+///		top.gSTR_WinCtrlInfo.WindowObj = wSubRes['Responce'].WindowObj ;	//Window情報
+		top.gSTR_WinCtrlInfo.WindowObj = window ;  //Window情報
+        
+		////////////////////////////////
 		// 定期処理の設定
 		top.gSTR_SystemCircle.FLG_UseTimer  = inUseTimer ;
 		top.gSTR_SystemCircle.FLG_UseCircle = inUseCircle ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// コールバックの設定
 		top.gSTR_SystemExit.Callback = wExitProc['Callback'] ;
 		top.gSTR_SystemExit.Arg      = wExitProc['Arg'] ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 日時挿入オブジェクトの取得
-		wSubRes = CLS_PageObj.sGetElement({
-			inPageObj	: inPageObj,
-			inKey		: top.DEF_GVAL_IDX_SYSTEM_TD
+		wSubRes = top.gCLS_Obj.GetElement({
+			inPageObj : inPageObj,
+			inKey     : top.DEF_GVAL_IDX_SYSTEM_TD
 		})
 		if( wSubRes['Result']!=true )
 		{///失敗
-			wRes['Reason'] = "CLS_Timer.sSet is failed(3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+			wRes['Reason'] = "日付挿入オブジェクト取得失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 			//取れなくても処理を継続する
 		}
 		else
@@ -241,7 +250,7 @@ class CLS_Sys {
 			}
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システムタイマ・定期処理タイマ 設定
 		if( top.gSTR_SystemCircle.FLG_UseTimer==true )
 		{
@@ -303,12 +312,12 @@ class CLS_Sys {
 			}
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// コンソール表示
 		wMessage = "System Set complete" ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常終了
 		wRes['Result'] = true ;
 		return wRes ;
@@ -813,69 +822,69 @@ class CLS_Sys {
 
 
 
-//#####################################################
-//# ページ情報取得（gSTR_PageInfo_Str構造）
-//#####################################################
-	static sGetSTRpage({
-		inPageObj = top.DEF_GVAL_NULL
-	})
-	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sGetSTRpage" }) ;
-		
-		let wSubRes, wSTR_Param ;
-		
-		/////////////////////////////
-		// 入力チェック
-		if(( inPageObj=="" ) || ( inPageObj==top.DEF_GVAL_NULL ) )
-		{///失敗
-			wRes['Reason'] = "PageObj is incorrect" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
-			return wRes ;
-		}
-		
-		/////////////////////////////
-		// ページ情報の設定（PageObj関数）
-		wSubRes = CLS_PageObj.sGetPageInfo({
-			inPageObj : inPageObj
-		}) ;
-		if( wSubRes['Result']!=true )
-		{
-			//失敗
-			wRes['Reason'] = "sGetPageInfo is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-			return wRes ;
-		}
-		
-		/////////////////////////////
-		// ページ情報をまとめる
-		wSTR_Param = new gSTR_PageInfo_Str() ;
-		
-		wSTR_Param.WindowObj	= window ;
-		wSTR_Param.PageObj		= inPageObj ;
-		
-		wSTR_Param.Title		= String( wSubRes['Responce']['Title'] ) ;
-		wSTR_Param.Height		= String( wSubRes['Responce']['Height'] ) ;
-		wSTR_Param.Width		= String( wSubRes['Responce']['Width'] ) ;
-		
-		wSTR_Param.Url			= String( wSubRes['Responce']['Url'] ) ;
-		wSTR_Param.Protocol		= String( wSubRes['Responce']['Protocol'] ) ;
-		wSTR_Param.Host			= String( wSubRes['Responce']['Host'] ) ;
-		wSTR_Param.Pathname		= String( wSubRes['Responce']['Pathname'] ) ;
-		wSTR_Param.Hash			= String( wSubRes['Responce']['Hash'] ) ;
-		wSTR_Param.Port			= String( wSubRes['Responce']['Port'] ) ;
-		wSTR_Param.Search		= String( wSubRes['Responce']['Search'] ) ;
-		
-		/////////////////////////////
-		// 正常終了
-		wRes['Responce'] = wSTR_Param ;
-		wRes['Result'] = true ;
-		return wRes ;
-	}
-
-
+/////#####################################################
+/////# ページ情報取得（gSTR_PageInfo_Str構造）
+/////#####################################################
+///	static sGetSTRpage({
+///		inPageObj = top.DEF_GVAL_NULL
+///	})
+///	{
+///		//###########################
+///		//# 応答形式の取得
+///		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
+///		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sGetSTRpage" }) ;
+///		
+///		let wSubRes, wSTR_Param ;
+///		
+///		/////////////////////////////
+///		// 入力チェック
+///		if(( inPageObj=="" ) || ( inPageObj==top.DEF_GVAL_NULL ) )
+///		{///失敗
+///			wRes['Reason'] = "PageObj is incorrect" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
+///		
+///		/////////////////////////////
+///		// ページ情報の設定（PageObj関数）
+///		wSubRes = CLS_PageObj.sGetPageInfo({
+///			inPageObj : inPageObj
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{
+///			//失敗
+///			wRes['Reason'] = "sGetPageInfo is failed" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
+///		
+///		/////////////////////////////
+///		// ページ情報をまとめる
+///		wSTR_Param = new gSTR_PageInfo_Str() ;
+///		
+///		wSTR_Param.WindowObj	= window ;
+///		wSTR_Param.PageObj		= inPageObj ;
+///		
+///		wSTR_Param.Title		= String( wSubRes['Responce']['Title'] ) ;
+///		wSTR_Param.Height		= String( wSubRes['Responce']['Height'] ) ;
+///		wSTR_Param.Width		= String( wSubRes['Responce']['Width'] ) ;
+///		
+///		wSTR_Param.Url			= String( wSubRes['Responce']['Url'] ) ;
+///		wSTR_Param.Protocol		= String( wSubRes['Responce']['Protocol'] ) ;
+///		wSTR_Param.Host			= String( wSubRes['Responce']['Host'] ) ;
+///		wSTR_Param.Pathname		= String( wSubRes['Responce']['Pathname'] ) ;
+///		wSTR_Param.Hash			= String( wSubRes['Responce']['Hash'] ) ;
+///		wSTR_Param.Port			= String( wSubRes['Responce']['Port'] ) ;
+///		wSTR_Param.Search		= String( wSubRes['Responce']['Search'] ) ;
+///		
+///		/////////////////////////////
+///		// 正常終了
+///		wRes['Responce'] = wSTR_Param ;
+///		wRes['Result'] = true ;
+///		return wRes ;
+///	}
+///
+///
 
 //#####################################################
 }

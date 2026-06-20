@@ -1,11 +1,11 @@
-//#####################################################
+//##############################################################
 //# ::Project  : 共通アプリ
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : ページオブジェクト制御
-//#####################################################
-//# 関数群     :
-//#
+//##############################################################
+
+
 //# エレメント オブジェクト取得
 //#		CLS_PageObj.sGetElement({
 //#			in:		inPageObj, inKey
@@ -91,28 +91,26 @@
 //#			in:		inPageObj, inKey, inDirect
 //#			out:	QuerySelector
 //#
-//#####################################################
 
-//#####################################################
+
+//##############################################################
 class CLS_Obj {
-//#####################################################
+//##############################################################
 
-//#####################################################
+//##############################################################
 //# エレメント オブジェクト取得
-//#####################################################
-	static sGetElement({
+//##############################################################
+	GetElement({
 		inPageObj,
 		inKey
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetElement" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetElement" }) ;
 		
 		let wObj ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// オブジェクト取得
 		try
 		{
@@ -120,15 +118,15 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+		//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wObj ;
 		wRes['Result']   = true ;
@@ -137,22 +135,20 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# フレームドキュメント取得
-//#####################################################
-	static sGetFrameDocument({
+//##############################################################
+	GetFrameDoc({
 		inPageObj,
 		inKey
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetFrameDocument" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetFrameDoc" }) ;
 		
 		let wObj ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// オブジェクト取得
 		try
 		{
@@ -160,15 +156,15 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wObj ;
 		wRes['Result']   = true ;
@@ -177,90 +173,88 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# ページ情報取得
-//#####################################################
-	static sGetPageInfo({
+//##############################################################
+	GetPageInfo({
 		inPageObj
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetPageInfo" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetPageInfo" }) ;
 		
 		let wURL, wHref, wMessage ;
 		let wARR_Data, wSearch, wIndex, wF_Ind ;
 		let wKey, wDataKey, wData, wCHR_Com, wPt ;
 		
 		wRes['Responce'] = {
-			"Title"		: top.DEF_GVAL_NULL,
-			"Height"	: top.DEF_GVAL_NULL,
-			"Width"		: top.DEF_GVAL_NULL,
+			"Title"    : top.DEF_GVAL_NULL,
+			"Height"   : top.DEF_GVAL_NULL,
+			"Width"    : top.DEF_GVAL_NULL,
 			
-			"Url"		: top.DEF_GVAL_NULL,
-			"Protocol"	: top.DEF_GVAL_NULL,
-			"Host"		: top.DEF_GVAL_NULL,
-			"Pathname"	: top.DEF_GVAL_NULL,
-			"Hash"		: top.DEF_GVAL_NULL,
-			"Port"		: top.DEF_GVAL_NULL,
-			"Search"	: top.DEF_GVAL_NULL,
+			"Url"      : top.DEF_GVAL_NULL,
+			"Protocol" : top.DEF_GVAL_NULL,
+			"Host"     : top.DEF_GVAL_NULL,
+			"Pathname" : top.DEF_GVAL_NULL,
+			"Hash"     : top.DEF_GVAL_NULL,
+			"Port"     : top.DEF_GVAL_NULL,
+			"Search"   : top.DEF_GVAL_NULL,
 			
-			"Commands"	: {}
+			"Commands" : {}
 		} ;
 		
 		wHref = top.DEF_GVAL_TEXT_NONE ;
-		/////////////////////////////
+		////////////////////////////////
 		// ページ情報の取得
 		try
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// ページURL
 			wHref = inPageObj.location.href ;
 			
-			/////////////////////////////
+			////////////////////////////////
 			// ページプロパティ取得
-			wRes['Responce']['Title']	= inPageObj.title ;
-			wRes['Responce']['Height']	= inPageObj.documentElement.clientHeight ;
-			wRes['Responce']['Width']	= inPageObj.documentElement.clientWidth ;
+			wRes['Responce']['Title']  = inPageObj.title ;
+			wRes['Responce']['Height'] = inPageObj.documentElement.clientHeight ;
+			wRes['Responce']['Width']  = inPageObj.documentElement.clientWidth ;
 			
-			/////////////////////////////
+			////////////////////////////////
 			// ページ情報
 			wURL = new URL( wHref ) ;
-			wRes['Responce']['Url']      = String( wHref ) ;
-			wRes['Responce']['Protocol'] = String( wURL.protocol ) ;
-			wRes['Responce']['Host']     = String( wURL.host ) ;
-			wRes['Responce']['Pathname'] = String( wURL.pathname ) ;
-			wRes['Responce']['Hash']     = String( wURL.hash ) ;
-			wRes['Responce']['Port']     = String( wURL.port ) ;
-			wRes['Responce']['Search']   = String( wURL.search ) ;
+			wRes['Responce']['Url']      = top.gCLS_OSIF.String( wHref ) ;
+			wRes['Responce']['Protocol'] = top.gCLS_OSIF.String( wURL.protocol ) ;
+			wRes['Responce']['Host']     = top.gCLS_OSIF.String( wURL.host ) ;
+			wRes['Responce']['Pathname'] = top.gCLS_OSIF.String( wURL.pathname ) ;
+			wRes['Responce']['Hash']     = top.gCLS_OSIF.String( wURL.hash ) ;
+			wRes['Responce']['Port']     = top.gCLS_OSIF.String( wURL.port ) ;
+			wRes['Responce']['Search']   = top.gCLS_OSIF.String( wURL.search ) ;
 			
-			/////////////////////////////
+			////////////////////////////////
 			// コマンドの取得
 			
 			//### "?"部分の解析
-			wSearch = String( wURL.search ) ;
-			wIndex = CLS_OSIF.sIndexOf({
-				inString	: wSearch,
-				inPattern	: "?"
+			wSearch = top.gCLS_OSIF.String( wURL.search ) ;
+			wIndex = top.gCLS_OSIF.IndexOf({
+				inString  : wSearch,
+				inPattern : "?"
 			}) ;
 			if( wIndex>=0 )
 			{///ヒット
 				
 				wIndex++ ; //1個ずらす
 				//### "?"以下の取得＆分解
-				wSearch = CLS_OSIF.sSubString({
-					inString	: wSearch,
-					inStart		: wIndex
+				wSearch = top.gCLS_OSIF.SubString({
+					inString : wSearch,
+					inStart  : wIndex
 				}) ;
-				wSearch = CLS_OSIF.sSplit({
-					inString	: wSearch,
-					inPattern	: "&"
+				wSearch = top.gCLS_OSIF.Split({
+					inString  : wSearch,
+					inPattern : "&"
 				}) ;
 				if( wSearch['Result']!=true )
 				{///失敗
-					wRes['Reason'] = "CLS_OSIF.sSplit is failed" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+					wRes['Reason'] = "失敗: CLS_OSIF.Split" ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 				
@@ -271,9 +265,9 @@ class CLS_Obj {
 				for( wKey in wSearch['Data'] )
 				{
 					//### "="で分解
-					wIndex = CLS_OSIF.sIndexOf({
-						inString	: wSearch['Data'][wKey],
-						inPattern	: "="
+					wIndex = top.gCLS_OSIF.IndexOf({
+						inString  : wSearch['Data'][wKey],
+						inPattern : "="
 					}) ;
 					if( wIndex>=0 )
 					{///ヒット
@@ -281,23 +275,23 @@ class CLS_Obj {
 						//  0123456789
 						//      * .. index=4
 						//### キー部分の取得
-						wDataKey = CLS_OSIF.sSubString({
-							inString	: wSearch['Data'][wKey],
-							inStart		: 0,
-							inLength	: wIndex
+						wDataKey = top.gCLS_OSIF.SubString({
+							inString : wSearch['Data'][wKey],
+							inStart  : 0,
+							inLength : wIndex
 						}) ;
 						
 						wIndex++ ; //1個ずらす
-						wData = CLS_OSIF.sSubString({
-							inString	: wSearch['Data'][wKey],
-							inStart		: wIndex
+						wData = top.gCLS_OSIF.SubString({
+							inString : wSearch['Data'][wKey],
+							inStart  : wIndex
 						}) ;
 					}
 					else
 					{///ノーヒット
 						//### "="がない場合、キーを Comm* で、データ全突っ込む
 						
-						wDataKey = wCHR_Com + String(wPt) ;
+						wDataKey = wCHR_Com + top.gCLS_OSIF.String(wPt) ;
 						wData    = wSearch['Data'][wKey] ;
 						wPt++
 					}
@@ -314,11 +308,11 @@ class CLS_Obj {
 				}
 			}
 			
-			/////////////////////////////
+			////////////////////////////////
 			// ページ情報の取得
 			if( top.DEF_INDEX_TEST==true )
 			{
-				wMessage = "Get page info" ;
+				wMessage = "ページ情報取得" ;
 				wMessage = wMessage + '\n' + "  Url=" + wRes['Responce']['Url'] ;
 				wMessage = wMessage + '\n' + "  Host Url=" + wRes['Responce']['Protocol'] + "//" + wRes['Responce']['Host'] ;
 				if( wRes['Responce']['Port']!="" )
@@ -334,25 +328,25 @@ class CLS_Obj {
 				wMessage = wMessage + '\n' + "  Commands ::" ;
 				for( wKey in wRes['Responce']['Commands'] )
 				{
-					wMessage = wMessage + '\n' + "    " + String(wKey) + "=" + wRes['Responce']['Commands'][wKey] ;
+					wMessage = wMessage + '\n' + "    " + top.gCLS_OSIF.String(wKey) + "=" + wRes['Responce']['Commands'][wKey] ;
 				}
 				
 				//### コンソール表示
-				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 				
 			}
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "herf=" + String(wHref) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "herf=" + top.gCLS_OSIF.String(wHref) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
 		return wRes ;
@@ -363,27 +357,25 @@ class CLS_Obj {
 //#####################################################
 //# ページタイトル設定
 //#####################################################
-	static sSetPageTitle({
+	SetPageTitle({
 		inPageObj,
 		inCode = top.DEF_GVAL_NULL
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetPageTitle" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetPageTitle" }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -391,15 +383,15 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -407,48 +399,46 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# innerHTML取得 / 設定
-//#####################################################
-///////////////////////////////////////////////////////
+//##############################################################
+////////////////////////////////////////////////////////////////
 //  innerHTML取得
-///////////////////////////////////////////////////////
-	static sGetInner({
+////////////////////////////////////////////////////////////////
+	GetInner({
 		inPageObj,
 		inKey,
-		inDirect = false,	//ダイレクトモード true=inPageObjは対象オブジェクト入り
-		inError  = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inDirect = false,
+		inError  = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetInner" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetInner" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
 			
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードなので、
 		//   オブジェクトを設定する
 		else
@@ -457,7 +447,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -465,67 +455,65 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wValue ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
 
-///////////////////////////////////////////////////////
-//  innerHTM設定
-///////////////////////////////////////////////////////
-	static sSetInner({
+////////////////////////////////////////////////////////////////
+//  innerHTML設定
+////////////////////////////////////////////////////////////////
+	SetInner({
 		inPageObj,
 		inKey,
 		inCode = top.DEF_GVAL_NULL,
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetInner" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetInner" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -537,7 +525,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -545,15 +533,15 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -561,48 +549,46 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# value取得 / 設定
-//#####################################################
-///////////////////////////////////////////////////////
+//##############################################################
+////////////////////////////////////////////////////////////////
 //  value取得
-///////////////////////////////////////////////////////
-	static sGetValue({
+////////////////////////////////////////////////////////////////
+	GetValue({
 		inPageObj,
 		inKey,
-		inDirect = false,	//ダイレクトモード true=inPageObjは対象オブジェクト入り
-		inError  = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inDirect = false,
+		inError  = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetValue" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetValue" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
 			
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードなので、
 		//   オブジェクトを設定する
 		else
@@ -611,7 +597,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -619,64 +605,62 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wValue ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  value設定
-///////////////////////////////////////////////////////
-	static sSetValue({
+////////////////////////////////////////////////////////////////
+	SetValue({
 		inPageObj,
 		inKey,
 		inCode = top.DEF_GVAL_NULL,
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetValue" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetValue" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
+			wSubRes = this.GetElement({
 				inPageObj	: inPageObj,
 				inKey		: inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -688,7 +672,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -696,15 +680,15 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -712,46 +696,44 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# href設定
-//#####################################################
-	static sSetHref({
+//##############################################################
+	SetHref({
 		inPageObj,
 		inKey,
 		inCode = top.DEF_GVAL_NULL,
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetHref" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetHref" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -763,7 +745,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -771,15 +753,15 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -787,48 +769,46 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# クラス名取得 / 設定
-//#####################################################
-///////////////////////////////////////////////////////
+//##############################################################
+////////////////////////////////////////////////////////////////
 //  クラス名取得
-///////////////////////////////////////////////////////
-	static sGetClassName({
+////////////////////////////////////////////////////////////////
+	GetClassName({
 		inPageObj,
 		inKey,
-		inDirect = false,	//ダイレクトモード true=inPageObjは対象オブジェクト入り
-		inError  = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inDirect = false,
+		inError  = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetClassName" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetClassName" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
 			
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードなので、
 		//   オブジェクトを設定する
 		else
@@ -837,7 +817,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -845,64 +825,62 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wValue ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  クラス名設定
-///////////////////////////////////////////////////////
-	static sSetClassName({
+////////////////////////////////////////////////////////////////
+	SetClassName({
 		inPageObj,
 		inKey,
 		inCode = top.DEF_GVAL_NULL,
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetClassName" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetClassName" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -914,7 +892,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -922,15 +900,15 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -938,46 +916,44 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# src設定
-//#####################################################
-	static sSetSrc({
+//##############################################################
+	SetSrc({
 		inPageObj,
 		inKey,
 		inCode = top.DEF_GVAL_NULL,
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetSrc" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetSrc" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -989,7 +965,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -999,13 +975,13 @@ class CLS_Obj {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -1013,48 +989,46 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# Checked取得 / 設定
-//#####################################################
-///////////////////////////////////////////////////////
+//##############################################################
+////////////////////////////////////////////////////////////////
 //  Checked取得
-///////////////////////////////////////////////////////
-	static sGetChecked({
+////////////////////////////////////////////////////////////////
+	GetChecked({
 		inPageObj,
 		inKey,
-		inDirect = false,	//ダイレクトモード true=inPageObjは対象オブジェクト入り
-		inError  = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inDirect = false,
+		inError  = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetChecked" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetChecked" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
 			
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードなので、
 		//   オブジェクトを設定する
 		else
@@ -1063,7 +1037,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -1071,42 +1045,40 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wValue ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  グループ選択取得
-///////////////////////////////////////////////////////
-	static sGetGroupChoose({
+////////////////////////////////////////////////////////////////
+	GetGroupChoose({
 		inPageObj,
 		inKey,
-		inError = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inError = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetGroupChoose" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetGroupChoose" }) ;
 		
 		let wSelector, wObj, wValue ;
 		
 		wSelector = '[name="' + String(inKey) + '"]:checked' ;
-		/////////////////////////////
+		////////////////////////////////
 		// オブジェクト取得
 		try
 		{
@@ -1114,18 +1086,18 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) + " [1]" ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "オブジェクト取得時 inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -1133,64 +1105,64 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) + " [2]" ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "オブジェクト設定時 inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wValue ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  Checked設定
-///////////////////////////////////////////////////////
-	static sSetChecked({
+////////////////////////////////////////////////////////////////
+	SetChecked({
 		inPageObj,
 		inKey,
-		inCode = top.DEF_GVAL_NULL,
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+///		inCode = top.DEF_GVAL_NULL,
+		inCode = true,
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetChecked" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetChecked" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
-		if( inCode==top.DEF_GVAL_NULL )
+///		if( inCode==top.DEF_GVAL_NULL )
+		if(( inCode!=true )&&( inCode!=false ))
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1202,7 +1174,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -1212,9 +1184,9 @@ class CLS_Obj {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -1226,48 +1198,46 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# Disabled取得 / 設定
-//#####################################################
-///////////////////////////////////////////////////////
+//##############################################################
+////////////////////////////////////////////////////////////////
 //  Disabled取得
-///////////////////////////////////////////////////////
-	static sGetDisabled({
+////////////////////////////////////////////////////////////////
+	GetDisabled({
 		inPageObj,
 		inKey,
-		inDirect = false,	//ダイレクトモード true=inPageObjは対象オブジェクト入り
-		inError  = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inDirect = false,
+		inError  = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetDisabled" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetDisabled" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
 			
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードなので、
 		//   オブジェクトを設定する
 		else
@@ -1276,7 +1246,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -1284,64 +1254,64 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wValue ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  Disabled設定
-///////////////////////////////////////////////////////
-	static sSetDisabled({
+////////////////////////////////////////////////////////////////
+	SetDisabled({
 		inPageObj,
 		inKey,
-		inCode = top.DEF_GVAL_NULL,	// true=無効  false=有効
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+///		inCode = top.DEF_GVAL_NULL,	// true=無効  false=有効
+		inCode = true,
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetDisabled" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetValue" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
-		if( inCode==top.DEF_GVAL_NULL )
+///		if( inCode==top.DEF_GVAL_NULL )
+		if(( inCode!=true )&&( inCode!=false ))
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1353,7 +1323,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -1363,13 +1333,13 @@ class CLS_Obj {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -1377,48 +1347,46 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# Display取得 / 設定
-//#####################################################
-///////////////////////////////////////////////////////
+//##############################################################
+////////////////////////////////////////////////////////////////
 //  Display取得
-///////////////////////////////////////////////////////
-	static sGetDisplay({
+////////////////////////////////////////////////////////////////
+	GetDisplay({
 		inPageObj,
 		inKey,
-		inDirect = false,	//ダイレクトモード true=inPageObjは対象オブジェクト入り
-		inError  = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inDirect = false,
+		inError  = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetDisplay" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetDisplay" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
 			
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードなので、
 		//   オブジェクトを設定する
 		else
@@ -1427,7 +1395,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -1435,64 +1403,64 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wValue ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  Display設定
-///////////////////////////////////////////////////////
-	static sSetDisplay({
+////////////////////////////////////////////////////////////////
+	SetDisplay({
 		inPageObj,
 		inKey,
-		inCode = top.DEF_GVAL_NULL,	// true=表示  false=非表示
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+///		inCode = top.DEF_GVAL_NULL,
+		inCode = true,
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetDisplay" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetDisplay" }) ;
 		
 		let wSubRes, wObj, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
-		if( inCode==top.DEF_GVAL_NULL )
+///		if( inCode==top.DEF_GVAL_NULL )
+		if(( inCode!=true )&&( inCode!=false ))
 		{
 			//失敗
-			wRes['Reason'] = "input error: inCode=" + String(inCode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
+			wSubRes = this.GetElement({
 				inPageObj	: inPageObj,
 				inKey		: inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
@@ -1504,7 +1472,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -1519,15 +1487,15 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inCode=" + String(inCode) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -1535,53 +1503,51 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# フレームサイズ取得 / 設定
-//#####################################################
-///////////////////////////////////////////////////////
+//##############################################################
+////////////////////////////////////////////////////////////////
 //  フレームサイズ取得
-///////////////////////////////////////////////////////
-	static sGetFrameSize({
+////////////////////////////////////////////////////////////////
+	GetFrameSize({
 		inPageObj,
 		inKey,
-		inDirect = false,	//ダイレクトモード true=inPageObjは対象オブジェクト入り
-		inError  = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inDirect = false,
+		inError  = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetFrameSize" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetFrameSize" }) ;
 		
 		let wSubRes, wObj, wARR_Value ;
 		
 		wARR_Value = {
-			"Height"	: top.DEF_GVAL_NULL,
-			"Width"		: top.DEF_GVAL_NULL
+			"Height" : top.DEF_GVAL_NULL,
+			"Width"  : top.DEF_GVAL_NULL
 		} ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
 			
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードなので、
 		//   オブジェクトを設定する
 		else
@@ -1590,7 +1556,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -1599,53 +1565,51 @@ class CLS_Obj {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wARR_Value ;
 		wRes['Result']   = true ;
 		return wRes ;
 	}
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  フレームサイズ設定
-///////////////////////////////////////////////////////
-	static sSetFrameSize({
+////////////////////////////////////////////////////////////////
+	SetFrameSize({
 		inPageObj,
 		inKey,
 		inHeight= top.DEF_GVAL_NULL,
 		inWidth = top.DEF_GVAL_NULL,
-		inDirect = false	//ダイレクトモード true=inPageObjは対象オブジェクト入り
+		inDirect = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sSetFrameSize" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"SetFrameSize" }) ;
 		
 		let wSubRes, wObj, wARR_Value, wMessage ;
 		
 		wARR_Value = {
-			"Height"	: "100%",
-			"Width"		: "100%"
+			"Height" : "100%",
+			"Width"  : "100%"
 		} ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		if( inHeight!=top.DEF_GVAL_NULL )
 		{
 ///			wARR_Value['Height'] = inHeight ;
-			if( CLS_OSIF.sCheckVal({ inValue:inHeight })==true )
+			if( top.gCLS_OSIF.CheckVal({ inValue:inHeight })==true )
 			{
 				wARR_Value['Height'] = inHeight + "pt" ;
 			}
@@ -1657,7 +1621,7 @@ class CLS_Obj {
 		if( inWidth!=top.DEF_GVAL_NULL )
 		{
 ///			wARR_Value['Width'] = inWidth ;
-			if( CLS_OSIF.sCheckVal({ inValue:inWidth })==true )
+			if( top.gCLS_OSIF.CheckVal({ inValue:inWidth })==true )
 			{
 				wARR_Value['Width'] = inWidth + "pt" ;
 			}
@@ -1667,28 +1631,28 @@ class CLS_Obj {
 			}
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードでなければ、
 		//   オブジェクトを取得する
 		if( inDirect==false )
 		{
-			/////////////////////////////
+			////////////////////////////////
 			// オブジェクト取得
-			wSubRes = this.sGetElement({
-				inPageObj	: inPageObj,
-				inKey		: inKey
+			wSubRes = this.GetElement({
+				inPageObj : inPageObj,
+				inKey     : inKey
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sGetElement is failer" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "オブジェクト取得失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 			wObj = wSubRes['Responce'] ;
 			
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ダイレクトモードなので、
 		//   オブジェクトを設定する
 		else
@@ -1697,7 +1661,7 @@ class CLS_Obj {
 			wObj = inPageObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ設定
 		try
 		{
@@ -1706,22 +1670,22 @@ class CLS_Obj {
 			
 			//### コンソール表示
 ///			let wMessage = "Change Frame Size: inKey=" + String(inKey) + " inHeight=" + String(inHeight) + " inWidth=" + String(inWidth) ;
-			wMessage = "Change Frame Size: inKey=" + String(inKey) ;
-			wMessage = wMessage + '\n' + "  inHeight = " + String(inHeight) ;
-			wMessage = wMessage + '\n' + "  inWidth  = " + String(inWidth) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+			wMessage = "フレームサイズ変更: inKey=" + top.gCLS_OSIF.String(inKey) ;
+			wMessage = wMessage + '\n' + "  inHeight = " + top.gCLS_OSIF.String(inHeight) ;
+			wMessage = wMessage + '\n' + "  inWidth  = " + top.gCLS_OSIF.String(inWidth) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) + " inHeight=" + String(inHeight) + " inWidth=" + String(inWidth) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inHeight=" + top.gCLS_OSIF.String(inHeight) + " inWidth=" + top.gCLS_OSIF.String(inWidth) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -1729,24 +1693,22 @@ class CLS_Obj {
 
 
 
-//#####################################################
+//##############################################################
 //# QuerySelector取得
-//#####################################################
-	static sGetQuerySelector({
+//##############################################################
+	GetQuerySelector({
 		inPageObj,
 		inKey,
-		inDirect = false,	//ダイレクトモード true=inPageObjは対象オブジェクト入り
-		inError  = true		//エラーのコンソール出力（タグ確認）  true=ON
+		inDirect = false,
+		inError  = true
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PageObj", inFunc:"sGetQuerySelector" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Obj", inFunc:"GetQuerySelector" }) ;
 		
 		let wSubRes, wQuery ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// データ取得
 		try
 		{
@@ -1758,14 +1720,14 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + String(inKey) ;
-				wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wQuery ;
 		wRes['Result']   = true ;

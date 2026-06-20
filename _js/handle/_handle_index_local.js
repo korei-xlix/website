@@ -37,41 +37,24 @@ var DEF_INDEX_TEST				= false ;
 //##############################################################
 function __handle_PageLoad()
 {
-
+////////////////////////////////////////
 ///		console.dir( gCLS_OSIF ) ;
-
-
-
-	//  //### 応答形式の取得
-	let wRes = gCLS_OSIF.Get_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
-	
-	let wMessage ;
-	
-
-	wMessage = "へろう！！！" ;
-	gCLS_L.L({ inRes:wRes, inLevel:"P", inMessage:wMessage, inLine:__LINE__ }) ;
-
-
-
-//	let wRes2 = CLS_OSIF.sGet_Resp({ inClass:"__handle222", inFunc:"__handle_PageLoad222" }) ;
-//	console.dir( wRes ) ;
-//	console.dir( wRes2 ) ;
-
-
-
-return wRes ;
-
-
-
-
-
+///
+///	//  //### 応答形式の取得
+///	let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
+///	let wMessage ;
+///	
+///	wMessage = "へろう！！！" ;
+///	top.gCLS_L.L({ inRes:wRes, inLevel:"P", inMessage:wMessage, inLine:__LINE__ }) ;
+////////////////////////////////////////
 
 	let wSubRes, wPageObj ;
 
 	wPageObj = self.document ;
-	/////////////////////////////
+	////////////////////////////////////
 	// システム情報設定
-	wSubRes = CLS_Sys.sSet({
+///	wSubRes = CLS_Sys.sSet({
+	wSubRes = top.gCLS_Sys.Set({
 		inUserID		: "webmain",			//ユーザID
 		inSystemName	: "website",			//システム名
 		inPageObj		: wPageObj,
@@ -89,6 +72,12 @@ return wRes ;
 		return wRes ;
 	}
 	
+
+
+	return wRes ;
+
+
+
 	/////////////////////////////
 	// 親フレームの設定
 	wSubRes = CLS_WinCtrl.sSet({

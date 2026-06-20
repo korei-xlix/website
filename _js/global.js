@@ -83,8 +83,8 @@ var DEF_GVAL_IDX_CSSSW_MODE		= "iCSSsw_Mode" ;
 
 ////////////////////////////////
 // セレクタ
-var DEF_GVAL_IDX_SELECTOR_TITLE	= "iSelectorTitle-" ;
-var DEF_GVAL_IDX_SELECTOR_SET	= "iSelectorSet-" ;
+///var DEF_GVAL_IDX_SELECTOR_TITLE	= "iSelectorTitle-" ;
+///var DEF_GVAL_IDX_SELECTOR_SET	= "iSelectorSet-" ;
 
 ////////////////////////////////
 // ポップアップヘルプ
@@ -272,6 +272,7 @@ function gSTR_PageInfo_Str()
 	this.Hash					= top.DEF_GVAL_NULL ;			//# ハッシュタグ部分
 	this.Port					= top.DEF_GVAL_NULL ;			//ポート番号付きの ポート番号
 	this.Search					= top.DEF_GVAL_NULL ;			//& 以下のパス
+	this.Commands				= {} ;							//コマンド
 }
 var gSTR_PageInfo = new gSTR_PageInfo_Str() ;
 
@@ -565,13 +566,13 @@ function gSTR_WinCtrl_MouseMove_Str()
 }
 
 
-//### セレクタ制御
-function gSTR_SelInfo_Str()
-{
-	this.Name					= top.DEF_GVAL_NULL ;			//名前
-	this.Open					= false ;						//オープン状態
-}
-
+/////### セレクタ制御
+///function gSTR_SelInfo_Str()
+///{
+///	this.Name					= top.DEF_GVAL_NULL ;			//名前
+///	this.Open					= false ;						//オープン状態
+///}
+///
 
 //### windowバー情報
 function gSTR_FrameCtrl_BarInfo_Str()
@@ -612,7 +613,7 @@ function gSTR_FrameCtrlInfo_Str()
 	this.PageInfo 		= new gSTR_PageInfo_Str() ;				//  ページ情報
 	this.WindowBarInfo	= new gSTR_FrameCtrl_BarInfo_Str() ;	//  windowバー情報
 	this.NextProcess	= new gSTR_CallbackInfo_Str() ;			//  ロード後処理
-	this.SelInfo		= {} ;									//  セレクタ情報
+///	this.SelInfo		= {} ;									//  セレクタ情報
 	this.MouseMove		= new gSTR_WinCtrl_MouseMove_Str() ;	//  マウスムーブ情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
 }
@@ -665,7 +666,7 @@ function gSTR_WinCtrlInfo_Str()
 	this.PageIcon		= new gSTR_WinCtrl_File_Str() ;			//  ページアイコン
 	this.UpIcon			= new gSTR_WinCtrl_File_Str() ;			//  更新アイコン
 	this.UpdateInfo 	= new gSTR_WinCtrl_Update_Str() ;		//  更新情報
-	this.SelInfo		= {} ;									//  セレクタ情報
+///	this.SelInfo		= {} ;									//  セレクタ情報
 	this.MouseMove		= new gSTR_WinCtrl_MouseMove_Str() ;	//  マウスムーブ情報
 	this.CompProcess	= new gSTR_CallbackInfo_Str() ;			//  コールバック情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
@@ -704,6 +705,7 @@ function gSTR_STR_LogBox_Str()
 	this.ID						= top.DEF_GVAL_NULL ;			//  ログボックス ID (id)
 	this.BoxObj					= top.DEF_GVAL_NULL ;			//  ログボックス オブジェクト(or textarea)
 	
+	this.FLG_Full				= false ;						//  true=フルログ  false=操作のみ
 	this.FLG_Open				= false ;						//  true=オープン  false=クローズ
 	this.Data					= new Array() ;					//  メッセージデータ
 }
@@ -723,10 +725,11 @@ var gSTR_PreReg_ButtonCtrl = {} ;	//ボタン情報 仮登録
 //#####################################################
 //# クラス 外部参照用オブジェクト
 //#####################################################
-var gCLS_OSIF           = new CLS_OSIF() ;
-var gCLS_L              = new CLS_L() ;
-var gCLS_Obj            = new CLS_Obj() ;
-var gCLS_Sys            = new CLS_Sys() ;
+var gCLS_OSIF        = new CLS_OSIF() ;
+var gCLS_L           = new CLS_L() ;
+var gCLS_Obj         = new CLS_Obj() ;
+var gCLS_Sys         = new CLS_Sys() ;
+var gCLS_File        = new CLS_File() ;
 
 
 
