@@ -120,7 +120,7 @@ class CLS_Obj {
 		{
 		//##############################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -158,7 +158,7 @@ class CLS_Obj {
 		{
 			//##############################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -221,19 +221,19 @@ class CLS_Obj {
 			////////////////////////////////
 			// ページ情報
 			wURL = new URL( wHref ) ;
-			wRes['Responce']['Url']      = top.gCLS_OSIF.String( wHref ) ;
-			wRes['Responce']['Protocol'] = top.gCLS_OSIF.String( wURL.protocol ) ;
-			wRes['Responce']['Host']     = top.gCLS_OSIF.String( wURL.host ) ;
-			wRes['Responce']['Pathname'] = top.gCLS_OSIF.String( wURL.pathname ) ;
-			wRes['Responce']['Hash']     = top.gCLS_OSIF.String( wURL.hash ) ;
-			wRes['Responce']['Port']     = top.gCLS_OSIF.String( wURL.port ) ;
-			wRes['Responce']['Search']   = top.gCLS_OSIF.String( wURL.search ) ;
+			wRes['Responce']['Url']      = top.gCLS_OSIF.String({ inString: wHref }) ;
+			wRes['Responce']['Protocol'] = top.gCLS_OSIF.String({ inString: wURL.protocol }) ;
+			wRes['Responce']['Host']     = top.gCLS_OSIF.String({ inString: wURL.host }) ;
+			wRes['Responce']['Pathname'] = top.gCLS_OSIF.String({ inString: wURL.pathname }) ;
+			wRes['Responce']['Hash']     = top.gCLS_OSIF.String({ inString: wURL.hash }) ;
+			wRes['Responce']['Port']     = top.gCLS_OSIF.String({ inString: wURL.port }) ;
+			wRes['Responce']['Search']   = top.gCLS_OSIF.String({ inString: wURL.search }) ;
 			
 			////////////////////////////////
 			// コマンドの取得
 			
 			//### "?"部分の解析
-			wSearch = top.gCLS_OSIF.String( wURL.search ) ;
+			wSearch = top.gCLS_OSIF.String({ inString: wURL.search }) ;
 			wIndex = top.gCLS_OSIF.IndexOf({
 				inString  : wSearch,
 				inPattern : "?"
@@ -291,7 +291,7 @@ class CLS_Obj {
 					{///ノーヒット
 						//### "="がない場合、キーを Comm* で、データ全突っ込む
 						
-						wDataKey = wCHR_Com + top.gCLS_OSIF.String(wPt) ;
+						wDataKey = wCHR_Com + top.gCLS_OSIF.String({ inString:wPt }) ;
 						wData    = wSearch['Data'][wKey] ;
 						wPt++
 					}
@@ -328,7 +328,7 @@ class CLS_Obj {
 				wMessage = wMessage + '\n' + "  Commands ::" ;
 				for( wKey in wRes['Responce']['Commands'] )
 				{
-					wMessage = wMessage + '\n' + "    " + top.gCLS_OSIF.String(wKey) + "=" + wRes['Responce']['Commands'][wKey] ;
+					wMessage = wMessage + '\n' + "    " + top.gCLS_OSIF.String({ inString:wKey }) + "=" + wRes['Responce']['Commands'][wKey] ;
 				}
 				
 				//### コンソール表示
@@ -340,7 +340,7 @@ class CLS_Obj {
 		{
 			//##############################
 			//# 例外処理
-			let wError = "herf=" + top.gCLS_OSIF.String(wHref) ;
+			let wError = "herf=" + top.gCLS_OSIF.String({ inString:wHref }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -370,7 +370,7 @@ class CLS_Obj {
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -385,7 +385,7 @@ class CLS_Obj {
 		{
 			//##############################
 			//# 例外処理
-			let wError = "inCode=" + top.gCLS_OSIF.String(inCode) ;
+			let wError = "inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -459,7 +459,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -493,7 +493,7 @@ class CLS_Obj {
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -535,7 +535,7 @@ class CLS_Obj {
 		{
 			//##############################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) + " inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -609,7 +609,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -643,7 +643,7 @@ class CLS_Obj {
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -682,7 +682,7 @@ class CLS_Obj {
 		{
 			//##############################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) + " inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -716,7 +716,7 @@ class CLS_Obj {
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -755,7 +755,7 @@ class CLS_Obj {
 		{
 			//##############################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -829,7 +829,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -863,7 +863,7 @@ class CLS_Obj {
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -902,7 +902,7 @@ class CLS_Obj {
 		{
 			//##############################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -936,7 +936,7 @@ class CLS_Obj {
 		if( inCode==top.DEF_GVAL_NULL )
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -975,7 +975,7 @@ class CLS_Obj {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) + " inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -1049,7 +1049,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -1090,7 +1090,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "オブジェクト取得時 inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "オブジェクト取得時 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -1109,7 +1109,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "オブジェクト設定時 inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "オブジェクト設定時 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -1145,7 +1145,7 @@ class CLS_Obj {
 		if(( inCode!=true )&&( inCode!=false ))
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -1184,7 +1184,7 @@ class CLS_Obj {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) + " inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -1258,7 +1258,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -1294,7 +1294,7 @@ class CLS_Obj {
 		if(( inCode!=true )&&( inCode!=false ))
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -1333,7 +1333,7 @@ class CLS_Obj {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) + " inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -1407,7 +1407,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -1443,7 +1443,7 @@ class CLS_Obj {
 		if(( inCode!=true )&&( inCode!=false ))
 		{
 			//失敗
-			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String(inCode) ;
+			wRes['Reason'] = "入力エラー inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -1489,7 +1489,7 @@ class CLS_Obj {
 		{
 			//##############################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inCode=" + top.gCLS_OSIF.String(inCode) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) + " inCode=" + top.gCLS_OSIF.String({ inString:inCode }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -1569,7 +1569,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}
@@ -1670,16 +1670,16 @@ class CLS_Obj {
 			
 			//### コンソール表示
 ///			let wMessage = "Change Frame Size: inKey=" + String(inKey) + " inHeight=" + String(inHeight) + " inWidth=" + String(inWidth) ;
-			wMessage = "フレームサイズ変更: inKey=" + top.gCLS_OSIF.String(inKey) ;
-			wMessage = wMessage + '\n' + "  inHeight = " + top.gCLS_OSIF.String(inHeight) ;
-			wMessage = wMessage + '\n' + "  inWidth  = " + top.gCLS_OSIF.String(inWidth) ;
+			wMessage = "フレームサイズ変更: inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wMessage = wMessage + '\n' + "  inHeight = " + top.gCLS_OSIF.String({ inString:inHeight }) ;
+			wMessage = wMessage + '\n' + "  inWidth  = " + top.gCLS_OSIF.String({ inString:inWidth }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		}
 		catch(e)
 		{
 			//##############################
 			//# 例外処理
-			let wError = "inKey=" + top.gCLS_OSIF.String(inKey) + " inHeight=" + top.gCLS_OSIF.String(inHeight) + " inWidth=" + top.gCLS_OSIF.String(inWidth) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) + " inHeight=" + top.gCLS_OSIF.String({ inString:inHeight }) + " inWidth=" + top.gCLS_OSIF.String({ inString:inWidth }) ;
 			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -1720,7 +1720,7 @@ class CLS_Obj {
 			//# 例外処理
 			if( inError==true )
 			{
-				let wError = "inKey=" + top.gCLS_OSIF.String(inKey) ;
+				let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 				wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			}

@@ -171,7 +171,7 @@
 ```text
 呼出：
   CLS_OSIF.ConsLog({
-    inText   String   コンソールに表示するテキスト
+    inString   String   コンソールに表示するテキスト
   }) ;
 
 出力；
@@ -188,7 +188,7 @@
 ```text
 呼出：
   CLS_OSIF.ConsError({
-    inText   String   コンソールに表示するテキスト
+    inString   String   コンソールに表示するテキスト
   }) ;
 
 出力；
@@ -205,7 +205,7 @@
 ```text
 呼出：
   CLS_OSIF.ConsWarn({
-    inText   String   コンソールに表示するテキスト
+    inString   String   コンソールに表示するテキスト
   }) ;
 
 出力；
@@ -222,7 +222,7 @@
 ```text
 呼出：
   CLS_OSIF.ConsInfo({
-    inText   String   コンソールに表示するテキスト
+    inString   String   コンソールに表示するテキスト
   }) ;
 
 出力；
@@ -239,7 +239,7 @@
 ```text
 呼出：
   CLS_OSIF.Alert({
-    inText   String   alertに表示するテキスト
+    inString   String   alertに表示するテキスト
   }) ;
 
 出力；
@@ -256,7 +256,7 @@
 ```text
 呼出：
   CLS_OSIF.Confirm({
-    inText   String   confirmに表示するテキスト
+    inString   String   confirmに表示するテキスト
   }) ;
 
 出力；
@@ -273,7 +273,7 @@
 ```text
 呼出：
   CLS_OSIF.Prompt({
-    inText      String   window.promptに表示するテキスト
+    inString    String   window.promptに表示するテキスト
     inDefault   String   入力ボックスのデフォルト値
   }) ;
 

@@ -111,7 +111,7 @@ class CLS_Sys {
 		}) ;
 		if( wSubRes!=true )
 		{///不正
-			wRes['Reason'] = "辞書に ['Callback'] がない keys=" + top.gCLS_OSIF.String( Object.keys(inExitProc) ) ;
+			wRes['Reason'] = "辞書に ['Callback'] がない keys=" + top.gCLS_OSIF.String({ inString: Object.keys(inExitProc) }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -150,8 +150,8 @@ class CLS_Sys {
 		////////////////////////////////
 		// システム情報設定
 		top.gSTR_SystemInfo.Status     = top.DEF_GVAL_SYS_STAT_INIT ;  //初期化
-		top.gSTR_SystemInfo.UserID     = top.gCLS_OSIF.String( inUserID ) ;
-		top.gSTR_SystemInfo.SystemName = top.gCLS_OSIF.String( inSystemName ) ;
+		top.gSTR_SystemInfo.UserID     = top.gCLS_OSIF.String({ inString: inUserID }) ;
+		top.gSTR_SystemInfo.SystemName = top.gCLS_OSIF.String({ inString: inSystemName }) ;
 		
 		////////////////////////////////
 		// 時間の取得

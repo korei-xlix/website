@@ -37,6 +37,9 @@ var DEF_INDEX_TEST				= false ;
 //##############################################################
 function __handle_PageLoad()
 {
+	//  //### 応答形式の取得
+	let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
+
 ////////////////////////////////////////
 ///		console.dir( gCLS_OSIF ) ;
 ///
@@ -47,6 +50,24 @@ function __handle_PageLoad()
 ///	wMessage = "へろう！！！" ;
 ///	top.gCLS_L.L({ inRes:wRes, inLevel:"P", inMessage:wMessage, inLine:__LINE__ }) ;
 ////////////////////////////////////////
+
+	console.info( "111" ) ;
+
+	let wString = top.gCLS_OSIF.Replace({
+		inString  : "2026-06-21",
+		inChara   : /-/g,
+		inPattern : ""
+	})
+
+	console.info( "222" ) ;
+
+	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
+
+	console.info( "333" ) ;
+
+
+return ;
+
 
 	let wSubRes, wPageObj ;
 

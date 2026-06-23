@@ -271,11 +271,11 @@ class CLS_L {
 			"UserID"   : top.gSTR_SystemInfo.UserID,
 			"TimeDate" : inTimeDate,
 			"Level"    : inLevel,
-			"Result"   : top.gCLS_OSIF.String(inRes['Result']),
-			"Class"    : top.gCLS_OSIF.String(inRes['Class']),
-			"Func"     : top.gCLS_OSIF.String(inRes['Func']),
-			"Reason"   : top.gCLS_OSIF.String(inRes['Reason']),
-			"Responce" : top.gCLS_OSIF.String(inRes['Responce']),
+			"Result"   : top.gCLS_OSIF.String({ inString:inRes['Result'] }),
+			"Class"    : top.gCLS_OSIF.String({ inString:inRes['Class'] }),
+			"Func"     : top.gCLS_OSIF.String({ inString:inRes['Func'] }),
+			"Reason"   : top.gCLS_OSIF.String({ inString:inRes['Reason'] }),
+			"Responce" : top.gCLS_OSIF.String({ inString:inRes['Responce'] }),
 			"Message"  : inMessage,
 			"Line"     : inLine,
 			"Dump"     : top.DEF_GVAL_NULL
@@ -436,7 +436,7 @@ class CLS_L {
 		//### 致命的エラー
 		if( inData['Level']=="A" )
 		{
-			top.gCLS_OSIF.ConsError({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsError({ inString:wCons }) ;
 		}
 		//### エラー
 		else if(( inData['Level']=="B" ) ||
@@ -445,52 +445,52 @@ class CLS_L {
 		        ( inData['Level']=="E" ) ||
 		        ( inData['Level']=="I" ) )
 		{
-			top.gCLS_OSIF.ConsWarn({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsWarn({ inString:wCons }) ;
 		}
 		//### トラヒック
 		else if(( inData['Level']=="TS" ) ||
 		        ( inData['Level']=="TU" ) )
 		{
-			top.gCLS_OSIF.ConsInfo({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsInfo({ inString:wCons }) ;
 		}
 		//### テストログ
 		else if( inData['Level']=="XX" )
 		{
 			if( top.DEF_INDEX_TEST==true )
 			{
-				top.gCLS_OSIF.ConsWarn({ inText:wCons }) ;
+				top.gCLS_OSIF.ConsWarn({ inString:wCons }) ;
 			}
 		}
 		//### 非表示
 		else if( inData['Level']=="XN" )
 		{
-			top.gCLS_OSIF.ConsInfo({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsInfo({ inString:wCons }) ;
 		}
 		//### コールバック
 		else if( inData['Level']=="XC" )
 		{
-			top.gCLS_OSIF.ConsInfo({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsInfo({ inString:wCons }) ;
 		}
 		//### 操作記録（システム起動・システム設定）
 		else if(( inData['Level']=="SS" ) ||
 		        ( inData['Level']=="SW" ) )
 		{
-			top.gCLS_OSIF.ConsLog({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsLog({ inString:wCons }) ;
 		}
 		//### 操作記録（システム規制・ユーザ操作）
 		else
 		{
-			top.gCLS_OSIF.ConsInfo({ inText:wCons }) ;
+			top.gCLS_OSIF.ConsInfo({ inString:wCons }) ;
 		}
 		
 		////////////////////////////////
 		// ダンプの表示
 		if( inData['Dump']!=top.DEF_GVAL_NULL )
 		{
-			top.gCLS_OSIF.ConsInfo({ inText : top.DEF_GVAL_LOG_DUMP_HEADER }) ;
+			top.gCLS_OSIF.ConsInfo({ inString : top.DEF_GVAL_LOG_DUMP_HEADER }) ;
 ///			CLS_OSIF.sViewObj({ inObj:inData['Dump'] }) ;
-			top.gCLS_OSIF.ConsInfo({ inText : inData['Dump'] }) ;
-			top.gCLS_OSIF.ConsInfo({ inText : top.DEF_GVAL_LOG_HEADER }) ;
+			top.gCLS_OSIF.ConsInfo({ inString : inData['Dump'] }) ;
+			top.gCLS_OSIF.ConsInfo({ inString : top.DEF_GVAL_LOG_HEADER }) ;
 		}
 		
 		// 処理正常
@@ -525,7 +525,7 @@ class CLS_L {
 		
 		////////////////////////////////
 		// データ作成
-		wData = top.gCLS_OSIF.String( inData['TimeDate'] ) + " " + top.gCLS_OSIF.String( inData['Message'] ) ;
+		wData = top.gCLS_OSIF.String({ inString:inData['TimeDate'] }) + " " + top.gCLS_OSIF.String({ inString:inData['Message'] }) ;
 		
 		////////////////////////////////
 		// ログボックスへデータを詰める
@@ -680,14 +680,14 @@ class CLS_L {
 				else
 				{
 					//### それ以外は、コンソール用出力
-					wOutput   = top.gCLS_OSIF.String( wKey ) ;
+					wOutput   = top.gCLS_OSIF.String({ inString:wKey }) ;
 					wSpaceLen = top.DEF_GVAL_LOG_KOUMOKU_LEN - wOutput.length ;
 ///					wSpace = " ".repeat( wSpaceLen ) ;
 					wSpace = top.gCLS_OSIF.StrRepeat({
 						inString : "",
 						inLength : wSpaceLen
 					}) ;
-					wOutput = wOutput + wSpace + ": " + top.gCLS_OSIF.String( top.gSTR_Log[wIndex][wKey] ) + '\n' ;
+					wOutput = wOutput + wSpace + ": " + top.gCLS_OSIF.String({ inString:top.gSTR_Log[wIndex][wKey] }) + '\n' ;
 ///					wContCons.push( wOutput ) ;
 					top.gCLS_OSIF.PushArray({
 						inObject : wContCons,
@@ -734,14 +734,14 @@ class CLS_L {
 		
 		////////////////////////////////
 		// ファイル名生成
-		wSubRes = CLS_OSIF.sSplit({
+		wSubRes = top.gCLS_OSIF.Split({
 			inString  : inTimeDate,
 			inPattern : " "
 		}) ;
 		if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=2 ))
 		{///失敗
-			wRes['Reason'] = "CLS_OSIF.sSplit is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "文字列分割処理失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return ;
 		}
 		wTimeDate = wSubRes['Data'] ;
@@ -751,12 +751,16 @@ class CLS_L {
 		
 		////////////////////////////////
 		// ファイル出力
-		CLS_File.sOutput({ inPath:wPath, inText:wText, inAuto:top.DEF_INDEX_LOG_AUTOOPEN }) ;
+		top.gCLS_File.Output({
+			inPath : wPath,
+			inText : wText,
+			inAuto : top.DEF_INDEX_LOG_AUTOOPEN
+		}) ;
 		
 		////////////////////////////////
 		// コンソール表示
-		wText = "Output Log file: Path=" + top.gCLS_OSIF.String(wPath) ;
-		this.sL({ inRes:wRes, inLevel:"SC", inMessage:wText }) ;
+		wText = "ログ出力  Path=" + top.gCLS_OSIF.String({ inString: wPath }) ;
+		this.L({ inRes:wRes, inLevel:"SR", inMessage:wText }) ;
 		
 		return ;
 	}
