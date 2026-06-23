@@ -51,19 +51,17 @@ function __handle_PageLoad()
 ///	top.gCLS_L.L({ inRes:wRes, inLevel:"P", inMessage:wMessage, inLine:__LINE__ }) ;
 ////////////////////////////////////////
 
-	console.info( "111" ) ;
-
 	let wString = top.gCLS_OSIF.Replace({
 		inString  : "2026-06-21",
-		inChara   : /-/g,
-		inPattern : ""
-	})
-
-	console.info( "222" ) ;
+		inPattern : /-/g,
+		inChara   : ""
+	}) ;
 
 	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
 
-	console.info( "333" ) ;
+	wString = "2026-06-21".replace( /-/g, "" ) ;
+
+	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
 
 
 return ;

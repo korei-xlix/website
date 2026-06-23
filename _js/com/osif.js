@@ -642,8 +642,8 @@ class CLS_OSIF {
 //##############################################################
 	Replace({
 		inString,
-		inChara,
-		inPattern
+		inPattern,
+		inChara
 	})
 	{
 		let wString = top.DEF_GVAL_TEXT_NONE ;

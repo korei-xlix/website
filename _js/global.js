@@ -92,7 +92,7 @@ var DEF_GVAL_IDX_POPUP_HELP		= "iPopupHelp" ;
 
 ////////////////////////////////
 // ログボックス
-var DEF_GVAL_IDX_LOGBOX_Window	= "iLogBox_Window" ;
+///var DEF_GVAL_IDX_LOGBOX_Window	= "iLogBox_Window" ;
 var DEF_GVAL_IDX_LOGBOX_MESSAGE	= "iLogBox_Message" ;
 
 ////////////////////////////////
@@ -702,7 +702,7 @@ var gARR_Log					= new Array() ;
 function gSTR_STR_LogBox_Str()
 {																//ログボックス
 	this.FrameID				= top.DEF_GVAL_NULL ;			//  フレームID  nullなら親フレーム
-	this.ID						= top.DEF_GVAL_NULL ;			//  ログボックス ID (id)
+	this.ID						= top.DEF_GVAL_NULL ;			//  ログボックス メッセージID (id)
 	this.BoxObj					= top.DEF_GVAL_NULL ;			//  ログボックス オブジェクト(or textarea)
 	
 	this.FLG_Full				= false ;						//  true=フルログ  false=操作のみ

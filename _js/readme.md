@@ -51,6 +51,7 @@
   * [文字列長取得 / GetStrLength](#文字列長取得--getstrlength)
   * [文字列変換 / String](#文字列変換--string)
   * [文字分割 / Split](#文字分割--split)
+  * [文字列置換 / Replace](#文字列置換--replace)
   * [文字切り抜き / SubString](#文字切り抜き--substring)
   * [文字の繰り返し / StrRepeat](#文字の繰り返し--strrepeat)
   * [１桁なら先頭０埋め / ZeroPadding](#１桁なら先頭０埋め--zeropadding)
@@ -119,10 +120,21 @@
 
 
 
+### 目次：[ファイルクラス / CLS_File](#ログクラス--cls_l-logjs)
+
+* [ファイル出力 / Output](#ファイル出力--output)
+
+
+
 ### 目次：[ログクラス / CLS_L](#ログクラス--cls_l-logjs)
 
-* [ロギング / L](#ロギング--l)
 * [ログレベル / Level](#ログレベル--level)
+* [ログファイル出力 / PutFile](#ログファイル出力--putfile)
+* [ログ強制表示 / ForceView](#ログ強制表示--forceview)
+* [ログクリア / Clear](#ログクリア--clear)
+* [ログボックス設定 / SetLogBox](#ログボックス設定--setlogbox)
+* [ログボックス オープン / OpenLogBox](#ログボックス-オープン--openlogbox)
+* [ログボックス クローズ / CloseLogBox](#ログボックス-クローズ--closelogbox)
   
 
 
@@ -508,6 +520,24 @@
 
 
 
+### 文字列置換 / Replace
+
+```text
+呼出：
+  CLS_OSIF.Replace({
+    inString    String   置換する文字列
+    inPattern   String   置換パターン（正規表現）
+    inChara     String   置換後の文字
+  }) ;
+
+出力；
+  string   切り抜いた文字列   null=処理失敗
+
+```
+  
+
+
+
 ### 文字切り抜き / SubString
 
 ```text
@@ -597,7 +627,7 @@
 
 ```text
 呼出：
-  CLS_OSIF.IndexOf({
+  CLS_OSIF.ExpStr({
     inE   String   catchしたメッセージ
     inA   String   メッセージに追加するメッセージ
   }) ;
@@ -1267,6 +1297,30 @@
 
 
 
+## ファイルクラス / CLS_File [file_ctrl.js]
+  
+  [[目次に戻る]](#目次ファイルクラス--cls_file)  
+  
+
+### ファイル出力 / Output
+
+```text
+呼出：
+  CLS_File.Output({
+    inPath  : string    ファイルパス
+    inText  : string    ファイル出力データ
+    inAuto  : bool      true=出力後自動オープンする  false=自動オープンしない
+  }) ;
+
+出力：
+  ※戻り値なし
+
+```
+  
+
+
+
+
 
 ## ログクラス / CLS_L [log.js]
   
@@ -1328,12 +1382,98 @@
 
 
 
+### ログファイル出力 / PutFile
+
+```text
+呼出：
+  CLS_L.PutFile() ;
+  ※引数なし
+
+出力：
+  bool   true=処理正常  false=処理失敗
+
+```
+  
 
 
 
+### ログ強制表示 / ForceView
+
+```text
+呼出：
+  CLS_L.ForceView() ;
+  ※引数なし
+
+出力：
+  bool   true=処理正常  false=処理失敗
+
+```
+  
 
 
 
+### ログクリア / Clear
+
+```text
+呼出：
+  CLS_L.Clear() ;
+  ※引数なし
+
+出力：
+  bool   true=処理正常  false=処理失敗
+
+```
+  
+
+
+
+### ログボックス設定 / SetLogBox
+
+```text
+呼出：
+  CLS_L.SetLogBox({
+    inID      : string   メッセージボックスID
+    inFrameID : string   フレームID（なしは親フレーム）
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### ログボックス オープン / OpenLogBox
+
+```text
+呼出：
+  CLS_L.OpenLogBox() ;
+  ※引数なし
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### ログボックス クローズ / CloseLogBox
+
+```text
+呼出：
+  CLS_L.CloseLogBox() ;
+  ※引数なし
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
 
 
 
