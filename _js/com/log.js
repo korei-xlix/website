@@ -407,6 +407,11 @@ class CLS_L {
 			wCons = wCons + " " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
+			wCons = wCons + inData['Func'] ;
+			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+			{
+				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+			}
 		}
 		
 		//### Reason: Reason

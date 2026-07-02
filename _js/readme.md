@@ -120,6 +120,20 @@
 
 
 
+### 目次：[タイマ制御クラス / CLS_Timer](#タイマ制御クラス--cls_timer-timer_ctrljs)
+
+* [非同期コールバック / async_CLS_Timer_Callback](#非同期コールバック--async_cls_timer_callback)
+* [タイマ設定 / Set](#タイマ設定--set)
+* [タイマ存在チェック / Exist](#タイマ存在チェック--exist)
+* [ログレベル / Level](#ログレベル--level)
+* [ログレベル / Level](#ログレベル--level)
+* [ログレベル / Level](#ログレベル--level)
+* [ログレベル / Level](#ログレベル--level)
+* [ログレベル / Level](#ログレベル--level)
+
+
+
+
 ### 目次：[ファイルクラス / CLS_File](#ログクラス--cls_l-logjs)
 
 * [ファイル出力 / Output](#ファイル出力--output)
@@ -1269,26 +1283,122 @@
 
 
 
+## タイマ制御クラス / CLS_Timer [timer_ctrl.js]
+  
+  [[目次に戻る]](#目次タイマ制御クラス--cls_timer)  
+  
+
+### 非同期コールバック / async_CLS_Timer_Callback
+
+```text
+呼出：
+  CLS_Timer.async_CLS_Timer_Callback({
+    inTimerID     : string    タイマID
+  }) ;
+
+出力：
+  ※戻り値なし
+
+```
+  
+
+
+
+### タイマ設定 / Set
+
+```text
+呼出：
+  CLS_Timer.Set({
+    inTimerID   : string   タイマID
+    inTimerKind : string   タイマ種類
+    inValue     : int      タイマ値
+    inRetry     : int      リトライ値
+    intLog      : int      ログカウント値
+    inNextProc  = {
+      "Callback" : string  コールバック関数
+      "Arg"      : array   コールバック関数に渡す引数
+    },
+    inOW         : bool    上書き設定  true=上書き設定
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### タイマ存在チェック / Exist
+
+```text
+呼出：
+  CLS_Timer.Exist({
+    inTimerID   : string   タイマID
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+    "Responce"  : false       bool    true=タイマあり, false=タイマなし
+
+```
+  
+
+
+
+### タイマ起動 / Start
+
+```text
+呼出：
+  CLS_Timer.Start({
+    inTimerID   : string   タイマID
+    inStatus    : string   待ち状態指定
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## システム情報クラス / CLS_Sys [sys.js]
   
   [[目次に戻る]](#目次システム情報クラス--cls_sys)  
   
 
-### ロギ / L
+### システム設定 / Set
 
 ```text
 呼出：
-  CLS_L.L({
-    inRes     : object    応答情報（CLS_OSIF.Get_Resp）
-    inLevel   : text      ログレベル *1,
-    inMessage : text      出力するエラーメッセージ,
-    inLine    : text      エラー行（__LINE__ と書くとスタックが、ファイル名：行数をセットする）
-    inDump    : object    ダンプデータ（形式は自由）
+  CLS_Sys.Set({
+    inUserID     : string    ユーザID
+    inSystemName : string    システム名
+    inPageObj    : object    ページオブジェクト
+    inUseTimer   : bool      true=システムタイマを使用する
+    inUseCircle  : bool      true=周期タイマを使用する（inUseTimer=trueの場合のみ有効）
+    inExitProc   :
+      "Callback" : object    コールバックする関数
+      "Arg"      : array     コールバック関数に渡す引数
   }) ;
 
 出力：
-  ※戻り値なし
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
 
 ```
   

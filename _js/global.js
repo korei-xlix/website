@@ -728,6 +728,7 @@ var gSTR_PreReg_ButtonCtrl = {} ;	//ボタン情報 仮登録
 var gCLS_OSIF        = new CLS_OSIF() ;
 var gCLS_L           = new CLS_L() ;
 var gCLS_Obj         = new CLS_Obj() ;
+var gCLS_Tim         = new CLS_Timer() ;
 var gCLS_Sys         = new CLS_Sys() ;
 var gCLS_File        = new CLS_File() ;
 

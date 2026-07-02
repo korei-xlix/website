@@ -9,22 +9,22 @@
 //# ※ユーザ自由変更※
 
 //### true=ストレージ有効
-var DEF_INDEX_USE_STORAGE       = true ;
+var DEF_INDEX_USE_STORAGE     = true ;
 
 //### true=ストレージインデックス名
-var DEF_INDEX_STORAGE_HEADER    = "KOREIS_WEB" ;
+var DEF_INDEX_STORAGE_HEADER  = "KOREIS_WEB" ;
 
 //### true=翻訳機能有効
-var DEF_INDEX_USE_TRANSRATE     = false ;
+var DEF_INDEX_USE_TRANSRATE   = false ;
 
 //### true=ログファイル出力
-var DEF_INDEX_LOG_OUTPUT        = false ;
+var DEF_INDEX_LOG_OUTPUT      = false ;
 
 //### ログファイル自動オープン
-var DEF_INDEX_LOG_AUTOOPEN      = false ;
+var DEF_INDEX_LOG_AUTOOPEN    = false ;
 
 //### true=テストモード
-var DEF_INDEX_TEST				= false ;
+var DEF_INDEX_TEST            = false ;
 
 
 
@@ -51,21 +51,22 @@ function __handle_PageLoad()
 ///	top.gCLS_L.L({ inRes:wRes, inLevel:"P", inMessage:wMessage, inLine:__LINE__ }) ;
 ////////////////////////////////////////
 
-	let wString = top.gCLS_OSIF.Replace({
-		inString  : "2026-06-21",
-		inPattern : /-/g,
-		inChara   : ""
-	}) ;
-
-	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
-
-	wString = "2026-06-21".replace( /-/g, "" ) ;
-
-	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
-
-
-return ;
-
+////////////////////////////////////////
+///	let wString = top.gCLS_OSIF.Replace({
+///		inString  : "2026-06-21",
+///		inPattern : /-/g,
+///		inChara   : ""
+///	}) ;
+///
+///	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
+///
+///	wString = "2026-06-21".replace( /-/g, "" ) ;
+///
+///	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
+///
+///return ;
+///
+////////////////////////////////////////
 
 	let wSubRes, wPageObj ;
 
@@ -74,20 +75,22 @@ return ;
 	// システム情報設定
 ///	wSubRes = CLS_Sys.sSet({
 	wSubRes = top.gCLS_Sys.Set({
-		inUserID		: "webmain",			//ユーザID
-		inSystemName	: "website",			//システム名
-		inPageObj		: wPageObj,
-		inUseTimer		: true					//システムタイマ使用有無  true=使用
-//		inUseCircle		: true,					//定期処理使用有無        true=使用（システムタイマ有効時）
-//		inExitProc		= {
-//			"Callback"	: top.DEF_GVAL_NULL,
-//			"Arg"		: new Array()
+		inUserID     : "webmain",			//ユーザID
+		inSystemName : "website",			//システム名
+		inPageObj    : wPageObj,
+		inUseTimer   : true					//システムタイマ使用有無  true=使用
+//		inUseCircle  : true,					//定期処理使用有無        true=使用（システムタイマ有効時）
+//		inExitProc   = {
+//			"Callback" : top.DEF_GVAL_NULL,
+//			"Arg"      : new Array()
 //			}
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
-		wRes['Reason'] = "CLS_Sys.sSet is failed" ;
-		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+///		wRes['Reason'] = "CLS_Sys.sSet is failed" ;
+///		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+		wRes['Reason'] = "システム情報設定失敗" ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 		return wRes ;
 	}
 	

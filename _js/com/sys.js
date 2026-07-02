@@ -85,13 +85,15 @@ class CLS_Sys {
 		}
 		if(( inUserID=="" ) || ( inUserID==top.DEF_GVAL_TEXT_NONE ) || ( inUserID==top.DEF_GVAL_NULL ) )
 		{///失敗
-			wRes['Reason'] = "入力値不正 inUserID=" + String( inUserID ) ;
+///			wRes['Reason'] = "入力値不正 inUserID=" + String( inUserID ) ;
+			wRes['Reason'] = "入力値不正 inUserID=" + top.gCLS_OSIF.String({ inString:inUserID }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if(( inSystemName=="" ) || ( inSystemName==top.DEF_GVAL_TEXT_NONE ) || ( inSystemName==top.DEF_GVAL_NULL ) )
 		{///失敗
-			wRes['Reason'] = "入力値不正 inSystemName=" + String( inSystemName ) ;
+///			wRes['Reason'] = "入力値不正 inSystemName=" + String( inSystemName ) ;
+			wRes['Reason'] = "入力値不正 inSystemName=" + top.gCLS_OSIF.String({ inString:inSystemName }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -136,11 +138,11 @@ class CLS_Sys {
 ///		
 		////////////////////////////////
 		// データ初期化
-		top.gSTR_SystemInfo = new top.gSTR_SystemInfo_Str() ;
-		top.gSTR_SystemExit = new gSTR_CallbackInfo_Str() ;
-		top.gSTR_SystemCircle = new gSTR_SystemCircle_Str() ;
-		top.gSTR_PageInfo = new top.gSTR_PageInfo_Str() ;
-		top.gSTR_Time     = new top.gSTR_Time_Str() ;
+		top.gSTR_SystemInfo    = new top.gSTR_SystemInfo_Str() ;
+		top.gSTR_SystemExit    = new gSTR_CallbackInfo_Str() ;
+		top.gSTR_SystemCircle  = new gSTR_SystemCircle_Str() ;
+		top.gSTR_PageInfo      = new top.gSTR_PageInfo_Str() ;
+		top.gSTR_Time          = new top.gSTR_Time_Str() ;
 		top.gARR_TimerCtrlInfo = {} ;
 		top.gSTR_WinCtrlInfo   = new top.gSTR_WinCtrlInfo_Str() ;
 		
@@ -150,8 +152,8 @@ class CLS_Sys {
 		////////////////////////////////
 		// システム情報設定
 		top.gSTR_SystemInfo.Status     = top.DEF_GVAL_SYS_STAT_INIT ;  //初期化
-		top.gSTR_SystemInfo.UserID     = top.gCLS_OSIF.String({ inString: inUserID }) ;
-		top.gSTR_SystemInfo.SystemName = top.gCLS_OSIF.String({ inString: inSystemName }) ;
+		top.gSTR_SystemInfo.UserID     = top.gCLS_OSIF.String({ inString:inUserID }) ;
+		top.gSTR_SystemInfo.SystemName = top.gCLS_OSIF.String({ inString:inSystemName }) ;
 		
 		////////////////////////////////
 		// 時間の取得
@@ -229,11 +231,11 @@ class CLS_Sys {
 			wObj = wSubRes['Responce'] ;
 			
 			//### テスト挿入
-			wSubRes = CLS_PageObj.sSetInner({
-				inPageObj	: wObj,
-				inKey		: top.DEF_GVAL_IDX_SYSTEM_TD,
-				inCode		: top.gSTR_Time.TimeDate,
-				inDirect	: true
+			wSubRes = top.gCLS_Obj.SetInner({
+				inPageObj : wObj,
+				inKey     : top.DEF_GVAL_IDX_SYSTEM_TD,
+				inCode    : top.gSTR_Time.TimeDate,
+				inDirect  : true
 			})
 			if( wSubRes['Result']==true )
 			{///成功
@@ -244,8 +246,9 @@ class CLS_Sys {
 			////  テストモード時は、念のためログ出力しておく
 				if( top.DEF_INDEX_TEST==true )
 				{///テストモード時
-					wRes['Reason'] = "System time date insert is failer: id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
-					CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+///					wRes['Reason'] = "System time date insert is failer: id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
+					wRes['Reason'] = "システム時間挿入失敗  id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 				}
 			}
 		}
@@ -604,13 +607,15 @@ class CLS_Sys {
 		}) ;
 		if( wSubRes!=true )
 		{
-			wRes['Reason'] = "No Status num: inStatus=" + String(inStatus) ;
+///			wRes['Reason'] = "No Status num: inStatus=" + String(inStatus) ;
+			wRes['Reason'] = "No Status num: inStatus=" + top.gCLS_OSIF.String({ inString:inStatus }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if( top.gSTR_SystemInfo.Status==inStatus )
 		{///設定重複
-			wRes['Reason'] = "System Status is dual setting: now Status=" + String(inStatus) ;
+///			wRes['Reason'] = "System Status is dual setting: now Status=" + String(inStatus) ;
+			wRes['Reason'] = "System Status is dual setting: now Status=" + top.gCLS_OSIF.String({ inString:inStatus }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 			
 			wRes['Result'] = true ;
@@ -655,8 +660,10 @@ class CLS_Sys {
 		
 		//### コンソール表示
 		wMessage = "Change System Status" ;
-		wMessage = wMessage + '\n' + "  Pre Stat=" + String(wPrevStatus) ;
-		wMessage = wMessage + '\n' + "  New Stat=" + String(top.gSTR_SystemInfo.Status) ;
+///		wMessage = wMessage + '\n' + "  Pre Stat=" + String(wPrevStatus) ;
+///		wMessage = wMessage + '\n' + "  New Stat=" + String(top.gSTR_SystemInfo.Status) ;
+		wMessage = wMessage + '\n' + "  Pre Stat=" + top.gCLS_OSIF.String({ inString:wPrevStatus }) ;
+		wMessage = wMessage + '\n' + "  New Stat=" + top.gCLS_OSIF.String({ inString:top.gSTR_SystemInfo.Status }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
