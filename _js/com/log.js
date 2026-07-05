@@ -125,15 +125,38 @@ class CLS_L {
 		}
         
 		//### Message
-		if(( inMessage=="" ) && ( inMessage==top.DEF_GVAL_NULL ))
+		if(( inLevel=="SS" ) ||
+		   ( inLevel=="SW" ) ||
+		   ( inLevel=="SR" ) ||
+		   ( inLevel=="SL" ) ||
+		   ( inLevel=="US" ) ||
+		   ( inLevel=="UW" ) ||
+		   ( inLevel=="UR" ) ||
+		   ( inLevel=="UL" ) ||
+		   ( inLevel=="TS" ) ||
+		   ( inLevel=="TU" ) )
 		{
-			wReason = "メッセージ不正" ;
+			if(( inMessage=="" ) || ( inMessage==top.DEF_GVAL_NULL ))
+			{
+				wReason = "メッセージ不正" ;
+			}
 		}
 		
 		//### Line
-		if(( inLine=="" ) && ( inLine==top.DEF_GVAL_NULL ))
+		if(( inLevel=="A" ) ||
+		   ( inLevel=="B" ) ||
+		   ( inLevel=="C" ) ||
+		   ( inLevel=="D" ) ||
+		   ( inLevel=="E" ) ||
+		   ( inLevel=="I" ) ||
+		   ( inLevel=="XC" ) ||
+		   ( inLevel=="XN" ) ||
+		   ( inLevel=="XX" ) )
 		{
-			wReason = "inLine不正" ;
+			if(( inLine=="" ) || ( inLine==top.DEF_GVAL_NULL ))
+			{
+				wReason = "inLine不正" ;
+			}
 		}
 		
 		wTimeDate = top.DEF_GVAL_TIMEDATE ;
@@ -353,7 +376,8 @@ class CLS_L {
 			wCons = top.DEF_GVAL_LOG_ERROR_HEADER + '\n' + wCons + "[" + inData['Result'] + "] " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
-			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+//			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
 			{
 				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
 			}
@@ -366,7 +390,8 @@ class CLS_L {
 			wCons = wCons + " " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
-			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+//			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
 			{
 				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
 			}
@@ -407,8 +432,8 @@ class CLS_L {
 			wCons = wCons + " " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
-			wCons = wCons + inData['Func'] ;
-			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+//			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
+			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
 			{
 				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
 			}
@@ -423,7 +448,8 @@ class CLS_L {
 		
 		//### Info: Message
 		//    詳細な情報などを表示する
-		if( inData['Message']!=top.DEF_GVAL_TEXT_NONE )
+//		if( inData['Message']!=top.DEF_GVAL_TEXT_NONE )
+		if(( inData['Message']!="" ) && ( inData['Message']!=top.DEF_GVAL_NULL ))
 		{
 ///			wCons = wCons + '\n' + "  Info: " + inData['Message'] ;
 			wCons = wCons + '\n' + "  Info  : " + inData['Message'] ;

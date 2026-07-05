@@ -305,12 +305,23 @@ var DEF_GVAL_TIMERCTRL_TST_FRM_LOCATION	= "ts_frmLocation" ;	//    フレーム�
 var DEF_GVAL_TIMERCTRL_TST_FRM_INIT		= "ts_frmInit" ;		//    フレームページ設定中
 var DEF_GVAL_TIMERCTRL_TST_FRM_PROOESS	= "ts_frmProc" ;		//    ロード後プロセス中
 
-var DEF_GVAL_TIMERCTRL_KIND	= new Array(						//タイマ種類
-	"normal",													//  ノーマルタイマ（リトライなし 1回タイマ）    Retry=未設定
-	"circle",													//  定期実行タイマ（無限実行）                  Retry=未設定
-	"frame",													//  フレーム受信タイマ（フレーム受信で止める）  Retry=必要
-	"wait",														//  状態待ちタイマ                              Retry=必要
-	"system"													//  システムタイマ（定期実行と同じ）            Retry=未設定  
+																//タイマ種類
+var DEF_GVAL_TIMERCTRL_KIND_NORMAL = "normal" ;					//  ノーマルタイマ（リトライなし 1回タイマ）    Retry=未設定
+var DEF_GVAL_TIMERCTRL_KIND_CIRCLE = "circle" ;					//  定期実行タイマ（無限実行）                  Retry=未設定
+var DEF_GVAL_TIMERCTRL_KIND_FRAME  = "frame" ;					//  フレーム受信タイマ（フレーム受信で止める）  Retry=必要
+var DEF_GVAL_TIMERCTRL_KIND_WAIT   = "wait" ;					//  状態待ちタイマ                              Retry=必要
+var DEF_GVAL_TIMERCTRL_KIND_SYSTEM = "system" ;					//  システムタイマ（定期実行と同じ）            Retry=未設定  
+var DEF_GVAL_TIMERCTRL_KIND = new Array(
+	DEF_GVAL_TIMERCTRL_KIND_NORMAL,
+	DEF_GVAL_TIMERCTRL_KIND_CIRCLE,
+	DEF_GVAL_TIMERCTRL_KIND_FRAME,
+	DEF_GVAL_TIMERCTRL_KIND_WAIT,
+	DEF_GVAL_TIMERCTRL_KIND_SYSTEM
+///	"normal",
+///	"circle",
+///	"frame",
+///	"wait",
+///	"system"
 	) ;
 
 function gSTR_TimerCtrlInfo_Str()

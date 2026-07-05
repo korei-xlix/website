@@ -85,21 +85,19 @@ class CLS_Sys {
 		}
 		if(( inUserID=="" ) || ( inUserID==top.DEF_GVAL_TEXT_NONE ) || ( inUserID==top.DEF_GVAL_NULL ) )
 		{///失敗
-///			wRes['Reason'] = "入力値不正 inUserID=" + String( inUserID ) ;
 			wRes['Reason'] = "入力値不正 inUserID=" + top.gCLS_OSIF.String({ inString:inUserID }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if(( inSystemName=="" ) || ( inSystemName==top.DEF_GVAL_TEXT_NONE ) || ( inSystemName==top.DEF_GVAL_NULL ) )
 		{///失敗
-///			wRes['Reason'] = "入力値不正 inSystemName=" + String( inSystemName ) ;
 			wRes['Reason'] = "入力値不正 inSystemName=" + top.gCLS_OSIF.String({ inString:inSystemName }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		wExitProc = {} ;
-		//### コールバック情報
+		//### システム終了時コールバック情報
 		if( top.gCLS_OSIF.CheckObject({ inObject:inExitProc })!=true )
 		{///不正
 			wRes['Reason'] = "入力値不正 inExitProc は辞書型ではない" ;
@@ -160,7 +158,7 @@ class CLS_Sys {
 		wSubRes = top.gCLS_OSIF.UpdateGTD() ;
 		if( wSubRes['Result']!=true )
 		{
-			wRes['Reason'] = "時間情報取得失敗(1)" ;
+			wRes['Reason'] = "時間情報取得失敗" ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"C", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -168,7 +166,6 @@ class CLS_Sys {
 		
 		////////////////////////////////
 		// ページ情報の設定
-///		wSubRes = this.sGetSTRpage({
 		wSubRes = top.gCLS_Obj.GetPageInfo({
 			inPageObj : inPageObj
 		}) ;
@@ -179,8 +176,6 @@ class CLS_Sys {
 			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
-///		top.gSTR_PageInfo.WindowObj = wSubRes['Responce'].WindowObj ;
-///		top.gSTR_PageInfo.PageObj   = wSubRes['Responce'].PageObj ;
 		top.gSTR_PageInfo.WindowObj = window ;
 		top.gSTR_PageInfo.PageObj   = inPageObj ;
 		
@@ -200,8 +195,6 @@ class CLS_Sys {
 		{
 			top.gSTR_PageInfo.Commands[wKey] = wSubRes['Responce'].Commands[wKey] ;
 		}
-		
-///		top.gSTR_WinCtrlInfo.WindowObj = wSubRes['Responce'].WindowObj ;	//Window情報
 		top.gSTR_WinCtrlInfo.WindowObj = window ;  //Window情報
         
 		////////////////////////////////
@@ -230,12 +223,19 @@ class CLS_Sys {
 		{///成功の場合、オブジェクトを設定する
 			wObj = wSubRes['Responce'] ;
 			
-			//### テスト挿入
-			wSubRes = top.gCLS_Obj.SetInner({
+//			//### テスト挿入
+//			wSubRes = top.gCLS_Obj.SetInner({
+//				inPageObj : wObj,
+//				inKey     : top.DEF_GVAL_IDX_SYSTEM_TD,
+//				inCode    : top.gSTR_Time.TimeDate,
+//				inDirect  : true
+//			})
+			//### テスト取得
+			wSubRes = top.gCLS_Obj.GetInner({
 				inPageObj : wObj,
 				inKey     : top.DEF_GVAL_IDX_SYSTEM_TD,
-				inCode    : top.gSTR_Time.TimeDate,
-				inDirect  : true
+				inDirect  : true,
+				inError   : false
 			})
 			if( wSubRes['Result']==true )
 			{///成功
@@ -246,8 +246,8 @@ class CLS_Sys {
 			////  テストモード時は、念のためログ出力しておく
 				if( top.DEF_INDEX_TEST==true )
 				{///テストモード時
-///					wRes['Reason'] = "System time date insert is failer: id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
-					wRes['Reason'] = "システム時間挿入失敗  id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
+//					wRes['Reason'] = "システム時間挿入失敗  id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
+					wRes['Reason'] = "システム時間オブジェクト取得失敗  id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
 					top.gCLS_L.L({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 				}
 			}
@@ -258,67 +258,45 @@ class CLS_Sys {
 		if( top.gSTR_SystemCircle.FLG_UseTimer==true )
 		{
 			//### システムタイマ設定
-			wSubRes = CLS_Timer.sSet({
-				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER,
-				inTimerKind	: "system",
-				inValue		: top.DEF_GVAL_SYS_TIMER_VALUE,
-				inNextProc	: {
-					"Callback"	: CLS_Sys.__sCircleProcess
+			wSubRes = top.gCLS_Tim.Set({
+				inTimerID   : top.DEF_GVAL_SYS_TID_TIMER,
+				inTimerKind : top.DEF_GVAL_TIMERCTRL_KIND_SYSTEM,
+				inValue     : top.DEF_GVAL_SYS_TIMER_VALUE,
+				inNextProc  : {
+					"Callback" : top.gCLS_Sys.__CircleProcess
 					}
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///失敗
-				wRes['Reason'] = "CLS_Timer.sSet is failed(4-1)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "タイマ設定失敗（システムタイマ）" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
-///			
-///			//### タイマ起動
-///			wSubRes = CLS_Timer.sStart({
-///				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER
-///			}) ;
-///			if( wSubRes['Result']!=true )
-///			{///失敗
-///				wRes['Reason'] = "CLS_Timer.sStart is failed(4-3)" ;
-///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///				return wRes ;
-///			}
-///			
+			
 			if( top.gSTR_SystemCircle.FLG_UseCircle==true )
 			{
 				//### 周期処理タイマ設定
-				wSubRes = CLS_Timer.sSet({
-					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE,
-					inTimerKind	: "system",
-					inValue		: top.DEF_GVAL_SYS_TIMER_VALUE,
-					inNextProc	: {
-						"Callback"	: __handle_Circle
+				wSubRes = top.gCLS_Tim.Set({
+					inTimerID   : top.DEF_GVAL_SYS_TID_CIRCLE,
+					inTimerKind : top.DEF_GVAL_TIMERCTRL_KIND_SYSTEM,
+					inValue     : top.DEF_GVAL_SYS_TIMER_VALUE,
+					inNextProc  : {
+						"Callback" : top.__handle_Circle
 						}
 				}) ;
 				if( wSubRes['Result']!=true )
 				{///失敗
-					wRes['Reason'] = "CLS_Timer.sSet is failed(4-2)" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+					wRes['Reason'] = "タイマ設定失敗（周期処理タイマ）" ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
-///				
-///				//### タイマ起動
-///				wSubRes = CLS_Timer.sStart({
-///					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE
-///				}) ;
-///				if( wSubRes['Result']!=true )
-///				{///失敗
-///					wRes['Reason'] = "CLS_Timer.sStart is failed(4-4)" ;
-///					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///					return wRes ;
-///				}
 			}
 		}
 		
 		////////////////////////////////
 		// コンソール表示
-		wMessage = "System Set complete" ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		wMessage = "システム設定完了" ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
 		
 		////////////////////////////////
 		// 正常終了
@@ -328,75 +306,72 @@ class CLS_Sys {
 
 
 
-//#####################################################
+//##############################################################
 //# システム開始
-//#####################################################
-///	static sSysRestart()
-	static sStart()
+//##############################################################
+	Start()
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sStart" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Sys", inFunc:"Start" }) ;
 		
 		let wSubRes, wMessage ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システムフラグ初期化
-		top.gSTR_SystemCircle.Cnt		= 0 ;
-		top.gSTR_SystemCircle.FLG_Comp	= false ;
-		top.gSTR_SystemCircle.FLG_Error	= false ;
-		top.gSTR_SystemCircle.FLG_Rock	= false ;
-		top.gSTR_SystemCircle.FLG_15	= false ;
-		top.gSTR_SystemCircle.FLG_30	= false ;
-		top.gSTR_SystemCircle.FLG_60	= false ;
+		top.gSTR_SystemCircle.Cnt       = 0 ;
+		top.gSTR_SystemCircle.FLG_Comp  = false ;
+		top.gSTR_SystemCircle.FLG_Error = false ;
+		top.gSTR_SystemCircle.FLG_Rock  = false ;
+		top.gSTR_SystemCircle.FLG_15    = false ;
+		top.gSTR_SystemCircle.FLG_30    = false ;
+		top.gSTR_SystemCircle.FLG_60    = false ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システムタイマ・周期処理タイマ 再起動
 		
 		//### タイマ起動
-		wSubRes = CLS_Timer.sStart({
-			inTimerID	: top.DEF_GVAL_SYS_TID_TIMER
+		wSubRes = top.gCLS_Tim.Start({
+			inTimerID : top.DEF_GVAL_SYS_TID_TIMER
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///失敗
-			wRes['Reason'] = "CLS_Timer.sStart is failed(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "タイマ起動失敗（システムタイマ）" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		if( top.gSTR_SystemCircle.FLG_UseCircle==true )
 		{
 			//### タイマ起動
-			wSubRes = CLS_Timer.sStart({
-				inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE
+			wSubRes = top.gCLS_Tim.Start({
+				inTimerID : top.DEF_GVAL_SYS_TID_CIRCLE
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///失敗
-				wRes['Reason'] = "CLS_Timer.sStart is failed(2)" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "タイマ起動失敗（周期処理タイマ）" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システム状態設定（運用）
-		wSubRes = this.sChg({
+		wSubRes = this.Chg({
 			inStatus : top.DEF_GVAL_SYS_STAT_RUN
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///失敗
-			wRes['Reason'] = "CLS_Sys.sChg is failed(3)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "システム状態変更失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// コンソール表示
-		wMessage = "Start System" ;
-		CLS_L.sL({ inRes:wRes, inLevel:"S", inMessage:wMessage }) ;
+		wMessage = "システム開始" ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SS", inMessage:wMessage }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常終了
 		wRes['Result'] = true ;
 		return wRes ;
@@ -404,29 +379,27 @@ class CLS_Sys {
 
 
 
-//#####################################################
+//##############################################################
 //# システム定期処理
-//#####################################################
-	static __sCircleProcess()
+//##############################################################
+	__CircleProcess()
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"__sCircleProcess" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Sys", inFunc:"__CircleProcess" }) ;
 		
 		let wSubRes, wMessage, wValue ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 時間の取得
-		wSubRes = CLS_OSIF.sUpdateGTD() ;
+		wSubRes = top.gCLS_OSIF.UpdateGTD() ;
 		if( wSubRes['Result']!=true )
 		{
-			wRes['Reason'] = "Get Time Date Error" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"C", inLine:__LINE__ }) ;
+			wRes['Reason'] = "時間情報更新失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"C", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 運用中でない場合、
 		//   タイマ停止して終わる
 		if(( top.gSTR_SystemInfo.Status!=top.DEF_GVAL_SYS_STAT_RUN ) ||
@@ -434,20 +407,20 @@ class CLS_Sys {
 		   ( top.gSTR_SystemCircle.FLG_Error==true ))
 		{
 			//### システムタイマ停止
-			wSubRes = CLS_Timer.sStop({
-				inTimerID	: top.DEF_GVAL_SYS_TID_TIMER
+			wSubRes = top.gCLS_Tim.Stop({
+				inTimerID : top.DEF_GVAL_SYS_TID_TIMER
 			}) ;
 			
 			if( top.gSTR_SystemCircle.FLG_UseCircle==true )
 			{
-				wSubRes = CLS_Timer.sStop({
-					inTimerID	: top.DEF_GVAL_SYS_TID_CIRCLE
+				wSubRes = top.gCLS_Tim.Stop({
+					inTimerID : top.DEF_GVAL_SYS_TID_CIRCLE
 				}) ;
 			}
 			
-			/////////////////////////////
+			////////////////////////////////
 			// システム状態設定（運用）
-			wSubRes = CLS_Sys.sChg({
+			wSubRes = top.gCLS_Sys.Chg({
 				inStatus : top.DEF_GVAL_SYS_STAT_STOP
 			}) ;
 			
@@ -455,67 +428,68 @@ class CLS_Sys {
 			if( top.gSTR_SystemCircle.FLG_Error==true )
 			{
 				//### エラーによる停止
-				wMessage = "Stopped Circle process: Ditect system error" ;
+				wMessage = "システム定期処理停止（エラー検出）" ;
 			}
 			else
 			{
 				//### 運用停止
-				wMessage = "Stopped Circle process: Stop system" ;
+				wMessage = "システム定期処理停止（正常）" ;
 			}
-			CLS_L.sL({ inRes:wRes, inLevel:"S", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SS", inMessage:wMessage }) ;
 			
-			/////////////////////////////
+			////////////////////////////////
 			// 正常終了
 			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 日時挿入オブジェクトの取得
 		if( top.gSTR_SystemCircle.TimeObj!=top.DEF_GVAL_NULL )
 		{
-			wSubRes = CLS_PageObj.sSetInner({
-				inPageObj	: top.gSTR_SystemCircle.TimeObj,
-				inKey		: top.DEF_GVAL_IDX_SYSTEM_TD,
-				inCode		: top.gSTR_Time.TimeDate,
-				inDirect	: true
+			wSubRes = top.CLS_Obj.SetInner({
+				inPageObj : top.gSTR_SystemCircle.TimeObj,
+				inKey     : top.DEF_GVAL_IDX_SYSTEM_TD,
+				inCode    : top.gSTR_Time.TimeDate,
+				inDirect  : true
 			})
 			if( wSubRes['Result']!=true )
 			{///失敗
-				wRes['Reason'] = "System time date insert is failer: id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
-				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+				wRes['Reason'] = "システム時間挿入失敗 id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 				
+				// 次の周回以降は挿入させないため、日付挿入オブジェクトを消す
 				top.gSTR_SystemCircle.TimeObj = top.DEF_GVAL_NULL ;
 			}
 		}
 		
-		/////////////////////////////
-		// 定期処理完了通知の確認
+		////////////////////////////////
+		// 周期処理完了通知の確認
 		if( top.gSTR_SystemCircle.FLG_Comp==true )
 		{
 			top.gSTR_SystemCircle.FLG_Comp = false ;
 			
 			//### コンソール表示
-			wMessage = "Circle process complete notifications" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			wMessage = "周期処理完了通知" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 		}
 		
-		/////////////////////////////
-		// 定期処理が無効なら、終わる
+		////////////////////////////////
+		// 周期処理が無効なら、終わる
 		if( top.gSTR_SystemCircle.FLG_UseCircle==false )
 		{
 			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
-	/////////////////////////////
-	// 周期処理の処理
+		////////////////////////////////
+		// 周期処理の処理
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システムカウント
 		top.gSTR_SystemCircle.Cnt++ ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 周期フラグセット
 		
 		//### 15分フラグ
@@ -529,8 +503,8 @@ class CLS_Sys {
 				//### コンソール表示
 				if( top.DEF_INDEX_TEST==true )
 				{
-					wMessage = "15 minute process ON" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage, inLine:__LINE__ }) ;
+					wMessage = "15分処理 ON" ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 			}
 		}
@@ -546,8 +520,8 @@ class CLS_Sys {
 				//### コンソール表示
 				if( top.DEF_INDEX_TEST==true )
 				{
-					wMessage = "30 minute process ON" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage, inLine:__LINE__ }) ;
+					wMessage = "30分処理 ON" ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 			}
 		}
@@ -563,21 +537,21 @@ class CLS_Sys {
 				//### コンソール表示
 				if( top.DEF_INDEX_TEST==true )
 				{
-					wMessage = "60 minute process ON" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage, inLine:__LINE__ }) ;
+					wMessage = "60分処理 ON" ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
-				/////////////////////////////
+				////////////////////////////////
 				// カウントリセット
 				top.gSTR_SystemCircle.Cnt = 0 ;
 				
 				//### コンソール表示
-				wMessage = "Circle Cnt Reset" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				wMessage = "周期カウントリセット" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			}
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常終了
 		wRes['Result'] = true ;
 		return wRes ;
@@ -585,45 +559,41 @@ class CLS_Sys {
 
 
 
-//#####################################################
+//##############################################################
 //# システム状態変更
-//#####################################################
-	static sChg({
-		inStatus	=top.DEF_GVAL_SYS_STAT_STOP
+//##############################################################
+	Chg({
+		inStatus =top.DEF_GVAL_SYS_STAT_STOP
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Sys", inFunc:"sChg" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Sys", inFunc:"Chg" }) ;
 		
 		let wSubRes, wPrevStatus, wMessage ;
 		
 		/////////////////////////////
 		// 入力チェック
-		wSubRes = CLS_OSIF.sGetInObject({
-			inObject	: top.DEF_GVAL_SYS_STAT,
-			inKey		: inStatus
+		wSubRes = top.gCLS_OSIF.GetInObject({
+			inObject : top.DEF_GVAL_SYS_STAT,
+			inKey    : inStatus
 		}) ;
 		if( wSubRes!=true )
 		{
-///			wRes['Reason'] = "No Status num: inStatus=" + String(inStatus) ;
-			wRes['Reason'] = "No Status num: inStatus=" + top.gCLS_OSIF.String({ inString:inStatus }) ;
+			wRes['Reason'] = "存在しないステータス inStatus=" + top.gCLS_OSIF.String({ inString:inStatus }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if( top.gSTR_SystemInfo.Status==inStatus )
 		{///設定重複
-///			wRes['Reason'] = "System Status is dual setting: now Status=" + String(inStatus) ;
-			wRes['Reason'] = "System Status is dual setting: now Status=" + top.gCLS_OSIF.String({ inString:inStatus }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-			
-			wRes['Result'] = true ;
+			wRes['Reason'] = "状態の重複設定NG Status=" + top.gCLS_OSIF.String({ inString:inStatus }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+///			
+///			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
 		/////////////////////////////
-		// 時間の設定
+		// 運用状態切り替わり時間の記録
 		
 		//### 初期化→運用
 		if(( top.gSTR_SystemInfo.Status==top.DEF_GVAL_SYS_STAT_INIT ) &&
@@ -659,12 +629,10 @@ class CLS_Sys {
 		top.gSTR_SystemInfo.Status = inStatus ;
 		
 		//### コンソール表示
-		wMessage = "Change System Status" ;
-///		wMessage = wMessage + '\n' + "  Pre Stat=" + String(wPrevStatus) ;
-///		wMessage = wMessage + '\n' + "  New Stat=" + String(top.gSTR_SystemInfo.Status) ;
+		wMessage = "システム状態変更" ;
 		wMessage = wMessage + '\n' + "  Pre Stat=" + top.gCLS_OSIF.String({ inString:wPrevStatus }) ;
 		wMessage = wMessage + '\n' + "  New Stat=" + top.gCLS_OSIF.String({ inString:top.gSTR_SystemInfo.Status }) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
 		
 		/////////////////////////////
 		// 正常終了
@@ -674,24 +642,24 @@ class CLS_Sys {
 
 
 
-//#####################################################
+//##############################################################
 //# システム運用状態取得
-//#####################################################
-	static sGet()
+//##############################################################
+	Get()
 	{
 		return top.gSTR_SystemInfo.Status ;
 	}
 
 
 
-//#####################################################
+//##############################################################
 //# システム運用確認
-//#####################################################
-	static sRunCheck()
+//##############################################################
+	RunCheck()
 	{
 		let wSubRes, wMessage, wLang ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システム状態が運用中か
 		if( this.sGet()==top.DEF_GVAL_SYS_STAT_RUN )
 		{
@@ -699,10 +667,10 @@ class CLS_Sys {
 			return true ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 運用中ではない場合
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 言語を設定
 		if( top.gSTR_WinCtrlInfo.TransInfo.Lang==top.DEF_GVAL_NULL )
 		{///言語設定がなければ、デフォルト言語に設定
@@ -713,117 +681,116 @@ class CLS_Sys {
 			wLang = top.gSTR_WinCtrlInfo.TransInfo.Lang ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 言語のメッセージをロード
-		wSubRes = CLS_OSIF.sGetInObject({
-			inObject	: top.DEF_GVAL_TRANSRATE_SYSTEM_IS_NOT_RUN,
-			inKey		: wLang
+		wSubRes = top.gCLS_OSIF.GetInObject({
+			inObject : top.DEF_GVAL_TRANSRATE_SYSTEM_IS_NOT_RUN,
+			inKey    : wLang
 		}) ;
 		if( wSubRes==true )
 		{///言語があれば、メッセージを表示する
 			wMessage = top.DEF_GVAL_TRANSRATE_SYSTEM_IS_NOT_RUN[wLang] ;
-			CLS_OSIF.sAlert({ inText:wMessage }) ;
+			top.gCLS_OSIF.Alert({ inText:wMessage }) ;
 		}
 		return false ;
 	}
 
 
 
-//#####################################################
+//##############################################################
 //# システム停止
-//#####################################################
-	static sSystemExit()
+//##############################################################
+	Stop()
 	{
 		let wSubRes ;
 		
-		let wText = "Call SystemExit and System stopping..." ;
-		CLS_OSIF.sConsInfo({ inText:wText }) ;
+		let wText = "システム停止処理中..." ;
+		top.gCLS_OSIF.ConsInfo({ inText:wText }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 終了処理が指定されていれば、
 		//   いちおコールバックする
 		if( top.gSTR_SystemExit.Callback!=top.DEF_GVAL_NULL )
 		{
-			//### セットされていれば呼び出す
-			wSubRes = CLS_OSIF.sCallBack({
-				callback	: top.gSTR_SystemExit.Callback,
-				inArg		: top.gSTR_SystemExit.Arg
+			//### セットされていれば終了処理を呼び出す
+			wSubRes = top.gCLS_OSIF.CallBack({
+				callback : top.gSTR_SystemExit.Callback,
+				inArg    : top.gSTR_SystemExit.Arg
 			}) ;
 			if( wSubRes!=true )
 			{///失敗
-				wRes['Reason'] = "Callback error" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "コールバック呼出失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			}
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システムを初期状態にする
 		top.gSTR_SystemInfo.Status = top.DEF_GVAL_SYS_STAT_INIT ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システム情報表示
-		this.sView() ;
+		this.View() ;
 		
-		/////////////////////////////
-		// システム強制停止
-		CLS_OSIF.sExit() ;
+		////////////////////////////////
+		// システム強制停止（プロセスはここで停止）
+		top.gCLS_OSIF.Exit() ;
 		
-		/////////////////////////////
-		// 正常終了
-		wRes['Result'] = true ;
-		return wRes ;
+		////////////////////////////////
+		// 終了（ここは通らない）
+		return ;
 	}
 
 
 
-//#####################################################
+//##############################################################
 //# システム表示
-//#####################################################
-	static sView()
+//##############################################################
+	View()
 	{
 		let wMessage ;
 		
 		wMessage = top.DEF_GVAL_LOG_HEADER + '\n' + "*** view All SystemInfo" + '\n' + top.DEF_GVAL_LOG_HEADER ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
 		
 		wMessage = "*** gSTR_SystemInfo" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gSTR_SystemInfo });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gSTR_SystemInfo });
 		
 		wMessage = "*** gSTR_PageInfo" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gSTR_PageInfo });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gSTR_PageInfo });
 		
 		wMessage = "*** gSTR_Time" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gSTR_Time });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gSTR_Time });
 		
 		wMessage = "*** gARR_TimerCtrlInfo" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gARR_TimerCtrlInfo });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gARR_TimerCtrlInfo });
 		
 		wMessage = "*** gSTR_WinCtrlInfo" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gSTR_WinCtrlInfo });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gSTR_WinCtrlInfo });
 		
 		wMessage = "*** gARR_FrameCtrlInfo" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gARR_FrameCtrlInfo });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gARR_FrameCtrlInfo });
 		
 		wMessage = "*** gSTR_PopupHelp" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gSTR_PopupHelp });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gSTR_PopupHelp });
 		
 		wMessage = "*** gSTR_PopupWindow" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gSTR_PopupWindow });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gSTR_PopupWindow });
 		
 		wMessage = "*** gSTR_ButtonCtrl" ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
-		CLS_OSIF.sViewObj({ inObj: top.gSTR_ButtonCtrl });
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ViewObj({ inObj: top.gSTR_ButtonCtrl });
 		
 		wMessage = top.DEF_GVAL_LOG_HEADER ;
-		CLS_OSIF.sConsInfo({ inText:wMessage }) ;
+		top.gCLS_OSIF.ConsInfo({ inText:wMessage }) ;
 		return ;
 	}
 

@@ -1,28 +1,40 @@
-//#####################################################
+//##############################################################
 //# ::Project  : Web Site
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : ハンドラ
-//#####################################################
+//##############################################################
 
-//###########################
+//##############################
 //# ※ユーザ自由変更※
 
-//### ストレージインデックス
-var DEF_INDEX_USE_STORAGE		= true ;
-var DEF_INDEX_STORAGE_HEADER	= "KOREIS_WEB" ;
+//### true=ストレージ有効
+var DEF_INDEX_USE_STORAGE     = true ;
 
-//### 翻訳機能の有効・無効
-//var DEF_INDEX_TRANSRATE		= true ;
-var DEF_INDEX_TRANSRATE			= false ;
+//### true=ストレージインデックス名
+var DEF_INDEX_STORAGE_HEADER  = "KOREIS_WEB" ;
 
-//### ログファイル出力・自動オープン
-var DEF_INDEX_LOG_OUTPUT		= false ;
-var DEF_INDEX_LOG_AUTOOPEN		= false ;
+//### true=翻訳機能有効
+var DEF_INDEX_USE_TRANSRATE   = false ;
 
-//### テストモード  true=テスト稼働
-//var DEF_INDEX_TEST			= true ;
-var DEF_INDEX_TEST				= false ;
+//### true=ログファイル出力
+var DEF_INDEX_LOG_OUTPUT      = false ;
+
+//### ログファイル自動オープン
+var DEF_INDEX_LOG_AUTOOPEN    = false ;
+
+//### true=テストモード
+///var DEF_INDEX_TEST            = false ;
+var DEF_INDEX_TEST            = true ;
+
+
+
+function __handle_TimerTest( arg )
+{
+	let arg1 = arg[0] ;
+	let arg2 = arg[1] ;
+	console.log( "TIMER T.O.: " + arg1 + " : " + arg2 ) ;
+}
 
 
 
@@ -34,34 +46,41 @@ var DEF_INDEX_TEST				= false ;
 ///////////////////////////////////////////////////////
 function __handle_PageLoad()
 {
-	//###########################
-	//# 応答形式の取得
-	//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Reason" : "(none)", "Responce" : "(none)"
-	let wRes = CLS_OSIF.sGet_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
+	//  //### 応答形式の取得
+	let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
 	
 	let wSubRes, wPageObj ;
 	
+	////////////////////////////////////
+	// ページオブジェクトの取得
 	wPageObj = self.document ;
-	/////////////////////////////
+    
+	////////////////////////////////////
 	// システム情報設定
-	wSubRes = CLS_Sys.sSet({
-		inUserID		: "webmain",			//ユーザID
-		inSystemName	: "website",			//システム名
-		inPageObj		: wPageObj,
-		inUseTimer		: true					//システムタイマ使用有無  true=使用
-//		inUseCircle		: true,					//定期処理使用有無        true=使用（システムタイマ有効時）
-//		inExitProc		= {
-//			"Callback"	: top.DEF_GVAL_NULL,
-//			"Arg"		: new Array()
+	wSubRes = top.gCLS_Sys.Set({
+		inUserID     : "webmain",
+		inSystemName : "website",
+		inPageObj    : wPageObj,
+		inUseTimer   : true
+//		inUseCircle  : true,
+//		inExitProc   = {
+//			"Callback" : top.DEF_GVAL_NULL,
+//			"Arg"      : new Array()
 //			}
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
-		wRes['Reason'] = "CLS_Sys.sSet is failed" ;
-		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+		wRes['Reason'] = "システム情報設定失敗" ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 		return wRes ;
 	}
 	
+
+
+return ;
+
+
+
 	/////////////////////////////
 	// 親フレームの設定
 	wSubRes = CLS_WinCtrl.sSet({

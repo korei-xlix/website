@@ -28,6 +28,17 @@ var DEF_INDEX_TEST            = false ;
 
 
 
+function __handle_TimerTest( arg )
+{
+
+	let arg1 = arg[0] ;
+	let arg2 = arg[1] ;
+
+	console.log( "TIMER T.O.: " + arg1 + " : " + arg2 ) ;
+
+}
+
+
 //##############################################################
 //# ハンドラ（共通）
 //##############################################################
@@ -39,6 +50,9 @@ function __handle_PageLoad()
 {
 	//  //### 応答形式の取得
 	let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"__handle", inFunc:"__handle_PageLoad" }) ;
+    
+	let wSubRes, wPageObj ;
+    
 
 ////////////////////////////////////////
 ///		console.dir( gCLS_OSIF ) ;
@@ -49,37 +63,55 @@ function __handle_PageLoad()
 ///	
 ///	wMessage = "へろう！！！" ;
 ///	top.gCLS_L.L({ inRes:wRes, inLevel:"P", inMessage:wMessage, inLine:__LINE__ }) ;
-////////////////////////////////////////
-
-////////////////////////////////////////
-///	let wString = top.gCLS_OSIF.Replace({
-///		inString  : "2026-06-21",
-///		inPattern : /-/g,
-///		inChara   : ""
+///
+///	top.gSTR_WinCtrlInfo.WindowObj = window ;
+///
+///	//### xxxタイマ設定
+///	wSubRes = top.gCLS_Tim.Set({
+///		inTimerID   : top.DEF_GVAL_SYS_TID_TIMER,
+///	//		inTimerKind : top.DEF_GVAL_TIMERCTRL_KIND_NORMAL,
+///	//		inTimerKind : top.DEF_GVAL_TIMERCTRL_KIND_CIRCLE,
+///		inTimerKind : top.DEF_GVAL_TIMERCTRL_KIND_WAIT,
+///		inValue     : top.DEF_GVAL_SYS_TIMER_VALUE,
+///		inRetry     : 3,
+///		inNextProc  : {
+///			"Callback" : top.__handle_TimerTest,
+///			"Arg"      : new Array( "korei", "xlix" )
+///			}
 ///	}) ;
+///	if( wSubRes['Result']!=true )
+///	{///失敗
+///		wRes['Reason'] = "タイマ設定失敗" ;
+///		top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///		return wRes ;
+///	}
 ///
-///	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
-///
-///	wString = "2026-06-21".replace( /-/g, "" ) ;
-///
-///	top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wString, inLine:__LINE__ }) ;
-///
-///return ;
+///	//### xxxタイマ起動
+///	wSubRes = top.gCLS_Tim.Start({
+///		inTimerID : top.DEF_GVAL_SYS_TID_TIMER
+///	}) ;
+///	if( wSubRes['Result']!=true )
+///	{///失敗
+///		wRes['Reason'] = "タイマ起動失敗" ;
+///		top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///		return wRes ;
+///	}
 ///
 ////////////////////////////////////////
 
-	let wSubRes, wPageObj ;
 
+	////////////////////////////////////
+	// ページオブジェクトの取得
 	wPageObj = self.document ;
+    
 	////////////////////////////////////
 	// システム情報設定
-///	wSubRes = CLS_Sys.sSet({
 	wSubRes = top.gCLS_Sys.Set({
-		inUserID     : "webmain",			//ユーザID
-		inSystemName : "website",			//システム名
+		inUserID     : "webmain",
+		inSystemName : "website",
 		inPageObj    : wPageObj,
-		inUseTimer   : true					//システムタイマ使用有無  true=使用
-//		inUseCircle  : true,					//定期処理使用有無        true=使用（システムタイマ有効時）
+		inUseTimer   : true
+//		inUseCircle  : true,
 //		inExitProc   = {
 //			"Callback" : top.DEF_GVAL_NULL,
 //			"Arg"      : new Array()
@@ -87,8 +119,6 @@ function __handle_PageLoad()
 	}) ;
 	if( wSubRes['Result']!=true )
 	{///失敗
-///		wRes['Reason'] = "CLS_Sys.sSet is failed" ;
-///		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 		wRes['Reason'] = "システム情報設定失敗" ;
 		top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 		return wRes ;
@@ -96,7 +126,9 @@ function __handle_PageLoad()
 	
 
 
+
 	return wRes ;
+
 
 
 

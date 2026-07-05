@@ -118,6 +118,14 @@
 
 ### 目次：[システム情報クラス / CLS_Sys](#システム情報クラス--cls_sys-sysjs)
 
+* [システム設定 / Set](#システム設定--set)
+* [システム開始 / Start](#システム開始--start)
+* [システム状態変更 / Chg](#システム状態変更--chg)
+* [システム運用状態取得 / Get](#システム運用状態取得--get)
+* [システム停止 / Stop](#システム停止--stop)
+* [システム表示 / View](#システム表示--view)
+  
+
 
 
 ### 目次：[タイマ制御クラス / CLS_Timer](#タイマ制御クラス--cls_timer-timer_ctrljs)
@@ -127,7 +135,7 @@
 * [タイマ存在チェック / Exist](#タイマ存在チェック--exist)
 * [タイマ起動 / Start](#タイマ起動--start)
 * [状態取得 / GetStatus](#状態取得--getstatus)
-* [状態設定 / SetStatus](#状態設定--setstatus)
+* [状態設定 / SetStatus](#innerhtml設定--setinner)
   
 
 
@@ -1465,13 +1473,106 @@
     inUseTimer   : bool      true=システムタイマを使用する
     inUseCircle  : bool      true=周期タイマを使用する（inUseTimer=trueの場合のみ有効）
     inExitProc   :
-      "Callback" : object    コールバックする関数
-      "Arg"      : array     コールバック関数に渡す引数
+      "Callback" : object    システム終了時にコールバックする関数
+      "Arg"      : array     システム終了時にコールバック関数に渡す引数
   }) ;
 
 出力：
     "Result"    : false,      bool    true=処理正常, false=処理失敗
     "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### システム開始 / Start
+
+```text
+呼出：
+  CLS_Sys.Start() ;
+    ※引数なし
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### システム状態変更 / Chg
+
+```text
+呼出：
+  CLS_Sys.Chg({
+    inStatus    : string   システム状態指定
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### システム運用状態取得 / Get
+
+```text
+呼出：
+  CLS_Sys.Get() ;
+    ※引数なし
+
+出力：
+    システム状態
+
+```
+  
+
+
+
+### システム運用確認 / RunCheck
+
+```text
+呼出：
+  CLS_Sys.RunCheck() ;
+    ※引数なし
+
+出力：
+    bool   true=運用中, false=非運用
+
+```
+  
+
+
+
+### システム停止 / Stop
+
+```text
+呼出：
+  CLS_Sys.Stop() ;
+    ※引数なし
+
+出力：
+    ※戻り値なし
+
+```
+  
+
+
+
+### システム表示 / View
+
+```text
+呼出：
+  CLS_Sys.View() ;
+    ※引数なし
+
+出力：
+    ※戻り値なし
 
 ```
   
