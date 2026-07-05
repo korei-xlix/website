@@ -213,7 +213,7 @@ class CLS_PopupCtrl {
 				wDistObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = wFrameID ;
 				
 				//### イベント設定開始
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Popup help ivent set start: HelpID=" + String(wPopupHelpID) + " DistID=" + String(wDistID) ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -226,7 +226,7 @@ class CLS_PopupCtrl {
 							inPopupID : this['id']
 						}) ;
 					}, false ) ;
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Popup help ivent set: mouseover: HelpID=" + String(wPopupHelpID) + " DistID=" + String(wDistID) ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -252,14 +252,14 @@ class CLS_PopupCtrl {
 					}
 					top.gSTR_PopupHelp[wPopupHelpID].ARR_DistObj[wDistID].ARR_Text[wLang] = inSTR_Data[wDistID][wLang] ;
 					
-					if( top.DEF_INDEX_TEST==true )
+					if( top.gVAL_TestMode==true )
 					{
 						wSetText = wSetText + '\n' + "  " + wLang + " : " + inSTR_Data[wDistID][wLang] ;
 					}
 				}
 				
 				//### イベント設定完了
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Popup help ivent set complete: HelpID=" + String(wPopupHelpID) ;
 					wMessage = wMessage + '\n' + "  DistID=" + String(wDistID)
@@ -1198,7 +1198,7 @@ class CLS_PopupCtrl {
 		try
 		{
 			//### イベント設定開始
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Popup window ivent set start: PopupWinID=" + String(wPopupWinID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1215,7 +1215,7 @@ class CLS_PopupCtrl {
 						inHang    : true
 					}) ;
 				}, false ) ;
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Window Bar ivent set: mousedown: PopupWinID=" + String(wPopupWinID) + " ObjectID=" + String(wBarObj['id']) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -1229,7 +1229,7 @@ class CLS_PopupCtrl {
 						inHang    : false
 					}) ;
 				}, false ) ;
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Window Bar ivent set: mouseup: PopupWinID=" + String(wPopupWinID) + " ObjectID=" + String(wBarObj['id']) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -1246,7 +1246,7 @@ class CLS_PopupCtrl {
 						inOpen    : false
 					}) ;
 				}, false ) ;
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Window Close ivent set: click: PopupWinID=" + String(wPopupWinID) + " ObjectID=" + String(wCloseObj['id']) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -1262,7 +1262,7 @@ class CLS_PopupCtrl {
 						inPopupID : this['id']
 					}) ;
 				}, false ) ;
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Window Text area ivent set: click: PopupWinID=" + String(wPopupWinID) + " ObjectID=" + String(wTextObj['id']) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -1278,14 +1278,14 @@ class CLS_PopupCtrl {
 						inPopupID : this['id']
 					}) ;
 				}, false ) ;
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Auto button ivent set: click: PopupWinID=" + String(wPopupWinID) + " ObjectID=" + String(wAutoObj['id']) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 			}
 			
 			//### イベント設定完了
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Popup window ivent set complete: PopupWinID=" + String(wPopupWinID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;

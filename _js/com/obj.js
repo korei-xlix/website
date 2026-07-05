@@ -310,7 +310,7 @@ class CLS_Obj {
 			
 			////////////////////////////////
 			// ページ情報の取得
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "ページ情報取得" ;
 				wMessage = wMessage + '\n' + "  Url=" + wRes['Responce']['Url'] ;

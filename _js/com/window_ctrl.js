@@ -80,7 +80,7 @@
 		wName = top.gSTR_WinCtrlInfo.CompProcess.Callback.name ;
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 ///			wMessage = "Befour callback: inFrameID=" + String(inFrameID) + " Func=" + wName ;
 			wMessage = "Befour callback: Func=" + wName ;
@@ -95,7 +95,7 @@
 		}) ;
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 ///			wMessage = "After callback: inFrameID=" + String(inFrameID) + " Func=" + wName ;
 			wMessage = "After callback: Func=" + wName ;
@@ -1135,7 +1135,7 @@ class CLS_WinCtrl {
 ///			wRes['Reason'] = "sSetInner is failed(<option>tag setting failuer)" ;
 ///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Unset <option> tags" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1296,7 +1296,7 @@ class CLS_WinCtrl {
 ///			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Up Title)" ;
 ///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Unset Up Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1323,7 +1323,7 @@ class CLS_WinCtrl {
 ///			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Down Title)" ;
 ///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Unset Down Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1345,7 +1345,7 @@ class CLS_WinCtrl {
 		if( wSubRes['Result']!=true )
 		{///タイトルがない場合、正常で終わる
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Unset Main Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1413,7 +1413,7 @@ class CLS_WinCtrl {
 ///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(1)" ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset CSS Switch: SW mode=elase" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1447,7 +1447,7 @@ class CLS_WinCtrl {
 ///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(2-1)" ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset CSS Switch: SW mode=pcnone or mbnone" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1508,7 +1508,7 @@ class CLS_WinCtrl {
 ///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(3-1)" ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset CSS Switch: SW mode=pconly or mbonly" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1568,7 +1568,7 @@ class CLS_WinCtrl {
 ///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(4-1)" ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset CSS Switch: SW mode=normal" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1777,7 +1777,7 @@ class CLS_WinCtrl {
 		if( CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_WinCtrlInfo.IFrameLoad })<=0 )
 		{
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Skip PageLoad stby and Call end process" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1826,7 +1826,7 @@ class CLS_WinCtrl {
 		}
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			wMessage = "Set PageLoad Comp stby" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1891,7 +1891,7 @@ class CLS_WinCtrl {
 		top.gSTR_WinCtrlInfo.IFrameLoad[inFrameID] = true ;
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			let wMessage = "Inline frame loaded: inFrameID=" + String(inFrameID) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;

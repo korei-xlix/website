@@ -88,7 +88,7 @@
 			wName = top.gARR_FrameCtrlInfo[inFrameID].NextProcess.Callback.name ;
 			
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Befour callback: inFrameID=" + String(inFrameID) + " Func=" + wName ;
 				wRes['Reason'] = wName ;
@@ -139,7 +139,7 @@
 		top.gARR_FrameCtrlInfo[inFrameID].FLG_Run = false ;
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			wMessage = "After callback: inFrameID=" + String(inFrameID) + " Func=" + wName ;
 			wRes['Reason'] = wName ;
@@ -426,7 +426,7 @@
 		/////////////////////////////
 		// フレームロード完了以外なら、終わる
 		
-//		if( top.DEF_INDEX_TEST==true )
+//		if( top.gVAL_TestMode==true )
 //		{
 //			//### 待ち状態取得
 //			wSubRes = CLS_Timer.sGetStatus({
@@ -932,7 +932,7 @@ class CLS_FrameCtrl {
 		/////////////////////////////
 		// タイマ起動（フレームロード待ち）
 		
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			//### 待ち状態取得
 			wSubRes = CLS_Timer.sGetStatus({
@@ -1428,7 +1428,7 @@ class CLS_FrameCtrl {
 ///			wRes['Reason'] = "inFrameID is not exist: inFrameID=" + String(inFrameID) ;
 ///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Unset Frame Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1476,7 +1476,7 @@ class CLS_FrameCtrl {
 ///				wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Popup:Up Title): inFrameID=" + String(inFrameID) ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset Up Title" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1500,7 +1500,7 @@ class CLS_FrameCtrl {
 ///				wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Popup:Down Title): inFrameID=" + String(inFrameID) ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset Up Title" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1545,7 +1545,7 @@ class CLS_FrameCtrl {
 ///				wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Iframe:Up Title): inFrameID=" + String(inFrameID) ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset Up Title" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1569,7 +1569,7 @@ class CLS_FrameCtrl {
 ///				wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Iframe:Down Title): inFrameID=" + String(inFrameID) ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset Up Title" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1591,7 +1591,7 @@ class CLS_FrameCtrl {
 			if( wSubRes['Result']!=true )
 			{///タイトルがない場合、正常で終わる
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Unset Main Title" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;

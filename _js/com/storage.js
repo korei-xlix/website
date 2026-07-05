@@ -161,7 +161,7 @@ class CLS_Storage {
 		}
 		
 		//### コンソールへ表示
-		if(( top.DEF_INDEX_TEST==true )&&( inError==true ))
+		if(( top.gVAL_TestMode==true )&&( inError==true ))
 		{
 			let wMessage = "Get Local Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
@@ -230,7 +230,7 @@ class CLS_Storage {
 		}
 		
 		//### コンソールへ表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			let wMessage = "Set Local Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
@@ -283,7 +283,7 @@ class CLS_Storage {
 		}
 		
 		//### コンソールへ表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			let wMessage = "Remove Local Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
@@ -333,7 +333,7 @@ class CLS_Storage {
 		}
 		
 		//### コンソールへ表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			let wMessage = "Clear Local Storage" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -395,7 +395,7 @@ class CLS_Storage {
 						wList[wKey] = wGetVal ;
 						
 						//### コンソールへ表示
-						if( top.DEF_INDEX_TEST==true )
+						if( top.gVAL_TestMode==true )
 						{
 							wMessage = "Get Local Storage Lists" ;
 							wMessage = wMessage + '\n' + "  key=" + String(wKey) ;
@@ -475,7 +475,7 @@ class CLS_Storage {
 		}
 		
 		//### コンソールへ表示
-		if(( top.DEF_INDEX_TEST==true )&&( inError==true ))
+		if(( top.gVAL_TestMode==true )&&( inError==true ))
 		{
 			let wMessage = "Get Session Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
@@ -544,7 +544,7 @@ class CLS_Storage {
 		}
 		
 		//### コンソールへ表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			let wMessage = "Set Session Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
@@ -597,7 +597,7 @@ class CLS_Storage {
 		}
 		
 		//### コンソールへ表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			let wMessage = "Delete Session Storage" ;
 			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
@@ -647,7 +647,7 @@ class CLS_Storage {
 		}
 		
 		//### コンソールへ表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			let wMessage = "Clear Session Storage" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;

@@ -20,8 +20,8 @@ var DEF_INDEX_LOG_OUTPUT		= false ;
 var DEF_INDEX_LOG_AUTOOPEN		= false ;
 
 //### テストモード  true=テスト稼働
-var DEF_INDEX_TEST				= false ;
-//var DEF_INDEX_TEST			= true ;
+var gVAL_TestMode				= false ;
+//var gVAL_TestMode			= true ;
 
 
 

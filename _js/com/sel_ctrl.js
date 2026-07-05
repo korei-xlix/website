@@ -29,7 +29,7 @@ class CLS_Sel {
 		// セットなしは無処理
 		if( wSelNum==0 )
 		{
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Selector is unset: SelNum=" + String(wSelNum) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -249,7 +249,7 @@ class CLS_Sel {
 		// 追加
 		top.gSTR_WinCtrlInfo.SelInfo[inNum] = wSTR_Cell ;
 		
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			wMessage = "Selector Reg: inNum=" + String(inNum) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;

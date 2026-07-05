@@ -194,6 +194,21 @@ class CLS_Sys {
 		for( wKey in wSubRes['Responce'].Commands )
 		{
 			top.gSTR_PageInfo.Commands[wKey] = wSubRes['Responce'].Commands[wKey] ;
+			
+			////////////////////////////////
+			// ここでのコマンドの実行
+            
+			//### テストモード
+			if( wKey=="test" )
+			{
+				if(( top.gVAL_TestMode==false ) && ( top.gSTR_PageInfo.Commands['test']=="true" ))
+				{
+					top.gVAL_TestMode = true ;
+
+					wMessage = "テストモードに設定（引数）" ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+				}
+			}
 		}
 		top.gSTR_WinCtrlInfo.WindowObj = window ;  //Window情報
         
@@ -244,7 +259,7 @@ class CLS_Sys {
 			else
 			{///失敗したら、スルーで
 			////  テストモード時は、念のためログ出力しておく
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{///テストモード時
 //					wRes['Reason'] = "システム時間挿入失敗  id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
 					wRes['Reason'] = "システム時間オブジェクト取得失敗  id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
@@ -501,7 +516,7 @@ class CLS_Sys {
 				top.gSTR_SystemCircle.FLG_15 = true ;
 				
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "15分処理 ON" ;
 					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -518,7 +533,7 @@ class CLS_Sys {
 				top.gSTR_SystemCircle.FLG_30 = true ;
 				
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "30分処理 ON" ;
 					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -535,7 +550,7 @@ class CLS_Sys {
 				top.gSTR_SystemCircle.FLG_60 = true ;
 				
 				//### コンソール表示
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "60分処理 ON" ;
 					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;

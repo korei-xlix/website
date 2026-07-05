@@ -24,7 +24,7 @@ var DEF_INDEX_LOG_OUTPUT      = false ;
 var DEF_INDEX_LOG_AUTOOPEN    = false ;
 
 //### true=テストモード
-var DEF_INDEX_TEST            = false ;
+var gVAL_TestMode            = false ;
 
 
 

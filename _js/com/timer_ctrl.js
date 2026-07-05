@@ -91,7 +91,7 @@
 			wName = top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name ;
 			
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "処理前コールバック inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) + " Func=" + wName ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"XC", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -108,7 +108,7 @@
 			wName = "__sDefaultCallback" ;
 			
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "処理前コールバック(Default) inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"XC", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -135,7 +135,7 @@
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Run = false ;
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			wMessage = "処理後コールバック inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"XC", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -300,7 +300,7 @@ class CLS_Timer {
 		
 		//### コンソール表示
 		wMessage = "タイマ設定 inTimerID=" + String(inTimerID) ;
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			wMessage = wMessage + '\n' + "  Kind=" + top.gCLS_OSIF.String({ inString:inTimerKind }) ;
 			wMessage = wMessage + '\n' + "  Value=" + top.gCLS_OSIF.String({ inString:inValue }) ;
@@ -469,7 +469,7 @@ class CLS_Timer {
 		
 		//### コンソール表示
 		wMessage = "タイマ起動 inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{///テストモード時
 			wMessage = wMessage + '\n' + "  Kind=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Kind }) ;
 			wMessage = wMessage + '\n' + "  Value=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Value }) ;
@@ -560,7 +560,7 @@ class CLS_Timer {
 		
 		//### コンソール表示
 		wMessage = "Reset Timer: inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{///テストモード時
 			wMessage = wMessage + '\n' + "  Kind=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Kind }) ;
 			wMessage = wMessage + '\n' + "  Value=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Value }) ;
@@ -700,7 +700,7 @@ class CLS_Timer {
 		   ( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true ))
 		{
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "タイマ停止済み inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 				wSubRes = top.gCLS_OSIF.GetInObject({
@@ -785,7 +785,7 @@ class CLS_Timer {
 			top.gARR_TimerCtrlInfo[inTimerID].Status    = top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
 			
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "タイマ停止済み inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 				wSubRes = top.gCLS_OSIF.GetInObject({
@@ -805,7 +805,7 @@ class CLS_Timer {
 		}
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			top.gARR_TimerCtrlInfo[inTimerID].LogCnt++ ;
 			if( top.gARR_TimerCtrlInfo[inTimerID].tLogCnt>=top.gARR_TimerCtrlInfo[inTimerID].tLog )
@@ -889,7 +889,7 @@ class CLS_Timer {
 		   ( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true ))
 		{
 			//### コンソール表示
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "タイマ停止済み inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 				wSubRes = top.gCLS_OSIF.GetInObject({
@@ -909,7 +909,7 @@ class CLS_Timer {
 		}
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			top.gARR_TimerCtrlInfo[inTimerID].tLogCnt++ ;
 			if( top.gARR_TimerCtrlInfo[inTimerID].tLog<=top.gARR_TimerCtrlInfo[inTimerID].tLogCnt )
@@ -1102,7 +1102,7 @@ class CLS_Timer {
 		
 		
 		
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			//### 応答形式の取得
 			let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Timer", inFunc:"__DefaultCallback" }) ;

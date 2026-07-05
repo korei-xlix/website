@@ -344,7 +344,7 @@ class CLS_ButtonCtrl {
 			
 		/////////////////////////////
 		// ボタンへのイベント設定開始
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Button ivent set start: ButtonID=" + String(wButtonID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -362,7 +362,7 @@ class CLS_ButtonCtrl {
 						inPush	   : true
 					}) ;
 					}, false ) ;
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Set Button ivent: mousedown: ButtonID=" + String(wButtonID) ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -376,7 +376,7 @@ class CLS_ButtonCtrl {
 						inPush	   : false
 					}) ;
 					}, false ) ;
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Set Button ivent: mouseup: ButtonID=" + String(wButtonID) ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -391,7 +391,7 @@ class CLS_ButtonCtrl {
 					inButtonID : this['id']
 				}) ;
 				}, false ) ;
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Set Button ivent: click: ButtonID=" + String(wButtonID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -399,7 +399,7 @@ class CLS_ButtonCtrl {
 			
 		/////////////////////////////
 		// ボタンへのイベント設定終了
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Button ivent set complete: ButtonID=" + String(wButtonID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -417,7 +417,7 @@ class CLS_ButtonCtrl {
 				top.gSTR_ButtonGroup[inFrameID][wGroupID].GroupObj	= wGroupObj ;
 				top.gSTR_ButtonGroup[inFrameID][wGroupID].ARR_ButtonID.push( wButtonID ) ;
 				
-				if( top.DEF_INDEX_TEST==true )
+				if( top.gVAL_TestMode==true )
 				{
 					wMessage = "Button Group info set complete: GroupID=" + String(wGroupID) ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
@@ -448,7 +448,7 @@ class CLS_ButtonCtrl {
 			
 			top.gSTR_ButtonCtrl[inFrameID][wButtonID].Init = true ;	//ボタン設定完了
 			
-			if( top.DEF_INDEX_TEST==true )
+			if( top.gVAL_TestMode==true )
 			{
 				wMessage = "Button ivent set complete: ButtonID=" + String(wButtonID) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;

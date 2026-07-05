@@ -986,7 +986,7 @@ class CLS_X_Search {
 		top.VAL_XSearch_Index = wIndex ;
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			wMessage = "Update X Search Index" 
 			wMessage = wMessage + '\n' + "  Pre=" + String(wPrevI) ;
@@ -1385,7 +1385,7 @@ class CLS_X_Search {
 		}
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			wMessage = "Select X Search Data" 
 			if( top.STR_XSdata[top.VAL_XSearch_SelIndex].Text!=top.DEF_GVAL_TEXT_NONE )
@@ -2633,7 +2633,7 @@ class CLS_X_Search {
 		}
 		
 		//### コンソール表示
-		if( top.DEF_INDEX_TEST==true )
+		if( top.gVAL_TestMode==true )
 		{
 			wMessage = "Select X Search Select Tag: " 
 			wMessage = wMessage + '\n' + "  Prev=" + wKey2 ;
