@@ -125,12 +125,10 @@
 * [非同期コールバック / async_CLS_Timer_Callback](#非同期コールバック--async_cls_timer_callback)
 * [タイマ設定 / Set](#タイマ設定--set)
 * [タイマ存在チェック / Exist](#タイマ存在チェック--exist)
-* [ログレベル / Level](#ログレベル--level)
-* [ログレベル / Level](#ログレベル--level)
-* [ログレベル / Level](#ログレベル--level)
-* [ログレベル / Level](#ログレベル--level)
-* [ログレベル / Level](#ログレベル--level)
-
+* [タイマ起動 / Start](#タイマ起動--start)
+* [状態取得 / GetStatus](#状態取得--getstatus)
+* [状態設定 / SetStatus](#状態設定--setstatus)
+  
 
 
 
@@ -1366,6 +1364,81 @@
 
 
 
+### タイマリセット / Reset
+
+```text
+呼出：
+  CLS_Timer.Reset({
+    inTimerID   : string   タイマID
+    inStatus    : string   待ち状態指定
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### タイマ停止 / Stop
+
+```text
+呼出：
+  CLS_Timer.Stop({
+    inTimerID   : string   タイマID
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### 状態取得 / GetStatus
+
+```text
+呼出：
+  CLS_Timer.GetStatus({
+    inTimerID   : string   タイマID
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+    'Responce' :
+      "FLG_Start" : false,    bool    true=タイマ起動中, false=タイマ停止中
+      "FLG_Stop"  : false,    bool    true=タイマ停止通知受付中
+      "FLG_Tout"  : false,    bool    true=タイマタイムアウト（T.O.）
+      "FLG_Rout"  : false,    bool    true=タイマリトライアウト
+      "Status"    : ts_IDLE   string  待ち状態
+      "Value"     : false,    int     タイマ値
+      "Retry"     : false     int     リトライ値
+
+```
+  
+
+
+
+### 状態設定 / SetStatus
+
+```text
+呼出：
+  CLS_Timer.SetStatus({
+    inTimerID   : string   タイマID
+    inStatus    : string   待ち状態指定
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
 
 
 
