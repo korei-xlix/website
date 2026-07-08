@@ -748,6 +748,7 @@ var gCLS_Obj         = new CLS_Obj() ;
 var gCLS_Tim         = new CLS_Timer() ;
 var gCLS_Sys         = new CLS_Sys() ;
 var gCLS_File        = new CLS_File() ;
+var gCLS_Win         = new CLS_Win() ;
 
 
 

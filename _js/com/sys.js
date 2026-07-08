@@ -365,6 +365,11 @@ class CLS_Sys {
 			{///失敗
 				wRes['Reason'] = "タイマ起動失敗（周期処理タイマ）" ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+                
+				// システムタイマを止める
+				wSubRes = top.gCLS_Tim.Stop({
+					inTimerID : top.DEF_GVAL_SYS_TID_TIMER
+				}) ;
 				return wRes ;
 			}
 		}
@@ -378,6 +383,14 @@ class CLS_Sys {
 		{///失敗
 			wRes['Reason'] = "システム状態変更失敗" ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+            
+			// システムタイマ・定期処理タイマを止める
+			wSubRes = top.gCLS_Tim.Stop({
+				inTimerID : top.DEF_GVAL_SYS_TID_TIMER
+			}) ;
+			wSubRes = top.gCLS_Tim.Stop({
+				inTimerID : top.DEF_GVAL_SYS_TID_CIRCLE
+			}) ;
 			return wRes ;
 		}
 		
@@ -586,7 +599,7 @@ class CLS_Sys {
 		
 		let wSubRes, wPrevStatus, wMessage ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
 		wSubRes = top.gCLS_OSIF.GetInObject({
 			inObject : top.DEF_GVAL_SYS_STAT,
@@ -595,7 +608,7 @@ class CLS_Sys {
 		if( wSubRes!=true )
 		{
 			wRes['Reason'] = "存在しないステータス inStatus=" + top.gCLS_OSIF.String({ inString:inStatus }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		if( top.gSTR_SystemInfo.Status==inStatus )
@@ -607,7 +620,7 @@ class CLS_Sys {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 運用状態切り替わり時間の記録
 		
 		//### 初期化→運用
@@ -638,7 +651,7 @@ class CLS_Sys {
 			top.gSTR_Time.SysStart  = top.gSTR_Time.TimeDate ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 状態変更
 		wPrevStatus = top.gSTR_SystemInfo.Status ;
 		top.gSTR_SystemInfo.Status = inStatus ;
@@ -649,7 +662,7 @@ class CLS_Sys {
 		wMessage = wMessage + '\n' + "  New Stat=" + top.gCLS_OSIF.String({ inString:top.gSTR_SystemInfo.Status }) ;
 		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常終了
 		wRes['Result'] = true ;
 		return wRes ;

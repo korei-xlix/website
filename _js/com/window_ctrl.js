@@ -1,9 +1,12 @@
-//#####################################################
+//##############################################################
 //# ::Project  : 共通アプリ
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : Window制御
-//#####################################################
+//##############################################################
+
+
+
 //# 関数群     :
 //#
 //# ページ設定
@@ -63,75 +66,73 @@
 //#
 //#####################################################
 
-//#####################################################
+
+
+//##############################################################
 //# 非同期コールバック（設定完了待ち後 実行プロセス）
-//#####################################################
+//##############################################################
 	async function async_CLS_WinCtrl_Callback()
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Timer", inFunc:"async_CLS_WinCtrl_Callback" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Win", inFunc:"async_CLS_WinCtrl_Callback" }) ;
 		
 		let wSubRes, wName ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// コールバック起動（フレーム受信後処理）
 		wName = top.gSTR_WinCtrlInfo.CompProcess.Callback.name ;
 		
 		//### コンソール表示
 		if( top.gVAL_TestMode==true )
 		{
-///			wMessage = "Befour callback: inFrameID=" + String(inFrameID) + " Func=" + wName ;
-			wMessage = "Befour callback: Func=" + wName ;
+			wMessage = "処理前コールバック Func=" + wName ;
 			wRes['Reason'] = wName ;
-			CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage, inLine:__LINE__ }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"XC", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		//### コールバック起動
-		wSubRes = CLS_OSIF.sCallBack({
-			callback	: top.gSTR_WinCtrlInfo.CompProcess.Callback,
-			inArg		: top.gSTR_WinCtrlInfo.CompProcess.Arg
+		wSubRes = top.gCLS_OSIF.CallBack({
+			callback : top.gSTR_WinCtrlInfo.CompProcess.Callback,
+			inArg    : top.gSTR_WinCtrlInfo.CompProcess.Arg
 		}) ;
 		
 		//### コンソール表示
 		if( top.gVAL_TestMode==true )
 		{
-///			wMessage = "After callback: inFrameID=" + String(inFrameID) + " Func=" + wName ;
-			wMessage = "After callback: Func=" + wName ;
+			wMessage = "処理後コールバック Func=" + wName ;
 			wRes['Reason'] = wName ;
-			CLS_L.sL({ inRes:wRes, inLevel:"CB", inMessage:wMessage, inLine:__LINE__ }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"XC", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
-		wRes['Result'] = true ;
+		wRes['Result'] = true ;  //とりあえず正常表示
 		return ;
 	}
 
 
 
-//#####################################################
-class CLS_WinCtrl {
-//#####################################################
+//##############################################################
+class CLS_Win {
+//##############################################################
 
-//#####################################################
+//##############################################################
 //# ページ設定
-//#####################################################
-	static sSet({
-		inPageObj		= top.DEF_GVAL_NULL,		//ページオブジェクト
-		inSTR_CSSinfo	= {},						//CSSファイル情報
-		inOtherDomain	= top.DEF_GVAL_NULL,		//外部ドメインのCSS  https://www.example.com
-		inStylePath		= top.DEF_GVAL_NULL,		//CSSカレントパス    /css/
-		inMode			= top.DEF_GVAL_NULL,		//CSS変更可・サイズ自動切替
-		inStyleCommPath	= top.DEF_GVAL_NULL,		//Comm Styleのカレントパス（別フォルダの場合）
-		inPgIconPath	= top.DEF_GVAL_PGICON_PATH,	//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
-		inUpIconPath	= top.DEF_GVAL_UPICON_PATH,	//更新アイコン   カレントパス  /_pic/icon/new_icon.gif
-		inCompProc		= {							//設定完了待ち後実行プロセス
-			"Callback"	: top.DEF_GVAL_NULL,
-			"Arg"		: new Array()
+//##############################################################
+	Set({
+		inPageObj       = top.DEF_GVAL_NULL,
+		inSTR_CSSinfo   = {},
+		inOtherDomain   = top.DEF_GVAL_NULL,
+		inStylePath     = top.DEF_GVAL_NULL,
+		inMode          = top.DEF_GVAL_NULL,
+		inStyleCommPath = top.DEF_GVAL_NULL,
+		inPgIconPath    = top.DEF_GVAL_PGICON_PATH,
+		inUpIconPath    = top.DEF_GVAL_UPICON_PATH,
+		inCompProc      = {
+			"Callback"  : top.DEF_GVAL_NULL,
+			"Arg"       : new Array()
 			},
-		inTrans			= false						//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
+		inTrans         = false
 	})
 	{
 		//###########################
@@ -143,7 +144,7 @@ class CLS_WinCtrl {
 		let wSTR_Param, wSTR_Storage, wMessage, wCompProc ;
 		let wWinIndex, wFLG_Error ;
 		
-		//###########################
+		//##############################
 		//# 入力チェック
 		
 		/////////////////////////////
@@ -229,7 +230,7 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# パラメータの作成
 		wSTR_Param = new top.gSTR_WinCtrlInfo_Str() ;
 		
@@ -245,7 +246,7 @@ class CLS_WinCtrl {
 		//### 拡張プロパティの追加：フレームID
 		wSTR_Param.WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = top.DEF_GVAL_PARENT_FRAME_ID ;
 		
-		//###########################
+		//##############################
 		//# Storage取得
 		
 		//### Storageチェック
@@ -257,7 +258,7 @@ class CLS_WinCtrl {
 		//		"cssname"
 		//		"mode"
 		
-		//###########################
+		//##############################
 		//# 画面モードの設定
 		
 		//### PC設定
@@ -297,7 +298,7 @@ class CLS_WinCtrl {
 		//### モード設定
 		wSTR_Param.SW_Mode = wMode ;
 		
-		//###########################
+		//##############################
 		//# CSSパスの設定
 		wSTR_Param.Com.PageObj = wSTR_Param.PageObj ;
 		wSTR_Param.Org.PageObj = wSTR_Param.PageObj ;
@@ -325,7 +326,7 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# ページアイコンパスの設定
 		wSubRes = this.__sGetFilePath({
 			inOtherDomain	: wSTR_Param.OtherDomain,
@@ -340,7 +341,7 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# 更新アイコンパスの設定
 		wSubRes = this.__sGetFilePath({
 			inOtherDomain	: wSTR_Param.OtherDomain,
@@ -355,7 +356,7 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# 更新情報の取得
 		wSubRes = this.__sGetPageUpdate({
 			inPageObj		: wSTR_Param.PageObj,
@@ -369,11 +370,11 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-	/////////////////////////////
+	////////////////////////////////
 	//  ※全データ設定完了※
-	/////////////////////////////
+	////////////////////////////////
 		
-		//###########################
+		//##############################
 		//# ページ設定
 		//# ・<option>タグ設定
 		//# ・CSS設定
@@ -395,15 +396,15 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# パラメータ保存
 		top.gSTR_WinCtrlInfo = wSTR_Param ;
 		
-	/////////////////////////////
+	////////////////////////////////
 	//  マウスムーブ・ポップアップ設定
-	/////////////////////////////
+	////////////////////////////////
 		
-		//###########################
+		//##############################
 		//# ポップアップヘルプの設定
 		wSubRes = CLS_PopupCtrl.sHelpSet({
 			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
@@ -416,7 +417,7 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# ポップアップWindowの設定
 		wSubRes = CLS_PopupCtrl.sWinSet({
 			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
@@ -429,7 +430,7 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# onmousemoveの設定
 		wSubRes = CLS_PopupCtrl.sAddMMI({
 			inFrameID : top.DEF_GVAL_PARENT_FRAME_ID	//親フレーム
@@ -441,7 +442,7 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# ボタンの設定
 		wSubRes = CLS_ButtonCtrl.sSet({
 			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
@@ -455,7 +456,7 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# Storageのセーブ
 		wSubRes = this.__sSetStorageConf({
 			inCSSname	: top.gSTR_WinCtrlInfo.Org.CHR_StyleName,
@@ -469,11 +470,11 @@ class CLS_WinCtrl {
 			return wRes ;
 		}
 		
-		//###########################
+		//##############################
 		//# 初期化完了表示
 		top.gSTR_WinCtrlInfo.FLG_Init = true ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常終了
 		wRes['Result'] = true ;
 		return wRes ;

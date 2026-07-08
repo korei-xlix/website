@@ -1252,6 +1252,49 @@
   
 
 
+### 非同期コールバック（設定完了待ち後 実行プロセス） / async_CLS_WinCtrl_Callback
+
+```text
+呼出：
+  CLS_Win.async_CLS_WinCtrl_Callback()
+  ※引数なし
+
+出力：
+  ※戻り値なし
+
+```
+  
+
+
+
+### ページ設定 / Set
+
+```text
+呼出：
+  CLS_Win.Set({
+    inPageObj        : object   ページオブジェクト
+    inSTR_CSSinfo    : array    CSSファイル情報
+    inOtherDomain    : string   外部ドメインのCSS  https://www.example.com
+    inStylePath      : string   CSSカレントパス    /css/
+    inMode           : string   CSS変更可・サイズ自動切替
+    inStyleCommPath  : string   Comm Styleのカレントパス（別フォルダの場合）
+    inPgIconPath     : string   ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
+    inUpIconPath     : string   更新アイコン   カレントパス  /_pic/icon/new_icon.gif
+    inCompProc{      : dict     設定完了待ち後実行プロセス
+      "Callback"       : string   コールバック関数
+      "Arg"            : array    コールバック関数に渡す引数
+      },
+    inTrans          : bool     翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
+  })
+
+出力：
+  ※戻り値なし
+
+```
+  
+
+
+
 
 
 
