@@ -201,9 +201,9 @@ class CLS_Sys {
 			//### テストモード
 			if( wKey=="test" )
 			{
-				if(( top.gVAL_TestMode==false ) && ( top.gSTR_PageInfo.Commands['test']=="true" ))
+				if(( top.gVAL_TestLog==false ) && ( top.gSTR_PageInfo.Commands['test']=="true" ))
 				{
-					top.gVAL_TestMode = true ;
+					top.gVAL_TestLog = true ;
 
 					wMessage = "テストモードに設定（引数）" ;
 					top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
@@ -259,7 +259,7 @@ class CLS_Sys {
 			else
 			{///失敗したら、スルーで
 			////  テストモード時は、念のためログ出力しておく
-				if( top.gVAL_TestMode==true )
+				if( top.gVAL_TestLog==true )
 				{///テストモード時
 //					wRes['Reason'] = "システム時間挿入失敗  id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
 					wRes['Reason'] = "システム時間オブジェクト取得失敗  id=" + top.DEF_GVAL_IDX_SYSTEM_TD ;
@@ -529,7 +529,7 @@ class CLS_Sys {
 				top.gSTR_SystemCircle.FLG_15 = true ;
 				
 				//### コンソール表示
-				if( top.gVAL_TestMode==true )
+				if( top.gVAL_TestLog==true )
 				{
 					wMessage = "15分処理 ON" ;
 					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -546,7 +546,7 @@ class CLS_Sys {
 				top.gSTR_SystemCircle.FLG_30 = true ;
 				
 				//### コンソール表示
-				if( top.gVAL_TestMode==true )
+				if( top.gVAL_TestLog==true )
 				{
 					wMessage = "30分処理 ON" ;
 					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -563,7 +563,7 @@ class CLS_Sys {
 				top.gSTR_SystemCircle.FLG_60 = true ;
 				
 				//### コンソール表示
-				if( top.gVAL_TestMode==true )
+				if( top.gVAL_TestLog==true )
 				{
 					wMessage = "60分処理 ON" ;
 					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;

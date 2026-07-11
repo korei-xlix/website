@@ -217,7 +217,7 @@ class CLS_L {
 		//   テストの場合、除外あり関数は除外
 		if( inLevel=="XC" )
 		{
-			if( top.gVAL_TestMode==false )
+			if( top.gVAL_TestLog==false )
 			{/// 通常の場合、無条件で除外
 				return ;
 			}
@@ -487,7 +487,7 @@ class CLS_L {
 		//### テストログ
 		else if( inData['Level']=="XX" )
 		{
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				top.gCLS_OSIF.ConsWarn({ inString:wCons }) ;
 			}

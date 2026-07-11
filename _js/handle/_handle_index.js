@@ -23,9 +23,9 @@ var DEF_INDEX_LOG_OUTPUT      = false ;
 //### ログファイル自動オープン
 var DEF_INDEX_LOG_AUTOOPEN    = false ;
 
-//### true=テストモード
-///var DEF_INDEX_TEST            = false ;
-var DEF_INDEX_TEST            = true ;  // ****** //
+//### true=テストログ出力  // ****** //
+///var DEF_INDEX_TEST_LOG     = false ;
+var DEF_INDEX_TEST_LOG        = true ;
 
 
 
@@ -380,7 +380,7 @@ function __handle_Circle()
 	if( top.gSTR_SystemCircle.FLG_Rock==true )
 	{
 		//### コンソール表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wMessage = "Process skip(Rock on)" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"N", inMessage:wMessage }) ;

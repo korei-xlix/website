@@ -1,63 +1,25 @@
-//#####################################################
+//##############################################################
 //# ::Project  : 共通アプリ
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/galaxyfleet/
 //# ::Class    : ストレージ制御
-//#####################################################
-//# 関数群     :
-//#
-//# Strageの全消去
-//#		CLS_Storage.sAllClear()
-//#
-//# Local Storage取得
-//#		CLS_Storage.sLget
-//#			in:		inKey
-//#			out:	value
-//# Local Storage設定
-//#		CLS_Storage.sLset
-//#			in:		inKey, inValue
-//# Local Storage削除
-//#		CLS_Storage.sLdel({
-//#			in:		inKey
-//# Local Storage全削除
-//#		CLS_Storage.sLclear()
-//# Local Storage一覧取得
-//#		CLS_Storage.sLgetList
-//#			in:		inKey
-//#			out:	lists
-//#
-//# Session Storage取得
-//#		CLS_Storage.sSget
-//#			in:		inKey
-//#			out:	value
-//# Session Storage設定
-//#		CLS_Storage.sSset
-//#			in:		inKey, inValue
-//# Session Storage削除
-//#		CLS_Storage.sSdel({
-//#			in:		inKey
-//# Session Storage全削除
-//#		CLS_Storage.sSclear()
-//#
-//#####################################################
+//##############################################################
 
-//#####################################################
+//##############################################################
 class CLS_Storage {
-//#####################################################
+//##############################################################
 
-//#####################################################
+//##############################################################
 //# Strageの利用可否チェック
-//#####################################################
-	static sCheck()
+//##############################################################
+	Check()
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sCheck" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Check" }) ;
 		
 		top.gSTR_StorageInfo.FLG_Use_Local = false ;
 		top.gSTR_StorageInfo.FLG_Use_Session = false ;
-		/////////////////////////////
+		////////////////////////////////
 		// localStorageの利用可否チェック
 		try
 		{
@@ -69,7 +31,7 @@ class CLS_Storage {
 		{
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// sessionStorageの利用可否チェック
 		if( top.DEF_USER_SESSION_STORAGE==true )
 		{
@@ -84,12 +46,16 @@ class CLS_Storage {
 			}
 		}
 		
-		/////////////////////////////
-		// コンソールへ表示
-		let wMessage = "Storage Check: local=" + String(top.gSTR_StorageInfo.FLG_Use_Local) + " session=" + String(top.gSTR_StorageInfo.FLG_Use_Session) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+		//### コンソールへ表示
+		if( top.gVAL_TestLog==true )
+		{
+			let wMessage = "ストレージチェック" ;
+			wMessage = wMessage + '\n' + "  local=" + top.gCLS_OSIF.String({ inString:top.gSTR_StorageInfo.FLG_Use_Local }) ;
+			wMessage = wMessage + '\n' + "  session=" + top.gCLS_OSIF.String({ inString:top.gSTR_StorageInfo.FLG_Use_Session }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常終了
 		wRes['Result'] = true ;
 		return wRes ;
@@ -97,41 +63,50 @@ class CLS_Storage {
 
 
 
-//#####################################################
+//##############################################################
 //# Strageの全消去
-//#####################################################
-	static sAllClear()
+//##############################################################
+	AllClear()
 	{
-		this.sLclear() ;
-		this.sSclear() ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"AllClear" }) ;
+        
+		this.Lclear() ;
+		this.Sclear() ;
+        
+		//### コンソールへ表示
+		if( top.gVAL_TestLog==true )
+		{
+			let wMessage = "全ストレージクリア" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+		}
+        
 		return ;
 	}
 
 
 
-//#####################################################
+//##############################################################
 //# LocalStrageへの読み・書き・消去
 //# ※オリジン内であればデータ共有が可能
 //#   scheme://hostname:port/ 全て一緒のコンテンツ間
 //#   =オリジン内ではデータ共有されるのでKey名注意
-//#####################################################
-///////////////////////////////////////////////////////
-//  Local Storage取得
-///////////////////////////////////////////////////////
-	static sLget({
+//##############################################################
+//##############################################################
+//#  Local Storage取得
+//##############################################################
+	Lget({
 		inKey,
-		inError = true
+		inView = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sLget" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Lget" }) ;
 		
 		let wSubRes ;
 		
 		wRes['Responce'] = top.DEF_GVAL_TEXT_NONE ;
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Local!=true )
 		{
@@ -139,7 +114,7 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Local Storage取得
 		try
 		{
@@ -152,24 +127,24 @@ class CLS_Storage {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソールへ表示
-		if(( top.gVAL_TestMode==true )&&( inError==true ))
+		if(( top.gVAL_TestLog==true )||( inView==true ))
 		{
-			let wMessage = "Get Local Storage" ;
-			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
-			wMessage = wMessage + '\n' + "  value=" + String(wSubRes) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
+			let wMessage = "Lストレージ取得" ;
+			wMessage = wMessage + '\n' + "  inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wMessage = wMessage + '\n' + "  value=" + top.gCLS_OSIF.String({ inString:wSubRes }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wSubRes ;
 		wRes['Result']   = true ;
@@ -178,20 +153,19 @@ class CLS_Storage {
 
 
 
-///////////////////////////////////////////////////////
+//##############################################################
 //  Local Storage設定
-///////////////////////////////////////////////////////
-	static sLset({
+//##############################################################
+	Lset({
 		inKey,
-		inValue
+		inValue,
+		inView = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sLset" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Lset" }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Local!=true )
 		{
@@ -199,7 +173,7 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Local Storage設定
 		try
 		{
@@ -207,38 +181,38 @@ class CLS_Storage {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 設定できたか確認
-		let wSubRes = this.sLget({
-			inKey	: inKey,
-			inError	: false
+		let wSubRes = this.Lget({
+			inKey   : inKey,
+			inView : false
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
 			//失敗
-			wRes['Reason'] = "sLget is failed" ;
-			CLS_L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "Lストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソールへ表示
-		if( top.gVAL_TestMode==true )
+		if(( top.gVAL_TestLog==true )||( inView==true ))
 		{
-			let wMessage = "Set Local Storage" ;
-			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
-			wMessage = wMessage + '\n' + "  inValue=" + String(inValue) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
+			let wMessage = "Lストレージ設定" ;
+			wMessage = wMessage + '\n' + "  inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wMessage = wMessage + '\n' + "  inValue=" + top.gCLS_OSIF.String({ inString:inValue }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -246,19 +220,18 @@ class CLS_Storage {
 
 
 
-///////////////////////////////////////////////////////
-//  Local Storage削除
-///////////////////////////////////////////////////////
-	static sLdel({
-		inKey
+//##############################################################
+//#  Local Storage削除
+//##############################################################
+	Ldel({
+		inKey,
+		inView = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sLdel" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Ldel" }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Local!=true )
 		{
@@ -266,7 +239,7 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Local Storage個別削除
 		try
 		{
@@ -274,23 +247,23 @@ class CLS_Storage {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソールへ表示
-		if( top.gVAL_TestMode==true )
+		if(( top.gVAL_TestLog==true )||( inView==true ))
 		{
-			let wMessage = "Remove Local Storage" ;
-			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
+			let wMessage = "Lストレージ削除" ;
+			wMessage = wMessage + '\n' + "  inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
 		return wRes ;
@@ -298,17 +271,15 @@ class CLS_Storage {
 
 
 
-///////////////////////////////////////////////////////
-//  Local Storage全削除
-///////////////////////////////////////////////////////
-	static sLclear()
+//##############################################################
+//#  Local Storage全削除
+//##############################################################
+	Lclear()
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sLclear" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Lclear" }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Local!=true )
 		{
@@ -316,7 +287,7 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Local Storage全削除
 		try
 		{
@@ -324,22 +295,23 @@ class CLS_Storage {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソールへ表示
-		if( top.gVAL_TestMode==true )
-		{
-			let wMessage = "Clear Local Storage" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
-		}
+///		if( top.gVAL_TestLog==true )
+///		{
+///			let wMessage = "Lストレージクリア" ;
+///			top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
+///		}
+		let wMessage = "Lストレージクリア" ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
 		return wRes ;
@@ -347,21 +319,20 @@ class CLS_Storage {
 
 
 
-///////////////////////////////////////////////////////
-//  Local Storage一覧取得
-///////////////////////////////////////////////////////
-	static sLgetList({
-		inKey
+//##############################################################
+//#  Local Storage一覧取得
+//##############################################################
+	LgetList({
+		inKey,
+		inView = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sLgetList" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"LgetList" }) ;
 		
 		let wKey, wVal, wGetVal, wLogStr, wList, wMessage ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Local!=true )
 		{
@@ -371,7 +342,7 @@ class CLS_Storage {
 		}
 		
 		wList = {} ;
-		/////////////////////////////
+		////////////////////////////////
 		// Storageからキーが頭のデータを抽出する
 		try
 		{
@@ -393,30 +364,43 @@ class CLS_Storage {
 					{
 						// 抽出したものをリストに保管
 						wList[wKey] = wGetVal ;
-						
-						//### コンソールへ表示
-						if( top.gVAL_TestMode==true )
-						{
-							wMessage = "Get Local Storage Lists" ;
-							wMessage = wMessage + '\n' + "  key=" + String(wKey) ;
-							wMessage = wMessage + '\n' + "  value=" + String(wGetVal) ;
-							CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
-						}
+///						
+///						//### コンソールへ表示
+///						if( top.gVAL_TestLog==true )
+///						{
+///							wMessage = "Lストレージ一覧取得" ;
+///							wMessage = wMessage + '\n' + "  key=" + String(wKey) ;
+///							wMessage = wMessage + '\n' + "  value=" + String(wGetVal) ;
+///							top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
+///						}
 					}
 				}
 			}
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		//### コンソールへ表示
+		if((( top.gVAL_TestLog==true )||( inView==true ))&&
+		   (top.gCLS_OSIF.GetObjectNum({ inObject:wList })>0) )
+		{
+			wMessage = "Lストレージ一覧取得" ;
+			for( wKey in wList )
+			{
+				wMessage = wMessage + '\n' + "  key=" + top.gCLS_OSIF.String({ inString:wKey }) ;
+				wMessage = wMessage + '\n' + "  value=" + top.gCLS_OSIF.String({ inString:wList[wKey] }) ;
+			}
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
+		}
+        
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wList ;
 		wRes['Result']   = true ;
@@ -425,27 +409,25 @@ class CLS_Storage {
 
 
 
-//#####################################################
+//##############################################################
 //# SessionStrageへの読み・書き・消去
 //# ※ウィンドウ・タブ間でのデータ共有はできない
-//#####################################################
-///////////////////////////////////////////////////////
-//  Session Storage取得
-///////////////////////////////////////////////////////
-	static sSget({
+//##############################################################
+//##############################################################
+//#  Session Storage取得
+//##############################################################
+	Sget({
 		inKey,
-		inError = true
+		inView = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sSget" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Sget" }) ;
 		
 		let wSubRes ;
 		
 		wRes['Responce'] = top.DEF_GVAL_TEXT_NONE ;
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Session!=true )
 		{
@@ -453,7 +435,7 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Session Storage取得
 		try
 		{
@@ -466,24 +448,24 @@ class CLS_Storage {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソールへ表示
-		if(( top.gVAL_TestMode==true )&&( inError==true ))
+		if(( top.gVAL_TestLog==true )||( inView==true ))
 		{
-			let wMessage = "Get Session Storage" ;
-			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
-			wMessage = wMessage + '\n' + "  value=" + String(wSubRes) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
+			let wMessage = "Sストレージ取得" ;
+			wMessage = wMessage + '\n' + "  inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wMessage = wMessage + '\n' + "  value=" + top.gCLS_OSIF.String({ inString:wSubRes }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Responce'] = wSubRes ;
 		wRes['Result']   = true ;
@@ -492,20 +474,19 @@ class CLS_Storage {
 
 
 
-///////////////////////////////////////////////////////
-//  Local Storage設定
-///////////////////////////////////////////////////////
-	static sSset({
+//##############################################################
+//#  Session Storage設定
+//##############################################################
+	Sset({
 		inKey,
-		inValue
+		inValue,
+		inView = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sSset" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Lset" }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Session!=true )
 		{
@@ -513,7 +494,7 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Session Storage設定
 		try
 		{
@@ -521,38 +502,38 @@ class CLS_Storage {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 設定できたか確認
-		let wSubRes = this.sSget({
-			inKey	: inKey,
-			inError	: false
+		let wSubRes = this.Sget({
+			inKey   : inKey,
+			inView : false
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
 			//失敗
-			wRes['Reason'] = "sSget is failed" ;
-			CLS_L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "Sストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソールへ表示
-		if( top.gVAL_TestMode==true )
+		if(( top.gVAL_TestLog==true )||( inView==true ))
 		{
-			let wMessage = "Set Session Storage" ;
-			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
-			wMessage = wMessage + '\n' + "  inValue=" + String(inValue) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
+			let wMessage = "Sストレージ設定" ;
+			wMessage = wMessage + '\n' + "  inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wMessage = wMessage + '\n' + "  inValue=" + top.gCLS_OSIF.String({ inString:inValue }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -560,19 +541,18 @@ class CLS_Storage {
 
 
 
-///////////////////////////////////////////////////////
-//  Session Storage削除
-///////////////////////////////////////////////////////
-	static sSdel({
-		inKey
+//##############################################################
+//#  Session Storage削除
+//##############################################################
+	Sdel({
+		inKey,
+		inView = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sSdel" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Sdel" }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Session!=true )
 		{
@@ -580,7 +560,7 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Session Storage個別削除
 		try
 		{
@@ -588,23 +568,23 @@ class CLS_Storage {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソールへ表示
-		if( top.gVAL_TestMode==true )
+		if(( top.gVAL_TestLog==true )||( inView==true ))
 		{
-			let wMessage = "Delete Session Storage" ;
-			wMessage = wMessage + '\n' + "  inKey=" + String(inKey) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
+			let wMessage = "Sストレージ削除" ;
+			wMessage = wMessage + '\n' + "  inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
 		return wRes ;
@@ -612,17 +592,15 @@ class CLS_Storage {
 
 
 
-///////////////////////////////////////////////////////
-//  Session Storage全削除
-///////////////////////////////////////////////////////
-	static sSclear()
+//##############################################################
+//#  Session Storage全削除
+//##############################################################
+	Sclear()
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_Storage", inFunc:"sSclear" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Sclear" }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Storageが有効か
 		if( top.gSTR_StorageInfo.FLG_Use_Session!=true )
 		{
@@ -630,7 +608,7 @@ class CLS_Storage {
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Session Storage全削除
 		try
 		{
@@ -638,22 +616,23 @@ class CLS_Storage {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソールへ表示
-		if( top.gVAL_TestMode==true )
-		{
-			let wMessage = "Clear Session Storage" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"X", inMessage:wMessage, inLine:__LINE__ }) ;
-		}
+///		if( top.gVAL_TestLog==true )
+///		{
+///			let wMessage = "Sストレージクリア" ;
+///			top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
+///		}
+		let wMessage = "Sストレージクリア" ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result']   = true ;
 		return wRes ;
@@ -661,6 +640,6 @@ class CLS_Storage {
 
 
 
-//#####################################################
+//##############################################################
 }
 

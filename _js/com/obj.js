@@ -5,94 +5,6 @@
 //# ::Class    : ページオブジェクト制御
 //##############################################################
 
-
-//# エレメント オブジェクト取得
-//#		CLS_PageObj.sGetElement({
-//#			in:		inPageObj, inKey
-//#			out:	Element Object
-//# フレームドキュメント取得
-//#		CLS_PageObj.sGetFrameDocument({
-//#			in:		inPageObj, inKey
-//#			out:	Frame Document
-//#
-//# ページ情報取得
-//#		CLS_PageObj.sGetPageInfo({
-//#			in:		inPageObj	self.document など
-//#			out:	wRes['Responce']['Url']			ページURL
-//#					wRes['Responce']['Protocol']	プロトコル  https: とか
-//#					wRes['Responce']['Host']		ホスト名
-//#					wRes['Responce']['Pathname']	ホスト以下のパス
-//#					wRes['Responce']['Hash']		# ハッシュタグ部分
-//#					wRes['Responce']['Port']		ポート番号付きの ポート番号
-//#					wRes['Responce']['Search']		& 以下のパス
-//#
-//# innerHTML取得
-//#		CLS_PageObj.sGetInner
-//#			in:		inPageObj, inKey, inDirect
-//#			out:	innerHTML
-//# innerHTM設定
-//#		CLS_PageObj.sSetInner
-//#			in:		inPageObj, inKey, inCode, inDirect
-//# value取得
-//#		CLS_PageObj.sGetValue
-//#			in:		inPageObj, inKey, inDirect
-//#			out:	value
-//# value設定
-//#		CLS_PageObj.sSetValue
-//#			in:		inPageObj, inKey, inCode, inDirect
-//# href設定
-//#		CLS_PageObj.sSetHref
-//#			in:		inPageObj, inKey, inCode, inDirect
-//# クラス名取得
-//#		CLS_PageObj.sGetClassName
-//#			in:		inPageObj, inKey, inDirect
-//#			out:	className
-//# クラス名設定
-//#		CLS_PageObj.sSetClassName
-//#			in:		inPageObj, inKey, inCode, inDirect
-//# src設定
-//#		CLS_PageObj.sSetSrc
-//#			in:		inPageObj, inKey, inCode, inDirect
-//# Checked取得
-//#		CLS_PageObj.sGetChecked
-//#			in:		inPageObj, inKey, inDirect
-//#			out:	checked
-//# グループ選択取得
-//#		CLS_PageObj.sGetGroupChoose
-//#			in:		inPageObj, inKey
-//#			out:	value
-//# Checked設定
-//#		CLS_PageObj.sSetChecked
-//#			in:		inPageObj, inKey, inCode, inDirect
-//# Disabled取得
-//#		CLS_PageObj.sGetDisabled
-//#			in:		inPageObj, inKey, inDirect
-//#			out:	disabled
-//# Disabled設定
-//#		CLS_PageObj.sSetDisabled
-//#			in:		inPageObj, inKey, inCode(true=無効 false=有効), inDirect
-//# Display取得
-//#		CLS_PageObj.sGetDisplay
-//#			in:		inPageObj, inKey, inDirect
-//#			out:	.style.display
-//# Display設定
-//#		CLS_PageObj.sSetDisplay
-//#			in:		inPageObj, inKey, inCode(true=表示 false=非表示), inDirect
-//# フレームサイズ取得
-//#		CLS_PageObj.sGetFrameSize
-//#			in:		inPageObj, inKey, inDirect
-//#			out:	Height, Width
-//# フレームサイズ設定
-//#		CLS_PageObj.sSetFrameSize
-//#			in:		inPageObj, inKey, inHeight, inWidth, inDirect
-//#
-//# QuerySelector取得
-//#		CLS_PageObj.sGetQuerySelector
-//#			in:		inPageObj, inKey, inDirect
-//#			out:	QuerySelector
-//#
-
-
 //##############################################################
 class CLS_Obj {
 //##############################################################
@@ -310,7 +222,7 @@ class CLS_Obj {
 			
 			////////////////////////////////
 			// ページ情報の取得
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "ページ情報取得" ;
 				wMessage = wMessage + '\n' + "  Url=" + wRes['Responce']['Url'] ;

@@ -708,6 +708,8 @@ var DEF_GVAL_LOG_OUTPUT_FILE_HEADER = "error_" ;
 //### 蓄積ログ
 var gARR_Log					= new Array() ;
 
+//### テストログ出力
+var gVAL_TestLog				= top.DEF_INDEX_TEST_LOG ;
 
 //### ログボックスデータ
 function gSTR_STR_LogBox_Str()
@@ -721,12 +723,6 @@ function gSTR_STR_LogBox_Str()
 	this.Data					= new Array() ;					//  メッセージデータ
 }
 var gSTR_LogBox = new gSTR_STR_LogBox_Str() ;
-
-
-
-//##############################################################
-//# テスト
-var gVAL_TestMode				= top.DEF_INDEX_TEST ;
 
 
 
@@ -747,6 +743,7 @@ var gCLS_L           = new CLS_L() ;
 var gCLS_Obj         = new CLS_Obj() ;
 var gCLS_Tim         = new CLS_Timer() ;
 var gCLS_Sys         = new CLS_Sys() ;
+var gCLS_Storage     = new CLS_Storage() ;
 var gCLS_File        = new CLS_File() ;
 var gCLS_Win         = new CLS_Win() ;
 

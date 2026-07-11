@@ -106,7 +106,7 @@ class CLS_OSIF {
 		let wText = this.String({ inString:inString }) ;
 		alert( wText ) ;
 		
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wText = "alertボックス表示" ;
 			wText = wText + '\n' + "  inText=" + this.String({ inString:inString }) ;
@@ -126,7 +126,7 @@ class CLS_OSIF {
 		let wText  = this.String({ inString:inString }) ;
 		let wInput = confirm( wText ) ;
 		
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wText = "confirmボックス表示" ;
 			wText = wText + '\n' + "  inText=" + this.String({ inString:inString }) ;
@@ -149,7 +149,7 @@ class CLS_OSIF {
 		let wText  = this.String({ inString:inString }) ;
 		let wInput = window.prompt( wText, this.String({ inString:inDefault }) ) ;
 		
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wText = "window prompt表示" ;
 			wText = wText + '\n' + "  inText=" + this.String({ inString:inString }) ;
@@ -1131,7 +1131,7 @@ class CLS_OSIF {
 			return false ;
 		}
 		
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wSubRes = this.GetInObject({
 				inObject : top.DEF_GVAL_OSIF_DEL_CALLBACK_LOG,
@@ -1158,7 +1158,7 @@ class CLS_OSIF {
 		inMsec = 1000
 	})
 	{
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			let wText = "遅延処理開始  " + this.String({ inString:inMsec }) + ".ms" + '\n' ;
 			this.ConsInfo({ inString:wText });

@@ -140,6 +140,22 @@
 
 
 
+### 目次：[ストレージクラス / CLS_Storage](#ストレージクラス--cls_storage-storagejs)
+
+* [Strageの利用可否チェック / Check](#strageの利用可否チェック--check)
+* [Strageの全消去 / AllClear](#strageの全消去--allclear)
+* [Local Storage取得 / Lget](#local-storage取得--lget)
+* [Local Storage設定 / Lset](#local-storage設定--lset)
+* [Local Storage削除 / Ldel](#local-storage削除--ldel)
+* [Local Storage全削除 / Lclear](#local-storage全削除--lclear)
+* [Local Storage一覧取得 / LgetList](#local-storage一覧取得--lgetlist)
+* [Session Storage取得 / Sget](#session-storage取得--sget)
+* [Session Storage設定 / Sset](#session-storage設定--sset)
+* [Session Storage削除 / Sdel](#session-storage削除--sdel)
+* [Session Storage全削除 / Sclear](#session-storage全削除--sclear)
+  
+
+
 ### 目次：[ファイルクラス / CLS_File](#ログクラス--cls_l-logjs)
 
 * [ファイル出力 / Output](#ファイル出力--output)
@@ -1619,6 +1635,212 @@
 
 ```
   
+
+
+
+
+
+## ストレージクラス / CLS_Storage [storage.js]
+  
+  [[目次に戻る]](#目次ストレージクラス--cls_storage)  
+  
+
+### Strageの利用可否チェック / Check
+
+```text
+呼出：
+  CLS_Storage.Check()
+  ※引数なし
+
+出力：
+  bool   true=正常処理  falseはない
+
+```
+  
+
+
+
+### Strageの全消去 / AllClear
+
+```text
+呼出：
+  CLS_Storage.AllClear()
+  ※引数なし
+
+出力：
+  ※戻り値なし
+
+```
+  
+
+
+
+### Local Storage取得 / Lget
+
+```text
+呼出：
+  CLS_Storage.Lget({
+    inKey       : string   ストレージキー文字
+    inView      : bool     true=結果をコンソール表示、false=表示しない(default)
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+    "Response"  : string      ストレージ値（データ）
+
+```
+  
+
+
+
+### Local Storage設定 / Lset
+
+```text
+呼出：
+  CLS_Storage.Lset({
+    inKey       : string   ストレージキー文字
+    inValue     : string   設定値
+    inView      : bool     true=結果をコンソール表示、false=表示しない(default)
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### Local Storage削除 / Ldel
+
+```text
+呼出：
+  CLS_Storage.Ldel({
+    inKey       : string   ストレージキー文字
+    inView      : bool     true=結果をコンソール表示、false=表示しない(default)
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### Local Storage全削除 / Lclear
+
+```text
+呼出：
+  CLS_Storage.Lclear() ;
+  ※引数なし
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### Local Storage一覧取得 / LgetList
+
+```text
+呼出：
+  CLS_Storage.LgetList({
+    inKey       : string   ストレージ頭キー文字
+    inView      : bool     true=結果をコンソール表示、false=表示しない(default)
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+    "Response"  : dict        ストレージ値一覧（辞書型）
+
+```
+  
+
+
+
+### Session Storage取得 / Sget
+
+```text
+呼出：
+  CLS_Storage.Sget({
+    inKey       : string   ストレージキー文字
+    inView      : bool     true=結果をコンソール表示、false=表示しない(default)
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+    "Response"  : string      ストレージ値（データ）
+
+```
+  
+
+
+
+### Session Storage設定 / Sset
+
+```text
+呼出：
+  CLS_Storage.Sset({
+    inKey       : string   ストレージキー文字
+    inValue     : string   設定値
+    inView      : bool     true=結果をコンソール表示、false=表示しない(default)
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### Session Storage削除 / Sdel
+
+```text
+呼出：
+  CLS_Storage.Sdel({
+    inKey       : string   ストレージキー文字
+    inView      : bool     true=結果をコンソール表示、false=表示しない(default)
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### Session Storage全削除 / Sclear
+
+```text
+呼出：
+  CLS_Storage.Sclear() ;
+  ※引数なし
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+
+
+
 
 
 

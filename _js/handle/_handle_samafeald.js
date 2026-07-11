@@ -21,8 +21,8 @@ var DEF_INDEX_LOG_OUTPUT		= false ;
 var DEF_INDEX_LOG_AUTOOPEN		= false ;
 
 //### テストモード  true=テスト稼働
-//var gVAL_TestMode			= true ;
-var gVAL_TestMode				= false ;
+//var gVAL_TestLog			= true ;
+var gVAL_TestLog				= false ;
 
 
 

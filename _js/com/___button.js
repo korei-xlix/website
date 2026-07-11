@@ -662,7 +662,7 @@ function __Button_Log( inRes, inLevel, inMessage=null )
 	// コンソールへ表示
 	try
 	{//////テストモードが確認できたら表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			console.log( wStatus ) ;
 		}

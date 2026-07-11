@@ -5,50 +5,6 @@
 //# ::Class    : タイマ制御
 //##############################################################
 
-
-
-//# 関数群     :
-//#
-//# タイマ設定
-//#		CLS_Timer.static sSet
-//#			in:		inTimerID			//タイマID
-//#					inTimerKind			//タイマ種類
-//#					inValue				//タイマ値
-//#					inRetry				//リトライ値
-//#					intLog				//ログカウント値
-//#					inNextProc
-//#						"Callback"		//受信時にコールバック
-//#						"Arg"			//コールバックに渡す引数
-//#					inOW				//上書き設定  true=上書き設定
-//#
-//# タイマ起動
-//#		CLS_Timer.sStart
-//#			in:		inTimerID, inStatus
-//# タイマリセット
-//#		CLS_Timer.sReset
-//#			in:		inTimerID, inStatus
-//# タイマ停止
-//#		CLS_Timer.sStop
-//#			in:		inTimerID
-//#
-//# 状態取得
-//#		CLS_Timer.sGetStatus
-//#			in:		inTimerID
-//#			out:	
-//#					wRes['Responce']['FLG_Start']	//タイマ起動      true=起動中
-//#					wRes['Responce']['FLG_Stop']	//タイマ停止通知  true=停止ON  タイマ停止による停止
-//#					wRes['Responce']['FLG_Tout']	//タイムアウト
-//#					wRes['Responce']['FLG_Rout']	//リトライアウト
-//#					wRes['Responce']['Status']		//状態遷移
-//#					wRes['Responce']['Value']		//タイマ値
-//#					wRes['Responce']['Retry']		//リトライ値
-//# 状態設定
-//#		CLS_Timer.sSetStatus
-//#			in:		inTimerID, inStatus
-//#
-
-
-
 //##############################################################
 //# 非同期コールバック
 //##############################################################
@@ -91,7 +47,7 @@
 			wName = top.gARR_TimerCtrlInfo[inTimerID].NextProcess.Callback.name ;
 			
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "処理前コールバック inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) + " Func=" + wName ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"XC", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -108,7 +64,7 @@
 			wName = "__sDefaultCallback" ;
 			
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "処理前コールバック(Default) inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"XC", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -135,7 +91,7 @@
 		top.gARR_TimerCtrlInfo[inTimerID].FLG_Run = false ;
 		
 		//### コンソール表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wMessage = "処理後コールバック inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"XC", inMessage:wMessage, inLine:__LINE__ }) ;
@@ -300,7 +256,7 @@ class CLS_Timer {
 		
 		//### コンソール表示
 		wMessage = "タイマ設定 inTimerID=" + String(inTimerID) ;
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wMessage = wMessage + '\n' + "  Kind=" + top.gCLS_OSIF.String({ inString:inTimerKind }) ;
 			wMessage = wMessage + '\n' + "  Value=" + top.gCLS_OSIF.String({ inString:inValue }) ;
@@ -469,7 +425,7 @@ class CLS_Timer {
 		
 		//### コンソール表示
 		wMessage = "タイマ起動 inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{///テストモード時
 			wMessage = wMessage + '\n' + "  Kind=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Kind }) ;
 			wMessage = wMessage + '\n' + "  Value=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Value }) ;
@@ -560,7 +516,7 @@ class CLS_Timer {
 		
 		//### コンソール表示
 		wMessage = "Reset Timer: inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{///テストモード時
 			wMessage = wMessage + '\n' + "  Kind=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Kind }) ;
 			wMessage = wMessage + '\n' + "  Value=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Value }) ;
@@ -700,7 +656,7 @@ class CLS_Timer {
 		   ( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true ))
 		{
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "タイマ停止済み inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 				wSubRes = top.gCLS_OSIF.GetInObject({
@@ -785,7 +741,7 @@ class CLS_Timer {
 			top.gARR_TimerCtrlInfo[inTimerID].Status    = top.DEF_GVAL_TIMERCTRL_TST_IDLE ;
 			
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "タイマ停止済み inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 				wSubRes = top.gCLS_OSIF.GetInObject({
@@ -805,7 +761,7 @@ class CLS_Timer {
 		}
 		
 		//### コンソール表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			top.gARR_TimerCtrlInfo[inTimerID].LogCnt++ ;
 			if( top.gARR_TimerCtrlInfo[inTimerID].tLogCnt>=top.gARR_TimerCtrlInfo[inTimerID].tLog )
@@ -889,7 +845,7 @@ class CLS_Timer {
 		   ( top.gARR_TimerCtrlInfo[inTimerID].FLG_Stop==true ))
 		{
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "タイマ停止済み inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 				wSubRes = top.gCLS_OSIF.GetInObject({
@@ -909,7 +865,7 @@ class CLS_Timer {
 		}
 		
 		//### コンソール表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			top.gARR_TimerCtrlInfo[inTimerID].tLogCnt++ ;
 			if( top.gARR_TimerCtrlInfo[inTimerID].tLog<=top.gARR_TimerCtrlInfo[inTimerID].tLogCnt )
@@ -1102,7 +1058,7 @@ class CLS_Timer {
 		
 		
 		
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			//### 応答形式の取得
 			let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Timer", inFunc:"__DefaultCallback" }) ;

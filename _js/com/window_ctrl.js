@@ -71,10 +71,10 @@
 //##############################################################
 //# 非同期コールバック（設定完了待ち後 実行プロセス）
 //##############################################################
-	async function async_CLS_WinCtrl_Callback()
+	async function async_CLS_Win_Callback()
 	{
 		//### 応答形式の取得
-		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Win", inFunc:"async_CLS_WinCtrl_Callback" }) ;
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Win", inFunc:"async_CLS_Win_Callback" }) ;
 		
 		let wSubRes, wName ;
 		
@@ -83,7 +83,7 @@
 		wName = top.gSTR_WinCtrlInfo.CompProcess.Callback.name ;
 		
 		//### コンソール表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wMessage = "処理前コールバック Func=" + wName ;
 			wRes['Reason'] = wName ;
@@ -97,7 +97,7 @@
 		}) ;
 		
 		//### コンソール表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wMessage = "処理後コールバック Func=" + wName ;
 			wRes['Reason'] = wName ;
@@ -135,10 +135,8 @@ class CLS_Win {
 		inTrans         = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sSet" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Win", inFunc:"Set" }) ;
 		
 		let wSubRes, wMode ;
 		let wSTR_Param, wSTR_Storage, wMessage, wCompProc ;
@@ -147,54 +145,54 @@ class CLS_Win {
 		//##############################
 		//# 入力チェック
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック：スタイルシート名（辞書型）
-		if( CLS_OSIF.sGetObjectNum({ inObject:inSTR_CSSinfo })<=0 )
+		if( top.gCLS_OSIF.GetObjectNum({ inObject:inSTR_CSSinfo })<=0 )
 		{
-			wRes['Reason'] = "inSTR_CSSinfo is Zero(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inSTR_CSSinfoにデータなし" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック：ページオブジェクト
 		if( inStylePath==top.DEF_GVAL_NULL )
 		{///失敗
-			wRes['Reason'] = "Unset inStylePath(2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inStylePath未設定" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック：CSSモード
-		wMode = CLS_OSIF.sStrLow({ inString:inMode }) ;
+		wMode = top.gCLS_OSIF.StrLow({ inString:inMode }) ;
 		if( wMode==top.DEF_GVAL_NULL )
 		{
-			wRes['Reason'] = "sStrLow is failer(3-1): inMode=" + String(inMode) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー 小文字変換失敗 inMode=" + top.gCLS_OSIF.top.gCLS_OSIF.String({ inString:inMode }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
-		wSubRes = CLS_OSIF.sGetInObject({
-			inObject	: top.DEF_GVAL_WINCTRL_CSS_MODE,
-			inKey		: inMode
+		wSubRes = top.gCLS_OSIF.GetInObject({
+			inObject : top.DEF_GVAL_WINCTRL_CSS_MODE,
+			inKey    : inMode
 		}) ;
 		if( wSubRes!=true )
 		{///失敗
-			wRes['Reason'] = "Undefined Mode(3-2): inMode=" + String(inMode)
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー 存在しないモード inMode=" + top.gCLS_OSIF.top.gCLS_OSIF.String({ inString:inMode }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		wCompProc = {} ;
 		//### コールバック情報
-		if( CLS_OSIF.sCheckObject({ inObject:inCompProc })!=true )
+		if( top.gCLS_OSIF.CheckObject({ inObject:inCompProc })!=true )
 		{///不正
-			wRes['Reason'] = "inCompProc is not dictionary(4-1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCompProcは辞書型ではない" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		wSubRes = CLS_OSIF.sGetInObject({
+		wSubRes = top.gCLS_OSIF.GetInObject({
 			inObject : inCompProc,
 			inKey    : "Callback"
 		}) ;
@@ -208,7 +206,7 @@ class CLS_Win {
 		}
 		
 		//### コールバック引数
-		wSubRes = CLS_OSIF.sGetInObject({
+		wSubRes = top.gCLS_OSIF.GetInObject({
 			inObject : inCompProc,
 			inKey    : "Arg"
 		}) ;
@@ -221,12 +219,12 @@ class CLS_Win {
 			wCompProc['Arg'] = inCompProc['Arg'] ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// コールバックが設定されているか
 		if( wCompProc['Callback']==top.DEF_GVAL_NULL )
 		{///コールバック未設定
-			wRes['Reason'] = "this Inline frames callback is unset(4-2)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+			wRes['Reason'] = "コールバック未設定" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -234,29 +232,29 @@ class CLS_Win {
 		//# パラメータの作成
 		wSTR_Param = new top.gSTR_WinCtrlInfo_Str() ;
 		
-		wSTR_Param.WindowObj	= top.gSTR_WinCtrlInfo.WindowObj ;	//設定済みを反映
-		wSTR_Param.PageObj		= top.gSTR_PageInfo.PageObj ;		//設定済みを反映
-		wSTR_Param.OtherDomain	= inOtherDomain ;
+		wSTR_Param.WindowObj    = top.gSTR_WinCtrlInfo.WindowObj ;  //設定済みを反映
+		wSTR_Param.PageObj      = top.gSTR_PageInfo.PageObj ;       //設定済みを反映
+		wSTR_Param.OtherDomain  = inOtherDomain ;
 		wSTR_Param.UpdateInfo.TimeDate = top.gSTR_Time.TimeDate ;
-		wSTR_Param.CSSInfo		= inSTR_CSSinfo ;
+		wSTR_Param.CSSInfo      = inSTR_CSSinfo ;
 		wSTR_Param.CompProcess['Callback'] = wCompProc['Callback'] ;
 		wSTR_Param.CompProcess['Arg']      = wCompProc['Arg'] ;
-		wSTR_Param.TransInfo.FLG_Trans	= inTrans ;
+		wSTR_Param.TransInfo.FLG_Trans     = inTrans ;
 		
 		//### 拡張プロパティの追加：フレームID
 		wSTR_Param.WindowObj[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID] = top.DEF_GVAL_PARENT_FRAME_ID ;
 		
 		//##############################
 		//# Storage取得
-		
-		//### Storageチェック
-		CLS_Storage.sCheck() ;
-		
-		//### Storage取得
-		wSubRes = this.__sGetStorageConf() ;
+///		
+///		//### Storageチェック
+///		CLS_Storage.sCheck() ;
+///		
+///		//### Storage取得
+		wSubRes = this.__GetStorageConf() ;
 		wSTR_Storage = wSubRes['Responce'] ;
-		//		"cssname"
-		//		"mode"
+		//  "cssname"
+		//  "mode"
 		
 		//##############################
 		//# 画面モードの設定
@@ -482,10 +480,10 @@ class CLS_Win {
 
 
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  Storage取得
-///////////////////////////////////////////////////////
-	static __sGetStorageConf()
+////////////////////////////////////////////////////////////////
+	__GetStorageConf()
 	{
 		//###########################
 		//# 応答形式の取得
@@ -513,6 +511,12 @@ class CLS_Win {
 			return wRes ;
 		}
 		
+
+
+		//### Storageチェック
+		CLS_Storage.sCheck() ;
+
+
 		/////////////////////////////
 		// Storage取得(cssname)
 		wSubRes = CLS_Storage.sLget({
@@ -531,7 +535,7 @@ class CLS_Win {
 		wRes['Responce']['cssname'] = wSubRes['Responce'] ;
 		
 		//### コンソール表示
-		wMessage = "Get Storage: CSS name: Key=" + String(wRes['Responce']['cssname']) ;
+		wMessage = "Get Storage: CSS name: Key=" + top.gCLS_OSIF.String({ inString:wRes['Responce']['cssname'] }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -548,7 +552,7 @@ class CLS_Win {
 		wRes['Responce']['mode'] = wSubRes['Responce'] ;
 		
 		//### コンソール表示
-		wMessage = "Get Storage: mode: Key=" + String(wRes['Responce']['mode']) ;
+		wMessage = "Get Storage: mode: Key=" + top.gCLS_OSIF.String({ inString:wRes['Responce']['mode'] }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -616,7 +620,7 @@ class CLS_Win {
 		}
 		
 		//### コンソール表示
-		wMessage = "Set Storage: CSS name: Key=" + String(inCSSname) ;
+		wMessage = "Set Storage: CSS name: Key=" + top.gCLS_OSIF.String({ inString:inCSSname }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -633,7 +637,7 @@ class CLS_Win {
 		}
 		
 		//### コンソール表示
-		wMessage = "Set Storage: mode: Key=" + String(wMode) ;
+		wMessage = "Set Storage: mode: Key=" + top.gCLS_OSIF.String({ inString:wMode }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -884,7 +888,7 @@ class CLS_Win {
 			}) ;
 			if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=2 ))
 			{///失敗
-				wRes['Reason'] = "CLS_OSIF.sSplit is failed: InnerHTML=" + String(wInnerHTML) ;
+				wRes['Reason'] = "CLS_OSIF.sSplit is failed: InnerHTML=" + top.gCLS_OSIF.String({ inString:wInnerHTML }) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 				return wRes ;
 			}
@@ -897,7 +901,7 @@ class CLS_Win {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "innerHTML=" + String(wInnerHTML) ;
+			let wError = "innerHTML=" + top.gCLS_OSIF.String({ inString:wInnerHTML }) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -912,7 +916,7 @@ class CLS_Win {
 		}) ;
 		if(( wSubRes['Result']!=true ) || ( wSubRes['Length']!=2 ))
 		{///失敗
-			wRes['Reason'] = "CLS_OSIF.sSplit is failed: TimeDate=" + String(top.gSTR_Time.TimeDate) ;
+			wRes['Reason'] = "CLS_OSIF.sSplit is failed: TimeDate=" + top.gCLS_OSIF.String({ inString:top.gSTR_Time.TimeDate }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -925,7 +929,7 @@ class CLS_Win {
 		})
 		if( wSubRes['Result']!=true )
 		{
-			wRes['Reason'] = "CLS_OSIF.sGetDateLag is failed: Reason=" + String(wSubRes['Reason']) ;
+			wRes['Reason'] = "CLS_OSIF.sGetDateLag is failed: Reason=" + top.gCLS_OSIF.String({ inString:wSubRes['Reason'] }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -1102,7 +1106,7 @@ class CLS_Win {
 			wSetTags   = "" ;
 			for( let wKey in pParam.CSSInfo )
 			{
-				wCSSname = String(wKey) ;
+				wCSSname = top.gCLS_OSIF.String({ inString:wKey }) ;
 				
 				wHTML = wHTML + "<option value='" ;
 				wHTML = wHTML + wCSSname + "'"
@@ -1110,15 +1114,15 @@ class CLS_Win {
 				{
 					wHTML = wHTML + " selected"
 				}
-				wHTML    = wHTML + ">" + String(pParam.CSSInfo[wKey]) + "</option>" + '\n' ;
-				wSetTags = wSetTags + String(pParam.CSSInfo[wKey]) + " " ;
+				wHTML    = wHTML + ">" + top.gCLS_OSIF.String({ inString:pParam.CSSInfo[wKey] }) + "</option>" + '\n' ;
+				wSetTags = wSetTags + top.gCLS_OSIF.String({ inString:pParam.CSSInfo[wKey] }) + " " ;
 			}
 		}
 		catch(e)
 		{
 			//###########################
 			//# 例外処理
-			let wError = "key=" + String(wKey) ;
+			let wError = "key=" + top.gCLS_OSIF.String({ inString:wKey }) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -1136,7 +1140,7 @@ class CLS_Win {
 ///			wRes['Reason'] = "sSetInner is failed(<option>tag setting failuer)" ;
 ///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Unset <option> tags" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1190,7 +1194,7 @@ class CLS_Win {
 		}
 		
 		//### コンソール表示
-		wMessage = "Set CSS File: CSS(Com)=" + String(inParam.Com.CHR_StylePath) ;
+		wMessage = "Set CSS File: CSS(Com)=" + top.gCLS_OSIF.String({ inString:inParam.Com.CHR_StylePath }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -1209,7 +1213,7 @@ class CLS_Win {
 		}
 		
 		//### コンソール表示
-		wMessage = "Set CSS File: CSS(Org)=" + String(inParam.Org.CHR_StylePath) ;
+		wMessage = "Set CSS File: CSS(Org)=" + top.gCLS_OSIF.String({ inString:inParam.Org.CHR_StylePath }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -1297,7 +1301,7 @@ class CLS_Win {
 ///			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Up Title)" ;
 ///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Unset Up Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1324,7 +1328,7 @@ class CLS_Win {
 ///			wRes['Reason'] = "CLS_PageObj.sGetPageInfo is failed(Down Title)" ;
 ///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Unset Down Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1346,7 +1350,7 @@ class CLS_Win {
 		if( wSubRes['Result']!=true )
 		{///タイトルがない場合、正常で終わる
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Unset Main Title" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1414,7 +1418,7 @@ class CLS_Win {
 ///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(1)" ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.gVAL_TestMode==true )
+				if( top.gVAL_TestLog==true )
 				{
 					wMessage = "Unset CSS Switch: SW mode=elase" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1448,7 +1452,7 @@ class CLS_Win {
 ///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(2-1)" ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.gVAL_TestMode==true )
+				if( top.gVAL_TestLog==true )
 				{
 					wMessage = "Unset CSS Switch: SW mode=pcnone or mbnone" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1509,7 +1513,7 @@ class CLS_Win {
 ///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(3-1)" ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.gVAL_TestMode==true )
+				if( top.gVAL_TestLog==true )
 				{
 					wMessage = "Unset CSS Switch: SW mode=pconly or mbonly" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1569,7 +1573,7 @@ class CLS_Win {
 ///				wRes['Reason'] = "CLS_PageObj.sSetDisplay is failed(4-1)" ;
 ///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				//### コンソール表示
-				if( top.gVAL_TestMode==true )
+				if( top.gVAL_TestLog==true )
 				{
 					wMessage = "Unset CSS Switch: SW mode=normal" ;
 					CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1671,7 +1675,7 @@ class CLS_Win {
 			}
 			
 			//### 更新アイコンの設定（設定あり）
-			wMessage = "Set Update Icon: Icon=" + String(inParam.UpIcon.CHR_FilePath) ;
+			wMessage = "Set Update Icon: Icon=" + top.gCLS_OSIF.String({ inString:inParam.UpIcon.CHR_FilePath }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		}
 		
@@ -1726,7 +1730,7 @@ class CLS_Win {
 			}) ;
 			if( wSubRes!=true )
 			{///不正
-				wRes['Reason'] = "Path is not exist(1-2): FrameID=" + String(wFrameID) ;
+				wRes['Reason'] = "Path is not exist(1-2): FrameID=" + top.gCLS_OSIF.String({ inString:wFrameID }) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 				return wRes ;
 			}
@@ -1738,7 +1742,7 @@ class CLS_Win {
 			}) ;
 			if( wSubRes!=true )
 			{///不正
-				wRes['Reason'] = "Open is not exist(1-3): FrameID=" + String(wFrameID) ;
+				wRes['Reason'] = "Open is not exist(1-3): FrameID=" + top.gCLS_OSIF.String({ inString:wFrameID }) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 				return wRes ;
 			}
@@ -1767,7 +1771,7 @@ class CLS_Win {
 			}) ;
 			if( wSubRes['Result']!=true )
 			{///失敗
-				wRes['Reason'] = "CLS_FrameCtrl.sOpen is failed(2): FrameID=" + String(wFrameID) ;
+				wRes['Reason'] = "CLS_FrameCtrl.sOpen is failed(2): FrameID=" + top.gCLS_OSIF.String({ inString:wFrameID }) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
 				return wRes ;
 			}
@@ -1778,7 +1782,7 @@ class CLS_Win {
 		if( CLS_OSIF.sGetObjectNum({ inObject:top.gSTR_WinCtrlInfo.IFrameLoad })<=0 )
 		{
 			//### コンソール表示
-			if( top.gVAL_TestMode==true )
+			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Skip PageLoad stby and Call end process" ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1786,7 +1790,7 @@ class CLS_Win {
 			
 			/////////////////////////////
 			// 設定完了待ち後 実行プロセス（コールバック）を呼ぶ
-			async_CLS_WinCtrl_Callback() ;
+			async_CLS_Win_Callback() ;
 			
 			/////////////////////////////
 			// 正常
@@ -1827,7 +1831,7 @@ class CLS_Win {
 		}
 		
 		//### コンソール表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
 			wMessage = "Set PageLoad Comp stby" ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
@@ -1882,7 +1886,7 @@ class CLS_Win {
 		}) ;
 		if(( wSubRes['Result']!=true ) || ( wSubRes['Responce']==false ))
 		{///フレームが存在しないか、不正の場合
-			wRes['Reason'] = "Frame is not exist: FrameID=" + String(wFrameID) ;
+			wRes['Reason'] = "Frame is not exist: FrameID=" + top.gCLS_OSIF.String({ inString:wFrameID }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
@@ -1892,9 +1896,9 @@ class CLS_Win {
 		top.gSTR_WinCtrlInfo.IFrameLoad[inFrameID] = true ;
 		
 		//### コンソール表示
-		if( top.gVAL_TestMode==true )
+		if( top.gVAL_TestLog==true )
 		{
-			let wMessage = "Inline frame loaded: inFrameID=" + String(inFrameID) ;
+			let wMessage = "Inline frame loaded: inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 		}
 		
@@ -1938,7 +1942,7 @@ class CLS_Win {
 		/////////////////////////////
 		// 全インラインフレーム ロード完了の場青、
 		// 設定完了待ち後 実行プロセス（コールバック）を呼ぶ
-		async_CLS_WinCtrl_Callback() ;
+		async_CLS_Win_Callback() ;
 		
 		/////////////////////////////
 		// 正常
@@ -2159,7 +2163,7 @@ class CLS_Win {
 		top.gSTR_WinCtrlInfo.Org.CHR_StylePath	= wSTR_Param.CHR_StylePath ;
 		
 		//### コンソール表示
-		wMessage = "Change CSS File: CSS(Org)=" + String(top.gSTR_WinCtrlInfo.Org.CHR_StylePath) ;
+		wMessage = "Change CSS File: CSS(Org)=" + top.gCLS_OSIF.String({ inString:top.gSTR_WinCtrlInfo.Org.CHR_StylePath }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		//###########################
@@ -2209,7 +2213,7 @@ class CLS_Win {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "inPath=" + String(inPath) ;
+			let wError = "inPath=" + top.gCLS_OSIF.String({ inString:inPath }) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
@@ -2388,7 +2392,7 @@ class CLS_Win {
 				}) ;
 				if( wSubRes!=true )
 				{///失敗
-					wRes['Reason'] = "this language is invalid: inTitle=" + inTitle + " Lang=" + String(wLang) ;
+					wRes['Reason'] = "this language is invalid: inTitle=" + inTitle + " Lang=" + top.gCLS_OSIF.String({ inString:wLang }) ;
 					CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
 					continue ;
 				}
@@ -2497,12 +2501,12 @@ class CLS_Win {
 			if( wSubRes['Result']==true )
 			{
 				//### 成功したら、コンソール表示
-				wMessage = "Set Storage : Transrate=" + String(pParam.Lang) ;
+				wMessage = "Set Storage : Transrate=" + top.gCLS_OSIF.String({ inString:pParam.Lang }) ;
 				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 			}
 		}
 		//### 翻訳言語の表示
-		wMessage = "Set Transrate: Lang=" + String(pParam.Lang) ;
+		wMessage = "Set Transrate: Lang=" + top.gCLS_OSIF.String({ inString:pParam.Lang }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -2538,7 +2542,7 @@ class CLS_Win {
 				for( let wKey in top.DEF_GVAL_TRANSRATE )
 				{
 					//英語テキスト
-					wEng  = String(wKey) ;
+					wEng  = top.gCLS_OSIF.String({ inString:wKey }) ;
 					
 					//日本語テキスト
 					wText = top.DEF_GVAL_TRANSRATE[wKey] ;
@@ -2635,7 +2639,7 @@ class CLS_Win {
 		top.gSTR_WinCtrlInfo.TransInfo.Lang = inLang ;
 		
 		//### コンソール表示
-		wMessage = "Change Lang=" + String(top.gSTR_WinCtrlInfo.TransInfo.Lang) ;
+		wMessage = "Change Lang=" + top.gCLS_OSIF.String({ inString:top.gSTR_WinCtrlInfo.TransInfo.Lang }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
@@ -2727,7 +2731,7 @@ class CLS_Win {
 		// 翻訳スイッチの作成
 		for( wKey in top.DEF_GVAL_TRANSRATE )
 		{
-			wEng = String(wKey) ;
+			wEng = top.gCLS_OSIF.String({ inString:wKey }) ;
 			if( inLang==wEng )
 			{///表示
 				wText = "block" ;
@@ -2752,7 +2756,7 @@ class CLS_Win {
 			{
 				for( wKey2 in wSTR_Trans )
 				{
-					wClass = top.DEF_GVAL_QS_TRANSRATE_HEADER + String(wKey2) ;
+					wClass = top.DEF_GVAL_QS_TRANSRATE_HEADER + top.gCLS_OSIF.String({ inString:wKey2 }) ;
 					if( wQS[wKey].className==wClass )
 					{
 						wQS[wKey].style.display = wSTR_Trans[wKey2] ;
@@ -2766,14 +2770,14 @@ class CLS_Win {
 		{
 			//###########################
 			//# 例外処理
-			let wError = "inKey=" + String(inKey) ;
+			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
 			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//###  翻訳モードの設定
-		wMessage = "Transrate Complete: QS=" + String(wQScnt) + " TR=" + String(wTRcnt) + " Words=" + String(wCnt) ;
+		wMessage = "Transrate Complete: QS=" + top.gCLS_OSIF.String({ inString:wQScnt }) + " TR=" + top.gCLS_OSIF.String({ inString:wTRcnt }) + " Words=" + top.gCLS_OSIF.String({ inString:wCnt }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
 		/////////////////////////////
