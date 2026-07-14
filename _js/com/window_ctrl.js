@@ -463,7 +463,7 @@ class CLS_Win {
 		
 		//##############################
 		//# 翻訳（取得・設置・翻訳実行）
-		wSubRes = this.GetTracnsrate({
+		wSubRes = this.GetTransrate({
 			inPageObj   : wSTR_Param.PageObj,
 			outSubParam : wSTR_Param.TransInfo
 		}) ;
@@ -495,9 +495,9 @@ class CLS_Win {
 		//# パラメータ保存
 		top.gSTR_WinCtrlInfo = wSTR_Param ;
 		
-	////////////////////////////////
-	//  マウスムーブ・ポップアップ設定
-	////////////////////////////////
+		//##############################
+		//#  マウスムーブ・ポップアップ設定
+		//##############################
 		
 		//##############################
 		//# ポップアップヘルプの設定
@@ -553,15 +553,15 @@ class CLS_Win {
 		
 		//##############################
 		//# Storageのセーブ
-		wSubRes = this.__sSetStorageConf({
-			inCSSname	: top.gSTR_WinCtrlInfo.Org.CHR_StyleName,
-			inFLG_PC	: top.gSTR_WinCtrlInfo.FLG_PC
+///		wSubRes = this.__sSetStorageConf({
+		wSubRes = this.__SetStorage({
+			inCSSname : top.gSTR_WinCtrlInfo.Org.CHR_StyleName,
+			inFLG_PC  : top.gSTR_WinCtrlInfo.FLG_PC
 		}) ;
 		if( wSubRes['Result']!=true )
-		{
-			//失敗
-			wRes['Reason'] = "__sSetStorageConf is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+		{///失敗
+			wRes['Reason'] = "ストレージ設定失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -593,22 +593,33 @@ class CLS_Win {
 			"mode"    : top.DEF_GVAL_NULL
 		} ;
 		
+///		////////////////////////////////
+///		// Storageチェック
+///		top.gCLS_Storage.Check() ;
+///     
+///		////////////////////////////////
+///		// Storage使用 無効か？
+///		if( top.DEF_INDEX_USE_STORAGE!=true )
+///		{
+///			//# コンソール表示
+///			wMessage = "ストレージ使用無効 DEF_INDEX_USE_STORAGE=false" ;
+///			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+///			
+///			wRes['Result'] = true ;
+///			return wRes ;
+///		}
 		////////////////////////////////
-		// Storageチェック
-		top.gCLS_Storage.Check() ;
-        
-		////////////////////////////////
-		// Storage使用 無効か？
-		if( top.DEF_INDEX_USE_STORAGE!=true )
+		// ローカルストレージ使用 無効か？
+		if( top.gSTR_StorageInfo.FLG_Use_Local==false )
 		{
 			//# コンソール表示
-			wMessage = "ストレージ使用無効 DEF_INDEX_USE_STORAGE=false" ;
+			wMessage = "ローカルストレージ使用無効" ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 			
 			wRes['Result'] = true ;
 			return wRes ;
 		}
-		
+        
 		////////////////////////////////
 		// Storage取得(cssname)
 		wSubRes = top.gCLS_Storage.Lget({
@@ -670,12 +681,13 @@ class CLS_Win {
 
 
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  Storage設定
-///////////////////////////////////////////////////////
-	static __sSetStorageConf({
-		inCSSname	=top.DEF_GVAL_TEXT_NONE,
-		inFLG_PC	=false
+////////////////////////////////////////////////////////////////
+///	static __sSetStorageConf({
+	__SetStorage({
+		inCSSname =top.DEF_GVAL_TEXT_NONE,
+		inFLG_PC  =false
 	})
 	{
 		//###########################
@@ -2720,12 +2732,12 @@ class CLS_Win {
 ///
 ///
 
-//#####################################################
-//# ページ翻訳
-//#####################################################
-///////////////////////////////////////////////////////
-//  翻訳（取得・設置・翻訳実行）
-///////////////////////////////////////////////////////
+//##############################################################
+//# 翻訳処理
+//##############################################################
+//##############################################################
+//#  翻訳（取得・設置・翻訳実行）
+//##############################################################
 	GetTransrate({
 		inPageObj = top.DEF_GVAL_NULL,
 		outSubParam
@@ -2738,25 +2750,30 @@ class CLS_Win {
 		let wHTML, wEng, wText ;
 		
 		pParam = outSubParam ;
-		/////////////////////////////
+		////////////////////////////////
 		// 翻訳機能が無効なら、終わる
 		if( top.DEF_INDEX_TRANSRATE==false )
 		{
 			//### コンソール表示
-			wMessage = "Transrate is invalid" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			if( top.gVAL_TestLog==true )
+			{
+				wMessage = "翻訳機能無効" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			}
 			
+			////////////////////////////////
+			// 正常
 			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 翻訳言語が未設定なら
 		//   言語設定する
 		if( pParam.Lang==top.DEF_GVAL_NULL )
 		{
 			//### ストレージ取得
-			wSubRes = CLS_Storage.sLget({
+			wSubRes = top.gCLS_Storage.Lget({
 				inKey : top.DEF_GVAL_STORAGE_TRANSRATE
 			}) ;
 			if(( wSubRes['Result']!=true )||( wSubRes['Responce']==top.DEF_GVAL_TEXT_NONE ))
@@ -2764,16 +2781,16 @@ class CLS_Win {
 			// ストレージ設定がないか、初回で未設定の場合
 			//   デフォルトで設定する
 				
-				pParam.Lang = top.DEF_GVAL_TRANSRATE_SELECT ;	//デフォルト言語
+				pParam.Lang = top.DEF_GVAL_TRANSRATE_SELECT ;  //デフォルト言語
 			}
 			else
 			{
 			// ストレージ設定がある場合
 			//   翻訳モードをチェックする
 				wTrans = wSubRes['Responce'] ;
-				wSubRes = CLS_OSIF.sGetInObject({
-					inObject	: top.DEF_GVAL_TRANSRATE,
-					inKey		: wTrans
+				wSubRes = top.gCLS_OSIF.GetInObject({
+					inObject : top.DEF_GVAL_TRANSRATE,
+					inKey    : wTrans
 				}) ;
 				if( wSubRes!=true )
 				{/// 翻訳モードにない場合はデフォルト設定
@@ -2785,51 +2802,66 @@ class CLS_Win {
 				}
 			}
 			
-			//### ストレージ設定
-			wSubRes = CLS_Storage.sLset({
-				inKey	: top.DEF_GVAL_STORAGE_TRANSRATE,
-				inValue	: pParam.Lang
+			//### ストレージに保存
+			wSubRes = top.gCLS_Storage.Lset({
+				inKey   : top.DEF_GVAL_STORAGE_TRANSRATE,
+				inValue : pParam.Lang
 			}) ;
 			if( wSubRes['Result']==true )
 			{
 				//### 成功したら、コンソール表示
-				wMessage = "Set Storage : Transrate=" + top.gCLS_OSIF.String({ inString:pParam.Lang }) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+				wMessage = "翻訳言語をストレージへ保存" ;
+				wMessage = wMessage + '\n' + "  key=" + top.gCLS_OSIF.String({ inString:DEF_GVAL_STORAGE_TRANSRATE }) ;
+				wMessage = wMessage + '\n' + "  value=" + top.gCLS_OSIF.String({ inString:pParam.Lang }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
 			}
 		}
-		//### 翻訳言語の表示
-		wMessage = "Set Transrate: Lang=" + top.gCLS_OSIF.String({ inString:pParam.Lang }) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		//### コンソール表示（翻訳言語）
+		if( top.gVAL_TestLog==true )
+		{
+			wMessage = "翻訳言語設定 Lang=" + top.gCLS_OSIF.String({ inString:pParam.Lang }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ページ翻訳が有効で、
 		// 翻訳ボタン出力先があれば、
 		// 翻訳ボタンを出力する
 		if( pParam.FLG_Trans==true )
 		{
 			//### ボタン出力先があるか
-			wSubRes = CLS_PageObj.sGetInner({
-				inPageObj	: inPageObj,
-				inKey		: top.DEF_GVAL_IDX_TRANSRATE,
-				inError		: false		//チェック用なのでエラーを消す
+			wSubRes = top.gCLS_Obj.sGetInner({
+				inPageObj : inPageObj,
+				inKey     : top.DEF_GVAL_IDX_TRANSRATE,
+				inError   : false  //チェック用なのでエラーを消す
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
-			//### 翻訳ボタンの設定先がない場合、コンソール表示
-				wMessage = "Unset Transrate Button" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			//##############################
+			//### 翻訳ボタンの設定先がない場合
+			//##############################
+                
+				//###コンソール表示
+				if( top.gVAL_TestLog==true )
+				{
+					wMessage = "翻訳ボタン出力先なし" ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+				}
 			}
+			//##############################
+			//# 翻訳ボタンの設定先がある場合
+			//##############################
 			else
 			{
-			//### 翻訳ボタンの作成
-			/////////////////////////////
-			// タグ例
-			//	<input type="radio" name="aRAD_Transrate" id="iRAD_Transrate_JP" value="JP" checked />
-			//	<label>日本語</label>
-			//	<input type="radio" name="aRAD_Transrate" id="iRAD_Transrate_EN" value="EN" />
-			//	<label>英語</label>
-			/////////////////////////////
-				
+		////////////////////////////////
+		// タグ例
+		//  <input type="radio" name="aRAD_Transrate" id="iRAD_Transrate_JP" value="JP" checked />
+		//  <label>日本語</label>
+		//  <input type="radio" name="aRAD_Transrate" id="iRAD_Transrate_EN" value="EN" />
+		//  <label>英語</label>
+		////////////////////////////////
+                
+				//### 翻訳ボタンの作成
 				wHTML = "" ;
 				for( let wKey in top.DEF_GVAL_TRANSRATE )
 				{
@@ -2848,45 +2880,45 @@ class CLS_Win {
 					}
 					wHTML = wHTML + "/>" + '\n' ;
 					wHTML = wHTML + "<label class='Label' for='" + top.DEF_GVAL_IDX_TRANSRATE + "_" + wEng + "' " ;
-					wHTML = wHTML + "onclick='CLS_WinCtrl.sChgLang({ inLang:\"" + wEng + "\"})'>" ;
+					wHTML = wHTML + "onclick='top.gCLS_Win.ChgLang({ inLang:\"" + wEng + "\"})'>" ;
 					wHTML = wHTML + wText + " [" + wEng + "]</label>" + '\n' ;
 				}
 				
 				//### 翻訳ボタンの出力
-				wSubRes = CLS_PageObj.sSetInner({
-					inPageObj	: inPageObj,
-					inKey		: top.DEF_GVAL_IDX_TRANSRATE,
-					inCode		: wHTML
+				wSubRes = top.gCLS_Obj.SetInner({
+					inPageObj : inPageObj,
+					inKey     : top.DEF_GVAL_IDX_TRANSRATE,
+					inCode    : wHTML
 				}) ;
 				if( wSubRes['Result']!=true )
 				{///失敗
-					wRes['Reason'] = "CLS_PageObj.sSetInner is failed" ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+					wRes['Reason'] = "CLS_Obj.SetInner処理失敗" ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 					return wRes ;
 				}
 				
 				//### コンソール表示
-				wMessage = "Set Transrate Button" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+				wMessage = "翻訳ボタン設置完了" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
 			}
 			
-			/////////////////////////////
+			////////////////////////////////
 			// 翻訳も実行してみる
-			wSubRes = this.sRunTransrate({
-				inPageObj	: inPageObj,
-				inLang 		: pParam.Lang,
-				inFLG_Trans	: pParam.FLG_Trans
+			wSubRes = this.RunTransrate({
+				inPageObj   : inPageObj,
+				inLang      : pParam.Lang,
+				inFLG_Trans : pParam.FLG_Trans
 			}) ;
 			if( wSubRes['Result']!=true )
 			{
 				//失敗
-				wRes['Reason'] = "sRunTransrate is failed" ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				wRes['Reason'] = "翻訳実行失敗" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 				return wRes ;
 			}
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -2894,80 +2926,101 @@ class CLS_Win {
 
 
 
-///////////////////////////////////////////////////////
-//  翻訳言語の変更
-///////////////////////////////////////////////////////
-	static sChgLang({
+//##############################################################
+//#  翻訳言語の変更
+//##############################################################
+	ChgLang({
 		inLang
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sChgLang" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Win", inFunc:"ChgLang" }) ;
 		
 		let wSubRes, wMessage ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// システム状態の確認
-///		wSubRes = this.__sCheckCtrl() ;
- 		wSubRes = top.gCLS_Sys.RunCheck() ;
+		wSubRes = top.gCLS_Sys.RunCheck() ;
 		if( wSubRes!=true )
 		{///運用中ではない
-			wRes['Reason'] = "System is not RUN" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "翻訳変更不可 システムが運用中ではない" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 変更がなければ、終わる
 		if( top.gSTR_WinCtrlInfo.TransInfo.Lang==inLang )
-		{///終わる
+		{
+			////////////////////////////////
+			// 正常
 			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 翻訳言語の変更
 		top.gSTR_WinCtrlInfo.TransInfo.Lang = inLang ;
 		
+		//### ストレージに保存
+		wSubRes = top.gCLS_Storage.Lset({
+			inKey   : top.DEF_GVAL_STORAGE_TRANSRATE,
+			inValue : inLang
+		}) ;
+		if( wSubRes['Result']==true )
+		{
+			//### 成功したら、コンソール表示
+			wMessage = "翻訳言語をストレージへ保存" ;
+			wMessage = wMessage + '\n' + "  key=" + top.gCLS_OSIF.String({ inString:DEF_GVAL_STORAGE_TRANSRATE }) ;
+			wMessage = wMessage + '\n' + "  value=" + top.gCLS_OSIF.String({ inString:inLang }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+		}
+        
 		//### コンソール表示
-		wMessage = "Change Lang=" + top.gCLS_OSIF.String({ inString:top.gSTR_WinCtrlInfo.TransInfo.Lang }) ;
+		wMessage = "翻訳言語変更 Lang=" + top.gCLS_OSIF.String({ inString:top.gSTR_WinCtrlInfo.TransInfo.Lang }) ;
 		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
 		
-		/////////////////////////////
-		// 翻訳も実行してみる
-		wSubRes = this.sRunTransrate({
-			inPageObj	: top.gSTR_WinCtrlInfo.PageObj,
-			inLang 		: top.gSTR_WinCtrlInfo.TransInfo.Lang,
-			inFLG_Trans	: top.gSTR_WinCtrlInfo.TransInfo.FLG_Trans
+		////////////////////////////////
+		// タイトルの翻訳
+		wSubRes = this.__SetTitle({
+			inParam : top.gSTR_WinCtrlInfo
+		}) ;
+		if( wSubRes['Result']!=true )
+		{///失敗
+			wRes['Reason'] = "タイトル変更失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		////////////////////////////////
+		// 本文の翻訳
+		wSubRes = this.RunTransrate({
+			inPageObj   : top.gSTR_WinCtrlInfo.PageObj,
+			inLang      : top.gSTR_WinCtrlInfo.TransInfo.Lang,
+			inFLG_Trans : top.gSTR_WinCtrlInfo.TransInfo.FLG_Trans
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
 			//失敗
-			wRes['Reason'] = "sRunTransrate is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "翻訳実行失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
-		// タイトル変更（ヘッダ・フッタ・ページの翻訳）
-		wSubRes = this.__sSetTitle({
-			inParam	: top.gSTR_WinCtrlInfo
-		}) ;
-		if( wSubRes['Result']!=true )
-		{
-			//失敗
-			wRes['Reason'] = "__sSetTitle is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-			return wRes ;
-		}
+///		////////////////////////////////
+///		// タイトル変更（ヘッダ・フッタ・ページの翻訳）
+///		wSubRes = this.__sSetTitle({
+///			inParam	: top.gSTR_WinCtrlInfo
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{
+///			//失敗
+///			wRes['Reason'] = "__sSetTitle is failed" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
 		
-///		/////////////////////////////
-///		// 強制コンソール表示
-///		CLS_L.sV() ;
-///		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -2975,52 +3028,57 @@ class CLS_Win {
 
 
 
-///////////////////////////////////////////////////////
-//  翻訳実行
-///////////////////////////////////////////////////////
-	static sRunTransrate({
-		inPageObj	= top.DEF_GVAL_NULL,
-		inLang 		= top.DEF_GVAL_TRANSRATE_SELECT,
-		inFLG_Trans	= false
+//##############################################################
+//#  翻訳実行
+//##############################################################
+	RunTransrate({
+		inPageObj   = top.DEF_GVAL_NULL,
+		inLang      = top.DEF_GVAL_TRANSRATE_SELECT,
+		inFLG_Trans = false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sRunTransrate" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Win", inFunc:"RunTransrate" }) ;
 		
 		let wSTR_Trans, wSubRes, wQS, wMessage ;
 		let wKey, wKey2, wEng, wText, wClass, wCnt, wQScnt, wTRcnt ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ページ翻訳が無効の場合、終わる
 		if( inFLG_Trans==false )
 		{
 			//### コンソール表示
-			wMessage = "Transrate is invalid" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+///			wMessage = "Transrate is invalid" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			if( inFLG_Trans==false )
+			{
+				wMessage = "翻訳処理無効" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			}
 			
+			////////////////////////////////
+			// 正常
 			wRes['Result'] = true ;
 			return wRes ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// QuerySelectorの取得
-		wSubRes = CLS_PageObj.sGetQuerySelector({
-			inPageObj	: inPageObj,
-			inKey		: top.DEF_GVAL_QS_TRANSRATE_HEADER
+		wSubRes = top.gCLS_Obj.GetQuerySelector({
+			inPageObj : inPageObj,
+			inKey     : top.DEF_GVAL_QS_TRANSRATE_HEADER
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
 			//失敗
-			wRes['Reason'] = "CLS_PageObj.sGetQuerySelector is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "CLS_Obj.GetQuerySelector処理失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		wQS = wSubRes['Responce'] ;
 		
 		wSTR_Trans = {} ;
-		/////////////////////////////
+		////////////////////////////////
 		// 翻訳スイッチの作成
 		for( wKey in top.DEF_GVAL_TRANSRATE )
 		{
@@ -3036,11 +3094,11 @@ class CLS_Win {
 			wSTR_Trans[wEng] = wText ;
 		}
 		
-		wQScnt = CLS_OSIF.sGetObjectNum({ inObject:wQS }) ;	//QS数
-		wTRcnt = CLS_OSIF.sGetObjectNum({ inObject:wSTR_Trans }) ;		//Trans数
+		wQScnt = top.gCLS_OSIF.GetObjectNum({ inObject:wQS }) ;         //QS数
+		wTRcnt = top.gCLS_OSIF.GetObjectNum({ inObject:wSTR_Trans }) ;  //Trans数
 		wClass = top.DEF_GVAL_TEXT_NONE ;
-		wCnt = 0 ;	//処理数
-		/////////////////////////////
+		wCnt = 0 ;  //処理数
+		////////////////////////////////
 		// QuerySelectorを検索し、
 		//   翻訳スイッチに従って表示 / 非表示していく
 		try
@@ -3061,19 +3119,22 @@ class CLS_Win {
 		}
 		catch(e)
 		{
-			//###########################
+			//##############################
 			//# 例外処理
 			let wError = "inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
-			wRes['Reason'] = CLS_OSIF.sExpStr({ inE:e, inA:wError }) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//###  翻訳モードの設定
-		wMessage = "Transrate Complete: QS=" + top.gCLS_OSIF.String({ inString:wQScnt }) + " TR=" + top.gCLS_OSIF.String({ inString:wTRcnt }) + " Words=" + top.gCLS_OSIF.String({ inString:wCnt }) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		wMessage = "翻訳処理完了" ;
+		wMessage = wMessage + '\n' + "  QS=" + top.gCLS_OSIF.String({ inString:wQScnt }) ;
+		wMessage = wMessage + '\n' + "  TR=" + top.gCLS_OSIF.String({ inString:wTRcnt }) ;
+		wMessage = wMessage + '\n' + "  Words=" + top.gCLS_OSIF.String({ inString:wCnt }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -3081,10 +3142,11 @@ class CLS_Win {
 
 
 
-//#####################################################
+//##############################################################
 //# ページリサイズ
-//#####################################################
-	static sChgPageResize()
+//##############################################################
+///	static sChgPageResize()
+	PageResize()
 	{
 		
 //***************************
@@ -3092,12 +3154,10 @@ class CLS_Win {
 		return ;
 //***************************
 		
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"sChgPageResize" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Win", inFunc:"PageResize" }) ;
 		
-		if( CLS_Sys.sGet()!=top.DEF_GVAL_SYS_STAT_RUN )
+		if( top.gCLS_Sys.Get()!=top.DEF_GVAL_SYS_STAT_RUN )
 		{
 		//### 運用中ではない
 			/////////////////////////////

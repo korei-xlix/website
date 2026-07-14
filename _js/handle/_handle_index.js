@@ -75,41 +75,34 @@ function __handle_PageLoad()
 		return wRes ;
 	}
 	
-
-
 	////////////////////////////////
 	// 親フレームの設定
-	wSubRes = CLS_WinCtrl.sSet({
-		inPageObj		: wPageObj,				//ページオブジェクト
-		inSTR_CSSinfo	: {						//CSSファイル情報
-							"default"	: "Default",
-							"darkred"	: "Darkred",
-							"cursegray"	: "Cursegray"
-							},
-		inOtherDomain	: top.DEF_GVAL_NULL,	//外部ドメインのCSS  https://www.example.com
-		inStylePath		: "/_css/",				//CSSカレントパス    /css/
-		inMode			: "normal",				//CSS変更可・サイズ自動切替
-//		inMode			: "pconly",				//CSS変更可・PCサイズのみ
-//		inMode			: "mbonly",				//CSS変更可・モバイルサイズのみ
-//		inMode			: "pcnone",				//CSS変更不可・PCサイズのみ
-//		inMode			: "mbnone",				//CSS変更不可・モバイルサイズのみ
-//		inMode			: "elase",				//ボタン非表示・サイズ自動切替
-		inStyleCommPath	: top.DEF_GVAL_NULL,	//Comm Styleのカレントパス（別フォルダの場合）
-		inPgIconPath	: "/_pic/icon/koreilabo_icon.ico",			//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
-		inUpIconPath	: "/_pic/icon/new_icon.gif",				//更新アイコン   カレントパス  /_pic/icon/new_icon.gif
-		inCompProc		: {							//設定完了待ち後実行プロセス
-			"Callback"	: __handle_Main_PageLoad_Complete
-//			"Arg"		: new Array()
+	wSubRes = top.gCLS_Win.Set({
+		inPageObj      : wPageObj,
+		inSTR_CSSinfo  : {
+		                  "default"   : "Default",
+		                  "darkred"   : "Darkred",
+		                  "cursegray" : "Cursegray"
+		                },
+		inOtherDomain  : top.DEF_GVAL_NULL,
+		inStylePath    : "/_css/",     //CSSカレントパス    /css/
+		inMode         : "normal",     //CSS変更可・サイズ自動切替
+//		inMode         : "pconly",     //CSS変更可・PCサイズのみ
+//		inMode         : "mbonly",     //CSS変更可・モバイルサイズのみ
+//		inMode         : "pcnone",     //CSS変更不可・PCサイズのみ
+//		inMode         : "mbnone",     //CSS変更不可・モバイルサイズのみ
+//		inMode         : "elase",      //ボタン非表示・サイズ自動切替
+		inPgIconPath   : "/_pic/icon/koreilabo_icon.ico",
+		inUpIconPath   : "/_pic/icon/new_icon.gif",
+		inCompProc     : {
+			"Callback" : __handle_Main_PageLoad_Complete
 			},
-		inTrans			: false					//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
+		inTrans         : false
 	}) ;
-
-
-
 	if( wSubRes['Result']!=true )
 	{///失敗
-		wRes['Reason'] = "CLS_WinCtrl.sSet is failer" ;
-		CLS_L.sL({ inRes:wRes, inLevel:"B" }) ;
+		wRes['Reason'] = "Window制御設定失敗" ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 		return wRes ;
 	}
 	

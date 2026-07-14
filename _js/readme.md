@@ -103,6 +103,14 @@
 
 ### 目次：[Window制御クラス / CLS_Win](#window制御クラス--cls_win-womdow_ctrljs)
 
+* [ページ設定 / Set](#ページ設定--set)
+
+* [翻訳（取得・設置・翻訳実行） / GetTransrate](#翻訳取得設置翻訳実行--gettransrate)
+* [翻訳言語の変更 / ChgLang](#翻訳言語の変更--chglang)
+* [翻訳実行 / RunTransrate](#翻訳実行--runtransrate)
+* [ページリサイズ / PageResize](#ページリサイズ--pageresize)
+  
+
 
 
 ### 目次：[Frame制御クラス / CLS_Frm](#frame制御クラス--cls_frm-frame_ctrljs)
@@ -142,7 +150,6 @@
 
 ### 目次：[ストレージクラス / CLS_Storage](#ストレージクラス--cls_storage-storagejs)
 
-* [Strageの利用可否チェック / Check](#strageの利用可否チェック--check)
 * [Strageの全消去 / AllClear](#strageの全消去--allclear)
 * [Local Storage取得 / Lget](#local-storage取得--lget)
 * [Local Storage設定 / Lset](#local-storage設定--lset)
@@ -1304,7 +1311,8 @@
   })
 
 出力：
-  ※戻り値なし
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
 
 ```
   
@@ -1327,6 +1335,9 @@
 * ページアイコン設定
 * 更新アイコンパスの設定
 * 更新アイコンパスの設定
+* 更新アイコンパスの設定
+* 更新アイコンパスの設定
+* 更新アイコンパスの設定
 
 c
 
@@ -1335,8 +1346,92 @@ c
 ```text
   <title>JP:Galaxy Fleet :: EN:Galaxy Fleet - JP:Main :: EN:Main</title>
 
+  // タグ例
+  //  <input type="radio" name="aRAD_Transrate" id="iRAD_Transrate_JP" value="JP" checked />
+  //  <label>日本語</label>
+  //  <input type="radio" name="aRAD_Transrate" id="iRAD_Transrate_EN" value="EN" />
+  //  <label>英語</label>
+
+
+
 ```
   
+
+
+
+### 翻訳（取得・設置・翻訳実行） / GetTransrate
+
+```text
+呼出：
+  CLS_Win.GetTransrate({
+    inPageObj = top.DEF_GVAL_NULL,
+    outSubParam
+  })
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### 翻訳言語の変更 / ChgLang
+
+```text
+呼出：
+  CLS_Win.ChgLang({
+    inLang      = top.DEF_GVAL_TRANSRATE_SELECT,
+  })
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### 翻訳実行 / RunTransrate
+
+```text
+呼出：
+  CLS_Win.RunTransrate({
+    inPageObj   = top.DEF_GVAL_NULL,
+    inLang      = top.DEF_GVAL_TRANSRATE_SELECT,
+    inFLG_Trans = false
+  })
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+
+
+### ページリサイズ / PageResize
+
+```text
+呼出：
+  CLS_Win.PageResize()
+  ※引数なし
+
+出力：
+  ※戻り値なし
+
+```
+  
+
+
+
+
+
 
 
 
@@ -1669,21 +1764,6 @@ c
   
   [[目次に戻る]](#目次ストレージクラス--cls_storage)  
   
-
-### Strageの利用可否チェック / Check
-
-```text
-呼出：
-  CLS_Storage.Check()
-  ※引数なし
-
-出力：
-  bool   true=正常処理  falseはない
-
-```
-  
-
-
 
 ### Strageの全消去 / AllClear
 
