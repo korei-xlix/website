@@ -206,7 +206,7 @@ class CLS_Sys {
 					top.gVAL_TestLog = true ;
 
 					wMessage = "テストモードに設定（引数）" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 			}
 		}
@@ -311,7 +311,7 @@ class CLS_Sys {
 		////////////////////////////////
 		// コンソール表示
 		wMessage = "システム設定完了" ;
-		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		
 		////////////////////////////////
 		// 正常終了
@@ -397,7 +397,7 @@ class CLS_Sys {
 		////////////////////////////////
 		// コンソール表示
 		wMessage = "システム開始" ;
-		top.gCLS_L.L({ inRes:wRes, inLevel:"SS", inMessage:wMessage }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SS", inMessage:wMessage, inLine:__LINE__ }) ;
 		
 		////////////////////////////////
 		// 正常終了
@@ -463,7 +463,7 @@ class CLS_Sys {
 				//### 運用停止
 				wMessage = "システム定期処理停止（正常）" ;
 			}
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SS", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SS", inMessage:wMessage, inLine:__LINE__ }) ;
 			
 			////////////////////////////////
 			// 正常終了
@@ -499,7 +499,7 @@ class CLS_Sys {
 			
 			//### コンソール表示
 			wMessage = "周期処理完了通知" ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		////////////////////////////////
@@ -575,7 +575,7 @@ class CLS_Sys {
 				
 				//### コンソール表示
 				wMessage = "周期カウントリセット" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
 		
@@ -660,7 +660,7 @@ class CLS_Sys {
 		wMessage = "システム状態変更" ;
 		wMessage = wMessage + '\n' + "  Pre Stat=" + top.gCLS_OSIF.String({ inString:wPrevStatus }) ;
 		wMessage = wMessage + '\n' + "  New Stat=" + top.gCLS_OSIF.String({ inString:top.gSTR_SystemInfo.Status }) ;
-		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		
 		////////////////////////////////
 		// 正常終了

@@ -143,20 +143,24 @@ class CLS_L {
 		}
 		
 		//### Line
-		if(( inLevel=="A" ) ||
-		   ( inLevel=="B" ) ||
-		   ( inLevel=="C" ) ||
-		   ( inLevel=="D" ) ||
-		   ( inLevel=="E" ) ||
-		   ( inLevel=="I" ) ||
-		   ( inLevel=="XC" ) ||
-		   ( inLevel=="XN" ) ||
-		   ( inLevel=="XX" ) )
+///		if(( inLevel=="A" ) ||
+///		   ( inLevel=="B" ) ||
+///		   ( inLevel=="C" ) ||
+///		   ( inLevel=="D" ) ||
+///		   ( inLevel=="E" ) ||
+///		   ( inLevel=="I" ) ||
+///		   ( inLevel=="XC" ) ||
+///		   ( inLevel=="XN" ) ||
+///		   ( inLevel=="XX" ) )
+///		{
+///			if(( inLine=="" ) || ( inLine==top.DEF_GVAL_NULL ))
+///			{
+///				wReason = "inLine不正" ;
+///			}
+///		}
+		if(( inLine=="" ) || ( inLine==top.DEF_GVAL_NULL ))
 		{
-			if(( inLine=="" ) || ( inLine==top.DEF_GVAL_NULL ))
-			{
-				wReason = "inLine不正" ;
-			}
+			wReason = "inLine不正" ;
 		}
 		
 		wTimeDate = top.DEF_GVAL_TIMEDATE ;
@@ -377,10 +381,11 @@ class CLS_L {
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
 //			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
-			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
-			{
-				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
-			}
+///			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
+///			{
+///				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+///			}
+			wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
 		}
 		//### コールバック・非表示情報・テストログ
 		else if(( inData['Level']=="XC" ) ||
@@ -391,7 +396,11 @@ class CLS_L {
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
 //			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
-			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
+///			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
+///			{
+///				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+///			}
+			if( top.gVAL_TestLog==true )
 			{
 				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
 			}
@@ -402,6 +411,10 @@ class CLS_L {
 			wCons = top.DEF_GVAL_LOG_SYSRUN_HEADER + '\n' + wCons + " " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
+			if( top.gVAL_TestLog==true )
+			{
+				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+			}
 		}
 		//### システム情報変更
 		else if( inData['Level']=="SW" )
@@ -409,6 +422,10 @@ class CLS_L {
 			wCons = top.DEF_GVAL_LOG_SYSCTRL_HEADER + '\n' + wCons + " " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
+			if( top.gVAL_TestLog==true )
+			{
+				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+			}
 		}
 		//### ログイン
 		else if(( inData['Level']=="SL" ) ||
@@ -417,6 +434,10 @@ class CLS_L {
 			wCons = top.DEF_GVAL_LOG_LOGIN_HEADER + '\n' + wCons + " " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
+			if( top.gVAL_TestLog==true )
+			{
+				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+			}
 		}
 		//### ユーザ登録・変更
 		else if(( inData['Level']=="US" ) ||
@@ -425,6 +446,10 @@ class CLS_L {
 			wCons = top.DEF_GVAL_LOG_USECTRL_HEADER + '\n' + wCons + " " ;
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
+			if( top.gVAL_TestLog==true )
+			{
+				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+			}
 		}
 		//### その他
 		else
@@ -433,12 +458,16 @@ class CLS_L {
 			wCons = wCons + inData['Class'] + " :: " ;
 			wCons = wCons + inData['Func'] ;
 //			if( inData['Line']!=top.DEF_GVAL_TEXT_NONE )
-			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
+///			if(( inData['Line']!="" ) && ( inData['Line']!=top.DEF_GVAL_NULL ) ) 
+///			{
+///				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
+///			}
+			if( top.gVAL_TestLog==true )
 			{
 				wCons = wCons + '\n' + "  Line  : " + inData['Line'] ;
 			}
 		}
-		
+        
 		//### Reason: Reason
 		//    拒否理由を表示する
 		if( inData['Reason']!=top.DEF_GVAL_TEXT_NONE )

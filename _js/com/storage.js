@@ -82,7 +82,7 @@ class CLS_Storage {
 			wMessage = wMessage + '\n' + "  session storage=" + top.gCLS_OSIF.String({ inString:top.gSTR_StorageInfo.FLG_Use_Session }) ;
 			wMessage = wMessage + '\n' + "  USE STORAGE(index)=" + top.gCLS_OSIF.String({ inString:top.DEF_INDEX_USE_STORAGE }) ;
 			wMessage = wMessage + '\n' + "  USE SESSION STORAGE(global)=" + top.gCLS_OSIF.String({ inString:top.DEF_USER_SESSION_STORAGE }) ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		////////////////////////////////
@@ -144,7 +144,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Lストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Result'] = true ;
 			return wRes ;
@@ -210,7 +210,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Lストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Result'] = true ;
 			return wRes ;
@@ -283,7 +283,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Lストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Result']   = true ;
 			return wRes ;
@@ -338,7 +338,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Lストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Result']   = true ;
 			return wRes ;
@@ -396,7 +396,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Lストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Responce'] = {} ;
 			wRes['Result']   = true ;
@@ -496,7 +496,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Sストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Result'] = true ;
 			return wRes ;
@@ -562,7 +562,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Sストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Result']   = true ;
 			return wRes ;
@@ -635,7 +635,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Sストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Result']   = true ;
 			return wRes ;
@@ -690,7 +690,7 @@ class CLS_Storage {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "Sストレージ無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			wRes['Result']   = true ;
 			return wRes ;

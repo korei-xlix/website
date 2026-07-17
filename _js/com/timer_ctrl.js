@@ -1035,7 +1035,7 @@ class CLS_Timer {
 		wMessage = "待ち状態変更 inTimerID=" + top.gCLS_OSIF.String({ inString:inTimerID }) ;
 		wMessage = wMessage + '\n' + "  Pre=" + top.gCLS_OSIF.String({ inString:wStatus }) ;
 		wMessage = wMessage + '\n' + "  New=" + top.gCLS_OSIF.String({ inString:top.gARR_TimerCtrlInfo[inTimerID].Status }) ;
-		top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 		
 		////////////////////////////////
 		// 正常

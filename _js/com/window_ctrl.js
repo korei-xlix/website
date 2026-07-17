@@ -495,62 +495,62 @@ class CLS_Win {
 		//# パラメータ保存
 		top.gSTR_WinCtrlInfo = wSTR_Param ;
 		
+///		//##############################
+///		//#  マウスムーブ・ポップアップ設定
+///		//##############################
+///		
+///		//##############################
+///		//# ポップアップヘルプの設定
+///		wSubRes = CLS_PopupCtrl.sHelpSet({
+///			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
+///			inSTR_Data	: top.gSTR_PreReg_PopupHelp
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{///失敗
+///			wRes['Reason'] = "CLS_PopupCtrl.sHelpSet is failed (Unset MMI)" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
+///		
+///		//##############################
+///		//# ポップアップWindowの設定
+///		wSubRes = CLS_PopupCtrl.sWinSet({
+///			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
+///			inSTR_Data	: top.gSTR_PreReg_PopupWin
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{///失敗
+///			wRes['Reason'] = "CLS_PopupCtrl.sWinSet is failed (Unset MMI)" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
+///		
 		//##############################
-		//#  マウスムーブ・ポップアップ設定
-		//##############################
-		
-		//##############################
-		//# ポップアップヘルプの設定
-		wSubRes = CLS_PopupCtrl.sHelpSet({
-			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
-			inSTR_Data	: top.gSTR_PreReg_PopupHelp
+		//# onmousemoveの設定（親フレームのWindow）
+		wSubRes = top.gCLS_Popup.AddMMI({
+			inFrameID : top.DEF_GVAL_PARENT_FRAME_ID  //親フレーム
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///失敗
-			wRes['Reason'] = "CLS_PopupCtrl.sHelpSet is failed (Unset MMI)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "マウスイベント設定失敗 parent window" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		//##############################
-		//# ポップアップWindowの設定
-		wSubRes = CLS_PopupCtrl.sWinSet({
-			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
-			inSTR_Data	: top.gSTR_PreReg_PopupWin
-		}) ;
-		if( wSubRes['Result']!=true )
-		{///失敗
-			wRes['Reason'] = "CLS_PopupCtrl.sWinSet is failed (Unset MMI)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-			return wRes ;
-		}
-		
-		//##############################
-		//# onmousemoveの設定
-		wSubRes = CLS_PopupCtrl.sAddMMI({
-			inFrameID : top.DEF_GVAL_PARENT_FRAME_ID	//親フレーム
-		}) ;
-		if( wSubRes['Result']!=true )
-		{///失敗
-			wRes['Reason'] = "CLS_PopupCtrl.sAddMMI is failed" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-			return wRes ;
-		}
-		
-		//##############################
-		//# ボタンの設定
-		wSubRes = CLS_ButtonCtrl.sSet({
-			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
-			inSTR_Data	: top.gSTR_PreReg_ButtonCtrl
-		}) ;
-		if( wSubRes['Result']!=true )
-		{
-			//失敗
-			wRes['Reason'] = "CLS_ButtonCtrl.sSet is failed  (Set MMI)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-			return wRes ;
-		}
-		
+///		//##############################
+///		//# ボタンの設定
+///		wSubRes = CLS_ButtonCtrl.sSet({
+///			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
+///			inSTR_Data	: top.gSTR_PreReg_ButtonCtrl
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{
+///			//失敗
+///			wRes['Reason'] = "CLS_ButtonCtrl.sSet is failed  (Set MMI)" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
+///		
 		//##############################
 		//# Storageのセーブ
 ///		wSubRes = this.__sSetStorageConf({
@@ -614,7 +614,7 @@ class CLS_Win {
 		{
 			//# コンソール表示
 			wMessage = "ローカルストレージ使用無効" ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			
 			wRes['Result'] = true ;
 			return wRes ;
@@ -631,7 +631,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "ストレージ取得不可 存在しないキー key cssname=" + top.gCLS_OSIF.String({ inString:top.DEF_GVAL_STORAGE_CSSNAME }) ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			
 			//### 正常（終わり）
@@ -655,7 +655,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "ストレージ取得不可 存在しないキー key cssname=" + top.gCLS_OSIF.String({ inString:top.DEF_GVAL_STORAGE_CSSNAME }) ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			
 			//### 正常（終わり）
@@ -670,7 +670,7 @@ class CLS_Win {
 			wMessage = "ストレージ取得" ;
 			wMessage = wMessage + '\n' + "  cssname=" + top.gCLS_OSIF.String({ inString:wRes['Responce']['cssname'] }) ;
 			wMessage = wMessage + '\n' + "  mode=" + top.gCLS_OSIF.String({ inString:wRes['Responce']['mode'] }) ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		////////////////////////////////
@@ -690,76 +690,96 @@ class CLS_Win {
 		inFLG_PC  =false
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_WinCtrl", inFunc:"__sSetStorageConf" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Win", inFunc:"__SetStorage" }) ;
 		
 		let wSubRes, wMessage, wMode ;
 		
-		/////////////////////////////
-		// Storage使用 無効か？
-		if( top.DEF_INDEX_USE_STORAGE!=true )
+///		////////////////////////////////
+///		// Storage使用 無効か？
+///		if( top.DEF_INDEX_USE_STORAGE!=true )
+///		{
+///			//###########################
+///			//# コンソール表示
+///			wMessage = "Invalid Storage: DEF_INDEX_USE_STORAGE=false" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+///			
+///			wRes['Result']   = true ;
+///			return wRes ;
+///		}
+		////////////////////////////////
+		// ローカルストレージ使用 無効か？
+		if( top.gSTR_StorageInfo.FLG_Use_Local==false )
 		{
-			//###########################
 			//# コンソール表示
-			wMessage = "Invalid Storage: DEF_INDEX_USE_STORAGE=false" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			wMessage = "ローカルストレージ使用無効" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			
-			wRes['Result']   = true ;
+			wRes['Result'] = true ;
 			return wRes ;
 		}
-		
-		/////////////////////////////
+        
+		////////////////////////////////
 		// 入力チェック
 		if(( inCSSname=="" )||( inCSSname==top.DEF_GVAL_TEXT_NONE ))
 		{///失敗
-			wRes['Reason'] = "Unset inCSSname" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+///			wRes['Reason'] = "Unset inCSSname" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+			wRes['Reason'] = "入力エラー inCSSname=" + top.gCLS_OSIF.String({ inString:inCSSname }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
+		////////////////////////////////
+		// モードの設定
 		wMode = "MB" ;
 		if( inFLG_PC==true )
 		{
 			wMode = "PC" ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// Storage設定(cssname)
-		wSubRes = CLS_Storage.sLset({
-			inKey	: top.DEF_GVAL_STORAGE_CSSNAME,
-			inValue	: inCSSname
+		wSubRes = top.gCLS_Storage.Lset({
+			inKey   : top.DEF_GVAL_STORAGE_CSSNAME,
+			inValue : inCSSname
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///失敗
-			wRes['Reason'] = "CLS_Storage.sLset is failed(cssname)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			wRes['Reason'] = "CLS_Storage.Lset処理失敗(cssname)" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+///		//### コンソール表示
+///		wMessage = "Set Storage: CSS name: Key=" + top.gCLS_OSIF.String({ inString:inCSSname }) ;
+///		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+///		
+		////////////////////////////////
+		// Storage設定(mode)
+		wSubRes = top.gCLS_Storage.Lset({
+			inKey   : top.DEF_GVAL_STORAGE_MODE,
+			inValue : wMode
+		}) ;
+		if( wSubRes['Result']!=true )
+		{///失敗
+			wRes['Reason'] = "CLS_Storage.Lset処理失敗(mode)" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//### コンソール表示
-		wMessage = "Set Storage: CSS name: Key=" + top.gCLS_OSIF.String({ inString:inCSSname }) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-		
-		/////////////////////////////
-		// Storage取得(mode)
-		wSubRes = CLS_Storage.sLset({
-			inKey	: top.DEF_GVAL_STORAGE_MODE,
-			inValue	: wMode
-		}) ;
-		if( wSubRes['Result']!=true )
-		{///失敗
-			wRes['Reason'] = "CLS_Storage.sLset is failed(mode)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-			return wRes ;
+///		wMessage = "Set Storage: mode: Key=" + top.gCLS_OSIF.String({ inString:wMode }) ;
+///		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+		if( top.gVAL_TestLog==true )
+		{
+			wMessage = "ストレージ設定" ;
+			wMessage = wMessage + '\n' + "  cssname=" + top.gCLS_OSIF.String({ inString:inCSSname }) ;
+			wMessage = wMessage + '\n' + "  mode=" + top.gCLS_OSIF.String({ inString:wMode }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
-		//### コンソール表示
-		wMessage = "Set Storage: mode: Key=" + top.gCLS_OSIF.String({ inString:wMode }) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
-		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -985,7 +1005,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "更新情報が存在しない" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 				
 				wRes['Result'] = true ;
 				return wRes ;
@@ -1275,7 +1295,7 @@ class CLS_Win {
 		//### コンソール表示
 		if( top.gVAL_TestLog==true )
 		{
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		////////////////////////////////
@@ -1343,7 +1363,7 @@ class CLS_Win {
 			wMessage = "CSSファイル設定" ;
 			wMessage = wMessage + '\n' + "  ComPath=" + top.gCLS_OSIF.String({ inString:inParam.Com.CHR_StylePath }) ;
 			wMessage = wMessage + '\n' + "  OrgPath=" + top.gCLS_OSIF.String({ inString:inParam.Org.CHR_StylePath }) ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		/////////////////////////////
@@ -1397,7 +1417,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "タイトル上 未設定" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
 		
@@ -1414,7 +1434,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "タイトル下 未設定" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
 		
@@ -1431,7 +1451,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "メインタイトル 未設定" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
 		
@@ -1452,7 +1472,7 @@ class CLS_Win {
 		if( top.gVAL_TestLog==true )
 		{
 			wMessage = "ページタイトル設定 title=" + wTitle ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		////////////////////////////////
@@ -1773,7 +1793,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替スイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=elase" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -1787,7 +1807,7 @@ class CLS_Win {
 			{
 				wMessage = "CSS切替スイッチ設定" ;
 				wMessage = wMessage + '\n' + "  Switch=OFF" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			//  以後、正常処理
 		}
@@ -1810,7 +1830,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替スイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=pcnone or mbnone" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -1832,7 +1852,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替 スタイルスイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=pcnone or mbnone" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -1854,7 +1874,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替 モードスイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=pcnone or mbnone" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -1872,7 +1892,7 @@ class CLS_Win {
 				wMessage = "CSS切替スイッチ設定" ;
 				wMessage = wMessage + '\n' + "  Style=OFF" ;
 				wMessage = wMessage + '\n' + "  Mode=OFF" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			//  以後、正常処理
 		}
@@ -1895,7 +1915,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替スイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=pconly or mbonly" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -1917,7 +1937,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替 スタイルスイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=pconly or mbonly" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -1939,7 +1959,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替 モードスイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=pconly or mbonly" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -1957,7 +1977,7 @@ class CLS_Win {
 				wMessage = "CSS切替スイッチ設定" ;
 				wMessage = wMessage + '\n' + "  Style=ON" ;
 				wMessage = wMessage + '\n' + "  Mode=OFF" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			//  以後、正常処理
 		}
@@ -1979,7 +1999,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替スイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=normal" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -2001,7 +2021,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替 スタイルスイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=normal" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -2023,7 +2043,7 @@ class CLS_Win {
 				{
 					wMessage = "CSS切替 モードスイッチがない" ;
 					wMessage = wMessage + '\n' + "  SW_Mode=normal" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 				
 				////////////////////////////////
@@ -2041,7 +2061,7 @@ class CLS_Win {
 				wMessage = "CSS切替スイッチ設定" ;
 				wMessage = wMessage + '\n' + "  Style=ON" ;
 				wMessage = wMessage + '\n' + "  Mode=ON" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
 		
@@ -2078,7 +2098,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "更新アイコンが存在しない" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			
 			////////////////////////////////
@@ -2110,7 +2130,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "更新アイコン設定 Icon=" + top.gCLS_OSIF.String({ inString:inParam.UpIcon.CHR_FilePath }) ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
 		
@@ -2758,7 +2778,7 @@ class CLS_Win {
 			if( top.gVAL_TestLog==true )
 			{
 				wMessage = "翻訳機能無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			
 			////////////////////////////////
@@ -2813,14 +2833,14 @@ class CLS_Win {
 				wMessage = "翻訳言語をストレージへ保存" ;
 				wMessage = wMessage + '\n' + "  key=" + top.gCLS_OSIF.String({ inString:DEF_GVAL_STORAGE_TRANSRATE }) ;
 				wMessage = wMessage + '\n' + "  value=" + top.gCLS_OSIF.String({ inString:pParam.Lang }) ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
 		//### コンソール表示（翻訳言語）
 		if( top.gVAL_TestLog==true )
 		{
 			wMessage = "翻訳言語設定 Lang=" + top.gCLS_OSIF.String({ inString:pParam.Lang }) ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		
 		////////////////////////////////
@@ -2845,7 +2865,7 @@ class CLS_Win {
 				if( top.gVAL_TestLog==true )
 				{
 					wMessage = "翻訳ボタン出力先なし" ;
-					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage }) ;
+					top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 				}
 			}
 			//##############################
@@ -2899,7 +2919,7 @@ class CLS_Win {
 				
 				//### コンソール表示
 				wMessage = "翻訳ボタン設置完了" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			
 			////////////////////////////////
@@ -2973,12 +2993,12 @@ class CLS_Win {
 			wMessage = "翻訳言語をストレージへ保存" ;
 			wMessage = wMessage + '\n' + "  key=" + top.gCLS_OSIF.String({ inString:DEF_GVAL_STORAGE_TRANSRATE }) ;
 			wMessage = wMessage + '\n' + "  value=" + top.gCLS_OSIF.String({ inString:inLang }) ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
         
 		//### コンソール表示
 		wMessage = "翻訳言語変更 Lang=" + top.gCLS_OSIF.String({ inString:top.gSTR_WinCtrlInfo.TransInfo.Lang }) ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		
 		////////////////////////////////
 		// タイトルの翻訳
@@ -3053,7 +3073,7 @@ class CLS_Win {
 			if( inFLG_Trans==false )
 			{
 				wMessage = "翻訳処理無効" ;
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 			
 			////////////////////////////////
@@ -3132,7 +3152,7 @@ class CLS_Win {
 		wMessage = wMessage + '\n' + "  QS=" + top.gCLS_OSIF.String({ inString:wQScnt }) ;
 		wMessage = wMessage + '\n' + "  TR=" + top.gCLS_OSIF.String({ inString:wTRcnt }) ;
 		wMessage = wMessage + '\n' + "  Words=" + top.gCLS_OSIF.String({ inString:wCnt }) ;
-		top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 		
 		////////////////////////////////
 		// 正常

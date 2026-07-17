@@ -244,7 +244,7 @@ class CLS_Obj {
 				}
 				
 				//### コンソール表示
-				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"SR", inMessage:wMessage, inLine:__LINE__ }) ;
 				
 			}
 		}
@@ -1585,7 +1585,7 @@ class CLS_Obj {
 			wMessage = "フレームサイズ変更: inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
 			wMessage = wMessage + '\n' + "  inHeight = " + top.gCLS_OSIF.String({ inString:inHeight }) ;
 			wMessage = wMessage + '\n' + "  inWidth  = " + top.gCLS_OSIF.String({ inString:inWidth }) ;
-			top.gCLS_L.L({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		}
 		catch(e)
 		{

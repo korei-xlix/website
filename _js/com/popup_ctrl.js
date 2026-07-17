@@ -1,13 +1,18 @@
-//#####################################################
+//##############################################################
 //# ::Project  : 共通アプリ
 //# ::Admin    : Korei (@korei-xlix)
 //# ::github   : https://github.com/korei-xlix/website/
 //# ::Class    : ポップアップ制御
-//#####################################################
+//##############################################################
 
-//#####################################################
-class CLS_PopupCtrl {
-//#####################################################
+//##############################################################
+class CLS_Popup {
+//##############################################################
+
+
+
+
+
 
 //#####################################################
 //# ポップアップヘルプ設定
@@ -2143,81 +2148,79 @@ class CLS_PopupCtrl {
 
 
 
-//#####################################################
-//# マウスムーブイベント
-//#####################################################
-///////////////////////////////////////////////////////
-//  mousemove設定
-///////////////////////////////////////////////////////
-	static sAddMMI({
-		inFrameID = top.DEF_GVAL_PARENT_FRAME_ID,	//フレームID  デフォルトは親フレーム
+//##############################################################
+//# マウスイベント
+//##############################################################
+//##############################################################
+//#  mousemove設定
+//##############################################################
+	AddMMI({
+		inFrameID = top.DEF_GVAL_PARENT_FRAME_ID  //フレームID  デフォルトは親フレーム
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sAddMMI" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Popup", inFunc:"AddMMI" }) ;
 		
 		let wSubRes, wWinObj, wMessage ;
-		let wKey, wFLG_Set ;
-		
-		wFLG_Set = false ;
-		/////////////////////////////
-		// フレームにポップアップヘルプ情報、ポップアップWindow情報
-		// どちらかが設定されているか
-		
-		//### ポップアップヘルプ情報
-		for( wKey in top.gSTR_PopupHelp )
-		{
-			wSubRes = this.__sCheckPopupID({
-				inPopupID : wKey	//ポップアップヘルプID
-			}) ;
-			if( wSubRes['Result']!=true )
-			{///不正
-				wRes['Reason'] = "Frame is not exist(PopupHelp): inFrameID=" + String(inFrameID) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-				return wRes ;
-			}
-			if( wSubRes['Responce']==true )
-			{///フレームが存在する場合
-				wFLG_Set = true ;
-				break ;
-			}
-		}
-		
-		//### ポップアップWindow情報
-		if( wFLG_Set==false )
-		{
-			for( wKey in top.gSTR_PopupWindow )
-			{
-				wSubRes = this.__sCheckPopupID({
-					inPopupID : wKey	//ポップアップWindow ID
-				}) ;
-				if( wSubRes['Result']!=true )
-				{///不正
-					wRes['Reason'] = "Frame is not exist(PopupWin): inFrameID=" + String(inFrameID) ;
-					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-					return wRes ;
-				}
-				if( wSubRes['Responce']==true )
-				{///フレームが存在する場合
-					wFLG_Set = true ;
-					break ;
-				}
-			}
-		}
-		
-		//### フレームにポップアップヘルプ / ポップアップWindowが設定されてるか
-		if( wFLG_Set==false )
-		{
-			//### 未設定の場合、終わる
-			
-			/////////////////////////////
-			// 正常
-			wRes['Result'] = true ;
-			return wRes ;
-		}
-		
+///		let wKey, wFLG_Set ;
+///		
+///		wFLG_Set = false ;
+///		/////////////////////////////
+///		// フレームにポップアップヘルプ情報、ポップアップWindow情報
+///		// どちらかが設定されているか
+///		
+///		//### ポップアップヘルプ情報
+///		for( wKey in top.gSTR_PopupHelp )
+///		{
+///			wSubRes = this.__sCheckPopupID({
+///				inPopupID : wKey	//ポップアップヘルプID
+///			}) ;
+///			if( wSubRes['Result']!=true )
+///			{///不正
+///				wRes['Reason'] = "Frame is not exist(PopupHelp): inFrameID=" + String(inFrameID) ;
+///				CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///				return wRes ;
+///			}
+///			if( wSubRes['Responce']==true )
+///			{///フレームが存在する場合
+///				wFLG_Set = true ;
+///				break ;
+///			}
+///		}
+///		
+///		//### ポップアップWindow情報
+///		if( wFLG_Set==false )
+///		{
+///			for( wKey in top.gSTR_PopupWindow )
+///			{
+///				wSubRes = this.__sCheckPopupID({
+///					inPopupID : wKey	//ポップアップWindow ID
+///				}) ;
+///				if( wSubRes['Result']!=true )
+///				{///不正
+///					wRes['Reason'] = "Frame is not exist(PopupWin): inFrameID=" + String(inFrameID) ;
+///					CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+///					return wRes ;
+///				}
+///				if( wSubRes['Responce']==true )
+///				{///フレームが存在する場合
+///					wFLG_Set = true ;
+///					break ;
+///				}
+///			}
+///		}
+///		
+///		//### フレームにポップアップヘルプ / ポップアップWindowが設定されてるか
+///		if( wFLG_Set==false )
+///		{
+///			//### 未設定の場合、終わる
+///			
+///			/////////////////////////////
+///			// 正常
+///			wRes['Result'] = true ;
+///			return wRes ;
+///		}
+///		
 		/////////////////////////////
 		// Windowオブジェクトの取得
 		if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
@@ -2239,15 +2242,15 @@ class CLS_PopupCtrl {
 			wWinObj = top.gARR_FrameCtrlInfo[inFrameID].WindowObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// イベント設定：マウスムーブ
 		wWinObj.addEventListener( "mousemove", function (){
-				CLS_PopupCtrl.__sMouseMoveIvent({
+				top.gCLS_Popup.__RunMMI({
 					inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
 				}) ;
 			}, false ) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// イベント設定ON
 		if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 		{
@@ -2259,10 +2262,10 @@ class CLS_PopupCtrl {
 		}
 		
 		//### コンソール表示
-		wMessage = "Window mouse move ivent set" ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		wMessage = "window mouse moveイベント設定 inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -2270,10 +2273,10 @@ class CLS_PopupCtrl {
 
 
 
-///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 //  mousemove移動
-///////////////////////////////////////////////////////
-	static __sMouseMoveIvent({
+////////////////////////////////////////////////////////////////
+	__RunMMI({
 		inFrameID
 	})
 	{
@@ -2281,7 +2284,7 @@ class CLS_PopupCtrl {
 		
 		let wFLG_Help, wFLG_Win ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// フラグ取得
 		if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 		{
@@ -2294,43 +2297,42 @@ class CLS_PopupCtrl {
 			wFLG_Win  = top.gARR_FrameCtrlInfo[inFrameID].MouseMove.FLG_Win ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// ポップアップWindow移動中  (優先度・高)
 		if( wFLG_Win==true )
 		{
-			CLS_PopupCtrl.__sPopupWindow_BarMove({
+			top.gCLS_Popup.__PopupWindow_BarMove({
 				inFrameID : inFrameID
 			}) ;
 		}
-		/////////////////////////////
+		////////////////////////////////
 		// ポップアップヘルプ移動中
 		else if( wFLG_Help==true )
 		{
-			CLS_PopupCtrl.__sPopupHelp_Move({
+			top.gCLS_Popup.__PopupHelp_Move({
 				inFrameID : inFrameID
 			}) ;
 		}
 		
-		return true ;
+///		return true ;
+		return ;
 	}
 
 
 
-///////////////////////////////////////////////////////
-//  mousemove解除
-///////////////////////////////////////////////////////
-	static sDelMMI({
-		inFrameID = top.DEF_GVAL_PARENT_FRAME_ID,	//フレームID  デフォルトは親フレーム
+//##############################################################
+//#  mousemove解除
+//##############################################################
+	DelMMI({
+		inFrameID = top.DEF_GVAL_PARENT_FRAME_ID,  //フレームID  デフォルトは親フレーム
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sDelMMI" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Popup", inFunc:"DelMMI" }) ;
 		
 		let wSubRes, wWinObj, wMessage ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// フラグOFF
 		if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 		{
@@ -2357,15 +2359,15 @@ class CLS_PopupCtrl {
 			wWinObj = top.gARR_FrameCtrlInfo[inFrameID].WindowObj ;
 		}
 		
-		/////////////////////////////
+		////////////////////////////////
 		// イベント解除：マウスムーブ
 		wWinObj.removeEventListener( "mousemove", function (){
-				CLS_PopupCtrl.__sMouseMoveIvent({
+				top.gCLS_Popup.__RunMMI({
 					inFrameID : this[top.DEF_GVAL_IDX_EXTOBJ_FRAME_ID]
 				}) ;
 			}, false ) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// イベント設定OFF
 		if( inFrameID==top.DEF_GVAL_PARENT_FRAME_ID )
 		{
@@ -2377,10 +2379,10 @@ class CLS_PopupCtrl {
 		}
 		
 		//### コンソール表示
-		wMessage = "Window mouse move ivent remove" ;
-		CLS_L.sL({ inRes:wRes, inLevel:"SC", inMessage:wMessage }) ;
+		wMessage = "window mouse moveイベント解除 inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
+		top.gCLS_L.L({ inRes:wRes, inLevel:"SW", inMessage:wMessage, inLine:__LINE__ }) ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 正常
 		wRes['Result'] = true ;
 		return wRes ;
@@ -2388,6 +2390,6 @@ class CLS_PopupCtrl {
 
 
 
-//#####################################################
+//##############################################################
 }
 
