@@ -495,36 +495,36 @@ class CLS_Win {
 		//# パラメータ保存
 		top.gSTR_WinCtrlInfo = wSTR_Param ;
 		
-///		//##############################
-///		//#  マウスムーブ・ポップアップ設定
-///		//##############################
-///		
-///		//##############################
-///		//# ポップアップヘルプの設定
-///		wSubRes = CLS_PopupCtrl.sHelpSet({
-///			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
-///			inSTR_Data	: top.gSTR_PreReg_PopupHelp
-///		}) ;
-///		if( wSubRes['Result']!=true )
-///		{///失敗
-///			wRes['Reason'] = "CLS_PopupCtrl.sHelpSet is failed (Unset MMI)" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///			return wRes ;
-///		}
-///		
-///		//##############################
-///		//# ポップアップWindowの設定
-///		wSubRes = CLS_PopupCtrl.sWinSet({
-///			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
-///			inSTR_Data	: top.gSTR_PreReg_PopupWin
-///		}) ;
-///		if( wSubRes['Result']!=true )
-///		{///失敗
-///			wRes['Reason'] = "CLS_PopupCtrl.sWinSet is failed (Unset MMI)" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///			return wRes ;
-///		}
-///		
+		//##############################
+		//#  マウスムーブ・ポップアップ設定
+		//##############################
+		
+		//##############################
+		//# ポップアップヘルプの設定
+		wSubRes = top.gCLS_Popup.HelpSet({
+			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
+			inSTR_Data : top.gSTR_PreReg_PopupHelp
+		}) ;
+		if( wSubRes['Result']!=true )
+		{///失敗
+			wRes['Reason'] = "ポップアップヘルプ設定失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		//##############################
+		//# ポップアップWindowの設定
+		wSubRes = top.gCLS_Popup.WinSet({
+			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
+			inSTR_Data : top.gSTR_PreReg_PopupHelp
+		}) ;
+		if( wSubRes['Result']!=true )
+		{///失敗
+			wRes['Reason'] = "ポップアップWindow設定失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
 		//##############################
 		//# onmousemoveの設定（親フレームのWindow）
 		wSubRes = top.gCLS_Popup.AddMMI({
@@ -537,23 +537,22 @@ class CLS_Win {
 			return wRes ;
 		}
 		
-///		//##############################
-///		//# ボタンの設定
-///		wSubRes = CLS_ButtonCtrl.sSet({
-///			inFrameID	: top.DEF_GVAL_PARENT_FRAME_ID,	//親フレーム
-///			inSTR_Data	: top.gSTR_PreReg_ButtonCtrl
-///		}) ;
-///		if( wSubRes['Result']!=true )
-///		{
-///			//失敗
-///			wRes['Reason'] = "CLS_ButtonCtrl.sSet is failed  (Set MMI)" ;
-///			CLS_L.sL({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
-///			return wRes ;
-///		}
-///		
+		//##############################
+		//# ボタンの設定
+		wSubRes = top.gCLS_Button.Set({
+			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
+			inSTR_Data : top.gSTR_PreReg_PopupHelp
+		}) ;
+		if( wSubRes['Result']!=true )
+		{
+			//失敗
+			wRes['Reason'] = "ボタン設定失敗" ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
 		//##############################
 		//# Storageのセーブ
-///		wSubRes = this.__sSetStorageConf({
 		wSubRes = this.__SetStorage({
 			inCSSname : top.gSTR_WinCtrlInfo.Org.CHR_StyleName,
 			inFLG_PC  : top.gSTR_WinCtrlInfo.FLG_PC
