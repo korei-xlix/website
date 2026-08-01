@@ -9,42 +9,170 @@
 class CLS_Popup {
 //##############################################################
 
-
-
-
-
-
-//#####################################################
-//# ポップアップヘルプ設定
-//#####################################################
-	static sHelpSet({
-		inFrameID	= top.DEF_GVAL_PARENT_FRAME_ID,	//フレームID  デフォルトは親フレーム
-		inSTR_Data	= {}
+//##############################################################
+//# ポップアップヘルプ
+//##############################################################
+//##############################################################
+//# ヘルプデータ登録
+//##############################################################
+	RegHelp({
+		inFrameID = top.DEF_GVAL_PARENT_FRAME_ID,
+		inID   = top.DEF_GVAL_NULL,
+		inLang = {}
 	})
 	{
 		//###########################
 		//# 応答形式の取得
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sHelpSet" }) ;
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sRegHelp" }) ;
+		
+		let wSubRes, wSTR_Lang, wLang, wNum, wKey, wKey2 ;
+		
+		/////////////////////////////
+		// ヘルプ存在チェック
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject	: top.gSTR_PreReg_PopupHelp,
+			inKey		: inID
+		}) ;
+		if( wSubRes==true )
+		{///失敗
+			wRes['Reason'] = "this ID is exist: inID=" + String(inID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// inLang が 0 なら、終わる
+		wSubRes = CLS_OSIF.sGetObjectNum({ inObject:inLang }) ;
+		if( wSubRes<=0 )
+		{///失敗
+			wRes['Reason'] = "inLang data is zero: inID=" + String(inID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		wSTR_Lang = {} ;
+		wNum = 0 ;
+		/////////////////////////////
+		// 登録言語の設定
+		for( wKey in inLang )
+		{
+			wLang = String(wKey) ;
+			
+			//### 有効な言語か
+			wSubRes = CLS_OSIF.sGetInObject({
+				inObject	: top.DEF_GVAL_TRANSRATE,
+				inKey		: wLang
+			}) ;
+			if( wSubRes!=true )
+			{///失敗
+				wRes['Reason'] = "this language is invalid: inID=" + String(inID) + " Lang=" + String(wLang) ;
+				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+			
+			//### 設定
+			wSTR_Lang[wLang] = inLang[wKey] ;
+			wNum++ ;
+			
+		}
+		
+		/////////////////////////////
+		// 登録言語 が 0 なら、終わる
+		if( wNum==0 )
+		{///失敗
+			wRes['Reason'] = "Reg Lang data is zero: inID=" + String(inID) ;
+			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+			return wRes ;
+		}
+		
+		/////////////////////////////
+		// 仮登録へ追加
+		top.gSTR_PreReg_PopupHelp[inID] = wSTR_Lang ;
+		
+		/////////////////////////////
+		// 正常
+		wRes['Result'] = true ;
+		return wRes ;
+	}
+
+
+
+
+
+//##############################################################
+//# ヘルプデータ設定
+//##############################################################
+///	HelpSet({
+///		inFrameID  = top.DEF_GVAL_PARENT_FRAME_ID,  //フレームID  デフォルトは親フレーム
+///		inSTR_Data = {}
+	SetHelp({
+		inFrameID = top.DEF_GVAL_PARENT_FRAME_ID
+	})
+	{
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Popup", inFunc:"SetHelp" }) ;
 		
 		let wSubRes, wPageObj, wDist_PageObj, wHelpObj, wDistObj, wMessage, wError, wSetText ;
 		let wPopupHelpID, wFrameID, wDistID, wLang ;
 		let wData, wStyle, wKey ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
-		
-		//### 辞書型か
-		wSubRes = CLS_OSIF.sCheckObject({
-			inObject : inSTR_Data
+		//   親フレームはチェックしない
+		//   子フレームのみチェック
+		if( inFrameID != top.DEF_GVAL_PARENT_FRAME_ID )
+		{
+			//### フレームIDチェック
+			wSubRes = top.gCLS_Frm.CheckFrameID({
+				inFrameID : inFrameID
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "フレームIDチェック失敗 inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+			if( wSubRes['Responce']!=true )
+			{///存在しないフレーム
+				wRes['Reason'] = "存在しないフレームID inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
+        
+		//### フレームのデータ存在チェック
+		wSubRes = top.gCLS_OSIF.GetInObject({
+			inObject : top.gSTR_PreReg_PopupHelp,
+			inKey    : inFrameID
 		}) ;
-		if( wSubRes!=true )
-		{///失敗
-			wRes['Reason'] = "inSTR_Data is not dictionary: inFrameID=" + String(inFrameID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+		if( wSubRes==false )
+		{///フレームのデータがない場合、処理を終わる
+			if( top.gVAL_TestLog==true )
+			{
+				wMessage = "ヘルプデータ未登録 inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
+			}
+			
+			//### 正常（終わり）
+			wRes['Result'] = true ;
 			return wRes ;
 		}
+        
+///		//### 辞書型か
+///		wSubRes = CLS_OSIF.sCheckObject({
+///			inObject : inSTR_Data
+///		}) ;
+///		if( wSubRes!=true )
+///		{///失敗
+///			wRes['Reason'] = "inSTR_Data is not dictionary: inFrameID=" + String(inFrameID) ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
 		
+//*********************************************************
+//*********************************************************
+
 		//### ヘルプデータの個数チェック
 		if( CLS_OSIF.sGetObjectNum({ inObject:inSTR_Data })<=0 )
 		{
@@ -816,25 +944,34 @@ class CLS_Popup {
 
 
 
-//#####################################################
-//# ヘルプデータ登録
-//#####################################################
-	static sRegHelp({
-		inID = top.DEF_GVAL_NULL,
-		inLang = {}
+
+
+//##############################################################
+//# ポップアップWindow
+//##############################################################
+//##############################################################
+//# Windowデータ登録
+//##############################################################
+	RegWin({
+		inFrameID = top.DEF_GVAL_PARENT_FRAME_ID,
+		inID    = top.DEF_GVAL_NULL,
+		inCoord = {
+			"FTop"  : top.DEF_GVAL_POPUPWIN_FTOP,
+			"FLeft" : top.DEF_GVAL_POPUPWIN_FLEFT
+		}
 	})
 	{
 		//###########################
 		//# 応答形式の取得
 		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sRegHelp" }) ;
+		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sRegWin" }) ;
 		
-		let wSubRes, wSTR_Lang, wLang, wNum, wKey, wKey2 ;
+		let wSubRes, wCoord, wLang, wNum, wKey, wKey2 ;
 		
 		/////////////////////////////
-		// ヘルプ存在チェック
+		// Window情報存在チェック
 		wSubRes = CLS_OSIF.sGetInObject({
-			inObject	: top.gSTR_PreReg_PopupHelp,
+			inObject	: top.gSTR_PreReg_PopupWin,
 			inKey		: inID
 		}) ;
 		if( wSubRes==true )
@@ -845,53 +982,46 @@ class CLS_Popup {
 		}
 		
 		/////////////////////////////
-		// inLang が 0 なら、終わる
-		wSubRes = CLS_OSIF.sGetObjectNum({ inObject:inLang }) ;
-		if( wSubRes<=0 )
-		{///失敗
-			wRes['Reason'] = "inLang data is zero: inID=" + String(inID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+		// 入力チェック
+		
+		wCoord = {} ;
+		//### カスタム座標
+		if( CLS_OSIF.sCheckObject({ inObject:inCoord })!=true )
+		{///不正
+			wRes['Reason'] = "inCoord is not dictionary(1)" ;
+			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
-		wSTR_Lang = {} ;
-		wNum = 0 ;
-		/////////////////////////////
-		// 登録言語の設定
-		for( wKey in inLang )
-		{
-			wLang = String(wKey) ;
-			
-			//### 有効な言語か
-			wSubRes = CLS_OSIF.sGetInObject({
-				inObject	: top.DEF_GVAL_TRANSRATE,
-				inKey		: wLang
-			}) ;
-			if( wSubRes!=true )
-			{///失敗
-				wRes['Reason'] = "this language is invalid: inID=" + String(inID) + " Lang=" + String(wLang) ;
-				CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-				return wRes ;
-			}
-			
-			//### 設定
-			wSTR_Lang[wLang] = inLang[wKey] ;
-			wNum++ ;
-			
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject : inCoord,
+			inKey    : "FTop"
+		}) ;
+		if( wSubRes!=true )
+		{///未設定
+			wCoord['FTop'] = top.DEF_GVAL_POPUPWIN_FTOP ;
+		}
+		else
+		{///設定
+			wCoord['FTop'] = inCoord['FTop'] ;
 		}
 		
-		/////////////////////////////
-		// 登録言語 が 0 なら、終わる
-		if( wNum==0 )
-		{///失敗
-			wRes['Reason'] = "Reg Lang data is zero: inID=" + String(inID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-			return wRes ;
+		wSubRes = CLS_OSIF.sGetInObject({
+			inObject : inCoord,
+			inKey    : "FLeft"
+		}) ;
+		if( wSubRes!=true )
+		{///未設定
+			wCoord['FLeft'] = top.DEF_GVAL_POPUPWIN_FLEFT ;
+		}
+		else
+		{///設定
+			wCoord['FLeft'] = inCoord['FLeft'] ;
 		}
 		
 		/////////////////////////////
 		// 仮登録へ追加
-		top.gSTR_PreReg_PopupHelp[inID] = wSTR_Lang ;
+		top.gSTR_PreReg_PopupWin[inID] = wCoord ;
 		
 		/////////////////////////////
 		// 正常
@@ -901,32 +1031,76 @@ class CLS_Popup {
 
 
 
-//#####################################################
-//# ポップアップWindow設定
-//#####################################################
-	static sWinSet({
-		inFrameID	= top.DEF_GVAL_PARENT_FRAME_ID,	//フレームID  デフォルトは親フレーム
-		inSTR_Data	= {}
+//##############################################################
+//# Windowデータ設定
+//##############################################################
+///	static sWinSet({
+///		inFrameID	= top.DEF_GVAL_PARENT_FRAME_ID,	//フレームID  デフォルトは親フレーム
+///		inSTR_Data	= {}
+///	})
+	SetWin({
+		inFrameID = top.DEF_GVAL_PARENT_FRAME_ID
 	})
 	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sWinSet" }) ;
+		//### 応答形式の取得
+		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Popup", inFunc:"SetWin" }) ;
 		
 		let wSubRes, wMessage, wIndex ;
 		
-		/////////////////////////////
+		////////////////////////////////
 		// 入力チェック
-		
-		//### 辞書型か
-		if( CLS_OSIF.sCheckObject({ inObject:inSTR_Data })!=true )
-		{///不正
-			wRes['Reason'] = "inSTR_Data is not dictionary" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+		//   親フレームはチェックしない
+		//   子フレームのみチェック
+		if( inFrameID != top.DEF_GVAL_PARENT_FRAME_ID )
+		{
+			//### フレームIDチェック
+			wSubRes = top.gCLS_Frm.CheckFrameID({
+				inFrameID : inFrameID
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "フレームIDチェック失敗 inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+			if( wSubRes['Responce']!=true )
+			{///存在しないフレーム
+				wRes['Reason'] = "存在しないフレームID inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
+        
+		//### フレームのデータ存在チェック
+		wSubRes = top.gCLS_OSIF.GetInObject({
+			inObject : top.gSTR_PreReg_PopupWin,
+			inKey    : inFrameID
+		}) ;
+		if( wSubRes==false )
+		{///フレームのデータがない場合
+			if( top.gVAL_TestLog==true )
+			{
+				wMessage = "Windowデータ未登録 inFrameID=" + top.gCLS_OSIF.String({ inString:inFrameID }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
+			}
+			
+			//### 正常（終わり）
+			wRes['Result'] = true ;
 			return wRes ;
 		}
+        
+///		//### 辞書型か
+///		if( CLS_OSIF.sCheckObject({ inObject:inSTR_Data })!=true )
+///		{///不正
+///			wRes['Reason'] = "inSTR_Data is not dictionary" ;
+///			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
 		
+//*********************************************************
+//*********************************************************
+
+
 		//### Windowデータ 個数チェック
 		if( CLS_OSIF.sGetObjectNum({ inObject:inSTR_Data })<=0 )
 		{
@@ -1506,85 +1680,6 @@ class CLS_Popup {
 	}
 
 
-
-//#####################################################
-//# Windowデータ登録
-//#####################################################
-	static sRegWin({
-		inID = top.DEF_GVAL_NULL,
-		inCoord = {
-			"FTop"  : top.DEF_GVAL_POPUPWIN_FTOP,
-			"FLeft" : top.DEF_GVAL_POPUPWIN_FLEFT
-		}
-	})
-	{
-		//###########################
-		//# 応答形式の取得
-		//#   "Result" : false, "Class" : "(none)", "Func" : "(none)", "Result" : false, "Reason" : "(none)", "Responce" : "(none)"
-		let wRes = CLS_OSIF.sGet_Resp({ inClass:"CLS_PopupCtrl", inFunc:"sRegWin" }) ;
-		
-		let wSubRes, wCoord, wLang, wNum, wKey, wKey2 ;
-		
-		/////////////////////////////
-		// Window情報存在チェック
-		wSubRes = CLS_OSIF.sGetInObject({
-			inObject	: top.gSTR_PreReg_PopupWin,
-			inKey		: inID
-		}) ;
-		if( wSubRes==true )
-		{///失敗
-			wRes['Reason'] = "this ID is exist: inID=" + String(inID) ;
-			CLS_L.sL({ inRes:wRes, inLevel:"D", inLine:__LINE__ }) ;
-			return wRes ;
-		}
-		
-		/////////////////////////////
-		// 入力チェック
-		
-		wCoord = {} ;
-		//### カスタム座標
-		if( CLS_OSIF.sCheckObject({ inObject:inCoord })!=true )
-		{///不正
-			wRes['Reason'] = "inCoord is not dictionary(1)" ;
-			CLS_L.sL({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
-			return wRes ;
-		}
-		
-		wSubRes = CLS_OSIF.sGetInObject({
-			inObject : inCoord,
-			inKey    : "FTop"
-		}) ;
-		if( wSubRes!=true )
-		{///未設定
-			wCoord['FTop'] = top.DEF_GVAL_POPUPWIN_FTOP ;
-		}
-		else
-		{///設定
-			wCoord['FTop'] = inCoord['FTop'] ;
-		}
-		
-		wSubRes = CLS_OSIF.sGetInObject({
-			inObject : inCoord,
-			inKey    : "FLeft"
-		}) ;
-		if( wSubRes!=true )
-		{///未設定
-			wCoord['FLeft'] = top.DEF_GVAL_POPUPWIN_FLEFT ;
-		}
-		else
-		{///設定
-			wCoord['FLeft'] = inCoord['FLeft'] ;
-		}
-		
-		/////////////////////////////
-		// 仮登録へ追加
-		top.gSTR_PreReg_PopupWin[inID] = wCoord ;
-		
-		/////////////////////////////
-		// 正常
-		wRes['Result'] = true ;
-		return wRes ;
-	}
 
 
 

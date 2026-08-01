@@ -5,69 +5,6 @@
 //# ::Class    : Window制御
 //##############################################################
 
-
-
-//# 関数群     :
-//#
-//# ページ設定
-//#		CLS_WinCtrl.sSet({
-//#			in:		inPageObj			//ページオブジェクト
-//#					inSTR_CSSinfo		//CSSファイル情報
-//#					inOtherDomain		//外部ドメインのCSS（ホスト）
-//#					inStylePath			//CSSパス
-//#					inMode
-//#						: "normal",			//CSS変更可・サイズ自動切替
-//#						: "pconly",			//CSS変更可・PCサイズのみ
-//#						: "mbonly",			//CSS変更可・モバイルサイズのみ
-//#						: "pcnone",			//CSS変更不可・PCサイズのみ
-//#						: "mbnone",			//CSS変更不可・モバイルサイズのみ
-//#						: "elase",			//ボタン非表示・サイズ自動切替
-//#					inStyleCommPath		//Comm Styleのパス（別フォルダの場合）
-//#					inPgIconPath		//ページアイコン カレントパス  /_pic/icon/koreilabo_icon.ico
-//#					inUpIconPath		//更新アイコン   カレントパス  /_pic/icon/new_icon.gif
-//#					inCompProc			//設定完了待ち後実行プロセス
-//#						"Callback"		//  実行プロセス
-//#						"Arg"			//  引数
-//#					inTrans				//翻訳有効  true=ON（翻訳実行・翻訳モード選択ON）
-//#
-//# 設定完了待ち
-//#		CLS_WinCtrl.sStby
-//#
-//# フレーム受信後処理
-//#		CLS_WinCtrl.sIframeLoaded
-//#					inFrameID
-//#
-//# CSSスタイル切り替え
-//#		CLS_WinCtrl.sChgCSSstyle
-//# CSSモード切り替え
-//#		CLS_WinCtrl.sChgCSSmode({
-//#			in:		inMode				//"PC"=PCモード / "MB"=スマホモード
-//#
-//# ページロケーション
-//#		CLS_WinCtrl.sLocation
-//#			in:		inPath				//HTMLファイルパス
-//#					inRireki 			//true=ブラウザ履歴あり  false=ブラウザ履歴なし
-//#
-//#	翻訳機能
-//#		ストレージ有効にする
-//#		var DEF_INDEX_USE_STORAGE = true ;
-//#
-//#		タグを埋め込むと翻訳ボタンが表示（※親フレームのみの仕様）
-//#		<div id="iRAD_Transrate"></div>
-//#
-//#		inTrans = true  を有効にしたページのみ翻訳を実行する
-//#		翻訳対象文
-//#		<span class="gf_Trans_JP">にほんご1</span><span class="gf_Trans_EN">English1</span><br />
-//#		<span class="gf_Trans_JP">にほんご2</span><span class="gf_Trans_EN">English2</span><br />
-//#		<span class="gf_Trans_JP">にほんご3</span><span class="gf_Trans_EN">English3</span><br />
-//#
-//# ページリサイズ
-//#		CLS_WinCtrl.sChgPageResize
-//#
-//#####################################################
-
-
-
 //##############################################################
 //# 非同期コールバック（設定完了待ち後 実行プロセス）
 //##############################################################
@@ -501,22 +438,29 @@ class CLS_Win {
 		
 		//##############################
 		//# ポップアップヘルプの設定
-		wSubRes = top.gCLS_Popup.HelpSet({
-			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
-			inSTR_Data : top.gSTR_PreReg_PopupHelp
+///		wSubRes = top.gCLS_Popup.HelpSet({
+///			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
+///			inSTR_Data : top.gSTR_PreReg_PopupHelp
+///		}) ;
+		wSubRes = top.gCLS_Popup.SetHelp({
+			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID  //親フレーム
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///失敗
-			wRes['Reason'] = "ポップアップヘルプ設定失敗" ;
+///			wRes['Reason'] = "ポップアップヘルプ設定失敗" ;
+			wRes['Reason'] = "ヘルプデータ設定失敗" ;
 			top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
 		//##############################
 		//# ポップアップWindowの設定
-		wSubRes = top.gCLS_Popup.WinSet({
-			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
-			inSTR_Data : top.gSTR_PreReg_PopupHelp
+///		wSubRes = top.gCLS_Popup.WinSet({
+///			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
+///			inSTR_Data : top.gSTR_PreReg_PopupHelp
+///		}) ;
+		wSubRes = top.gCLS_Popup.SetWin({
+			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID  //親フレーム
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///失敗
@@ -539,9 +483,12 @@ class CLS_Win {
 		
 		//##############################
 		//# ボタンの設定
+///		wSubRes = top.gCLS_Button.Set({
+///			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
+///			inSTR_Data : top.gSTR_PreReg_PopupHelp
+///		}) ;
 		wSubRes = top.gCLS_Button.Set({
-			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID,  //親フレーム
-			inSTR_Data : top.gSTR_PreReg_PopupHelp
+			inFrameID  : top.DEF_GVAL_PARENT_FRAME_ID  //親フレーム
 		}) ;
 		if( wSubRes['Result']!=true )
 		{
@@ -1237,18 +1184,18 @@ class CLS_Win {
 		{
 			wHTML      = "" ;
 			wSetTags   = "" ;
-			for( let wKey in pParam.CSSInfo )
+			for( let wKey in inParam.CSSInfo )
 			{
 				wCSSname = top.gCLS_OSIF.String({ inString:wKey }) ;
 				
 				wHTML = wHTML + "<option value='" ;
 				wHTML = wHTML + wCSSname + "'"
-				if( pParam.Org.CHR_StyleName==wCSSname )
+				if( inParam.Org.CHR_StyleName==wCSSname )
 				{
 					wHTML = wHTML + " selected"
 				}
-				wHTML    = wHTML + ">" + top.gCLS_OSIF.String({ inString:pParam.CSSInfo[wKey] }) + "</option>" + '\n' ;
-				wSetTags = wSetTags + top.gCLS_OSIF.String({ inString:pParam.CSSInfo[wKey] }) + " " ;
+				wHTML    = wHTML + ">" + top.gCLS_OSIF.String({ inString:inParam.CSSInfo[wKey] }) + "</option>" + '\n' ;
+				wSetTags = wSetTags + top.gCLS_OSIF.String({ inString:inParam.CSSInfo[wKey] }) + " " ;
 			}
 		}
 		catch(e)
@@ -1263,8 +1210,8 @@ class CLS_Win {
 		
 		////////////////////////////////
 		// <option> タグの設定
-		wSubRes = top.gCLS_PageObj.SetInner({
-			inPageObj : pParam.PageObj,
+		wSubRes = top.gCLS_Obj.SetInner({
+			inPageObj : inParam.PageObj,
 			inKey     : top.DEF_GVAL_IDX_CSSSW_STYLE,
 			inCode    : wHTML
 		}) ;
@@ -1405,10 +1352,24 @@ class CLS_Win {
 		
 		////////////////////////////////
 		// タイトルの設定（上）
-		wSubRes = top.gCLS_PageObj.SetInner({
+///		wSubRes = top.gCLS_Obj.SetInner({
+///			inPageObj : inParam.PageObj,
+///			inKey     : top.DEF_GVAL_IDX_TITLE_UP,
+///			inCode    : wTitle
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{///タイトルがない場合 処理継続
+///			//### コンソール表示
+///			if( top.gVAL_TestLog==true )
+///			{
+///				wMessage = "タイトル上 未設定" ;
+///				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
+///			}
+///		}
+		wSubRes = top.gCLS_Obj.GetInner({
 			inPageObj : inParam.PageObj,
 			inKey     : top.DEF_GVAL_IDX_TITLE_UP,
-			inCode    : wTitle
+			inError   : false
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///タイトルがない場合 処理継続
@@ -1419,13 +1380,41 @@ class CLS_Win {
 				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
+		else
+		{///タイトルがある場合
+			wSubRes = top.gCLS_Obj.SetInner({
+				inPageObj : inParam.PageObj,
+				inKey     : top.DEF_GVAL_IDX_TITLE_UP,
+				inCode    : wTitle
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "SetInner処理設定失敗（タイトル上）" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
 		
 		////////////////////////////////
 		// タイトルの設定（下）
-		wSubRes = top.gCLS_PageObj.SetInner({
+///		wSubRes = top.gCLS_Obj.SetInner({
+///			inPageObj : inParam.PageObj,
+///			inKey     : top.DEF_GVAL_IDX_TITLE_DW,
+///			inCode    : wTitle
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{///タイトルがない場合 処理継続
+///			//### コンソール表示
+///			if( top.gVAL_TestLog==true )
+///			{
+///				wMessage = "タイトル下 未設定" ;
+///				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
+///			}
+///		}
+		wSubRes = top.gCLS_Obj.GetInner({
 			inPageObj : inParam.PageObj,
 			inKey     : top.DEF_GVAL_IDX_TITLE_DW,
-			inCode    : wTitle
+			inError   : false
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///タイトルがない場合 処理継続
@@ -1436,27 +1425,69 @@ class CLS_Win {
 				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
-		
+		else
+		{///タイトルがある場合
+			wSubRes = top.gCLS_Obj.SetInner({
+				inPageObj : inParam.PageObj,
+				inKey     : top.DEF_GVAL_IDX_TITLE_DW,
+				inCode    : wTitle
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "SetInner処理設定失敗（タイトル下）" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
+        
 		////////////////////////////////
 		// タイトルの設定（メインタイトル）
-		wSubRes = top.gCLS_PageObj.SetInner({
+///		wSubRes = top.gCLS_Obj.SetInner({
+///			inPageObj : inParam.PageObj,
+///			inKey     : top.DEF_GVAL_IDX_TITLE_MAIN,
+///			inCode    : wTitle
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{///タイトルがない場合 処理継続
+///			//### コンソール表示
+///			if( top.gVAL_TestLog==true )
+///			{
+///				wMessage = "メインタイトル 未設定" ;
+///				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
+///			}
+///		}
+		wSubRes = top.gCLS_Obj.GetInner({
 			inPageObj : inParam.PageObj,
 			inKey     : top.DEF_GVAL_IDX_TITLE_MAIN,
-			inCode    : wTitle
+			inError   : false
 		}) ;
 		if( wSubRes['Result']!=true )
 		{///タイトルがない場合 処理継続
 			//### コンソール表示
 			if( top.gVAL_TestLog==true )
 			{
-				wMessage = "メインタイトル 未設定" ;
+				wMessage = "タイトルメイン 未設定" ;
 				top.gCLS_L.L({ inRes:wRes, inLevel:"XN", inMessage:wMessage, inLine:__LINE__ }) ;
 			}
 		}
-		
+		else
+		{///タイトルがある場合
+			wSubRes = top.gCLS_Obj.SetInner({
+				inPageObj : inParam.PageObj,
+				inKey     : top.DEF_GVAL_IDX_TITLE_MAIN,
+				inCode    : wTitle
+			}) ;
+			if( wSubRes['Result']!=true )
+			{///失敗
+				wRes['Reason'] = "SetInner処理設定失敗（タイトルメイン）" ;
+				top.gCLS_L.L({ inRes:wRes, inLevel:"B", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
+        
 		////////////////////////////////
 		// タイトル変更（翻訳対応）
-		wSubRes = top.CLS_Obj.SetPageTitle({
+		wSubRes = top.gCLS_Obj.SetPageTitle({
 			inPageObj : inParam.PageObj,
 			inCode    : wTitle
 		}) ;
@@ -1866,7 +1897,7 @@ class CLS_Win {
 				inKey     : top.DEF_GVAL_IDX_CSSSW_MODE,
 				inCode    : false
 			}) ;
-			if( wSubRes_Dst['Result']!=true )
+			if( wSubRes['Result']!=true )
 			{///モードスイッチがない場合、正常で終わる
 				//### コンソール表示
 				if( top.gVAL_TestLog==true )
@@ -1951,7 +1982,7 @@ class CLS_Win {
 				inKey     : top.DEF_GVAL_IDX_CSSSW_MODE,
 				inCode    : false
 			}) ;
-			if( wSubRes_Dst['Result']!=true )
+			if( wSubRes['Result']!=true )
 			{///モードスイッチがない場合、正常で終わる
 				//### コンソール表示
 				if( top.gVAL_TestLog==true )
@@ -2035,7 +2066,7 @@ class CLS_Win {
 				inKey     : top.DEF_GVAL_IDX_CSSSW_MODE,
 				inCode    : true
 			}) ;
-			if( wSubRes_Dst['Result']!=true )
+			if( wSubRes['Result']!=true )
 			{///モードスイッチがない場合、正常で終わる
 				//### コンソール表示
 				if( top.gVAL_TestLog==true )

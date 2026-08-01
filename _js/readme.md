@@ -116,6 +116,11 @@
 ### 目次：[Frame制御クラス / CLS_Frm](#frame制御クラス--cls_frm-frame_ctrljs)
 
 * [フレームの仕様](#フレームの仕様)
+* [フレームIDチェック / CheckFrameID](#フレームidチェック--checkframeid)
+* [ヘルプデータ登録 / RegHelp](#ヘルプデータ登録--reghelp)
+* [ヘルプデータ登録 / RegHelp](#ヘルプデータ登録--reghelp)
+* [ヘルプデータ登録 / RegHelp](#ヘルプデータ登録--reghelp)
+* [ヘルプデータ登録 / RegHelp](#ヘルプデータ登録--reghelp)
   
 
 
@@ -132,6 +137,13 @@
 
 ### 目次：[ポップアップ制御クラス / CLS_Popup](#ポップアップ制御クラス--cls_popup-popup_ctrljs)
 
+* [ヘルプデータ登録 / RegHelp](#ヘルプデータ登録--reghelp)
+* [ヘルプデータ設定 / SetHelp](#ヘルプデータ設定--sethelp)
+* [Windowデータ登録 / RegWin](#windowデータ登録--regwin)
+* [Windowデータ設定 / SetWin](#windowデータ設定--setwin)
+* [システム設定 / Set](#システム設定--set)
+* [システム設定 / Set](#システム設定--set)
+  
 
 
 
@@ -1459,7 +1471,6 @@
 
 処理がややこしくなるので、フレームの仕様は以下で統一する。  
 
-親ウィンドウは、単画面でも iframe インラインフレーム を使用する。  
 子フレームは必ず、親ウィンドウに属するものとする。  
 子フレームのフレーム情報には、親ウィンドウの名前を入れる。  
 
@@ -1471,6 +1482,27 @@
 ポップアップも、フレーム情報として取り扱う。  
 ポップアップのフレーム情報にも、親ウィンドウの名前を入れておく。  
 （いちおう、将来ポップアップでもインラインフレーム使用を見越しておく）  
+  
+
+
+
+### フレームIDチェック / CheckFrameID
+
+```text
+呼出：
+  CLS_Frm.CheckFrameID({
+    inFrameID  : string    フレームID
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+    "Responce"  : false,      bool    true=存在あり, false=存在なし
+
+```
+  
+
+
 
 
 
@@ -1480,6 +1512,264 @@
   [[目次に戻る]](#目次子frameクラス--cls_cldfrm)  
   
 
+
+
+
+
+
+
+
+
+
+
+
+## ボタン制御クラス / CLS_Button [button_ctrl.js]
+  
+  [[目次に戻る]](#目次ボタン制御クラス--cls_button)  
+
+
+
+
+
+
+
+
+
+## ポップアップ制御クラス / CLS_Popup [popup_ctrl.js]
+  
+  [[目次に戻る]](#目次ポップアップ制御クラス--cls_popup)  
+  
+
+### ヘルプデータ登録 / RegHelp
+
+```text
+呼出：
+  CLS_Popup.RegHelp({
+    inFrameID  : string    フレームID
+    inID       : string    データID
+    inLang     : dict      ヘルプデータ
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### ヘルプデータ設定 / SetHelp
+
+```text
+呼出：
+  CLS_Popup.HelpSet({
+    inFrameID  : string    フレームID
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### Windowデータ登録 / RegWin
+
+```text
+呼出：
+  CLS_Popup.RegWin({
+    inFrameID  : string    フレームID
+    inID       : string    データID
+    inLang     : dict      ヘルプデータ
+    inCoord = {            初期座標
+      "FTop"     : int     縦  top.DEF_GVAL_POPUPWIN_FTOP,
+      "FLeft"    : int     横  top.DEF_GVAL_POPUPWIN_FLEFT
+    }
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### Windowデータ設定 / SetWin
+
+```text
+呼出：
+  CLS_Popup.SetWin({
+    inFrameID  : string    フレームID
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+
+
+
+```text
+登録フォーマット
+
+ヘルプ登録
+<img class="com_PopupHelp_Img" alt="dum" src="/_pic/icon/dummy.jpg" onload="__handle_SHelp({
+	inID : 'gf_Start_a', inLang : { 'JP':'ゲームを始めます', 'EN':'Game Start' } });" />
+
+
+
+Window登録
+<img class="com_PopupWin_Img" alt="dum" src="/_pic/icon/dummy.jpg" onload="__handle_SWin({
+	inID : 'iPopupWin', inCoord : { 'FTop':100, 'FLeft':100 } });" />
+
+
+
+ボタン登録
+				<img class="com_BTN_Img" alt="dum" src="/_pic/icon/dummy.jpg" onload="__handle_SBtn({
+					inID : 'iPopupWin-Message-B001-MSGBTN', inStyle : { 'Def':'com_MSGBTN com_BTNCOL_Def' } });" />
+
+
+
+
+```
+  
+
+
+
+
+
+
+
+
+## システム情報クラス / CLS_Sys [sys.js]
+  
+  [[目次に戻る]](#目次システム情報クラス--cls_sys)  
+  
+
+### システム設定 / Set
+
+```text
+呼出：
+  CLS_Sys.Set({
+    inUserID     : string    ユーザID
+    inSystemName : string    システム名
+    inPageObj    : object    ページオブジェクト
+    inUseTimer   : bool      true=システムタイマを使用する
+    inUseCircle  : bool      true=周期タイマを使用する（inUseTimer=trueの場合のみ有効）
+    inExitProc   :
+      "Callback" : object    システム終了時にコールバックする関数
+      "Arg"      : array     システム終了時にコールバック関数に渡す引数
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### システム開始 / Start
+
+```text
+呼出：
+  CLS_Sys.Start() ;
+    ※引数なし
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### システム状態変更 / Chg
+
+```text
+呼出：
+  CLS_Sys.Chg({
+    inStatus    : string   システム状態指定
+  }) ;
+
+出力：
+    "Result"    : false,      bool    true=処理正常, false=処理失敗
+    "Reason"    : "(none)",   text    Result=false の理由
+
+```
+  
+
+
+
+### システム運用状態取得 / Get
+
+```text
+呼出：
+  CLS_Sys.Get() ;
+    ※引数なし
+
+出力：
+    システム状態
+
+```
+  
+
+
+
+### システム運用確認 / RunCheck
+
+```text
+呼出：
+  CLS_Sys.RunCheck() ;
+    ※引数なし
+
+出力：
+    bool   true=運用中, false=非運用
+
+```
+  
+
+
+
+### システム停止 / Stop
+
+```text
+呼出：
+  CLS_Sys.Stop() ;
+    ※引数なし
+
+出力：
+    ※戻り値なし
+
+```
+  
+
+
+
+### システム表示 / View
+
+```text
+呼出：
+  CLS_Sys.View() ;
+    ※引数なし
+
+出力：
+    ※戻り値なし
+
+```
+  
 
 
 
@@ -1642,166 +1932,6 @@
 
 ```
   
-
-
-
-
-
-
-
-
-
-## ボタン制御クラス / CLS_Button [button_ctrl.js]
-  
-  [[目次に戻る]](#目次ボタン制御クラス--cls_button)  
-
-
-
-
-
-
-
-
-
-## ポップアップ制御クラス / CLS_Popup [popup_ctrl.js]
-  
-  [[目次に戻る]]()  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## システム情報クラス / CLS_Sys [sys.js]
-  
-  [[目次に戻る]](#目次システム情報クラス--cls_sys)  
-  
-
-### システム設定 / Set
-
-```text
-呼出：
-  CLS_Sys.Set({
-    inUserID     : string    ユーザID
-    inSystemName : string    システム名
-    inPageObj    : object    ページオブジェクト
-    inUseTimer   : bool      true=システムタイマを使用する
-    inUseCircle  : bool      true=周期タイマを使用する（inUseTimer=trueの場合のみ有効）
-    inExitProc   :
-      "Callback" : object    システム終了時にコールバックする関数
-      "Arg"      : array     システム終了時にコールバック関数に渡す引数
-  }) ;
-
-出力：
-    "Result"    : false,      bool    true=処理正常, false=処理失敗
-    "Reason"    : "(none)",   text    Result=false の理由
-
-```
-  
-
-
-
-### システム開始 / Start
-
-```text
-呼出：
-  CLS_Sys.Start() ;
-    ※引数なし
-
-出力：
-    "Result"    : false,      bool    true=処理正常, false=処理失敗
-    "Reason"    : "(none)",   text    Result=false の理由
-
-```
-  
-
-
-
-### システム状態変更 / Chg
-
-```text
-呼出：
-  CLS_Sys.Chg({
-    inStatus    : string   システム状態指定
-  }) ;
-
-出力：
-    "Result"    : false,      bool    true=処理正常, false=処理失敗
-    "Reason"    : "(none)",   text    Result=false の理由
-
-```
-  
-
-
-
-### システム運用状態取得 / Get
-
-```text
-呼出：
-  CLS_Sys.Get() ;
-    ※引数なし
-
-出力：
-    システム状態
-
-```
-  
-
-
-
-### システム運用確認 / RunCheck
-
-```text
-呼出：
-  CLS_Sys.RunCheck() ;
-    ※引数なし
-
-出力：
-    bool   true=運用中, false=非運用
-
-```
-  
-
-
-
-### システム停止 / Stop
-
-```text
-呼出：
-  CLS_Sys.Stop() ;
-    ※引数なし
-
-出力：
-    ※戻り値なし
-
-```
-  
-
-
-
-### システム表示 / View
-
-```text
-呼出：
-  CLS_Sys.View() ;
-    ※引数なし
-
-出力：
-    ※戻り値なし
-
-```
-  
-
 
 
 

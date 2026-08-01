@@ -425,7 +425,7 @@ function gSTR_ButtonGroup_Str()
 	
 	this.ARR_ButtonID			= new Array() ;					//  所属ボタンID  Array型
 }
-var gSTR_ButtonGroup = {} ;
+///var gSTR_ButtonGroup = {} ;
 
 function gSTR_ButtonCtrl_Str()
 {
@@ -449,7 +449,7 @@ function gSTR_ButtonCtrl_Str()
 																//   ['Off']	ボタン消灯スタイル
 	
 }
-var gSTR_ButtonCtrl = {} ;
+///var gSTR_ButtonCtrl = {} ;
 
 
 
@@ -495,7 +495,7 @@ function gSTR_PopupHelp_Str()
 	
 	this.ARR_DistObj			= {} ;							//  データ  辞書型{}  型：gSTR_PopupHelpDistobj_Str()
 }
-var gSTR_PopupHelp = {} ;
+///var gSTR_PopupHelp = {} ;
 
 
 //### ポップアップWindow群
@@ -537,7 +537,7 @@ function gSTR_PopupWindow_Str()
 	this.CodTop					= top.DEF_GVAL_POPUPWIN_FTOP ;	//    Top 座標
 	this.CodLeft				= top.DEF_GVAL_POPUPWIN_FLEFT ;	//    Left座標
 }
-var gSTR_PopupWindow = {} ;
+///var gSTR_PopupWindow = {} ;
 
 
 
@@ -626,6 +626,10 @@ function gSTR_FrameCtrlInfo_Str()
 	this.NextProcess	= new gSTR_CallbackInfo_Str() ;			//  ロード後処理
 ///	this.SelInfo		= {} ;									//  セレクタ情報
 	this.MouseMove		= new gSTR_WinCtrl_MouseMove_Str() ;	//  マウスムーブ情報
+	this.ButtonGroup	= {} ;									//  ボタングループ情報
+	this.ButtonInfo		= {} ;									//  ボタン制御情報
+	this.PopupHelp		= {} ;									//  ポップアップヘルプ情報
+	this.PopupWindow	= {} ;									//  ポップアップWindow情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
 }
 var gARR_FrameCtrlInfo = {} ;
@@ -680,6 +684,10 @@ function gSTR_WinCtrlInfo_Str()
 ///	this.SelInfo		= {} ;									//  セレクタ情報
 	this.MouseMove		= new gSTR_WinCtrl_MouseMove_Str() ;	//  マウスムーブ情報
 	this.CompProcess	= new gSTR_CallbackInfo_Str() ;			//  コールバック情報
+	this.ButtonGroup	= {} ;									//  ボタングループ情報
+	this.ButtonInfo		= {} ;									//  ボタン制御情報
+	this.PopupHelp		= {} ;									//  ポップアップヘルプ情報
+	this.PopupWindow	= {} ;									//  ポップアップWindow情報
 	this.TransInfo		= new gSTR_WinCtrl_TransInfo_Str() ;	//  翻訳情報
 	
 	this.IFrameLoad		= {} ;									//  インラインフレーム ロードフラグ  true=Load完了
@@ -747,6 +755,7 @@ var gCLS_Storage     = new CLS_Storage() ;
 var gCLS_Button      = new CLS_Button() ;
 var gCLS_Popup       = new CLS_Popup() ;
 var gCLS_File        = new CLS_File() ;
+var gCLS_Frm         = new CLS_Frm() ;
 var gCLS_Win         = new CLS_Win() ;
 
 

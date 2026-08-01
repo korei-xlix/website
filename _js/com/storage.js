@@ -133,8 +133,7 @@ class CLS_Storage {
 		//### 応答形式の取得
 		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Lget" }) ;
 		
-		let wSubRes ;
-		let wMessage ;
+		let wSubRes, wMessage ;
 		
 		wRes['Responce'] = top.DEF_GVAL_TEXT_NONE ;
 		////////////////////////////////
@@ -201,7 +200,7 @@ class CLS_Storage {
 		//### 応答形式の取得
 		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Lset" }) ;
 		
-		let wMessage ;
+		let wSubRes, wMessage ;
         
 		////////////////////////////////
 		// Storageが有効か
@@ -234,15 +233,34 @@ class CLS_Storage {
 		
 		////////////////////////////////
 		// 設定できたか確認
-		let wSubRes = this.Lget({
-			inKey   : inKey,
-			inView : false
-		}) ;
-		if( wSubRes['Result']!=true )
+///		let wSubRes = this.Lget({
+///			inKey   : inKey,
+///			inView : false
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{
+///			//失敗
+///			wRes['Reason'] = "Lストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+///			top.gCLS_L.L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
+		try
 		{
-			//失敗
-			wRes['Reason'] = "Lストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
-			top.gCLS_L.L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
+			wSubRes = localStorage.getItem( inKey ) ;
+			if( wSubRes==null )
+			{
+				wRes['Reason'] = "Lストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel: "A", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			let wError = "Lストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
@@ -553,7 +571,7 @@ class CLS_Storage {
 		//### 応答形式の取得
 		let wRes = top.gCLS_OSIF.Get_Resp({ inClass:"CLS_Storage", inFunc:"Lset" }) ;
 		
-		let wMessage ;
+		let wSubRes, wMessage ;
         
 		////////////////////////////////
 		// Storageが有効か
@@ -586,15 +604,34 @@ class CLS_Storage {
 		
 		////////////////////////////////
 		// 設定できたか確認
-		let wSubRes = this.Sget({
-			inKey   : inKey,
-			inView : false
-		}) ;
-		if( wSubRes['Result']!=true )
+///		let wSubRes = this.Sget({
+///			inKey   : inKey,
+///			inView : false
+///		}) ;
+///		if( wSubRes['Result']!=true )
+///		{
+///			//失敗
+///			wRes['Reason'] = "Sストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+///			top.gCLS_L.L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
+///			return wRes ;
+///		}
+		try
 		{
-			//失敗
-			wRes['Reason'] = "Sストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
-			top.gCLS_L.L({ inRes:wRes, inLevel: "B", inLine:__LINE__ }) ;
+			wSubRes = sessionStorage.getItem( inKey ) ;
+			if( wSubRes==null )
+			{
+				wRes['Reason'] = "Sストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+				top.gCLS_L.L({ inRes:wRes, inLevel: "A", inLine:__LINE__ }) ;
+				return wRes ;
+			}
+		}
+		catch(e)
+		{
+			//##############################
+			//# 例外処理
+			let wError = "Sストレージ設定失敗 inKey=" + top.gCLS_OSIF.String({ inString:inKey }) ;
+			wRes['Reason'] = top.gCLS_OSIF.ExpStr({ inE:e, inA:wError }) ;
+			top.gCLS_L.L({ inRes:wRes, inLevel:"A", inLine:__LINE__ }) ;
 			return wRes ;
 		}
 		
